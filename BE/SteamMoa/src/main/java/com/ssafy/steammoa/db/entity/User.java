@@ -5,12 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 /**
  * 유저 모델 정의.
@@ -18,25 +14,8 @@ import javax.persistence.GenerationType;
 @Entity
 @Getter
 //@Setter
-public class User extends BaseEntity{
-
+public class User{
     // 유저 식별자 PK
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long userId;
-//
-//    @Column(name="user_steam_id")
-//    private String userSteamId;
-//    @Column(name="user_service_id")
-//    private String userServiceId;
-//    @Column(name="user_service_pw")
-//    private String userServicePw;
-//    @Column(name="user_name")
-//    private String userName;
-//
-////
-
-    // double유저식별자, 유저 스팀아이디()
     @Id
     @Column(name = "user_id")
     @GeneratedValue
@@ -61,7 +40,7 @@ public class User extends BaseEntity{
     private boolean isAdmin;
 
     @Column(name = "user_point")
-    private Double point;
+    private Double userPoint;
 
 
     @Column(name = "user_img_path")
@@ -69,6 +48,14 @@ public class User extends BaseEntity{
 
     @Column(name = "user_img_nm")
     private String imgName;
+
+
+
+
+
+
+
+
 
 
 }
