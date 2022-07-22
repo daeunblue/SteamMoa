@@ -1,4 +1,4 @@
-BE/SteamMoa/HELP.md
+BackEnd/HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -35,7 +35,5 @@ out/
 
 ### VS Code ###
 .vscode/
-
-
-### db 정보 ##
-application.properties
+!/.idea/
+!/.idea/
