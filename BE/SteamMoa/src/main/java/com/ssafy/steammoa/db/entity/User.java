@@ -13,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Getter
-//@Setter
+@Setter
 public class User{
     // 유저 식별자 PK
     @Id
@@ -25,7 +25,7 @@ public class User{
     private Long steamId;
 
     @Column(name = "user_service_id", nullable = false)
-    private Long userId;
+    private String userId;
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  // 왜 쓰는지 -> https://eglowc.tistory.com/28
