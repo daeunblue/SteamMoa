@@ -3,6 +3,7 @@ package com.ssafy.backend.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,15 +15,15 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class User{
+public class User {
     // 유저 식별자 PK
     @Id
     @Column(name = "user_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "user_steam_id", nullable = false)
-    private Long steamId;
+    private String steamId;
 
     @Column(name = "user_service_id", nullable = false)
     private String userId;

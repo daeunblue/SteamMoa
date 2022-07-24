@@ -18,10 +18,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(UserRegisterPostReq userRegisterInfo) {
         User user = new User();
-        user.setUserId(userRegisterInfo.getId());
-        // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-//		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
-        user.setPassword(userRegisterInfo.getPassword());
+        user.setUserId(userRegisterInfo.getUser_service_id());
+        // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장. -> 추후에 SpringSecurity 적용하고 사용해야함
+        // user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
+        user.setPassword(userRegisterInfo.getUser_service_pw());
+        user.setName(userRegisterInfo.getUser_name());
+        user.setSteamId(userRegisterInfo.getUser_steam_id());
+        user.setImgPath(userRegisterInfo.getUser_img_path());
+        user.setImgName(userRegisterInfo.getUser_img_nm());
         return userRepository.save(user);
 
     }
