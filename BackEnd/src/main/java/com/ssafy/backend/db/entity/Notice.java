@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 알림 모델 정의.
@@ -26,7 +28,7 @@ public class Notice{
     private Long id;
 
     // 연관관계 FK 설정해줘야함
-    @Column(name = "user_service_id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(name = "notice_content", nullable = false)
@@ -39,5 +41,6 @@ public class Notice{
     @ColumnDefault("false")
     private boolean isRead;
 
-
+    @OneToMany(mappedBy = "noticeList")
+    private List<NoticeList> nLists = new ArrayList<>();
 }
