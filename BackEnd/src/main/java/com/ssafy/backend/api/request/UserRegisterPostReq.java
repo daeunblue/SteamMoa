@@ -12,6 +12,9 @@ import lombok.Setter;
 @Data
 @ApiModel("UserRegisterPostRequest")
 public class UserRegisterPostReq {
+	@ApiModelProperty(name="유저 steam식별자", example = "user_steam_id")
+	String user_steam_id;
+
 	@ApiModelProperty(name="유저 ID", example="user_id")
 	String user_service_id;
 
@@ -20,13 +23,4 @@ public class UserRegisterPostReq {
 
 	@ApiModelProperty(name="유저 nickname", example="user_name")
 	String user_name;
-
-	@ApiModelProperty(name="유저 steam식별자", example = "user_steam_id")
-	String user_steam_id;
-
-	@ApiModelProperty(name="유저 steam 프로필 사진경로", example = "user_image_path")
-	String user_img_path;
-
-	@ApiModelProperty(name="유저 steam 프로필 사진명", example = "user_steam_id")
-	String user_img_nm;
 }
