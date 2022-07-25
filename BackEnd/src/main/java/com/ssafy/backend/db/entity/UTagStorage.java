@@ -13,8 +13,8 @@ public class UTagStorage {
     @Id
     @Column(name = "utag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long utagId;
 
-    @OneToMany(mappedBy = "userTag")
+    @OneToMany(mappedBy = "uTagStorage")
     private List<UserTag> uTagList = new ArrayList<>();
 }

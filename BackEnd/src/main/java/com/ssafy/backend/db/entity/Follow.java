@@ -2,11 +2,7 @@ package com.ssafy.backend.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.apachecommons.CommonsLog;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -14,15 +10,15 @@ import java.util.List;
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="follow_user_id")
-    private Long id;
+    @Column(name="follow_id")
+    private Long followId;
 
     // 하나의 사용자는 여러 구독 테이블을 가진다.
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User fromUserId;
+    private User fromUser;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User toUserId;
+    // 피 구독자의 아이디
+    @Column(name = "following_id")
+    private Long followingId;
 }

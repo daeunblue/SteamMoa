@@ -21,13 +21,13 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @Column(name = "user_steam_id", nullable = false)
-    private String steamId;
+    private String userSteamId;
 
     @Column(name = "user_service_id", nullable = false)
-    private String userId;
+    private String userServiceId;
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  // 왜 쓰는지 -> https://eglowc.tistory.com/28
@@ -35,7 +35,7 @@ public class User {
     private String password;
 
     @Column(name = "user_name", nullable = false)
-    private String name;
+    private String userName;
 
     // Enum 타입으로 바꿀지 고민중임.
     @Column(name = "is_admin", nullable = false)
@@ -44,17 +44,17 @@ public class User {
     @Column(name = "user_point")
     private Double userPoint;
 
-
-    @Column(name = "user_img_path")
-    private String imgPath;
-
-    @Column(name = "user_img_nm")
-    private String imgName;
-
-    @OneToMany(mappedBy = "noticeList")
+    @OneToMany(mappedBy = "notice")
     private List<NoticeList> nLists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userTag")
+    @OneToMany(mappedBy = "user")
     private List<UserTag> uTagLists = new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromUser")
+    private List<Follow> uFollowList = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "user_id")
+//    private List<UserTag> uFollowingList = new ArrayList<>();
+
 
 }

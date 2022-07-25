@@ -1,7 +1,5 @@
 package com.ssafy.backend.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,22 +23,22 @@ public class Notice{
     @Id
     @Column(name = "notice_id")
     @GeneratedValue
-    private Long id;
+    private Long noticeId;
 
     // 연관관계 FK 설정해줘야함
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(name = "notice_content", nullable = false)
-    private String content;
+    private String noticeContent;
 
     @Column(name = "notice_type", nullable = false)
-    private String type;
+    private String noticeType;
 
     @Column(name = "is_read")
     @ColumnDefault("false")
     private boolean isRead;
 
-    @OneToMany(mappedBy = "noticeList")
+    @OneToMany(mappedBy = "notice")
     private List<NoticeList> nLists = new ArrayList<>();
 }
