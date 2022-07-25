@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       fontFamily: {
         'sans': ['Noto Sans'],
+        'blackSans': ['Black Han Sans'],
       }
     },
   },
