@@ -1,0 +1,15 @@
+.login-Logo{
+    width:340px;
+}
+
+.description{
+    width:460px;
+}
+
+.nav-vertical-div{
+    height:50px;
+}
+
+.nav-grad{
+    background: linear-gradient(to right, #141E30, #243B55);
+}
