@@ -17,13 +17,12 @@ public class Follow {
     @Column(name="follow_user_id")
     private Long id;
 
-    // 하나의 사용자는 여러 구독 테이블을 가진다
-    @OneToMany(mappedBy ="user")
-    private List<User> users = new ArrayList<>();
+    // 하나의 사용자는 여러 구독 테이블을 가진다.
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User fromUserId;
 
-
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
-
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User toUserId;
 }
