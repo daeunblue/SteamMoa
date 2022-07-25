@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class Gamecategory {
     @Id
     @Column(name="game_category_id")
-    private Long game_category_id;
+    private Long gamecategoryId;
 
     // 양방향 다대일
     @ManyToOne(fetch = FetchType.LAZY)

@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Gcategorystorage {
     @Id
     @Column(name="category_id")
-    private long category_id;
+    private long categoryId;
 
     @Column(name="category")
     private String category;

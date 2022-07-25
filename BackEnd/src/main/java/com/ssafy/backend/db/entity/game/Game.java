@@ -14,50 +14,55 @@ import java.util.List;
 public class Game {
     @Id @GeneratedValue
     @Column(name="game_id")
-    private Long game_id;
+    private Long gameId;
 
     @Column(name="steam_game_id", nullable = false)
-    private String steam_game_id;
+    private String steamgameId;
 
     @Column(name="game_name", nullable = false)
-    private String game_name;
+    private String name;
 
     @Column(name="game_score")
-    private double game_score;
+    private double score;
 
     @Column(name="game_img", nullable = false)
-    private String game_img;
+    private String imgpath;
 
     @Column(name="required_age")
-    private int required_age;
+    private int age;
 
     @Column(name="is_free")
-    private boolean is_free;
+    private boolean isFree;
 
     @Column(name="game_description")
-    private String game_description;
+    private String description;
 
     @Column(name="supported_languages")
-    private String supported_languages;
+    private String languages;
 
     @Column(name="developers")
     private String developers;
 
     @Column(name="game_price")
-    private long game_price;
+    private long price;
 
     @Column(name="discount_per")
-    private int discount_per;
+    private int discount;
 
     @Column(name="is_window")
-    private boolean is_window;
+    private boolean isWindow;
 
     @Column(name="is_mac")
-    private boolean is_mac;
+    private boolean isMac;
 
     // 양방향 일대다 관계
     @OneToMany(mappedBy = "game")
     @JsonManagedReference
     private List<Gamegenre> gamegenres = new ArrayList<>();
+
+    // 양방향 일대다 관계
+    @OneToMany(mappedBy = "game")
+    @JsonManagedReference
+    private List<Gamecategory> gamecategories = new ArrayList<>();
 
 }

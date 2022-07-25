@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Ggenrestorage {
     @Id
     @Column(name="genre_id")
-    private long genre_id;
+    private long genreId;
 
     @Column(name="genre")
     private String genre;
