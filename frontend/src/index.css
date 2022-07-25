@@ -1,0 +1,7 @@
+/* Black Han Sans 사용 위한 CDN */
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+
+/* tailwind 기본 설정 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
