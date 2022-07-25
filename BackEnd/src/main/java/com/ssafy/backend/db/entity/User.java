@@ -3,11 +3,12 @@ package com.ssafy.backend.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 유저 모델 정의.
@@ -50,13 +51,10 @@ public class User {
     @Column(name = "user_img_nm")
     private String imgName;
 
+    @OneToMany(mappedBy = "noticeList")
+    private List<NoticeList> nLists = new ArrayList<>();
 
-
-
-
-
-
-
-
+    @OneToMany(mappedBy = "userTag")
+    private List<UserTag> uTagLists = new ArrayList<>();
 
 }
