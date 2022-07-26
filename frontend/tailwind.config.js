@@ -44,7 +44,12 @@ module.exports = {
         'mainBtn-disabled':'#A9ACB1',
         'createInput-gray':'#E7E7E7', // 글쓰기 input
         'card-lightgray':'#D9D9D9', // 모아카드 배경색
-        'detailContent-light':'#EFEDED' // 상세페이지 디테일 컨텐츠 등...
+        'detailContent-light':'#EFEDED', // 상세페이지 디테일 컨텐츠 등...
+
+        // gradient
+        'bg-search-gradient-from':'#415570',
+        'bg-search-gradient-via':'#263850',
+        'bg-search-gradient-to':'#263850'
       }
     },
   },
