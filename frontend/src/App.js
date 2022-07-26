@@ -1,12 +1,18 @@
-//import Login from "./pages/Login";
+
+import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-//import SignupForm from "./pages/SignupForm";
+import SignupForm from "./pages/SignupForm";
+import GameMoa from "./pages/game/GameMoa";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <Signup/>
-    </div>
+    <Routes>
+      <Route path="/" element={<Signup />} />
+      <Route path="/signupform" element={<SignupForm />} />
+      <Route path="/login" element={ <Login/> } />
+      <Route path="/gamemoa" element={ <GameMoa/> } />
+    </Routes>
   );
 }
 
