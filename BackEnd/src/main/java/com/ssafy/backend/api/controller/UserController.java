@@ -52,7 +52,7 @@ public class UserController {
         * 1. Map<String, Object> 형식으로
         * 2. 모든 Entity 의 toString을 재정의해라 (json방식)
         * */
-        Map<String,Object> result = userService.getUserByUserId(userId);
+        Map<String,Object> result = userService.getUserInfoByUserId(userId);
         log.debug("user 정보 : "+ result.toString());
 
 //        List<Follow> fList = userService.getFollowByUserId(userId);
