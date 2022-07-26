@@ -1,7 +1,9 @@
 package com.ssafy.backend.db.entity.game;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,9 +11,12 @@ import java.io.Serializable;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="gamecategory")
 public class Gamecategory {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="game_category_id")
     private Long gamecategoryId;
 

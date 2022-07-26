@@ -4,9 +4,11 @@ import com.ssafy.backend.db.entity.game.Game;
 import com.ssafy.backend.db.entity.game.GameDTO;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service("gameService")
 public class GameServiceImpl implements GameService {
     @Autowired
     private GameRepository gameRepository;
