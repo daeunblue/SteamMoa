@@ -73,18 +73,16 @@ const SignupForm = (props) => {
   };
 
   const handleIdCheck = (e) => {
-    setIdMessage("사용 가능한 아이디입니다 :)");
-    setIsCheckedId(true);
-    // const url = `/api/auth/signup/duplicated/${user.service_id}`;
-    // axios.get(url).then(({is_duplicated}) => {
-    //   if (!is_duplicated) {
-    //     setIdMessage("아이디가 중복되었습니다");
-    //     setIsCheckedId(false);
-    //   } else {
-    //     setIdMessage("사용 가능한 아이디입니다");
-    //     setIsCheckedId(true);
-    //   }
-    // }).catch();
+    const url = `/api/auth/signup/duplicated/${user.service_id}`;
+    axios.get(url).then(({is_duplicated}) => {
+      if (!is_duplicated) {
+        setIdMessage("아이디가 중복되었습니다");
+        setIsCheckedId(false);
+      } else {
+        setIdMessage("사용 가능한 아이디입니다");
+        setIsCheckedId(true);
+      }
+    }).catch();
   };
 
   useEffect(() => {
@@ -118,13 +116,15 @@ const SignupForm = (props) => {
 
     axios
       .post("")
-      .then((response) => {
-        // 회원가입 후 처리
-        // 이미 회원가입, 패스워드 유효성(정규 표현식으로 확인), 아무튼 오류 처리 필요
-        // 로그인 페이지로 redirect //navigate('/login');
+      .then(({ status, message }) => {
+        alert(message);
+        if (status === 200) {
+          navigate('/login');
+        } else {
+          navigate('/signup');
+        }
       })
       .catch(() => {
-        //스팀인증부터 다시?
       });
   };
 
@@ -148,7 +148,7 @@ const SignupForm = (props) => {
                 className="w-5/6 rounded-md"
               />
               <button
-                className="w-1/6 text-white text-center rounded-lg text-sm sm:w-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none px-3 py-2.5"
+                className="w-1/6 text-white text-center rounded-lg text-sm sm:w-auto bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none px-3 py-2.5"
                 onClick={handleIdCheck}>
                 중복검사
               </button>
@@ -182,6 +182,7 @@ const SignupForm = (props) => {
               name="service_pw"
               onChange={onChangePassword}
               className="w-full rounded-md"
+              placeholder="숫자, 영문 대,소문자 , 특수문자(!@#$%^+=-)를 포함한 8~25자리로 입력해주세요"
             />
             <span className="text-red-500 font-semibold">{passwordMessage}</span>
           </div>
@@ -196,12 +197,13 @@ const SignupForm = (props) => {
               name="service_pw_confirm"
               onChange={onChangePasswordConfirm}
               className="w-full rounded-md"
+              placeholder="한번 더 비밀번호를 입력해주세요"
             />
             <span className="text-red-500 font-semibold">{passwordConfirmMessage}</span>
           </div>
         </div>
         <button
-          className="w-3/6 mt-3 text-white text-center font-blackSans text-3xl bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-3.5 disabled:opacity-75 disabled:bg-gray-500"
+          className="w-3/6 mt-3 text-white text-center font-blackSans text-3xl bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-3.5 disabled:opacity-75 disabled:bg-gray-500"
           onClick={signup}
           disabled={!(isCheckedId && isPassword && isPasswordConfirm)}>
           가입하기
