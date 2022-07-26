@@ -36,7 +36,7 @@ module.exports = {
         // component colors : 미묘한 차이...
         'centerDiv-blue':'#374050', // 가운데 80% 색상 들어가는 경우
         'sidebar-dark':'#1A2535', // 마이페이지 사이드바 상단 프로필 배경
-        'sidebar-light':'#213047', // 마이페이지 사이드바 상단 프로필 배경
+        'sidebar-light':'#213047', // 마이페이지 사이드바
         'miniMoa-dark':'#1B2637', // 메인페이지 미니모아 배경
         'searchbar-gray':'#A1A7B4', // 각종 서치바, 정렬바
         'mainBtn-blue':'#788DB1', // 일반적인 버튼 색
