@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import { TextInput } from 'flowbite-react';
+import NavbarLoginOptions from './NavbarLoginOptions';
 import '../assets/style.css'
 
 const Navbar = (props) => { 
@@ -13,8 +13,7 @@ const Navbar = (props) => {
           <img src="../ImgAssets/TypoIconLogo.png" alt="Logo" className="w-1/12"/>
           {/* 로그인 if 걸어야함 => 변수만들어서 IF문 */}
           <div className="flex items-end h-3/5">
-            <Link to="/" className="text-white text-xs font-sans mr-3 font-bold">회원가입</Link>
-            <Link to="/login" className="text-white text-xs font-sans ml-3 font-bold">로그인</Link>
+            <NavbarLoginOptions/>
           </div>
         </div>
         <div className="h-10 flex justify-between items-center">
