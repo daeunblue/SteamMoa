@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest
 @Slf4j
@@ -27,7 +25,7 @@ public class AuthControllerTest {
         userDto.setUserServiceId("user_id");
         userDto.setUserServicePw("user_pass");
 
-//        authController.login(userDto);
+    //        authController.login(userDto);
 
     }
 }
