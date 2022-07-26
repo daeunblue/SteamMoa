@@ -3,6 +3,7 @@ package com.ssafy.backend.db.entity.party;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.Game;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,8 +29,10 @@ public class Party {
 
     private String chat_link;
 
+    @ColumnDefault("false")
     private boolean is_closed;
 
+    @ColumnDefault("false")
     private boolean is_deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)

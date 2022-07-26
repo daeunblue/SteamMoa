@@ -1,7 +1,6 @@
 package com.ssafy.backend.db.entity.party;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.db.entity.game.Game;
 
 import javax.persistence.*;
 
