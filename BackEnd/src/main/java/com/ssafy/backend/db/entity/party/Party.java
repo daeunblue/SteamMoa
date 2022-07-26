@@ -3,12 +3,14 @@ package com.ssafy.backend.db.entity.party;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.Game;
+import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class Party {
 
     @Id
