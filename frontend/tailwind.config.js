@@ -6,11 +6,27 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens:{
+        'mobile':'320px',
+        // => @media (min-width: 320px) { ... }
+        'tablet': '640px',
+        // => @media (min-width: 640px) { ... }
+        'laptop': '1024px',
+        // => @media (min-width: 1024px) { ... }
+      },
       fontFamily: {
         'sans': ['Noto Sans'],
         'blackSans': ['Black Han Sans'],
         //font-sans 
       },
+      minWidth:{
+        '90':'90px',
+        '144':'144px'
+      },
+      maxWidth:{
+        '144':'144px'
+      },
+
       width:{
         'per5':'5%',
         'per10':'10%',
