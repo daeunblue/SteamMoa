@@ -1,28 +1,18 @@
 package com.ssafy.backend.api.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.backend.api.request.UserLoginPostReq;
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.response.UserLoginPostRes;
 import com.ssafy.backend.api.service.UserService;
-import com.ssafy.backend.common.auth.SsafyUserDetails;
 import com.ssafy.backend.common.model.response.BaseResponseBody;
 import com.ssafy.backend.common.util.JwtTokenUtil;
 import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.dto.UserDto;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
-import sun.security.util.Password;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 회원가입 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -83,22 +73,30 @@ public class AuthController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     @ResponseBody
-    public ResponseEntity<? > login(@ApiIgnore Authentication authentication)throws IOException {
-        SsafyUserDetails ssafyUserDetails = (SsafyUserDetails)authentication.getDetails();
-        User user = ssafyUserDetails.getUser();
-        String password = user.getPassword();
+    public ResponseEntity<? extends UserLoginPostRes>login(@RequestBody UserLoginPostReq userLoginPostReq){
+//    public ResponseEntity<? > login(@ApiIgnore Authentication authentication)throws IOException {
+//        if(authentication == null){
+//            System.out.println("아무것도 전달되지 않음");
+//        }
+//        SsafyUserDetails ssafyUserDetails = (SsafyUserDetails)authentication.getDetails();
+//        User user = ssafyUserDetails.getUser();
+//        String password = user.getPassword();
+//
+//        String id = user.getUserServiceId();
+//        User result = userService.getUserByUserId(id);
+        String userId = userLoginPostReq.getUser_service_id();
+        String password = userLoginPostReq.getUser_service_pw();
 
-        String id = user.getUserServiceId();
-        User result = userService.getUserByUserId(id);
-
+        boolean idExist = userService.checkServiceIdDuplicate(userId);
         // 아이디 자체가 유효하지 않은 경우 407에러 return
-        if(result == null){
+        if(!idExist){
             return ResponseEntity.status(401).body(UserLoginPostRes.of(407, "Invalid Id", null));
         }
 
+        User result = userService.getUserByUserId(userId);
         if(passwordEncoder.matches(password, result.getPassword())) {
             // 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-            return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(id)));
+            return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
         }
 
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.

@@ -53,6 +53,8 @@ public class JwtTokenUtil {
                 .withSubject(userId)
                 .withExpiresAt(expires)
                 .withIssuer(ISSUER)
+//                .withClaim("user_id", userId)
+//                .withClaim("user_service_id", userSerivceId)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
     }

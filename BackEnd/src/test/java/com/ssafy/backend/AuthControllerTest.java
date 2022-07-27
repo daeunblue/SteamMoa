@@ -2,7 +2,7 @@ package com.ssafy.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.backend.api.controller.AuthController;
-import com.ssafy.backend.dto.UserDto;
+import com.ssafy.backend.api.response.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
