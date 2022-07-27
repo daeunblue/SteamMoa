@@ -13,7 +13,7 @@ import java.util.Map;
 public interface UserService {
     boolean createUser(UserRegisterPostReq userRegisterInfo);
 
-    Map<String, Object> getUserByUserId(String userId);
+    Map<String, Object> getUserInfoByUserId(String userId);
     List<Follow> getFollowByUserId(Long userId);
 
     // 유효성 검사

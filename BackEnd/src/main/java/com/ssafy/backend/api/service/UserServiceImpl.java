@@ -53,13 +53,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Map<String,Object> getUserByUserId(String userServiceId) {
+    public Map<String,Object> getUserInfoByUserId(String userServiceId) {
         // 디비에 유저 정보 조회 (userId 를 통한 조회).
-        User user = userRepository.findByUserServiceId(userServiceId);
-//        User user = userRepository.findByUserId(userId).get();
-//        log.debug("getUserByUserId : "+user.toString());
+        System.out.println("--------------------");
+        User user = userRepository.findByUserServiceId(userServiceId).get();
+        if(user == null){
+            System.out.println("반환값 없음");
+        }
         Map<String, Object> result = new HashMap<>();
-        result.put("user", user);
+        if(user.getUserId() == null){
+            System.out.println("아이디 에 해당하는 사용자 없음");
+        }else{
+            System.out.println("아이디 유저 있음");
+            result.put("user", user);
+        }
         return result;
     }
 
