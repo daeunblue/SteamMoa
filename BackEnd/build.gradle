@@ -41,6 +41,14 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.13.1'
 
     implementation 'org.projectlombok:lombok'
+
+    
+    // junit 테스트 관련 어노테이션
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testCompileOnly 'junit:junit:4.13'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+
 }
 
 tasks.named('test') {
