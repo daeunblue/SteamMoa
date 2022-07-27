@@ -14,9 +14,13 @@ public interface UserService {
     boolean createUser(UserRegisterPostReq userRegisterInfo);
 
     Map<String, Object> getUserInfoByUserId(String userId);
+    User getUserByUserId(String userId);
     List<Follow> getFollowByUserId(Long userId);
 
     // 유효성 검사
     boolean checkSteamIdDuplicate(String steamId);
     boolean checkServiceIdDuplicate(String serviceId);
+
+    // 로그인 유효성 검사
+    boolean isEqualUserIdPw(String serviceId, String servicePw);
 }

@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    Optional<List<Follow>> findUserUserIdBy(Long userId);
     boolean existsByUserSteamId(String userSteamId);
     boolean existsByUserServiceId(String userServiceId);
+
+
 }
