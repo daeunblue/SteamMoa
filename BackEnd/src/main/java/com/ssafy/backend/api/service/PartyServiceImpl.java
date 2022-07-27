@@ -22,4 +22,9 @@ public class PartyServiceImpl implements PartyService{
         PartyDTO partyDetail = new PartyDTO(partyRepository.findByPartyId(party_id));
         return partyDetail;
     }
+
+    @Override
+    public Party create_party(Party party){
+        return party;
+    }
 }

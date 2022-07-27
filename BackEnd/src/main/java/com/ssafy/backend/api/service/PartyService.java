@@ -10,4 +10,6 @@ public interface PartyService {
     List<Party> getPartyList();
 
     PartyDTO getPartyDetail(Long party_id);
+
+    Party create_party(Party party);
 }
