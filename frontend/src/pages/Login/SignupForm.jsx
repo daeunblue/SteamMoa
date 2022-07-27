@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import axios from "axios";
 
 const SignupForm = (props) => {
@@ -44,7 +44,8 @@ const SignupForm = (props) => {
   };
   const onChangePassword = (event) => {
     const { name, value } = event.target;
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     setUser({
       ...user,
       [name]: value,
@@ -74,15 +75,18 @@ const SignupForm = (props) => {
 
   const handleIdCheck = (e) => {
     const url = `/api/auth/signup/duplicated/${user.service_id}`;
-    axios.get(url).then(({is_duplicated}) => {
-      if (!is_duplicated) {
-        setIdMessage("아이디가 중복되었습니다");
-        setIsCheckedId(false);
-      } else {
-        setIdMessage("사용 가능한 아이디입니다");
-        setIsCheckedId(true);
-      }
-    }).catch();
+    axios
+      .get(url)
+      .then(({ is_duplicated }) => {
+        if (!is_duplicated) {
+          setIdMessage("아이디가 중복되었습니다");
+          setIsCheckedId(false);
+        } else {
+          setIdMessage("사용 가능한 아이디입니다");
+          setIsCheckedId(true);
+        }
+      })
+      .catch();
   };
 
   useEffect(() => {
@@ -90,7 +94,12 @@ const SignupForm = (props) => {
     const search = location.search.substring(1);
 
     const urlObj = JSON.parse(
-      '{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}'
+      '{"' +
+        decodeURI(search)
+          .replace(/"/g, '\\"')
+          .replace(/&/g, '","')
+          .replace(/=/g, '":"') +
+        '"}'
     );
     const getUserId = (response) => {
       const str = response["openid.claimed_id"];
@@ -104,7 +113,12 @@ const SignupForm = (props) => {
   });
 
   const signup = () => {
-    if (!user.service_id || !user.name || !user.service_pw || !user.service_pw_confirm) {
+    if (
+      !user.service_id ||
+      !user.name ||
+      !user.service_pw ||
+      !user.service_pw_confirm
+    ) {
       alert("모든 사항을 입력해주세요.");
       return;
     }
@@ -119,13 +133,12 @@ const SignupForm = (props) => {
       .then(({ status, message }) => {
         alert(message);
         if (status === 200) {
-          navigate('/login');
+          navigate("/login");
         } else {
-          navigate('/signup');
+          navigate("/signup");
         }
       })
-      .catch(() => {
-      });
+      .catch(() => {});
   };
 
   return (
@@ -149,12 +162,17 @@ const SignupForm = (props) => {
               />
               <button
                 className="w-1/6 text-white text-center rounded-lg text-sm sm:w-auto bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none px-3 py-2.5"
-                onClick={handleIdCheck}>
+                onClick={handleIdCheck}
+              >
                 중복검사
               </button>
             </div>
 
-            <span className={`font-semibold ${isCheckedId ? "text-green-500" : "text-red-500"} `}>
+            <span
+              className={`font-semibold ${
+                isCheckedId ? "text-green-500" : "text-red-500"
+              } `}
+            >
               {idMessage}
             </span>
           </div>
@@ -184,11 +202,16 @@ const SignupForm = (props) => {
               className="w-full rounded-md"
               placeholder="숫자, 영문 대,소문자 , 특수문자(!@#$%^+=-)를 포함한 8~25자리로 입력해주세요"
             />
-            <span className="text-red-500 font-semibold">{passwordMessage}</span>
+            <span className="text-red-500 font-semibold">
+              {passwordMessage}
+            </span>
           </div>
           {/* PASSWORD CONFIRM */}
           <div className="w-full mb-2.5">
-            <label htmlFor="user_service_pw_confirm" className="text-white text-sm">
+            <label
+              htmlFor="user_service_pw_confirm"
+              className="text-white text-sm"
+            >
               비밀번호 확인
             </label>
             <input
@@ -199,13 +222,16 @@ const SignupForm = (props) => {
               className="w-full rounded-md"
               placeholder="한번 더 비밀번호를 입력해주세요"
             />
-            <span className="text-red-500 font-semibold">{passwordConfirmMessage}</span>
+            <span className="text-red-500 font-semibold">
+              {passwordConfirmMessage}
+            </span>
           </div>
         </div>
         <button
           className="w-3/6 mt-3 text-white text-center font-blackSans text-3xl bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-3.5 disabled:opacity-75 disabled:bg-gray-500"
           onClick={signup}
-          disabled={!(isCheckedId && isPassword && isPasswordConfirm)}>
+          disabled={!(isCheckedId && isPassword && isPasswordConfirm)}
+        >
           가입하기
         </button>
       </div>
