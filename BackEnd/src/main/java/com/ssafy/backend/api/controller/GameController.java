@@ -3,6 +3,7 @@ package com.ssafy.backend.api.controller;
 import com.ssafy.backend.api.service.GameService;
 import com.ssafy.backend.db.entity.game.Game;
 import com.ssafy.backend.db.entity.game.GameDTO;
+import com.ssafy.backend.db.entity.game.GamelistDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,16 +28,16 @@ public class GameController {
 
     @GetMapping("")
     @ApiOperation(value = "게임 리스트 전체 조회", notes = "전체 게임 리스트를 조회.")
-    public ResponseEntity<?> getGameListAll(){
-        List<Game> result = gameService.getGameList();
+    public ResponseEntity<?> getGameListAll(@RequestParam int page){
+        List<GamelistDTO> result = gameService.getGameList(page);
         return ResponseEntity.status(200).body(result);
     }
 
 
     @GetMapping("/search")
     @ApiOperation(value = "게임 리스트 조건 조회", notes = "검색어, 필터에 맞는 게임들을 조회.")
-    public ResponseEntity<?> getGameListFiltered(@RequestParam String name){
-        List<Game> result = gameService.searchGameList(name);
+    public ResponseEntity<?> getGameListFiltered(@RequestParam String name, @RequestParam int page){
+        List<GamelistDTO> result = gameService.searchGameList(page, name);
         return ResponseEntity.status(200).body(result);
     }
 

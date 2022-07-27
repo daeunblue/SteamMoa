@@ -40,9 +40,9 @@ class GameServiceImplTest {
 //        gCategoryStorageRepository.save(gcs);
 //        Gamecategory gc = new Gamecategory(Long.parseLong("1"), g, gcs);
 //        gameCategoryRepository.save(gc);
-        System.out.println(gameRepository.findByGameId(Long.parseLong("1")));
-        List<Game> list = service.getGameList();
-        System.out.println(list.size());
+//        System.out.println(gameRepository.findByGameId(Long.parseLong("1")));
+//        List<Game> list = service.getGameList();
+//        System.out.println(list.size());
     }
 
     @Test
@@ -54,8 +54,8 @@ class GameServiceImplTest {
 //        Gamecategory gc = new Gamecategory(Long.parseLong("1"), g, gcs);
 //        gameCategoryRepository.save(gc);
 
-        List<Game> list = service.searchGameList("star");
-        System.out.println(list);
+//        List<Game> list = service.searchGameList("star");
+//        System.out.println(list);
     }
 
     @Test

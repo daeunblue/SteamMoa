@@ -40,7 +40,7 @@ public class GameDTO {
     private String description;
     private String languages;
     private String developers;
-    private long price;
+    private int price;
     private int discount;
     private boolean isWindow;
     private boolean isMac;
@@ -74,7 +74,7 @@ public class GameDTO {
 
         List<String> categories_temp = new ArrayList<>();
         for (Gamecategory gameCategory : g.getGamecategories())
-            genres_temp.add(gameCategory.getCategory().getCategory());
+            categories_temp.add(gameCategory.getCategory().getCategory());
         this.categories = categories_temp;
     }
 }
