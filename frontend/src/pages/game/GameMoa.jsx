@@ -7,7 +7,7 @@ const GameMoa = (props) => {
   return (
     <div className="w-full h-screen">
       <Navbar />
-      {/* 배너 이미지 */}
+      {/* 게임모아 배너 이미지 */}
       <div className="w-per75 m-auto">
         <img src="../ImgAssets/GameMoa_Main.gif" alt="게임모아 메인 배너" />
       </div>
