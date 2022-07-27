@@ -2,6 +2,8 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.db.entity.game.Game;
 import com.ssafy.backend.db.entity.game.GameDTO;
+import com.ssafy.backend.db.entity.game.GamelistDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -10,10 +12,10 @@ import java.util.List;
  */
 public interface GameService {
     // 게임 전체 목록 조회: 상세정보 필요 없음
-    List<Game> getGameList();
+    List<GamelistDTO> getGameList(int page);
 
     // 게임 검색
-    List<Game> searchGameList(String searchString);
+    List<GamelistDTO> searchGameList(int page, String searchString);
 
     // 게임 상세 정보 조회
     GameDTO getGameDetail(Long gameId);
