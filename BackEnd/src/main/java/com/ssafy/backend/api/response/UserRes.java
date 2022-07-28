@@ -17,6 +17,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Data
+@NoArgsConstructor
 @ApiModel("UserResponse")
 public class UserRes extends BaseResponseBody{
 //    Map<String, Object> response = new HashMap<>();
@@ -31,9 +32,6 @@ public class UserRes extends BaseResponseBody{
     @ApiModelProperty(name="사용자 아이디", example="user_service_id")
     private Double userPoint;
 
-
-
-
     public static UserRes of(Integer statusCode, String message, Long userId, String userServiceId, Double userPoint){
         UserRes res = new UserRes();
         res.setUserId(userId);
@@ -43,6 +41,7 @@ public class UserRes extends BaseResponseBody{
         res.setUserPoint(userPoint);
         return res;
     }
+
 
 
 }

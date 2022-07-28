@@ -131,14 +131,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean updateUser(User user) {
         try{
             userRepository.save(user);
+            System.out.println(user.getUserName());
+            System.out.println("User 수정 요청 성공");
 //            User sUser = userRepository.findByUserId(user.getUserId()).get();
 //            sUser.setUserPoint(user.getUserPoint());
 //            sUser.setUserName(user.getUserName());
             return true;
         }catch(Exception e){
+            System.out.println("User 수정 요청 실패");
             return false;
         }
     }

@@ -1,5 +1,6 @@
 package com.ssafy.backend.api.controller;
 
+import com.ssafy.backend.api.request.UserUpdatePutReq;
 import com.ssafy.backend.api.response.UserRes;
 import com.ssafy.backend.api.service.UserService;
 import com.ssafy.backend.common.auth.SsafyUserDetails;
@@ -22,14 +23,14 @@ import java.util.Map;
  **/
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 @Slf4j
 public class UserController {
     @Autowired
     UserService userService;
 
 
-    @GetMapping("/me")
+    @GetMapping("/profile")
     @ApiOperation(value = "회원 조회", notes = "<strong>사용자 아이디</strong>를 통해 회원 정보 조회.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -44,9 +45,9 @@ public class UserController {
          */
         System.out.println(authentication.toString());
 
-        if(authentication == null){
+        if (authentication == null) {
             System.out.println("아무것도 전달되지 않음");
-            return ResponseEntity.ok(UserRes.of(401, "토큰이 존재하지 않음",-1L,"",0.0));
+            return ResponseEntity.ok(UserRes.of(401, "토큰이 존재하지 않음", -1L, "", 0.0));
         }
 
         Map<String, Object> result = new HashMap<>();
@@ -59,12 +60,39 @@ public class UserController {
 
         }
 
+        User user = (User) result.get("user");
 
-        User user = (User)result.get("user");
-//        user.setUserPoint(0.0); // 아직 파티관련
+        return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint()));
+    }
 
+    @PutMapping("/profile")
+    @ApiOperation(value = "회원 정보 수정", notes = "<strong>회원 정보 수정 </strong>")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 403, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends UserRes> updateUserInfo(@ApiIgnore  Authentication authentication, @RequestBody UserUpdatePutReq userUpdatePutReq) {
+        Map<String, Object> result = new HashMap<>();
 
-        return ResponseEntity.ok(UserRes.of(200,"회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint()));
+        try {
+            SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+            User user = userDetails.getUser();
+            String userServiceId = user.getUserServiceId();
+            // userName 수정
+            user.setUserName(userUpdatePutReq.getUser_name());
+            System.out.println("수정된 값: " + user.getUserName());
+            userService.updateUser(user);
+            result = userService.getUserInfoByUserId(userServiceId);
+        } catch (Exception e) {
+            return (ResponseEntity<? extends UserRes>) ResponseEntity.badRequest();
         }
 
+        User user = (User) result.get("user");
+
+        return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint()));
+
     }
+}
+
