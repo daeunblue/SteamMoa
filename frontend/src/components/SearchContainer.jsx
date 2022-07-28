@@ -1,44 +1,44 @@
-import React from 'react'
-import SelectInput from './SelectInput';
-import { useState } from 'react';
+import React from "react";
 
-const SearchContainer = () => {
-  const [search, setSearch ] = useState("");
-  const onChangeSearch = (e) => {
-    e.preventDefault()
-    setSearch(e.target.value)
-  };
-
-  const onKeyPress = (e) => {
-    if (e.key === 'Enter'){
-      onSearch()
-    };
-  };
-
-  const onSearch = ()=>{
-    console.log(search)
-    //검색 화면으로 보내기
-    // 
-  }
-  
+const SearchContainer = (props) => {
   return (
-    <div id="accordion" className='w-per75 m-auto'>
-      {/* 검색 + select */}
-      <div>
-        <div id="search-bar" className='h-4/5 flex'>
-          {/* 검색바 */}
-          <input type="text" value={search} placeholder="검색어를 입력하세요"
-            onChange={onChangeSearch} onKeyPress={onKeyPress} 
-            className="w-full text-gray-900 bg-searchbar-gray rounded-sm border-0 text-xs focus:ring-slate-500 focus:border-slate-500 mr-2"/>  
-          <button className="bg-mainBtn-blue text-white hover:bg-mainBtn-blue-hover">검색</button>
+    <div className="w-per75 m-auto py-16 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to">
+      <form class="flex items-center">
+        <label for="simple-search" class="sr-only">
+          Search
+        </label>
+        <div class="relative w-full">
+          <input
+            type="text"
+            id="simple-search"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search"
+            required=""
+          />
         </div>
-        {/* 구분바 */}
-        <span>||</span>
-        {/* select */}
-        <SelectInput></SelectInput>
-      </div>
+        <button
+          type="submit"
+          class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+          <span class="sr-only">Search</span>
+        </button>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default SearchContainer
+export default SearchContainer;

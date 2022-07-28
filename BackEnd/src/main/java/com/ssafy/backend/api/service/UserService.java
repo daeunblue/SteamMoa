@@ -11,12 +11,20 @@ import java.util.Map;
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
  */
 public interface UserService {
+
     boolean createUser(UserRegisterPostReq userRegisterInfo);
 
-    Map<String, Object> getUserInfoByUserId(String userId);
+    Map<String, Object> getUserInfoByUserId(String userServiceId);
+    User getUserByUserId(String userId);
     List<Follow> getFollowByUserId(Long userId);
 
     // 유효성 검사
     boolean checkSteamIdDuplicate(String steamId);
     boolean checkServiceIdDuplicate(String serviceId);
+
+    // 로그인 유효성 검사
+    boolean isEqualUserIdPw(String serviceId, String servicePw);
+
+    boolean deleteUser(String userServiceId);
+    boolean updateUser(User user);
 }
