@@ -5,9 +5,7 @@ import com.ssafy.backend.common.model.response.BaseResponseBody;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -26,17 +24,23 @@ public class UserRes extends BaseResponseBody{
     @ApiModelProperty(name="사용자 인증 번호", example="1")
     private Long userId;
 
-    @ApiModelProperty(name="사용자 인증 번호", example="user_service_id")
+    @ApiModelProperty(name="사용자 아이디", example="user_service_id")
     private String userServiceId;
 
 
+    @ApiModelProperty(name="사용자 아이디", example="user_service_id")
+    private Double userPoint;
 
-    public static UserRes of(Integer statusCode, String message, Long userId, String userServiceId){
+
+
+
+    public static UserRes of(Integer statusCode, String message, Long userId, String userServiceId, Double userPoint){
         UserRes res = new UserRes();
         res.setUserId(userId);
         res.setUserServiceId(userServiceId);
         res.setStatusCode(statusCode);
         res.setMessage(message);
+        res.setUserPoint(userPoint);
         return res;
     }
 
