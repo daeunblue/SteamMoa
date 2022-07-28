@@ -6,12 +6,12 @@ module.exports = {
   ],
   theme: {
     extend: {
-      screens: {
-        mobile: "320px",
+      screens:{
+        'mobile':'320px',
         // => @media (min-width: 320px) { ... }
-        tablet: "640px",
+        'tablet': '640px',
         // => @media (min-width: 640px) { ... }
-        laptop: "1024px",
+        'laptop': '1024px',
         // => @media (min-width: 1024px) { ... }
       },
       fontFamily: {
@@ -19,31 +19,38 @@ module.exports = {
         blackSans: ["Black Han Sans"],
         //font-sans
       },
-      width: {
-        per5: "5%",
-        per10: "10%",
-        per15: "15%",
-        per20: "20%",
-        per25: "25%",
-        per30: "30%",
-        per35: "35%",
-        per40: "40%",
-        per45: "45%",
-        per50: "50%",
-        per55: "55%",
-        per60: "60%",
-        per65: "65%",
-        per70: "70%",
-        per75: "75%",
-        per80: "80%",
-        per85: "85%",
-        per90: "90%",
-        per95: "95%",
-        per100: "100%",
-        per105: "105%",
-        per110: "110%",
-        per115: "115%",
-        per120: "120%",
+      minWidth:{
+        '90':'90px',
+        '144':'144px'
+      },
+      maxWidth:{
+        '144':'144px'
+      },
+      width:{
+        'per5':'5%',
+        'per10':'10%',
+        'per15':'15%',
+        'per20':'20%',
+        'per25':'25%',
+        'per30':'30%',
+        'per35':'35%',
+        'per40':'40%',
+        'per45':'45%',
+        'per50':'50%',
+        'per55':'55%',
+        'per60':'60%',
+        'per65':'65%',
+        'per70':'70%',
+        'per75':'75%',
+        'per80':'80%',
+        'per85':'85%',
+        'per90':'90%',
+        'per95':'95%',
+        'per100':'100%',
+        'per105':'105%',
+        'per110':'110%',
+        'per115':'115%',
+        'per120':'120%',
       },
       height: {
         per5: "5%",
@@ -94,17 +101,17 @@ module.exports = {
         "moa-purple-dark": "#68279B",
 
         // component colors : 미묘한 차이...
-        "centerDiv-blue": "#374050", // 가운데 80% 색상 들어가는 경우
-        "sidebar-dark": "#1A2535", // 마이페이지 사이드바 상단 프로필 배경
-        "sidebar-light": "#213047", // 마이페이지 사이드바
-        "miniMoa-dark": "#1B2637", // 메인페이지 미니모아 배경
-        "searchbar-gray": "#A1A7B4", // 각종 서치바, 정렬바
-        "mainBtn-blue": "#788DB1", // 일반적인 버튼 색
-        "mainBtn-blue-hover": "#5C6D8A",
-        "mainBtn-disabled": "#A9ACB1",
-        "createInput-gray": "#E7E7E7", // 글쓰기 input
-        "card-lightgray": "#D9D9D9", // 모아카드 배경색
-        "detailContent-light": "#EFEDED", // 상세페이지 디테일 컨텐츠 등...
+        'centerDiv-blue':'#374050', // 가운데 80% 색상 들어가는 경우
+        'sidebar-dark':'#1A2535', // 마이페이지 사이드바 상단 프로필 배경
+        'sidebar-light':'#283C5A', // 마이페이지 사이드바
+        'miniMoa-dark':'#1B2637', // 메인페이지 미니모아 배경
+        'searchbar-gray':'#A1A7B4', // 각종 서치바, 정렬바
+        'mainBtn-blue':'#788DB1', // 일반적인 버튼 색
+        'mainBtn-blue-hover':'#5C6D8A',
+        'mainBtn-disabled':'#A9ACB1',
+        'createInput-gray':'#E7E7E7', // 글쓰기 input
+        'card-lightgray':'#D9D9D9', // 모아카드 배경색
+        'detailContent-light':'#EFEDED', // 상세페이지 디테일 컨텐츠 등...
 
         // gradient
         "bg-search-gradient-from": "#415570",
