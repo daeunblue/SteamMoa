@@ -18,7 +18,7 @@ const Sidebar = (props) => {
     <div className='h-screen bg-sidebar-light w-per25' >
       {/* 프로필 */}
       <NavLink
-        to={`/profile/${userName}/user`}
+        to={`/profile/${userName}`}
       >
       <div className='p-5 bg-sidebar-dark hover:cursor-pointer'>
         <div className='flex justify-around items-center'>
@@ -32,7 +32,7 @@ const Sidebar = (props) => {
       {menus.map((menu) => {
         return (
           <div>
-            <div>{menu.title}</div>
+            <div className=''>{menu.title}</div>
             {menu.submenus.map((submenu)=>{
               return (
                 <div>    

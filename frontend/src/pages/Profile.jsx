@@ -22,7 +22,7 @@ const Profile = () => {
         <Sidebar user={user}></Sidebar>
         <div className='bg-centerDiv-blue w-full'>
           <Routes>
-            <Route path="user" element={<ProfileUser />} />
+            <Route path="" element={<ProfileUser />} />
             <Route path="userupdate" element={<ProfileUserUpdate />} />
             <Route path="curparty" element={<ProfileCurParty />} />
             <Route path="pastparty" element={<ProfilePastParty />} />
