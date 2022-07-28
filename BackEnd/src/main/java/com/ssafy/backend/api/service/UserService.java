@@ -23,4 +23,7 @@ public interface UserService {
 
     // 로그인 유효성 검사
     boolean isEqualUserIdPw(String serviceId, String servicePw);
+
+    boolean deleteUser(String userServiceId);
+    boolean updateUser(User user);
 }

@@ -4,6 +4,8 @@ import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.db.entity.Follow;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +47,12 @@ public class UserServiceImpl implements UserService {
         if(!steamIdValidate && !serviceIdValidate){ // 두 경우를 다르게 볼것인지 프론트와 합의해야함 (코드 중복이 생기므로 이 부분도 개선해야함)
             user.setUserSteamId(userRegisterInfo.getUser_steam_id());
             user.setUserServiceId(userRegisterInfo.getUser_service_id());
-            System.out.println("모든 아이디 중복 아님");
+            user.setUserPoint(36.5);
+            System.out.println("회원 가입 가능");
         }else{
             System.out.println("아이디 중복!");
             return false;
         }
-//        log.debug("id 중복 검사 통과");
-//        System.out.println("아이디 중복체크 검사 통과");
 
         user.setUserName(userRegisterInfo.getUser_name());
         userRepository.save(user);
@@ -110,8 +111,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEqualUserIdPw(String serviceId, String servicePw) {
+
         User user = userRepository.findByUserServiceId(serviceId).get();
 //        if(user.getPassword());
         return false;
     }
+
+    @Override
+    @Transactional
+    public boolean deleteUser(String userServiceId) {  // 예외처리 해야함 나중에 추후에
+        try{
+            userRepository.delete(userRepository.findByUserServiceId(userServiceId).orElseThrow(()-> new ChangeSetPersister.NotFoundException()));
+            System.out.println("사용자 삭제 요청 성공!");
+            return true;
+        }catch (Exception e){
+            System.out.println("존재하지 않는 사용자 삭제 요청 -> 에러임!");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateUser(User user) {
+        try{
+            userRepository.save(user);
+//            User sUser = userRepository.findByUserId(user.getUserId()).get();
+//            sUser.setUserPoint(user.getUserPoint());
+//            sUser.setUserName(user.getUserName());
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
 }
+
