@@ -1,8 +1,10 @@
 package com.ssafy.backend.api.controller;
 
 import com.ssafy.backend.api.request.UserLoginPostReq;
+import com.ssafy.backend.api.request.UserPwCheckPostReq;
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.response.UserLoginPostRes;
+import com.ssafy.backend.api.response.UserPwCheckPostRes;
 import com.ssafy.backend.api.service.UserService;
 import com.ssafy.backend.common.model.response.BaseResponseBody;
 import com.ssafy.backend.common.util.JwtTokenUtil;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  **/
 @Api(value = "유저 API", tags = {"SignUp"})
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 @Slf4j
 public class AuthController {
 
@@ -74,16 +76,7 @@ public class AuthController {
     })
     @ResponseBody
     public ResponseEntity<? extends UserLoginPostRes>login(@RequestBody UserLoginPostReq userLoginPostReq){
-//    public ResponseEntity<? > login(@ApiIgnore Authentication authentication)throws IOException {
-//        if(authentication == null){
-//            System.out.println("아무것도 전달되지 않음");
-//        }
-//        SsafyUserDetails ssafyUserDetails = (SsafyUserDetails)authentication.getDetails();
-//        User user = ssafyUserDetails.getUser();
-//        String password = user.getPassword();
-//
-//        String id = user.getUserServiceId();
-//        User result = userService.getUserByUserId(id);
+
         String userId = userLoginPostReq.getUser_service_id();
         String password = userLoginPostReq.getUser_service_pw();
 
@@ -102,5 +95,50 @@ public class AuthController {
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
         return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
     }
+
+    @PostMapping("/check")
+    @ApiOperation(value = "비밀번호 확인 ", notes = "<strong>아이디, 비밀번호</strong>를 통해 비밀번호 확인.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 409, message = "서비스 아이디 중복 오류"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    @ResponseBody
+    public ResponseEntity<? extends UserPwCheckPostRes>checkPassword(@RequestBody UserPwCheckPostReq userPwCheckPostReq){
+
+        String userId = userPwCheckPostReq.getUser_service_id();
+        String password = userPwCheckPostReq.getUser_service_pw();
+
+        User result = userService.getUserByUserId(userId);
+        if(passwordEncoder.matches(password, result.getPassword())) {
+            // 유효한 패스워드가 맞는 경우, 성공으로 응답.
+            return ResponseEntity.ok(UserPwCheckPostRes.of(200, "Success"));
+        }
+
+        // 유효하지 않는 패스워드인 경우, 실패로 응답.
+        return ResponseEntity.ok(UserPwCheckPostRes.of(401, "Invalid Password"));
+    }
+
+    @DeleteMapping("/{user_service_id}")
+    @ApiOperation(value = "회원 탈퇴", notes = "user_service_id에 해당하는 사용자 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?>deleteUser(@PathVariable("user_service_id") String userServiceId){
+
+        try{
+            userService.deleteUser(userServiceId);
+        }catch(Exception e){    // 추후 예외처리 더 해줘야함
+
+        }
+
+        return null;
+    }
+
+
+
+
 
 }

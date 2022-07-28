@@ -25,10 +25,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "user_steam_id", nullable = false)
+    @Column(name = "user_steam_id", nullable = false, unique = true)
     private String userSteamId;
 
-    @Column(name = "user_service_id", nullable = false)
+    @Column(name = "user_service_id", nullable = false, unique = true)
     private String userServiceId;
 
     @JsonIgnore
@@ -43,7 +43,7 @@ public class User {
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
 
-    @Column(name = "user_point")
+    @Column(name = "user_point", nullable = false)
     private Double userPoint;
 
     @OneToMany(mappedBy = "notice")

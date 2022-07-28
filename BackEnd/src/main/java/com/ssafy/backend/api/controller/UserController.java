@@ -34,7 +34,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 403, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
@@ -42,9 +42,12 @@ public class UserController {
          * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
          */
-//        if(authentication == null){
-//            System.out.println("아무것도 전달되지 않음");
-//        }
+        System.out.println(authentication.toString());
+
+        if(authentication == null){
+            System.out.println("아무것도 전달되지 않음");
+            return ResponseEntity.ok(UserRes.of(401, "토큰이 존재하지 않음",-1L,"",0.0));
+        }
 
         Map<String, Object> result = new HashMap<>();
         try {
@@ -56,10 +59,12 @@ public class UserController {
 
         }
 
-        User user = (User)result.get("user");
-        user.setUserPoint(0.0);
 
-        return ResponseEntity.ok(UserRes.of(200,"회원 정보 조회 성공", user.getUserId(), user.getUserServiceId()));
+        User user = (User)result.get("user");
+//        user.setUserPoint(0.0); // 아직 파티관련
+
+
+        return ResponseEntity.ok(UserRes.of(200,"회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint()));
         }
 
     }
