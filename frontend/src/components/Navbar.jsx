@@ -26,10 +26,10 @@ const Navbar = (props) => {
   return (
     <div className="nav-container w-full nav-grad">
       {/* 내부 2칸 */}
-      <div className="w-4/5 m-auto">
+      <div className="w-per75 m-auto">
         <div className="h-9 flex justify-between items-center">
-            {/* 로고 */}
-          <img src="../ImgAssets/TypoIconLogo.png" alt="Logo" className="w-1/12"/>
+          {/* 로고 */}
+          <img src="../../ImgAssets/TypoIconLogo.png" alt="Logo" className="w-per15 min-w-90 max-w-144"/>
           {/* 로그인 if 걸어야함 => 변수만들어서 IF문 */}
           <div className="flex items-end h-3/5">
             <NavbarLoginOptions/>
@@ -43,11 +43,11 @@ const Navbar = (props) => {
           </div>
           <div className='h-4/5'>
               {/* 검색바 */}
-              <div className="flex items-center block p-1 w-full text-gray-900 bg-gray-400 rounded-lg border border-gray-500 sm:text-xs focus:ring-slate-500 focus:border-slate-500 h-full">
+              <div className="flex items-center p-1 w-full text-gray-900 bg-gray-400 rounded-lg border border-gray-500 sm:text-xs focus:ring-slate-500 focus:border-slate-500 h-full">
               <input type="text" id="small-input" value={search} placeholder="검색어를 입력하세요"
               onChange={onChangeSearch} onKeyPress={onKeyPress} 
               className="w-full h-5/6 text-gray-900 bg-gray-400 rounded-sm border-0 text-xs focus:ring-slate-500 focus:border-slate-500 mr-2"/>
-              <img src="../ImgAssets/NavBar-Magni.png" alt="" className='h-5/6 hover:cursor-pointer' onClick={onSearch}/>
+              <img src="../../ImgAssets/NavBar-Magni.png" alt="" className='h-5/6 hover:cursor-pointer' onClick={onSearch}/>
               </div>
 
           </div>
