@@ -15,7 +15,4 @@ public class UserLoginPostReq {
 
 	@ApiModelProperty(name="유저 Password", example="user_password")
 	String user_service_pw;
-
-	@ApiModelProperty(name="유저 nickname", example="user_name")
-	String user_name;
 }
