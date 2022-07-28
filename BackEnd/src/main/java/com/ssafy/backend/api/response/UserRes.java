@@ -21,15 +21,20 @@ import java.util.Map;
 @Data
 @ApiModel("UserResponse")
 public class UserRes extends BaseResponseBody{
-    Map<String, Object> response = new HashMap<>();
+//    Map<String, Object> response = new HashMap<>();
 
-	@ApiModelProperty(name="User")
-    UserDto userDto;
+    @ApiModelProperty(name="사용자 인증 번호", example="1")
+    private Long userId;
+
+    @ApiModelProperty(name="사용자 인증 번호", example="user_service_id")
+    private String userServiceId;
 
 
-    public static UserRes of(Integer statusCode, String message, UserDto userDto){
+
+    public static UserRes of(Integer statusCode, String message, Long userId, String userServiceId){
         UserRes res = new UserRes();
-        res.setUserDto(userDto);
+        res.setUserId(userId);
+        res.setUserServiceId(userServiceId);
         res.setStatusCode(statusCode);
         res.setMessage(message);
         return res;
