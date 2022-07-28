@@ -126,16 +126,15 @@ public class AuthController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?>deleteUser(@PathVariable("user_service_id") String userServiceId){
-
-        try{
-            userService.deleteUser(userServiceId);
-        }catch(Exception e){    // 추후 예외처리 더 해줘야함
-
+    public ResponseEntity<? extends BaseResponseBody>deleteUser(@PathVariable("user_service_id") String userServiceId){
+        boolean success = userService.deleteUser(userServiceId);
+        if(success){
+            return ResponseEntity.ok(BaseResponseBody.of(200,"Success"));
+        }else{
+            return ResponseEntity.ok(BaseResponseBody.of(400,"Fail"));
         }
-
-        return null;
     }
+
 
 
 
