@@ -27,10 +27,10 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<GamelistDTO> searchGameList(int page, String searchString) {
+    public List<GamelistDTO> searchGameList(int page, String searchString, String[] tags) {
         Pageable pageable = PageRequest.of(page, 10);
         List<GamelistDTO> resultlist = new ArrayList<>();
-        gameRepository.findAllMultiGameByName(searchString, pageable).forEach(Game->resultlist.add(new GamelistDTO(Game)));
+        gameRepository.findAllMultiGameByFilter(searchString, tags, pageable).forEach(Game->resultlist.add(new GamelistDTO(Game)));
         return resultlist;
     }
 

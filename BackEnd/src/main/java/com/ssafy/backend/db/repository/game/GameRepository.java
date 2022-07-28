@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface GameRepository extends JpaRepository<Game, Long> {
+public interface GameRepository extends JpaRepository<Game, Long>, GameCustomRepository {
 
     Game findByGameId(Long gameId);
 
@@ -20,11 +20,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             countQuery="select count(*) from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1",
             nativeQuery = true)
     List<Game> findAllMultiGame(Pageable pageable);
-
-    @Query(value = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where game.game_name like %:name% and gamecategory.category_id = 1 and game.game_price != -1",
-            countQuery="select count(*) from game inner join gamecategory on game.game_id = gamecategory.game_id where game.game_name like %:name% and gamecategory.category_id = 1 and game.game_price != -1",
-            nativeQuery = true)
-    List<Game> findAllMultiGameByName(String name, Pageable pageable);
 
     // 유무료 검색
     List<Game> findAllByIsFree(boolean isFree);

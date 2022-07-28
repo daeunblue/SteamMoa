@@ -15,7 +15,7 @@ public interface GameService {
     List<GamelistDTO> getGameList(int page);
 
     // 게임 검색
-    List<GamelistDTO> searchGameList(int page, String searchString);
+    List<GamelistDTO> searchGameList(int page, String searchString, String[] tags);
 
     // 게임 상세 정보 조회
     GameDTO getGameDetail(Long gameId);
