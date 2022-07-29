@@ -1,13 +1,8 @@
-//import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-//import SignupForm from "./pages/SignupForm";
+import Router from "./Router";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <Signup/>
-    </div>
-  );
+  return <Router />;
 }
 
 export default App;
