@@ -4,51 +4,37 @@ import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.Game;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /*
     응답용 DTO.
-    파티를 상세 페이지로 보여줄 때 사용.
+    파티를 리스트로 보여줄 때 사용.
  */
-public class PartyDTO {
+public class PartylistDTO {
+
+    private Long party_id;
 
     private Long game_id;
     private String gameImgPath;
     private String gameName;
 
-    private Long party_id;
     private String party_title;
-    private List<String> party_tags;
     private int max_player;
     private int cur_player;
     private LocalDateTime start_time;
     private LocalDateTime write_time;
-    private String status;
-    private List<PartyPlayerDTO> party_players = new ArrayList<>();
-    private String party_description;
-    private String chat_link;
 
-    public PartyDTO(Party p){
+    private String status;
+
+    public PartylistDTO(Party p){
+        this.party_id = p.getPartyId();
         this.game_id = p.getGame().getGameId();
         this.gameImgPath = p.getGame().getImgpath();
         this.gameName = p.getGame().getName();
-        this.party_id = p.getPartyId();
         this.party_title = p.getTitle();
-        for (PartyTag partytag: p.getPartyTags()) {
-            this.party_tags.add(partytag.getPtagStorage().getContent());
-        }
         this.max_player = p.getMaxPlayer();
         this.cur_player = p.getCurPlayer();
         this.start_time = p.getStartTime();
         this.write_time = p.getWriteTime();
         this.status = p.getPstatus().getContent();
-        for (Puser puser: p.getPusers()) {
-            this.party_players.add(new PartyPlayerDTO(puser));
-        }
-        this.party_description = p.getDescription();
-        this.chat_link = p.getChatLink();
     }
 }

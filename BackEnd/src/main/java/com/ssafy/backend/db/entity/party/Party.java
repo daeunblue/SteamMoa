@@ -1,49 +1,100 @@
 package com.ssafy.backend.db.entity.party;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.Game;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="party")
 public class Party {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "party_id")
+    private Long partyId;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long party_id;
-
-    private String party_title;
-
-    private int max_player;
-
-    private int cur_player;
-
-    private String party_description;
-
-    private LocalDateTime start_time;
-
-    private LocalDateTime write_time = LocalDateTime.now();
-
-    private String chat_link;
-
-    @ColumnDefault("false")
-    private boolean is_closed;
-
-    @ColumnDefault("false")
-    private boolean is_deleted;
-
+    // 단방향 다대일
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
     @JoinColumn(name="game_id")
     private Game game;
 
+    @Column(name = "party_title")
+    private String title;
+
+    @Column(name = "max_player")
+    private int maxPlayer;
+
+    @Column(name = "cur_player")
+    private int curPlayer;
+
+    @Column(name = "party_description")
+    private String description;
+
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
+
+    @Column(name = "write_time")
+    private LocalDateTime writeTime = LocalDateTime.now();
+
+    @Column(name = "chat_link", length = 1024)
+    private String chatLink;
+
+    @Column(name = "is_closed", columnDefinition = "TINYINT", length = 1)
+    private boolean isClosed;
+
+    @Column(name = "is_deleted", columnDefinition = "TINYINT", length = 1)
+    private boolean isDeleted;
+
+    // 양방향 다대일
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name="game_id")
-    private User user;
+    @JsonManagedReference
+    private Pstatus pstatus;
+
+    // 양방향 일대다
+    @OneToMany(mappedBy = "party")
+    @JsonManagedReference
+    private List<PartyTag> partyTags = new ArrayList<>();
+
+    // 양방향 일대다
+    @OneToMany(mappedBy = "party")
+    @JsonManagedReference
+    private List<Puser> pusers = new ArrayList<>();
+
+    // 양방향 편의 메소드 정의
+    // 다대일
+    public void setPstatus(Pstatus pstatus) {
+        if(this.pstatus != null){
+            this.pstatus.getParties().remove(this);
+        }
+        this.pstatus = pstatus;
+        pstatus.getParties().add(this);
+    }
+
+    // 일대다
+    public void addPartyTag(PartyTag partyTag) {
+        this.partyTags.add(partyTag);
+        if(partyTag.getParty() != this) {
+            partyTag.setParty(this);
+        }
+    }
+
+    // 일대다
+    public void addPuser(Puser puser) {
+        this.pusers.add(puser);
+        if(puser.getParty() != this) {
+            puser.setParty(this);
+        }
+    }
 }

@@ -1,8 +1,10 @@
 package com.ssafy.backend.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.ssafy.backend.db.entity.party.Puser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,5 +60,8 @@ public class User {
 //    @OneToMany(mappedBy = "user_id")
 //    private List<UserTag> uFollowingList = new ArrayList<>();
 
-
+    // 양방향 일대다
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Puser> pusers = new ArrayList<>();
 }
