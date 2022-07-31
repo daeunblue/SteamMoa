@@ -54,11 +54,8 @@ public class Party {
     @Column(name = "is_closed", columnDefinition = "TINYINT", length = 1)
     private boolean isClosed;
 
-    @Column(name = "is_deleted", columnDefinition = "TINYINT", length = 1)
-    private boolean isDeleted;
-
-    // 양방향 다대일
-    @ManyToOne(fetch = FetchType.LAZY)
+    // 양방향 일대일
+    @OneToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     private Pstatus pstatus;
 
@@ -75,11 +72,8 @@ public class Party {
     // 양방향 편의 메소드 정의
     // 다대일
     public void setPstatus(Pstatus pstatus) {
-        if(this.pstatus != null){
-            this.pstatus.getParties().remove(this);
-        }
         this.pstatus = pstatus;
-        pstatus.getParties().add(this);
+        pstatus.setParty(this);
     }
 
     // 일대다

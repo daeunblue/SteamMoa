@@ -22,11 +22,11 @@ public class Pstatus {
     @Column(name="pstatus_id")
     private Long pstatusId;
 
-    // 양방향 일대다
-    @OneToMany(mappedBy = "pstatus")
+    // 양방향 일대일
+    @OneToOne(mappedBy = "pstatus")
     @JsonManagedReference
-    @JoinColumn(name="genre_id")
-    private List<Party> parties = new ArrayList<>();
+    @JoinColumn(name="party_id")
+    private Party party;
 
     @Column(name="pstatus_content")
     private String content;
