@@ -46,7 +46,7 @@ const MiniMoa = (props) => {
   const parties = [party, party, party, party1, party1, party1, party, party, party, party1, party1, party1, party, party, party, ]
  
   return (
-    <div className='mini-moa bg-miniMoa-dark rounded flex justify-center items-center mt-8 tablet:mt-12'>
+    <div className='mini-moa bg-miniMoa-dark rounded flex justify-center items-center my-8 tablet:mt-12'>
       <div 
         className='w-10 tablet:w-14 laptop:w-16 hover:cursor-pointer text-center'
         onClick={() => {
@@ -74,9 +74,8 @@ const MiniMoa = (props) => {
                 } else {
                   
                   return(
-                  <div className='flex w-full grid grid-cols-3 gap-1' key={index}>
+                  <div className='w-full grid grid-cols-3 gap-1' key={index}>
                     {[...Array(3)].map((_, idx)=>{
-                      {console.log(3*index+idx)}
                       return(
                       <MoaCard party={parties[3*index+idx]} key={3*index+idx}></MoaCard>)
                     })}

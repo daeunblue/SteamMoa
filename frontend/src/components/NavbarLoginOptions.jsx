@@ -8,12 +8,10 @@ import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 
 
 const NavbarLoginOptions = (props) => {
-  const auth = useSelector(state => state.auth);
   const {isLoggedIn} = useSelector(state => state.auth);
   
   useEffect(
    ()=>{
-    console.log(auth)
    } ,
    [isLoggedIn]
   )
