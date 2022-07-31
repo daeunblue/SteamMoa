@@ -8,7 +8,7 @@ import FilterBadge from "./FilterBadge";
 import axios from "axios";
 
 const SearchContainer = (props) => {
-  const { filter, search, setFilter, setSort, setSearch,setGameList, pageCount } = props;
+  const { filter, search, setFilter, setSort, setSearch, setGameList, pageCount } = props;
   const { filters, sorts } = props.categories;
 
   const bgColor = ["", "bg-moa-pink", "bg-moa-yellow", "bg-moa-green", "bg-moa-purple"];
@@ -46,6 +46,15 @@ const SearchContainer = (props) => {
     setFilter([]);
   };
 
+  const deleteHandler = (category_id, filterItem_id) => {
+    const list = filter.filter((filterItem) => {
+      return filterItem.category !== category_id || filterItem.item !== filterItem_id
+        ? true
+        : false;
+    });
+    setFilter(list);
+  };
+
   const setBgColor = (id) => bgColor[id];
 
   return (
@@ -61,7 +70,7 @@ const SearchContainer = (props) => {
           {/* 정렬 */}
           <SelectInput options={sorts} handleSelectChange={onChangeSort} />
         </div>
-        {/* 아코디언 */}
+        {/* 아코디언 버튼 */}
         <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
           <span className="text-main-100">상세조건</span>
           <FontAwesomeIcon className="text-main-100 mr-2" icon={faAngleDown} />
@@ -86,9 +95,11 @@ const SearchContainer = (props) => {
           {filter.map((filterItem, index) => (
             <FilterBadge
               key={index}
-              id={filterItem.category}
+              category_id={filterItem.category}
+              filterItem_id={filterItem.item}
               name={filterItem.name}
               color={setBgColor(filterItem.category)}
+              deleteHandler={deleteHandler}
             />
           ))}
         </div>
