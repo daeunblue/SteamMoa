@@ -26,6 +26,13 @@ module.exports = {
       maxWidth:{
         '144':'144px'
       },
+      minWidth:{
+        '90':'90px',
+        '144':'144px'
+      },
+      maxWidth:{
+        '144':'144px'
+      },
       width:{
         'per5':'5%',
         'per10':'10%',
