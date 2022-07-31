@@ -8,8 +8,8 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = (props) => {
   const navigate = useNavigate();
-  const activeClass = "text-white text-base font-blackSans mx-4 block min-w-10 text-center"
-  const inactiveClass = "text-gray-200 text-base font-blackSans mx-4 block min-w-10 text-center"
+  const activeClass = "text-white border-b-2 border-main-100 text-xs laptop:text-base tablet:text-sm mobile:text-xs font-blackSans mx-4 block min-w-10 text-center"
+  const inactiveClass = "text-gray-300 text-xs laptop:text-base tablet:text-sm mobile:text-xs font-blackSans mx-4 block min-w-10 text-center"
   const [search, setSearch ] = useState("");
   const onChangeSearch = (e) => {
     e.preventDefault()
@@ -45,7 +45,7 @@ const Navbar = (props) => {
             <NavLink to="/moazone" className={({isActive}) => (isActive ? activeClass: inactiveClass)}>모아존</NavLink>
             <NavLink to="/gamemoa" className={({isActive}) => (isActive ? activeClass: inactiveClass)}>게임 모아</NavLink>
           </div>
-          <div className='h-4/5'>
+          <div className='h-per70 w-25'>
               {/* 검색바 */}
               <div className="flex items-center p-1 w-full text-gray-900 bg-gray-400 rounded-lg border border-gray-500 sm:text-xs focus:ring-slate-500 focus:border-slate-500 h-full">
               <input type="text" id="small-input" value={search} placeholder="검색어를 입력하세요"
