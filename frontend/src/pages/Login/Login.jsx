@@ -20,7 +20,7 @@ const navigate = useNavigate();
 
   const login = () => {
     axios
-      .post("http://localhost:8080/api/auth/login", {
+      .post("/api/auth/login", {
         user_service_id: user.service_id,
         user_service_pw: user.service_pw,
       })
@@ -29,7 +29,7 @@ const navigate = useNavigate();
         //  로그인 후 처리 -> 
         // 1. status 200일때 메인 페이지 or 원래 있던 페이지로 리다이렉트
         // res.data.status / res.status => int
-        if (response.status === 200) {
+        if (response.statusCode === 200) {
           navigate('/');
         // 2. 나머지는 오류 메시지 보여주기 (toast로)
         } else {

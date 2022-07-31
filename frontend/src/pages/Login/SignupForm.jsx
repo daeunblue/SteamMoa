@@ -74,13 +74,11 @@ const SignupForm = (props) => {
   };
 
   const handleIdCheck = (e) => {
-    const url = `http://localhost:8080/api/auth/signup/duplicated/${user.service_id}`;
-    console.log(user.service_id)
+    const url = `/api/auth/signup/duplicated/${user.service_id}`;
     axios
       .get(url)
-      .then((res) => {
-        console.log(res)
-        if (!(res.data.statusCode===200)) {
+      .then(({ is_duplicated }) => {
+        if (!is_duplicated) {
           setIdMessage("아이디가 중복되었습니다");
           setIsCheckedId(false);
         } else {
@@ -88,7 +86,7 @@ const SignupForm = (props) => {
           setIsCheckedId(true);
         }
       })
-      .catch((err)=> console.log(err));
+      .catch();
   };
 
   useEffect(() => {
@@ -131,16 +129,10 @@ const SignupForm = (props) => {
     }
 
     axios
-      .post("http://localhost:8080/api/auth", 
-            {
-              user_name: user.name,
-              user_service_id: user.service_id,
-              user_service_pw: user.service_pw,
-              user_steam_id: steamId,
-            })
-      .then((res) => {
-        alert(res.data.message);
-        if (res.status === 200) {
+      .post("")
+      .then(({ status, message }) => {
+        alert(message);
+        if (status === 200) {
           navigate("/login");
         } else {
           navigate("/signup");
