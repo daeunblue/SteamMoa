@@ -3,15 +3,22 @@ import SelectInput from "./SelectInput";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faRotateRight } from "@fortawesome/free-solid-svg-icons";
-import FilterCaterories from "./FilterCaterories";
-import FilterBadge from "./FilterBadge";
+import FilterCaterories from "./Filter/FilterCaterories";
+import FilterBadge from "./Filter/FilterBadge";
 import axios from "axios";
 
 const SearchContainer = (props) => {
-  const { filter, search, setFilter, setSort, setSearch, setGameList, pageCount } = props;
+  const { filter, search, setFilter, setSort, setSearch, setGameList, page } =
+    props;
   const { filters, sorts } = props.categories;
 
-  const bgColor = ["", "bg-moa-pink", "bg-moa-yellow", "bg-moa-green", "bg-moa-purple"];
+  const bgColor = [
+    "",
+    "bg-moa-pink",
+    "bg-moa-yellow",
+    "bg-moa-green",
+    "bg-moa-purple",
+  ];
 
   const onChangeSearch = (e) => {
     e.preventDefault();
@@ -30,7 +37,7 @@ const SearchContainer = (props) => {
     if (search) {
       url += `name=${search}`;
     }
-    url += `&page=${pageCount}`;
+    url += `&page=${page}`;
     filter.forEach((filterItem) => {
       url += `&tag=${filterItem.name}`;
     });
@@ -48,7 +55,8 @@ const SearchContainer = (props) => {
 
   const deleteHandler = (category_id, filterItem_id) => {
     const list = filter.filter((filterItem) => {
-      return filterItem.category !== category_id || filterItem.item !== filterItem_id
+      return filterItem.category !== category_id ||
+        filterItem.item !== filterItem_id
         ? true
         : false;
     });
@@ -60,7 +68,8 @@ const SearchContainer = (props) => {
   return (
     <div
       id="accordion"
-      className="w-per75 mx-auto mb-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to">
+      className="w-per75 mx-auto mb-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to"
+    >
       {/* header : 검색바, 정렬 Select, 펼침버튼 */}
       <div className="w-full grid grid-cols-2 grid-rows-1 p-5">
         {/* 검색바, 정렬 */}
@@ -71,7 +80,10 @@ const SearchContainer = (props) => {
           <SelectInput options={sorts} handleSelectChange={onChangeSort} />
         </div>
         {/* 아코디언 버튼 */}
-        <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
+        <div
+          className="flex flex-row-reverse items-center"
+          onClick={handleArcodion}
+        >
           <span className="text-main-100">상세조건</span>
           <FontAwesomeIcon className="text-main-100 mr-2" icon={faAngleDown} />
         </div>
@@ -106,12 +118,14 @@ const SearchContainer = (props) => {
         <div className="flex flex-col">
           <button
             onClick={handleApplyFilter}
-            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover my-1 py-1 rounded-lg">
+            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover my-1 py-1 rounded-lg"
+          >
             적용
           </button>
           <button
             onClick={handleResetFilter}
-            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover my-1 py-1 rounded-lg">
+            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover my-1 py-1 rounded-lg"
+          >
             <FontAwesomeIcon className="mr-2" icon={faRotateRight} />
             초기화
           </button>
