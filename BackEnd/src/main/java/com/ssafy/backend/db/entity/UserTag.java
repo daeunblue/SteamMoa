@@ -1,5 +1,6 @@
 package com.ssafy.backend.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,10 +16,12 @@ public class UserTag {
     private Long usertagId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "utag_id")
     private UTagStorage uTagStorage;
 
