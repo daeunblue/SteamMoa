@@ -23,20 +23,20 @@ public class Tactic {
     @Column(name="tactic_id")
     private Long tacticId;
 
-    @Column(name="tactic_title")
+    @Column(name="tactic_title", nullable = false)
     private String tacticTitle;
 
-    @Column(name = "tactic_content")
+    @Column(name = "tactic_content", nullable = false)
     private String tacticContent;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", nullable = false)
     private User user;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id")
+    @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
 }
