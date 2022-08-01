@@ -1,42 +1,122 @@
 import React from "react";
+import SelectInput from "./SelectInput";
+import SearchBar from "./SearchBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown, faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import FilterCaterories from "./FilterCaterories";
+import FilterBadge from "./FilterBadge";
+import axios from "axios";
 
 const SearchContainer = (props) => {
+  const { filter, search, setFilter, setSort, setSearch, setGameList, pageCount } = props;
+  const { filters, sorts } = props.categories;
+
+  const bgColor = ["", "bg-moa-pink", "bg-moa-yellow", "bg-moa-green", "bg-moa-purple"];
+
+  const onChangeSearch = (e) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
+
+  const onChangeSort = (e) => {
+    e.preventDefault();
+    setSort(e.target.value);
+  };
+
+  const handleArcodion = () => {};
+
+  const handleApplyFilter = () => {
+    let url = `http://i7a303.p.ssafy.io:8080/api/games/search?`;
+    if (search) {
+      url += `name=${search}`;
+    }
+    url += `&page=${pageCount}`;
+    filter.forEach((filterItem) => {
+      url += `&tag=${filterItem.name}`;
+    });
+    axios
+      .get(url)
+      .then(({ data }) => {
+        setGameList(data);
+      })
+      .catch();
+  };
+
+  const handleResetFilter = () => {
+    setFilter([]);
+  };
+
+  const deleteHandler = (category_id, filterItem_id) => {
+    const list = filter.filter((filterItem) => {
+      return filterItem.category !== category_id || filterItem.item !== filterItem_id
+        ? true
+        : false;
+    });
+    setFilter(list);
+  };
+
+  const setBgColor = (id) => bgColor[id];
+
   return (
-    <div className="w-per75 m-auto py-16 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to">
-      <form class="flex items-center">
-        <label for="simple-search" class="sr-only">
-          Search
-        </label>
-        <div class="relative w-full">
-          <input
-            type="text"
-            id="simple-search"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search"
-            required=""
-          />
+    <div
+      id="accordion"
+      className="w-per75 mx-auto mb-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to">
+      {/* header : 검색바, 정렬 Select, 펼침버튼 */}
+      <div className="w-full grid grid-cols-2 grid-rows-1 p-5">
+        {/* 검색바, 정렬 */}
+        <div className="grid grid-cols-5 gap-2">
+          {/* 검색바 */}
+          <SearchBar search={search} onChangeSearch={onChangeSearch} />
+          {/* 정렬 */}
+          <SelectInput options={sorts} handleSelectChange={onChangeSort} />
         </div>
-        <button
-          type="submit"
-          class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            ></path>
-          </svg>
-          <span class="sr-only">Search</span>
-        </button>
-      </form>
+        {/* 아코디언 버튼 */}
+        <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
+          <span className="text-main-100">상세조건</span>
+          <FontAwesomeIcon className="text-main-100 mr-2" icon={faAngleDown} />
+        </div>
+      </div>
+      <hr className="m-auto w-per95 h-px bg-main-100" />
+      {/* body : 필터링 항목 */}
+      <div className="w-full pt-5 pb-3">
+        {filters.map((category) => (
+          <FilterCaterories
+            key={category.id}
+            category={category}
+            filter={filter}
+            setFilter={setFilter}
+          />
+        ))}
+      </div>
+      <hr className="m-auto w-per95 h-px bg-main-200" />
+      {/* footer : 태그, 필터링 초기화 */}
+      <div className="w-full grid grid-cols-12 py-2 px-5 ">
+        <div className="col-span-11 grid grid-cols-10">
+          {filter.map((filterItem, index) => (
+            <FilterBadge
+              key={index}
+              category_id={filterItem.category}
+              filterItem_id={filterItem.item}
+              name={filterItem.name}
+              color={setBgColor(filterItem.category)}
+              deleteHandler={deleteHandler}
+            />
+          ))}
+        </div>
+        <div className="flex flex-col">
+          <button
+            onClick={handleApplyFilter}
+            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover my-1 py-1 rounded-lg">
+            적용
+          </button>
+          <button
+            onClick={handleResetFilter}
+            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover my-1 py-1 rounded-lg">
+            <FontAwesomeIcon className="mr-2" icon={faRotateRight} />
+            초기화
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -55,7 +55,8 @@ const handleSubmit = (e) => {
     // 라우터 쿼리 가져오기
     // party_id가 같은 데이터 가져오기
     // axios로 api 요청 보내서 다시 데이터 가져오기
-  axios.get(`http://localhost:8080/api/moazone/`, {
+  axios
+    .get(`http://localhost:8080/api/moazone/`, {
 
   }).then(function (res) {
     
@@ -63,8 +64,9 @@ const handleSubmit = (e) => {
   
 
   });
-  // 파티원 강퇴
-  // 파티장이 파티 마감
+  // 파티원 강퇴 => 파티원 테이블에서 삭제 가능
+  // 
+  // 파티장이 파티 마감 => 모집중에서 모집완료로 바뀌어야 함
 
   return (
     <>
