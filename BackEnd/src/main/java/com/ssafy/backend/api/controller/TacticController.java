@@ -1,8 +1,9 @@
 package com.ssafy.backend.api.controller;
 
 import com.ssafy.backend.api.request.TacticPostReq;
+import com.ssafy.backend.api.request.TacticPutReq;
+import com.ssafy.backend.api.response.TacticDto;
 import com.ssafy.backend.api.service.TacticService;
-import com.ssafy.backend.common.model.response.BaseResponseBody;
 import com.ssafy.backend.db.entity.tactic.Tactic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,21 +34,20 @@ public class TacticController {
     @GetMapping("/game/{gameId}")
     @ApiOperation(value="게임 공략 정보", notes = "game_id에 해당하는 게임 공략글 정보를 조회한다")
     public ResponseEntity<?> getTacticsByGameId(@PathVariable("gameId")Long gameId){
-        List<Tactic> result = tacticService.getTacticsByGameId(gameId);
+        List<TacticDto> result = tacticService.getTacticsByGameId(gameId);
         return ResponseEntity.status(200).body(result);
     }
 
     @GetMapping("/user/{userId}")
     @ApiOperation(value="게임 공략 정보", notes = "user_id에 해당하는 게임 공략글 정보를 조회한다")
     public ResponseEntity<?> getTacticsByUserId(@PathVariable("userId")Long userId){
-        List<Tactic> result = tacticService.getTacticsByUserId(userId);
+        List<TacticDto> result = tacticService.getTacticsByUserId(userId);
         return ResponseEntity.status(200).body(result);
     }
 
     @PostMapping()
-    @ApiOperation(value="게임 공략 생성", notes = "공략글 생성")
+    @ApiOperation(value="게임 공략글 생성", notes = "공략글 생성")
     public ResponseEntity<? extends Map<String,Object>> createTactics(@RequestBody TacticPostReq tacticPostReq){
-
         Map<String,Object> resultMap = new HashMap<>();
 
         if(tacticService.createTactics(tacticPostReq)){
@@ -58,4 +58,21 @@ public class TacticController {
             return ResponseEntity.status(400).body(resultMap);
         }
     }
+
+    @PutMapping()
+    @ApiOperation(value="게임 공략글 수정", notes = "공략글 수정")
+    public ResponseEntity<? extends Map<String,Object>> updateTactics(@RequestBody TacticPutReq tacticPutReq){
+        Map<String,Object> resultMap = new HashMap<>();
+
+        if(tacticService.updateTactic(tacticPutReq)){
+            resultMap.put("msg","Success");
+            return ResponseEntity.status(200).body(resultMap);
+        }else{
+            resultMap.put("msg","Fail");
+            return ResponseEntity.status(400).body(resultMap);
+        }
+    }
+
+    // 특정 게시글 상세 정보 조회 -> tactic_id기반 검색 결과 반환 (Dto 하나)
+
 }

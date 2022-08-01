@@ -1,6 +1,8 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.TacticPostReq;
+import com.ssafy.backend.api.request.TacticPutReq;
+import com.ssafy.backend.api.response.TacticDto;
 import com.ssafy.backend.db.entity.tactic.Tactic;
 import com.ssafy.backend.db.repository.TacticRepository;
 import com.ssafy.backend.db.repository.UserRepository;
@@ -8,6 +10,7 @@ import com.ssafy.backend.db.repository.game.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,13 +26,38 @@ public class TacticServiceImpl implements TacticService{
     GameRepository gameRepository;
 
     @Override
-    public List<Tactic> getTacticsByGameId(Long gameId) {
-        return tacticRepository.findByGameGameId(gameId).get();
+    public List<TacticDto> getTacticsByGameId(Long gameId) {
+        List<Tactic> list = tacticRepository.findByGameGameId(gameId).get();
+        List<TacticDto> resultList = new ArrayList<>();
+
+        for (Tactic tactic : list) {
+            TacticDto tacticDto = new TacticDto();
+            tacticDto.setTacticId(tactic.getTacticId());
+            tacticDto.setUserId(tactic.getUser().getUserId());
+            tacticDto.setGameId(tactic.getGame().getGameId());
+            tacticDto.setTacticTitle(tactic.getTacticTitle());
+            tacticDto.setTacticContent(tactic.getTacticContent());
+            resultList.add(tacticDto);
+        }
+        return resultList;
     }
 
     @Override
-    public List<Tactic> getTacticsByUserId(Long userId) {
-        return tacticRepository.findByUserUserId(userId).get();
+    public List<TacticDto> getTacticsByUserId(Long userId) {
+        List<Tactic> list = tacticRepository.findByUserUserId(userId).get();
+        List<TacticDto> resultList = new ArrayList<>();
+
+        for (Tactic tactic : list) {
+            TacticDto tacticDto = new TacticDto();
+            tacticDto.setTacticId(tactic.getTacticId());
+            tacticDto.setUserId(tactic.getUser().getUserId());
+            tacticDto.setGameId(tactic.getGame().getGameId());
+            tacticDto.setTacticTitle(tactic.getTacticTitle());
+            tacticDto.setTacticContent(tactic.getTacticContent());
+            resultList.add(tacticDto);
+        }
+
+        return resultList;
     }
 
     @Override
@@ -45,6 +73,23 @@ public class TacticServiceImpl implements TacticService{
             }
             tactic.setUser(userRepository.findByUserId(tacticPostReq.getUserId()).get());
             tactic.setGame(gameRepository.findByGameId(tacticPostReq.getGameId()));
+            tacticRepository.save(tactic);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    @Override
+    public boolean updateTactic(TacticPutReq tacticPutReq){
+        Tactic tactic = tacticRepository.findByTacticId(tacticPutReq.getTacticId()).get();
+        try{
+            tactic.setTacticTitle(tacticPutReq.getTacticTitle());
+            tactic.setTacticContent(tacticPutReq.getTacticContent());
+            if(!userRepository.findByUserId(tacticPutReq.getUserId()).isPresent() || (gameRepository.findByGameId(tacticPutReq.getGameId()) == null)){
+                return false;
+            }
+            tactic.setUser(userRepository.findByUserId(tacticPutReq.getUserId()).get());
+            tactic.setGame(gameRepository.findByGameId(tacticPutReq.getGameId()));
             tacticRepository.save(tactic);
             return true;
         }catch (Exception e){

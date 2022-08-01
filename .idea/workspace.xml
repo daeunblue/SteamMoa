@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="31672cbc-2c28-4304-b4d0-19686f34f08f" name="Changes" comment="" />
+    <list default="true" id="31672cbc-2c28-4304-b4d0-19686f34f08f" name="Changes" comment="init : 공략페이지 API 구현(C, 생성)">
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/api/request/TacticPutReq.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/api/response/TacticDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/api/controller/TacticController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/api/controller/TacticController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/api/service/TacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/api/service/TacticService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/api/service/TacticServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/api/service/TacticServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/db/repository/TacticRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/ssafy/backend/db/repository/TacticRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -23,15 +43,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/SSAFY/Downloads/STEAMMOA_GIT/BackEnd",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/SSAFY/Downloads/STEAMMOA_GIT/BackEnd&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;927c6df05c8cb4b1199d37df89d558ec&quot;
   }
-}]]></component>
+}</component>
+  <component name="RunManager">
+    <configuration name="BackEndApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="BackEnd.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ssafy.backend.BackEndApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ssafy.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.BackEndApplication" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -41,7 +89,59 @@
       <option name="presentableId" value="Default" />
       <updated>1658680075119</updated>
       <workItem from="1658680076686" duration="295000" />
+      <workItem from="1659319118587" duration="6266000" />
+      <workItem from="1659329271105" duration="9863000" />
     </task>
+    <task id="LOCAL-00001" summary="fix : 1대N관계 순환참조 관련 설정 추가&#10;주인엔티티 - @JsonBackReference&#10;참조엔티티 - @JsonManagedReference">
+      <created>1659328244265</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1659328244265</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix : 공략 관련 기능 연관관계 추가">
+      <created>1659330125713</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1659330125713</updated>
+    </task>
+    <task id="LOCAL-00003" summary="init : 공략 엔티티 생성">
+      <created>1659330143639</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1659330143639</updated>
+    </task>
+    <task id="LOCAL-00004" summary="init : 공략 Repository 생성">
+      <created>1659330158225</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1659330158225</updated>
+    </task>
+    <task id="LOCAL-00005" summary="init : 공략 Service/Controller R(조회) 구현">
+      <created>1659330182849</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1659330182849</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fix : GameRepository 수정 사항 주석 추가">
+      <created>1659333792397</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1659333792397</updated>
+    </task>
+    <task id="LOCAL-00007" summary="init : 공략페이지 API 구현(C, 생성)">
+      <created>1659333840919</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1659333840919</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -74,5 +174,25 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix : 1대N관계 순환참조 관련 설정 추가&#10;주인엔티티 - @JsonBackReference&#10;참조엔티티 - @JsonManagedReference" />
+    <MESSAGE value="fix : 공략 관련 기능 연관관계 추가" />
+    <MESSAGE value="init : 공략 엔티티 생성" />
+    <MESSAGE value="init : 공략 Repository 생성" />
+    <MESSAGE value="init : 공략 Service/Controller R(조회) 구현" />
+    <MESSAGE value="fix : GameRepository 수정 사항 주석 추가" />
+    <MESSAGE value="init : 공략페이지 API 구현(C, 생성)" />
+    <option name="LAST_COMMIT_MESSAGE" value="init : 공략페이지 API 구현(C, 생성)" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
