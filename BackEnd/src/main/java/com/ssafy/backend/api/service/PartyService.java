@@ -1,6 +1,7 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
+import com.ssafy.backend.api.request.PartyPutReq;
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.db.entity.party.Party;
 import com.ssafy.backend.db.entity.party.PartyDTO;
@@ -27,7 +28,7 @@ public interface PartyService {
     PartyDTO getPartyDetail(Long partyId);
 
     // 파티 수정
-    boolean updateParty(Party party);
+    boolean updateParty(Long partyId, PartyPutReq partyInfo);
 
     // 파티 삭제
     boolean deleteParty(Long partyId);

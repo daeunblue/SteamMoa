@@ -1,23 +1,29 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
+import com.ssafy.backend.api.request.PartyPutReq;
 import com.ssafy.backend.db.entity.game.GameDTO;
 import com.ssafy.backend.db.entity.game.GamelistDTO;
 import com.ssafy.backend.db.entity.party.*;
 import com.ssafy.backend.db.repository.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import com.ssafy.backend.db.repository.party.PartyRepository;
+import com.ssafy.backend.db.repository.party.PartyTagRepository;
 import com.ssafy.backend.db.repository.party.PtagStorageRepository;
+import com.ssafy.backend.db.repository.party.PuserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Service("partyService")
 public class PartyServiceImpl implements PartyService{
     @Autowired
     private PartyRepository partyRepository;
@@ -26,7 +32,9 @@ public class PartyServiceImpl implements PartyService{
     @Autowired
     private PtagStorageRepository ptagStorageRepository;
     @Autowired
-    private UserRepository userRepository;
+    private PartyTagRepository partyTagRepository;
+    @Autowired
+    private PuserRepository puserRepository;
 
     // 파티 전체 목록
     @Override
@@ -104,16 +112,49 @@ public class PartyServiceImpl implements PartyService{
     // 파티 수정
     @Override
     @Transactional
-    public boolean updateParty(Party party) {
-        try{
-            partyRepository.save(party);
-            System.out.println(party.getTitle());
-            System.out.println("Party 수정 요청 성공");
-            return true;
-        }catch(Exception e){
-            System.out.println("Party 수정 요청 실패");
-            return false;
+    public boolean updateParty(Long partyId, PartyPutReq partyInfo) {
+        Party party = partyRepository.findByPartyId(partyId);
+
+        party.setDescription(partyInfo.getParty_description());
+        party.setChatLink(partyInfo.getChat_link());
+
+        // 태그 수정
+        for (PartyTag pt: party.getPartyTags()) {
+            partyTagRepository.delete(pt);
         }
+
+        PartyTag partyTag;
+        for (String tag:partyInfo.getPartyTags()) {
+            partyTag = new PartyTag();
+            partyTag.setPtagStorage(ptagStorageRepository.findByContent(tag));
+            party.addPartyTag(partyTag);
+        }
+
+        // 멤버 수정
+        // 파티장만 놔두고 다 지운 다음에, 멤버 추가(이미 있는 멤버는 추가 안 함)
+        for (Puser u: party.getPusers()) {
+            if(!u.isLeader())
+                puserRepository.delete(u);
+        }
+
+        Puser puser;
+        for (String id:partyInfo.getPartyUsers()) {
+            if(party.getPusers().contains(puserRepository.findById(Long.parseLong(id))))
+                continue;
+
+            puser = new Puser();
+            puser.setPuserId(Long.parseLong(id));
+            party.addPuser(puser);
+        }
+
+        party.setCurPlayer(partyInfo.getPartyUsers().length);
+
+        // 파티 상태 수정
+        party.getPstatus().setContent(partyInfo.getParty_status());
+
+        partyRepository.save(party);
+
+        return true;
     }
 
     // 파티 삭제
