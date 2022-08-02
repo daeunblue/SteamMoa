@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/Navbar';
-// import ProfileUser from 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
 const MoaUpdate = (props) => {
-  // party_id가 같으면 수정 가능
   const [ moa, setMoa ] = useState({
-    party_id: '',
-    party_title: '',
-    game_name: '',
-    start_time: '',
-    max_player: '',
+    // party_id: '',
+    // party_title: '',
+    // game_name: '',
+    // start_time: '',
+    // max_player: '',
     party_description: '',
     chat_link: '',
-    user_id: '',
     ptag_content: '',
+    party_users: '',
+    party_status: '',
+    ptag_content: '',
+    close: false,
+
 });
+// 파티 태그 하드코딩
 
 const navigate = useNavigate();
 // 데이터 변경사항 저장
@@ -27,6 +30,11 @@ const onChange = (event) => {
         ...moa,
         [name]: value,
     })
+}
+
+const onClick = (event) => {
+// close 필드값 상태 변경 close: true로
+
 }
 // 수정된 데이터 보내서 저장
 const handleSubmit = (e) => {
@@ -39,11 +47,13 @@ const handleSubmit = (e) => {
         start_time: moa.start_time,
         max_player: moa.max_player,
         party_description: moa.party_description,
-        chat_link: moa.chat_link
+        chat_link: moa.chat_link,
+        ptag_content: moa.ptag_content,
+        close: moa.close,
     })
     .then(function (res) {
         //성공시 리다이렉트 어디로?
-        if (res.status === 200 ){
+        if (res.statusCode === 200 ){
             navigate('/')
         } else {
             alert(res.data.message);
@@ -55,16 +65,11 @@ const handleSubmit = (e) => {
     // 라우터 쿼리 가져오기
     // party_id가 같은 데이터 가져오기
     // axios로 api 요청 보내서 다시 데이터 가져오기
-  axios.get(`http://localhost:8080/api/moazone/`, {
-
-  }).then(function (res) {
-    
-  })
-  
-
-  });
-  // 파티원 강퇴
-  // 파티장이 파티 마감
+    const url = `http://localhost:8080/api/moazone/${moa.party_id}`;
+    axios.get(url)
+    .then(function (res) {
+      })
+    });
 
   return (
     <>
@@ -77,8 +82,17 @@ const handleSubmit = (e) => {
             <form>
             <div className="m-auto mb-2 bg-main-400">
                 <div className="createContainer p-4">
-                <div className="mb-3">
-                <span >파티 모집 수정하기</span>
+                <div className="mb-3 flex justify-content-between">
+                  <div className='flex-none'>
+                    <span>파티 모집 수정하기</span>
+                  </div>
+                  <div className='flex-none'>
+                    <button 
+                    name="close"
+                    value={moa.close}
+                    onClick={onClick}
+                    className='bg-moa-purple rounded-sm'>모집 완료</button>
+                  </div>
                 </div>
                     <input 
                     name="party_title"
@@ -126,6 +140,15 @@ const handleSubmit = (e) => {
                     name="chat_link"
                     value={moa.chat_link}
                     onChange={onChange}
+                    className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
+                </div>
+                {/* 파티 태그 하드 코딩 */}
+                <div className="grid grid-flow-col mb-8">
+                    <span className="col-span-1">파티 태그</span>
+                    <input 
+                    name="ptag_content" 
+                    value={moa.ptag_content} 
+                    onChange={onChange} 
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
                 <div className='w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black'>

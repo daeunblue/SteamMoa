@@ -8,14 +8,12 @@ import axios from "axios";
 
 function MoaCreate() {
     const [ moa, setMoa ] = useState({
-        party_id: '',
         party_title: '',
         game_name: '',
         start_time: '',
         max_player: '',
-        party_description: 'sfsdf',
-        chat_link: 'ffd',
-        user_id: '',
+        party_description: '',
+        chat_link: '',
         ptag_content: '',
     });
 
@@ -41,7 +39,8 @@ function MoaCreate() {
             start_time: moa.start_time,
             max_player: moa.max_player,
             party_description: moa.party_description,
-            chat_link: moa.chat_link
+            chat_link: moa.chat_link,
+            ptag_content: moa.ptag_content,
         })
         .then(function (res) {
             console.log(res)
@@ -78,9 +77,10 @@ function MoaCreate() {
                     value={moa.party_title} 
                     onChange={onChange} 
                     className="w-full text-main-500 bg-createInput-gray rounded-lg mb-3" type="text" placeholder="파티 모집 제목"/>
-                {/* 게임 검색 데이터 연결 */}
+                {/* 게임 검색 요청 보내기 */}
                 <div className="grid grid-flow-col mb-3">
-                    <span className="col-span-1 ">플레이 게임</span>
+                    <span className="col-span-1">플레이 게임</span>
+                    {/* SearchContainer 컴포넌트 삽입 */}
                     <input 
                     name="game_name" 
                     value={moa.game_name} 
@@ -124,6 +124,15 @@ function MoaCreate() {
                     <input 
                     name="chat_link" 
                     value={moa.chat_link} 
+                    onChange={onChange} 
+                    className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
+                </div>
+                {/* 파티 태그 하드 코딩 */}
+                <div className="grid grid-flow-col mb-8">
+                    <span className="col-span-1">파티 태그</span>
+                    <input 
+                    name="ptag_content" 
+                    value={moa.ptag_content} 
                     onChange={onChange} 
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
