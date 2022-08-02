@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import SearchContainer from "../../components/SearchContainer";
 import GameList from "../../components/Game/GameList";
@@ -49,12 +49,7 @@ const GameMoa = (props) => {
 
   const [gameList, setGameList] = useState([]);
 
-  useEffect(() => {
-      handleApplyFilter();
-  }, [page]);
-
-
-  const handleApplyFilter = () => {
+  const handleApplyFilter = useCallback(() => {
     let url = `http://i7a303.p.ssafy.io:8080/api/games/search?`;
     url += `page=${page}`;
 
@@ -67,6 +62,7 @@ const GameMoa = (props) => {
         url += `&tag=${filterItem.name}`;
       });
     }
+
     axios
       .get(url)
       .then(({ data }) => {
@@ -75,7 +71,11 @@ const GameMoa = (props) => {
         setTotalPage(parseInt(data.maxpage));
       })
       .catch();
-  };
+  },[page, search, filter]);
+
+  useEffect(() => {
+    handleApplyFilter()
+  }, [handleApplyFilter]);
 
   return (
     <div className="w-full h-screen">

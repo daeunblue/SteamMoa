@@ -6,7 +6,7 @@ import FilterCaterories from "./Filter/FilterCaterories";
 import FilterBadge from "./Filter/FilterBadge";
 
 const SearchContainer = (props) => {
-  const { filter, search, setFilter, setSearch, handleApplyFilter } = props;
+  const { filter, search, setFilter, setSearch, handleApplyFilter} = props;
   const { filters } = props.categories;
 
   const [ishidden, setIsHidden] = useState(true);
