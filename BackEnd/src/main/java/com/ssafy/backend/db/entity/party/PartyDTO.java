@@ -2,6 +2,8 @@ package com.ssafy.backend.db.entity.party;
 
 import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.Game;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.Map;
     응답용 DTO.
     파티를 상세 페이지로 보여줄 때 사용.
  */
+@Getter
+@Setter
 public class PartyDTO {
 
     private Long game_id;
@@ -21,7 +25,7 @@ public class PartyDTO {
 
     private Long party_id;
     private String party_title;
-    private List<String> party_tags;
+    private List<String> party_tags = new ArrayList<>();
     private int max_player;
     private int cur_player;
     private LocalDateTime start_time;
@@ -44,7 +48,7 @@ public class PartyDTO {
         this.cur_player = p.getCurPlayer();
         this.start_time = p.getStartTime();
         this.write_time = p.getWriteTime();
-        this.status = p.getPstatus().getContent();
+        this.status = p.getStatus();
         for (Puser puser: p.getPusers()) {
             this.party_players.add(new PartyPlayerDTO(puser));
         }

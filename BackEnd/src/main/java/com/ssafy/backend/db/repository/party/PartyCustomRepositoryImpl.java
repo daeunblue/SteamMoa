@@ -80,9 +80,61 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
         List<Party> partylist = query.getResultList();
         List<Party> partylist_status = new ArrayList<>();
         for (Party p: partylist) {
-            if(p.getPstatus().getContent().equals(partyStatus))
+            if(p.getStatus().equals(partyStatus))
                 partylist_status.add(p);
         }
         return partylist_status;
     }
+
+        @Override
+        public int findAllPartyByFilter(String searchString, String[] tag, String partyStatus, String sortString) {
+            // 쿼리문 생성
+            String sql = "select * from";
+
+            sql +=  "(select gamegenre.game_id\n" +
+                    "from\n" +
+                    "(select distinct gamecategory.game_id\n" +
+                    "from\n" +
+                    "(select game_id\n" +
+                    "from gamecategory\n" +
+                    "where gamecategory.category_id = 1) as gamecategory\n" +
+                    "left join gamegenre\n" +
+                    "on gamecategory.game_id = gamegenre.game_id\n" +
+                    "left join ggenrestorage\n" +
+                    "on gamegenre.genre_id = ggenrestorage.genre_id\n";
+
+            if(tag.length != 0){
+                sql += "where \n";
+                for (int i = 0; i < tag.length; i++) {
+                    sql += "ggenrestorage.genre like \'" + tag[i] + "\'\n";
+                    if(i != tag.length-1)
+                        sql += "or \n";
+                }
+            }
+
+            sql +=  ") as gamegenre\n" +
+                    "inner join game\n" +
+                    "on gamegenre.game_id = game.game_id\n" +
+                    "where game.game_name like \'%" + searchString + "%\' and game.game_price != -1 ) as game\n" +
+                    "left join party\n" +
+                    "on party.game_id = game.game_id\n";
+
+            if (sortString.equals("1"))
+                sql += "order by party.write_time";
+            else if(sortString.equals("2"))
+                sql += "order by desc party.write_time";
+            else if(sortString.equals("3"))
+                sql += "order by party.start_time";
+            else if(sortString.equals("4"))
+                sql += "order by party.game_id";
+
+            Query query = em.createNativeQuery(sql, Party.class);
+            List<Party> partylist = query.getResultList();
+            List<Party> partylist_status = new ArrayList<>();
+            for (Party p: partylist) {
+                if(p.getStatus().equals(partyStatus))
+                    partylist_status.add(p);
+            }
+            return partylist_status.size();
+        }
 }

@@ -11,7 +11,7 @@ import lombok.Data;
 @ApiModel("PartyPostRequest")
 public class PartyPostReq {
 	@ApiModelProperty(name="게임 ID", example = "game_id")
-	String game_id;
+	Long game_id;
 
 	@ApiModelProperty(name="파티 이름", example="party_title")
 	String party_title;

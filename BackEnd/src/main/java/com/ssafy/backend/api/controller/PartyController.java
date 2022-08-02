@@ -11,6 +11,7 @@ import com.ssafy.backend.db.entity.party.PartylistDTO;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,16 +35,16 @@ public class PartyController {
     // 파티 전체 목록
     @GetMapping("")
     @ApiOperation(value = "파티 리스트 전체 조회", notes = "전체 파티 리스트를 조회.")
-    public ResponseEntity<?> getPartyListAll(@RequestParam(required = false, defaultValue = "0") int page){
-        List<PartylistDTO> result = partyService.getPartyList(page);
+    public ResponseEntity<?> getPartyListAll(@RequestParam(required = false, defaultValue = "1") int page){
+        JSONObject result = partyService.getPartyList(page-1);
         return ResponseEntity.status(200).body(result);
     }
 
     // 파티 검색+필터+정렬 기반 목록
     @GetMapping("/search")
     @ApiOperation(value = "파티 리스트 조건 조회", notes = "검색어, 필터에 맞는 파티를 조회.")
-    public ResponseEntity<?> getPartyListFiltered(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "") String searchString, @RequestParam(value = "genre", required = false, defaultValue = "") String[] tags, @RequestParam(required = false, defaultValue = "1") String partyStatus, @RequestParam(required = false, defaultValue = "1") String sortString){
-        List<PartylistDTO> result = partyService.searchPartyList(page, searchString, tags, partyStatus, sortString);
+    public ResponseEntity<?> getPartyListFiltered(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "") String searchString, @RequestParam(value = "genre", required = false, defaultValue = "") String[] tags, @RequestParam(required = false, defaultValue = "1") String partyStatus, @RequestParam(required = false, defaultValue = "1") String sortString){
+        JSONObject result = partyService.searchPartyList(page-1, searchString, tags, partyStatus, sortString);
         return ResponseEntity.status(200).body(result);
     }
 
@@ -64,7 +65,7 @@ public class PartyController {
     }
 
     // 파티 수정
-    @PutMapping("")
+    @PutMapping("/{partyid}")
     @ApiOperation(value = "파티 수정", notes = "파티장이 파티 정보를 수정하는 경우, 파티원이 파티를 가입하거나 탈퇴하는 경우 호출.")
     public ResponseEntity<?> updateParty(@PathVariable("partyid") Long partyid, @RequestBody PartyPutReq partyPutReq){
         boolean result = partyService.updateParty(partyid, partyPutReq);
@@ -72,7 +73,7 @@ public class PartyController {
     }
 
     // 파티 삭제
-    @DeleteMapping("")
+    @DeleteMapping("/{partyid}")
     @ApiOperation(value = "파티 삭제", notes = "파티가 삭제된다.")
     public ResponseEntity<?> deleteParty(@PathVariable("partyid") Long partyid){
         boolean result = partyService.deleteParty(partyid);

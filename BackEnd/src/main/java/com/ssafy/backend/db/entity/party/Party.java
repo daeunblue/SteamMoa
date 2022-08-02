@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -56,28 +58,22 @@ public class Party {
     @Column(name = "is_closed", columnDefinition = "TINYINT", length = 1)
     private boolean isClosed;
 
-    // 양방향 일대일
-    @OneToOne(fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private Pstatus pstatus;
+    @Column(name = "party_status")
+    private String status;
 
     // 양방향 일대다
-    @OneToMany(mappedBy = "party")
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @NotFound(action = NotFoundAction.IGNORE)
     private List<PartyTag> partyTags = new ArrayList<>();
 
     // 양방향 일대다
-    @OneToMany(mappedBy = "party")
+    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @NotFound(action = NotFoundAction.IGNORE)
     private List<Puser> pusers = new ArrayList<>();
 
     // 양방향 편의 메소드 정의
-    // 다대일
-    public void setPstatus(Pstatus pstatus) {
-        this.pstatus = pstatus;
-        pstatus.setParty(this);
-    }
-
     // 일대다
     public void addPartyTag(PartyTag partyTag) {
         this.partyTags.add(partyTag);
