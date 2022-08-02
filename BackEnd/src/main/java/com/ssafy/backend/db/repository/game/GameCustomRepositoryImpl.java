@@ -47,7 +47,45 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
                 "where game.game_name like \'%" + name + "%\' and game.game_price != -1";
 
         Query query = em.createNativeQuery(sql, Game.class);
-        List<Game> gamelist = query.getResultList();
+        List<Game> gamelist = query
+                .setMaxResults(pageable.getPageSize())
+                .setFirstResult(pageable.getPageSize()*pageable.getPageNumber())
+                .getResultList();
         return gamelist;
+    }
+
+    @Override
+    public int findAllMultiGameByFilter(String name, String[] tag) {
+
+        // 쿼리문 생성
+        String sql = "select *\n" +
+                "from\n" +
+                "(select distinct gamecategory.game_id\n" +
+                "from\n" +
+                "(select game_id\n" +
+                "from gamecategory\n" +
+                "where gamecategory.category_id = 1) as gamecategory\n" +
+                "left join gamegenre\n" +
+                "on gamecategory.game_id = gamegenre.game_id\n" +
+                "left join ggenrestorage\n" +
+                "on gamegenre.genre_id = ggenrestorage.genre_id\n";
+
+        if(tag.length != 0){
+            sql += "where \n";
+            for (int i = 0; i < tag.length; i++) {
+                sql += "ggenrestorage.genre like \'" + tag[i] + "\'\n";
+                if(i != tag.length-1)
+                    sql += "or \n";
+            }
+        }
+
+        sql +=  ") as gamegenre\n" +
+                "inner join game\n" +
+                "on gamegenre.game_id = game.game_id\n" +
+                "where game.game_name like \'%" + name + "%\' and game.game_price != -1";
+
+        Query query = em.createNativeQuery(sql, Game.class);
+        List<Game> gamelist = query.getResultList();
+        return gamelist.size();
     }
 }
