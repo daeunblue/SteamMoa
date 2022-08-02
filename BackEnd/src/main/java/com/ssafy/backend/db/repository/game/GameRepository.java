@@ -21,7 +21,12 @@ public interface GameRepository extends JpaRepository<Game, Long>, GameCustomRep
             countQuery="select count(*) from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1",
             nativeQuery = true)
     List<Game> findAllMultiGame(Pageable pageable);
+    // [개수] 멀티게임, 그리고 판매중(가격이 -1이 아닌)인 게임만 불러오도록 쿼리 수정 필요
+    @Query(value = "select count(*) from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1",
+            countQuery="select count(*) from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1",
+            nativeQuery = true)
+    int findAllMultiGame();
 
     // 유무료 검색
-    List<Game> findAllByIsFree(boolean isFree);
+    //List<Game> findAllByIsFree(boolean isFree);
 }
