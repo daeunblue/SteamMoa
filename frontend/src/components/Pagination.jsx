@@ -5,15 +5,16 @@ import PaginationItem from "./PaginationItem";
 
 const Pagination = (props) => {
   const { page, setPage, totalPage } = props;
-  const pageCount = 10;
-  console.log(page);
+  const PAGE_COUNT = 10;
+  
   const getPaginationList = (currPage, perCount) => {
-    console.log(currPage);
     //그려질 리스트 정리하기 ex. 1-10
     let pageList = [];
-    const tmp = Math.floor(currPage / (perCount + 1));
-    const start = tmp + tmp * perCount; //1,11,21,31...
+
+    const tmp = Math.floor((currPage-1) / perCount);
+    const start = 1 + (tmp * perCount); //1,11,21,31...
     let end = start + perCount; //10,20,30,40...
+
     end = end > totalPage ? totalPage : end;
 
     let index = 0;
@@ -21,7 +22,6 @@ const Pagination = (props) => {
       pageList[index++] = i;
     }
 
-    console.log(pageList);
     return pageList;
   };
 
@@ -44,7 +44,7 @@ const Pagination = (props) => {
         className="w-7 h-7 rounded-full hover:bg-main-100 hover:text-main-500"
       />
       <ul className="p-0 mx-2">
-        {getPaginationList(page, pageCount).map((item) => (
+        {getPaginationList(page, PAGE_COUNT).map((item) => (
           <PaginationItem
             key={item}
             value={item}

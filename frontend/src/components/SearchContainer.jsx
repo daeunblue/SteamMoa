@@ -8,7 +8,7 @@ import FilterBadge from "./Filter/FilterBadge";
 import axios from "axios";
 
 const SearchContainer = (props) => {
-  const { filter, search, setFilter, setSort, setSearch, setGameList, page } =
+  const { filter, search, setFilter, setSort, setSearch, handleApplyFilter } =
     props;
   const { filters, sorts } = props.categories;
 
@@ -31,23 +31,6 @@ const SearchContainer = (props) => {
   };
 
   const handleArcodion = () => {};
-
-  const handleApplyFilter = () => {
-    let url = `http://i7a303.p.ssafy.io:8080/api/games/search?`;
-    if (search) {
-      url += `name=${search}`;
-    }
-    url += `&page=${page}`;
-    filter.forEach((filterItem) => {
-      url += `&tag=${filterItem.name}`;
-    });
-    axios
-      .get(url)
-      .then(({ data }) => {
-        setGameList(data);
-      })
-      .catch();
-  };
 
   const handleResetFilter = () => {
     setFilter([]);
@@ -75,7 +58,7 @@ const SearchContainer = (props) => {
         {/* 검색바, 정렬 */}
         <div className="grid grid-cols-5 gap-2">
           {/* 검색바 */}
-          <SearchBar search={search} onChangeSearch={onChangeSearch} />
+          <SearchBar search={search} onChangeSearch={onChangeSearch} handleApplyFilter={ handleApplyFilter} />
           {/* 정렬 */}
           <SelectInput options={sorts} handleSelectChange={onChangeSort} />
         </div>
@@ -88,6 +71,7 @@ const SearchContainer = (props) => {
           <FontAwesomeIcon className="text-main-100 mr-2" icon={faAngleDown} />
         </div>
       </div>
+      
       <hr className="m-auto w-per95 h-px bg-main-100" />
       {/* body : 필터링 항목 */}
       <div className="w-full pt-5 pb-3">
@@ -103,7 +87,7 @@ const SearchContainer = (props) => {
       <hr className="m-auto w-per95 h-px bg-main-200" />
       {/* footer : 태그, 필터링 초기화 */}
       <div className="w-full grid grid-cols-12 py-2 px-5 ">
-        <div className="col-span-11 grid grid-cols-10">
+        <div className="col-span-10 grid grid-cols-10 items-center">
           {filter.map((filterItem, index) => (
             <FilterBadge
               key={index}
@@ -115,16 +99,16 @@ const SearchContainer = (props) => {
             />
           ))}
         </div>
-        <div className="flex flex-col">
+        <div className="col-span-2 flex flex-row justify-end items-center">
           <button
             onClick={handleApplyFilter}
-            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover my-1 py-1 rounded-lg"
+            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 px-6 rounded-lg"
           >
             적용
           </button>
           <button
             onClick={handleResetFilter}
-            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover my-1 py-1 rounded-lg"
+            className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 rounded-lg"
           >
             <FontAwesomeIcon className="mr-2" icon={faRotateRight} />
             초기화

@@ -11,7 +11,7 @@ const FilterBadge = (props) => {
 
   return (
     <div
-      className={`${color} flex flex-row justify-between items-center h-per50 text-white py-2 px-2 mx-1 text-sm font-medium rounded-2xl`}>
+      className={`${color} flex flex-row justify-between items-center h-8 text-white py-2 px-2 mx-1 text-sm font-medium rounded-2xl`}>
       <span id="badge-dismiss-default" className="inline-flex items-center p-0.5">
         {name}
       </span>
