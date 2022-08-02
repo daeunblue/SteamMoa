@@ -50,8 +50,9 @@ const GameMoa = (props) => {
   const [gameList, setGameList] = useState([]);
 
   useEffect(() => {
-    handleApplyFilter();
-  },[page]);
+      handleApplyFilter();
+  }, [page]);
+
 
   const handleApplyFilter = () => {
     let url = `http://i7a303.p.ssafy.io:8080/api/games/search?`;
@@ -61,7 +62,7 @@ const GameMoa = (props) => {
       url += `&name=${search}`;
     }
 
-    if (filter) {
+    if (filter.length) {
       filter.forEach((filterItem) => {
         url += `&tag=${filterItem.name}`;
       });
@@ -71,7 +72,7 @@ const GameMoa = (props) => {
       .then(({ data }) => {
         let list = data.data.map((item) => ({ ...item, gameReviewScore: 5 }));
         setGameList(list);
-        setTotalPage(data.maxpage);
+        setTotalPage(parseInt(data.maxpage));
       })
       .catch();
   };

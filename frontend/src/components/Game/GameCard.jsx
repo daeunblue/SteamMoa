@@ -1,8 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Badge from "../Badge";
 
 const GameListItem = (props) => {
-  const { gameName, gameImgpath, gameTags, gameReviewScore } = props.game;
+  const { gameId , gameName, gameImgpath, gameTags, gameReviewScore } = props.game;
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/gamemoa/detail/${gameId}`);
+  }
 
   const renderStar = () => {
     let list = [];
@@ -20,7 +27,7 @@ const GameListItem = (props) => {
   };
 
   return (
-    <div className="flex flex-col bg-card-lightgray">
+    <div className="flex flex-col bg-card-lightgray" onClick={handleClick}>
       <img src={gameImgpath} alt="" />
       <div className="contentsContainer m-2">
         {/* 게임이름 */}

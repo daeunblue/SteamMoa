@@ -1,21 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PaginationItem from "./PaginationItem";
 
 const Pagination = (props) => {
   const { page, setPage, totalPage } = props;
   const PAGE_COUNT = 10;
-  
+
   const getPaginationList = (currPage, perCount) => {
     //그려질 리스트 정리하기 ex. 1-10
     let pageList = [];
 
-    const tmp = Math.floor((currPage-1) / perCount);
-    const start = 1 + (tmp * perCount); //1,11,21,31...
+    const tmp = Math.floor((currPage - 1) / perCount);
+    const start = 1 + tmp * perCount; //1,11,21,31...
     let end = start + perCount; //10,20,30,40...
 
-    end = end > totalPage ? totalPage : end;
+    end = end > totalPage ? totalPage + 1 : end;
 
     let index = 0;
     for (let i = start; i < end; i++) {
@@ -26,10 +26,12 @@ const Pagination = (props) => {
   };
 
   const onClickPrev = () => {
-    setPage(page - 1);
+    let newPage = page - 1 > 1 ? page - 1 : 1;
+    setPage(newPage);
   };
   const onClickNext = () => {
-    setPage(page + 1);
+    let newPage = page + 1 <= totalPage ? page + 1 : totalPage;
+    setPage(newPage);
   };
 
   const handlePageMove = (value) => {
