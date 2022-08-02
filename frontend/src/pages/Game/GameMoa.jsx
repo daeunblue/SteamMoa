@@ -41,28 +41,17 @@ const GameMoa = (props) => {
         ],
       },
     ],
-    sorts: [
-      {
-        id: 1,
-        name: "이름 오름차순",
-      },
-      {
-        id: 2,
-        name: "이름 내림차순",
-      },
-    ],
   };
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [filter, setFilter] = useState([]);
-  const [sort, setSort] = useState(0);
   const [search, setSearch] = useState("");
 
   const [gameList, setGameList] = useState([]);
 
   useEffect(() => {
     handleApplyFilter();
-  },[]);
+  },[page]);
 
   const handleApplyFilter = () => {
     let url = `http://i7a303.p.ssafy.io:8080/api/games/search?`;
@@ -80,9 +69,9 @@ const GameMoa = (props) => {
     axios
       .get(url)
       .then(({ data }) => {
-        let list = data.map((item) => ({ ...item, gameReviewScore: 5 }));
+        let list = data.data.map((item) => ({ ...item, gameReviewScore: 5 }));
         setGameList(list);
-        setTotalPage(25);
+        setTotalPage(data.maxpage);
       })
       .catch();
   };
@@ -98,10 +87,8 @@ const GameMoa = (props) => {
       <SearchContainer
         categories={categories}
         filter={filter}
-        sort={sort}
         search={search}
         setFilter={setFilter}
-        setSort={setSort}
         setSearch={setSearch}
         handleApplyFilter={handleApplyFilter}
       />
