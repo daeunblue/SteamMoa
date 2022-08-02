@@ -22,12 +22,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public JSONObject getGameList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 12);
         List<GamelistDTO> resultlist = new ArrayList<>();
         gameRepository.findAllMultiGame(pageable).forEach(Game->resultlist.add(new GamelistDTO(Game)));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxpage", Integer.toString(gameRepository.findAllMultiGame()/10+1));
+        jsonObject.put("maxpage", Integer.toString(gameRepository.findAllMultiGame()/12+1));
 
         JSONArray data = new JSONArray();
         for (GamelistDTO g : resultlist) {
@@ -41,12 +41,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public JSONObject searchGameList(int page, String searchString, String[] tags) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 12);
         List<GamelistDTO> resultlist = new ArrayList<>();
         gameRepository.findAllMultiGameByFilter(searchString, tags, pageable).forEach(Game->resultlist.add(new GamelistDTO(Game)));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxpage", Integer.toString(gameRepository.findAllMultiGameByFilter(searchString, tags)/10+1));
+        jsonObject.put("maxpage", Integer.toString(gameRepository.findAllMultiGameByFilter(searchString, tags)/12+1));
 
         JSONArray data = new JSONArray();
         for (GamelistDTO g : resultlist) {
