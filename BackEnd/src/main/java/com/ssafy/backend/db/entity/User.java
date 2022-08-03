@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.ssafy.backend.db.entity.party.Puser;
+import com.ssafy.backend.db.entity.tactic.Tactic;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,13 +49,17 @@ public class User {
     @Column(name = "user_point", nullable = false)
     private Double userPoint;
 
-    @OneToMany(mappedBy = "notice")
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<NoticeList> nLists = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @JsonManagedReference
     private List<UserTag> uTagLists = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser")
+    @JsonManagedReference
     private List<Follow> uFollowList = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "user_id")
@@ -64,4 +69,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Puser> pusers = new ArrayList<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Tactic> tacticList = new ArrayList<>();
+    // mappedBy : (주인이 아닌 테이블엔티티에 붙임 + 기준 : 주인 테이블에서의 객체명)
+
 }
