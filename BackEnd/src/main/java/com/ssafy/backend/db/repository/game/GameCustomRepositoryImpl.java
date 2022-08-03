@@ -54,7 +54,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
     @Override
     public List<Game> findAllMultiGameByOnlyName(String name){
         // 쿼리문 생성
-        String sql = "select game.game_id, game.game_name from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game.game_name like \'%" + name + "%\'";
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game.game_name like \'%" + name + "%\'";
         Query query = em.createNativeQuery(sql, Game.class);
         List<Game> gamelist = query.getResultList();
         return gamelist;

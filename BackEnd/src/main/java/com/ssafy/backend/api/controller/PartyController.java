@@ -59,7 +59,7 @@ public class PartyController {
     }
 
     // 파티 생성시 게임ID 검색
-    @GetMapping("/api/moazone/games")
+    @GetMapping("/games")
     @ApiOperation(value = "파티 생성시 게임ID 검색", notes = "문자열을 포함하면 그 문자열이 게임 이름에 포함된 게임 리스트를 보내준다.")
     public ResponseEntity<?> getPartyCreateGamelist(@RequestParam(required = false, defaultValue = "") String game_name){
         List<PartyCreateGamelistDTO> result = partyService.searchPartyCreateGamelist(game_name);
