@@ -9,9 +9,11 @@ import lombok.Setter;
 public class PartyCreateGamelistDTO {
     private Long gameId;
     private String gameName;
+    private String gameImgPath;
 
     public PartyCreateGamelistDTO(Game game) {
         this.gameId = game.getGameId();
         this.gameName = game.getName();
+        this.gameImgPath = game.getImgpath();
     }
 }
