@@ -8,9 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import FilterCaterories from "./Filter/FilterCaterories";
 import FilterBadge from "./Filter/FilterBadge";
+import { useRecoilState } from "recoil";
+import { gamePage, searchWord, searchFilter } from "../recoil/Game";
 
 const SearchContainer = (props) => {
-  const { filter, search, setFilter, setSearch, handleApplyFilter } = props;
   const { filters } = props.categories;
 
   const [ishidden, setIsHidden] = useState(true);

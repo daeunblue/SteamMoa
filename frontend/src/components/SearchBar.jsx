@@ -1,10 +1,16 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useRecoilState } from "recoil";
+import { searchWord } from "../recoil/Game";
 
 const SearchBar = (props) => {
-  const { search, onChangeSearch, handleApplyFilter } = props;
+  const [word, setWord] = useRecoilState(searchWord);
 
+  const onChangeSearch = (e) => {
+    e.preventDefault();
+    setWord(e.target.value);
+  };
   return (
     <div
       id="search-bar"
@@ -18,7 +24,7 @@ const SearchBar = (props) => {
         id="search"
         className="w-per80 mx-2 text-sm text-gray-900 bg-transparent border-none focus:outline-hidden focus:border-none "
         placeholder="모아글을 검색하세요"
-        value={search}
+        value={word}
         onChange={onChangeSearch}
       />
       <button
