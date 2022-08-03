@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import SearchContainer from "../../components/SearchContainer";
 import GameList from "../../components/Game/GameList";
 import Pagination from "../../components/Pagination";
-import axios from "axios";
+import { getGamesSearch } from "../../api/Game";
 
 const GameMoa = (props) => {
   const categories = {
@@ -50,16 +50,7 @@ const GameMoa = (props) => {
   const [gameList, setGameList] = useState([]);
 
   const handleApplyFilter = () => {
-    let url = `http://i7a303.p.ssafy.io:8080/api/games/search?`;
-    url += `page=${page}`;
-    url += `&name=${search}`;
-
-    filter.forEach((filterItem) => {
-      url += `&tag=${filterItem.name}`;
-    });
-
-    axios
-      .get(url)
+    getGamesSearch(page, filter, search)
       .then(({ data }) => {
         let list = data.data.map((item) => ({ ...item, gameReviewScore: 5 }));
         setGameList([...list]);
@@ -69,9 +60,7 @@ const GameMoa = (props) => {
   };
 
   useEffect(() => {
-    const url = `http://i7a303.p.ssafy.io:8080/api/games?page=1`;
-    axios
-      .get(url)
+    getGamesSearch(page, [], "")
       .then(({ data }) => {
         let list = data.data.map((item) => ({ ...item, gameReviewScore: 5 }));
         setGameList(list);
