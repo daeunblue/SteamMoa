@@ -27,7 +27,7 @@ public class GameServiceImpl implements GameService {
         gameRepository.findAllMultiGame(pageable).forEach(Game->resultlist.add(new GamelistDTO(Game)));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxpage", Integer.toString(gameRepository.findAllMultiGame()/12+1));
+        jsonObject.put("maxPage", Integer.toString(gameRepository.findAllMultiGame()/12+1));
 
         JSONArray data = new JSONArray();
         for (GamelistDTO g : resultlist) {
@@ -46,7 +46,7 @@ public class GameServiceImpl implements GameService {
         gameRepository.findAllMultiGameByFilter(searchString, tags, pageable).forEach(Game->resultlist.add(new GamelistDTO(Game)));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxpage", Integer.toString(gameRepository.findAllMultiGameByFilter(searchString, tags)/12+1));
+        jsonObject.put("maxPage", Integer.toString(gameRepository.findAllMultiGameByFilter(searchString, tags)/12+1));
 
         JSONArray data = new JSONArray();
         for (GamelistDTO g : resultlist) {
