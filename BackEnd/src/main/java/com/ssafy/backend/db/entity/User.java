@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.ssafy.backend.db.entity.review.Review;
+import com.ssafy.backend.db.entity.party.Puser;
 import com.ssafy.backend.db.entity.tactic.Tactic;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +21,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-//@Builder
 public class User {
     // 유저 식별자 PK
     @Id
@@ -63,6 +62,13 @@ public class User {
     @JsonManagedReference
     private List<Follow> uFollowList = new ArrayList<>();
 
+//    @OneToMany(mappedBy = "user_id")
+//    private List<UserTag> uFollowingList = new ArrayList<>();
+
+    // 양방향 일대다
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Puser> pusers = new ArrayList<>();
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Tactic> tacticList = new ArrayList<>();

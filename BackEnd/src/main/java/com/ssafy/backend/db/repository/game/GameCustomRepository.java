@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface GameCustomRepository {
     List<Game> findAllMultiGameByFilter(String name, String[] tag, Pageable pageable);
+    List<Game> findAllMultiGameByOnlyName(String name);
     int findAllMultiGameByFilter(String name, String[] tag);
 }
