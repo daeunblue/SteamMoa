@@ -21,6 +21,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class User {
     // 유저 식별자 PK
     @Id
@@ -62,9 +63,6 @@ public class User {
     @JsonManagedReference
     private List<Follow> uFollowList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "user_id")
-//    private List<UserTag> uFollowingList = new ArrayList<>();
-
     // 양방향 일대다
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
@@ -82,9 +80,6 @@ public class User {
         return this.userId +", "+this.userServiceId+", "+this.userPoint;
     }
     // mappedBy : (주인이 아닌 테이블엔티티에 붙임 + 기준 : 주인 테이블에서의 객체명)
-
-    public User() {
-    }
 
     // 일대다
     public void addReview (Review review){

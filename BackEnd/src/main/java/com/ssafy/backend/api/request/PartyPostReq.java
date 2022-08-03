@@ -10,28 +10,28 @@ import lombok.Data;
 @Data
 @ApiModel("PartyPostRequest")
 public class PartyPostReq {
-	@ApiModelProperty(name="게임 ID", example = "gameId")
+	@ApiModelProperty(name="게임 ID", example = "457")
 	Long gameId;
 
-	@ApiModelProperty(name="파티 이름", example="partyTitle")
+	@ApiModelProperty(name="파티 이름", example="Title")
 	String partyTitle;
 
-	@ApiModelProperty(name="파티 최대 인원", example="maxPlayer")
+	@ApiModelProperty(name="파티 최대 인원", example="3")
 	String maxPlayer;
 
-	@ApiModelProperty(name="파티 설명", example="partyDescription")
+	@ApiModelProperty(name="파티 설명", example="빨리 모여라~")
 	String partyDescription;
 
-	@ApiModelProperty(name="게임 플레이 약속 시간", example="startTime")
+	@ApiModelProperty(name="게임 플레이 약속 시간", example="2021-11-08T11:44:30.327959")
 	String startTime;
 
-	@ApiModelProperty(name="외부 소통 링크(디스코드 등)", example="chatLink")
+	@ApiModelProperty(name="외부 소통 링크(디스코드 등)", example="http://localhost:8080/swagger-ui.html#/Party/createPartyUsingPOST")
 	String chatLink;
 
-	@ApiModelProperty(name="파티 성향 태그", example="partyTags")
+	@ApiModelProperty(name="파티 성향 태그", example="[\"1\", \"2\"]")
 	String[] partyTags;
 
-	@ApiModelProperty(name="파티장 유저 ID", example="userId")
+	@ApiModelProperty(name="파티장 유저 ID", example="1")
 	String userId;
 
 
