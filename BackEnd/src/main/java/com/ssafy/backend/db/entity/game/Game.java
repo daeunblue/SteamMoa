@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="game")
 public class Game {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -75,7 +77,7 @@ public class Game {
     @JsonManagedReference
     private List<Tactic> tactics = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "game")
     @JsonManagedReference
     private List<Review> reviewList = new ArrayList<>();
 
@@ -87,4 +89,10 @@ public class Game {
     }
 
 
+    public void addReview(Review review) {
+        this.reviewList.add(review);
+        if(review.getGame() != this){
+            review.setGame(this);
+        }
+    }
 }

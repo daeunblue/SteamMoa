@@ -21,7 +21,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Builder
+//@Builder
 public class User {
     // 유저 식별자 PK
     @Id
@@ -80,5 +80,11 @@ public class User {
     public User() {
     }
 
-
+    // 일대다
+    public void addReview (Review review){
+        this.reviewList.add(review);
+        if(review.getUser() != this){
+            review.setUser(this);
+        }
+    }
 }

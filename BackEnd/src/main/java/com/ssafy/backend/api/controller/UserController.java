@@ -30,6 +30,7 @@ public class UserController {
     UserService userService;
 
 
+    /* 토큰 인증 처리 필요 */
     @GetMapping("/profile/{user_service_id}")
     @ApiOperation(value = "회원 조회", notes = "<strong>사용자 아이디</strong>를 통해 회원 정보 조회.")
     @ApiResponses({

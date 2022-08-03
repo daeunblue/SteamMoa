@@ -30,25 +30,32 @@ public class Review {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name="user_id")
     private User user;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="game_id", nullable = false)
+    @JoinColumn(name="game_id")
     private Game game;
 
-    public void setUser(User user){
+    public void setUser(User user) {
+        if(this.user != null) {
+            this.user.getReviewList().remove(this);
+        }
         this.user = user;
-        if(!user.getReviewList().contains(user)){
-            user.getReviewList().add(this);
+        if(!user.getReviewList().contains(this)) {
+            user.addReview(this);
         }
     }
 
-    public void setGame(Game game){
+    public void setGame(Game game) {
+        if(this.game != null) {
+            this.game.getReviewList().remove(this);
+        }
         this.game = game;
-        if(!game.getReviewList().contains(game)){
-            game.getReviewList().add(this);
+        System.out.println(game.getReviewList());
+        if(!game.getReviewList().contains(this)) {
+            game.addReview(this);
         }
     }
 
