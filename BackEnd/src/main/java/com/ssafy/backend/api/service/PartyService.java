@@ -4,6 +4,7 @@ import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.db.entity.party.Party;
+import com.ssafy.backend.db.entity.party.PartyCreateGamelistDTO;
 import com.ssafy.backend.db.entity.party.PartyDTO;
 import com.ssafy.backend.db.entity.party.PartylistDTO;
 import org.json.simple.JSONObject;
@@ -25,6 +26,9 @@ public interface PartyService {
     // 파티 생성
     boolean createParty(PartyPostReq PartyInfo);
 
+    // 파티 생성시 게임ID 검색
+    List<PartyCreateGamelistDTO> searchPartyCreateGamelist(String searchString);
+
     // 파티 상세 조회
     PartyDTO getPartyDetail(Long partyId);
 
@@ -33,4 +37,5 @@ public interface PartyService {
 
     // 파티 삭제
     boolean deleteParty(Long partyId);
+
 }

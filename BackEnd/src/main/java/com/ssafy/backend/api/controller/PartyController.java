@@ -6,11 +6,13 @@ import com.ssafy.backend.api.service.PartyService;
 import com.ssafy.backend.common.model.response.BaseResponseBody;
 import com.ssafy.backend.db.entity.game.GamelistDTO;
 import com.ssafy.backend.db.entity.party.Party;
+import com.ssafy.backend.db.entity.party.PartyCreateGamelistDTO;
 import com.ssafy.backend.db.entity.party.PartyDTO;
 import com.ssafy.backend.db.entity.party.PartylistDTO;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +55,14 @@ public class PartyController {
     @ApiOperation(value = "새로운 파티 생성", notes = "파티장이 새로운 파티를 생성한다.")
     public ResponseEntity<?> createParty(@RequestBody PartyPostReq partyPostReq){
         boolean result = partyService.createParty(partyPostReq);
+        return ResponseEntity.status(200).body(result);
+    }
+
+    // 파티 생성시 게임ID 검색
+    @GetMapping("/api/moazone/games")
+    @ApiOperation(value = "파티 생성시 게임ID 검색", notes = "문자열을 포함하면 그 문자열이 게임 이름에 포함된 게임 리스트를 보내준다.")
+    public ResponseEntity<?> getPartyCreateGamelist(@RequestParam(required = false, defaultValue = "") String game_name){
+        List<PartyCreateGamelistDTO> result = partyService.searchPartyCreateGamelist(game_name);
         return ResponseEntity.status(200).body(result);
     }
 

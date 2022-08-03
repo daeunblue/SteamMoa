@@ -145,6 +145,16 @@ public class PartyServiceImpl implements PartyService{
         return true;
     }
 
+    // 파티 생성시 게임ID 검색
+    @Override
+    @Transactional
+    public List<PartyCreateGamelistDTO> searchPartyCreateGamelist(String searchString) {
+        List<PartyCreateGamelistDTO> resultlist = new ArrayList<>();
+        gameRepository.findAllMultiGameByOnlyName(searchString).forEach(Game->resultlist.add(new PartyCreateGamelistDTO(Game)));
+        return resultlist;
+    }
+
+
     // 파티 상세 조회
     @Override
     @Transactional
