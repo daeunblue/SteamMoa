@@ -10,29 +10,29 @@ import lombok.Data;
 @Data
 @ApiModel("PartyPostRequest")
 public class PartyPostReq {
-	@ApiModelProperty(name="게임 ID", example = "game_id")
-	Long game_id;
+	@ApiModelProperty(name="게임 ID", example = "gameId")
+	Long gameId;
 
-	@ApiModelProperty(name="파티 이름", example="party_title")
-	String party_title;
+	@ApiModelProperty(name="파티 이름", example="partyTitle")
+	String partyTitle;
 
-	@ApiModelProperty(name="파티 최대 인원", example="max_player")
-	String max_player;
+	@ApiModelProperty(name="파티 최대 인원", example="maxPlayer")
+	String maxPlayer;
 
-	@ApiModelProperty(name="파티 설명", example="party_description")
-	String party_description;
+	@ApiModelProperty(name="파티 설명", example="partyDescription")
+	String partyDescription;
 
-	@ApiModelProperty(name="게임 플레이 약속 시간", example="start_time")
-	String start_time;
+	@ApiModelProperty(name="게임 플레이 약속 시간", example="startTime")
+	String startTime;
 
-	@ApiModelProperty(name="외부 소통 링크(디스코드 등)", example="chat_link")
-	String chat_link;
+	@ApiModelProperty(name="외부 소통 링크(디스코드 등)", example="chatLink")
+	String chatLink;
 
 	@ApiModelProperty(name="파티 성향 태그", example="partyTags")
 	String[] partyTags;
 
-	@ApiModelProperty(name="파티장 유저 ID", example="user_id")
-	String user_id;
+	@ApiModelProperty(name="파티장 유저 ID", example="userId")
+	String userId;
 
 
 }

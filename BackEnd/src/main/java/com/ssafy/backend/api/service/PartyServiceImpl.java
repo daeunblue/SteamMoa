@@ -53,7 +53,7 @@ public class PartyServiceImpl implements PartyService{
         jsonObject.put("maxpage", Integer.toString(partyRepository.findAll().size()/12+1));
 
         System.out.println("resultlist 개수: "+resultlist.size());
-        System.out.println("resultlist: "+resultlist.get(0).getParty_title());
+        System.out.println("resultlist: "+resultlist.get(0).getPartyTitle());
 
         JSONArray data = new JSONArray();
         for (PartylistDTO p : resultlist) {
@@ -106,15 +106,15 @@ public class PartyServiceImpl implements PartyService{
         Party party = new Party();
 
         // 게임 존재하는지 확인 후 실패 응답
-        if (gameRepository.findById(partyInfo.getGame_id())==null)
+        if (gameRepository.findById(partyInfo.getGameId())==null)
             return false;
-        party.setGame(gameRepository.findByGameId(partyInfo.getGame_id()));
-        party.setTitle(partyInfo.getParty_title());
-        party.setMaxPlayer(Integer.parseInt(partyInfo.getMax_player()));
+        party.setGame(gameRepository.findByGameId(partyInfo.getGameId()));
+        party.setTitle(partyInfo.getPartyTitle());
+        party.setMaxPlayer(Integer.parseInt(partyInfo.getMaxPlayer()));
         party.setCurPlayer(1);
-        party.setDescription(partyInfo.getParty_description());
-        party.setStartTime(LocalDateTime.parse(partyInfo.getStart_time()));
-        party.setChatLink(partyInfo.getChat_link());
+        party.setDescription(partyInfo.getPartyDescription());
+        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime()));
+        party.setChatLink(partyInfo.getChatLink());
         party.setStatus("1");
 
 
@@ -131,10 +131,10 @@ public class PartyServiceImpl implements PartyService{
         }
 
         // 유저 존재하는지 확인 후 실패 응답
-        if (puserRepository.findById(Long.parseLong(partyInfo.getUser_id()))==null)
+        if (puserRepository.findById(Long.parseLong(partyInfo.getUserId()))==null)
             return false;
         Puser puser = new Puser();
-        puser.setUser(userRepository.findById(Long.parseLong(partyInfo.getUser_id())).get());
+        puser.setUser(userRepository.findById(Long.parseLong(partyInfo.getUserId())).get());
         puser.setLeader(true);
         puserRepository.save(puser);
         party.addPuser(puser);
@@ -159,8 +159,8 @@ public class PartyServiceImpl implements PartyService{
     public boolean updateParty(Long partyId, PartyPutReq partyInfo) {
         Party party = partyRepository.findByPartyId(partyId);
 
-        party.setDescription(partyInfo.getParty_description());
-        party.setChatLink(partyInfo.getChat_link());
+        party.setDescription(partyInfo.getPartyDescription());
+        party.setChatLink(partyInfo.getChatLink());
 
         // 태그 수정
         for (PartyTag pt: party.getPartyTags()) {
@@ -196,7 +196,7 @@ public class PartyServiceImpl implements PartyService{
         party.setCurPlayer(partyInfo.getPartyUsers().length);
 
         // 파티 상태 수정
-        party.setStatus(partyInfo.getParty_status());
+        party.setStatus(partyInfo.getPartyStatus());
 
         partyRepository.save(party);
 

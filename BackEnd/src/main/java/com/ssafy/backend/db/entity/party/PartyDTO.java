@@ -19,40 +19,40 @@ import java.util.Map;
 @Setter
 public class PartyDTO {
 
-    private Long game_id;
+    private Long gameId;
     private String gameImgPath;
     private String gameName;
 
-    private Long party_id;
-    private String party_title;
-    private List<String> party_tags = new ArrayList<>();
-    private int max_player;
-    private int cur_player;
-    private LocalDateTime start_time;
-    private LocalDateTime write_time;
+    private Long partyId;
+    private String partyTitle;
+    private List<String> partyTags = new ArrayList<>();
+    private int maxPlayer;
+    private int curPlayer;
+    private LocalDateTime startTime;
+    private LocalDateTime writeTime;
     private String status;
-    private List<PartyPlayerDTO> party_players = new ArrayList<>();
-    private String party_description;
-    private String chat_link;
+    private List<PartyPlayerDTO> partyPlayers = new ArrayList<>();
+    private String partyDescription;
+    private String chatLink;
 
     public PartyDTO(Party p){
-        this.game_id = p.getGame().getGameId();
+        this.gameId = p.getGame().getGameId();
         this.gameImgPath = p.getGame().getImgpath();
         this.gameName = p.getGame().getName();
-        this.party_id = p.getPartyId();
-        this.party_title = p.getTitle();
+        this.partyId = p.getPartyId();
+        this.partyTitle = p.getTitle();
         for (PartyTag partytag: p.getPartyTags()) {
-            this.party_tags.add(partytag.getPtagStorage().getContent());
+            this.partyTags.add(partytag.getPtagStorage().getContent());
         }
-        this.max_player = p.getMaxPlayer();
-        this.cur_player = p.getCurPlayer();
-        this.start_time = p.getStartTime();
-        this.write_time = p.getWriteTime();
+        this.maxPlayer = p.getMaxPlayer();
+        this.curPlayer = p.getCurPlayer();
+        this.startTime = p.getStartTime();
+        this.writeTime = p.getWriteTime();
         this.status = p.getStatus();
         for (Puser puser: p.getPusers()) {
-            this.party_players.add(new PartyPlayerDTO(puser));
+            this.partyPlayers.add(new PartyPlayerDTO(puser));
         }
-        this.party_description = p.getDescription();
-        this.chat_link = p.getChatLink();
+        this.partyDescription = p.getDescription();
+        this.chatLink = p.getChatLink();
     }
 }

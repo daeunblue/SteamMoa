@@ -15,32 +15,32 @@ import java.time.LocalDateTime;
 @Setter
 public class PartylistDTO {
 
-    private Long party_id;
+    private Long partyId;
 
-    private Long game_id;
+    private Long gameId;
     private String gameImgPath;
     private String gameName;
 
-    private String party_title;
-    private int max_player;
-    private int cur_player;
-    private LocalDateTime start_time;
-    private LocalDateTime write_time;
+    private String partyTitle;
+    private int maxPlayer;
+    private int curPlayer;
+    private LocalDateTime startTime;
+    private LocalDateTime writeTime;
 
     private String status;
 
     public PartylistDTO(Party p){
-        this.party_id = p.getPartyId();
-        this.game_id = p.getGame().getGameId();
+        this.partyId = p.getPartyId();
+        this.gameId = p.getGame().getGameId();
         this.gameImgPath = p.getGame().getImgpath();
         this.gameName = p.getGame().getName();
-        this.party_title = p.getTitle();
-        this.max_player = p.getMaxPlayer();
-        this.cur_player = p.getCurPlayer();
-        this.start_time = p.getStartTime();
-        this.write_time = p.getWriteTime();
+        this.partyTitle = p.getTitle();
+        this.maxPlayer = p.getMaxPlayer();
+        this.curPlayer = p.getCurPlayer();
+        this.startTime = p.getStartTime();
+        this.writeTime = p.getWriteTime();
         this.status = p.getStatus();
 
-        System.out.println("파티 list DTO 생성: "+this.party_title);
+        System.out.println("파티 list DTO 생성: "+this.partyTitle);
     }
 }
