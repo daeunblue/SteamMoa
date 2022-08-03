@@ -49,20 +49,27 @@ const GameMoa = (props) => {
 
   const [gameList, setGameList] = useState([]);
 
-  const handleApplyFilter = useCallback(() => {
+  const handleApplyFilter = () => {
     let url = `http://i7a303.p.ssafy.io:8080/api/games/search?`;
     url += `page=${page}`;
+    url += `&name=${search}`;
 
-    if (search) {
-      url += `&name=${search}`;
-    }
+    filter.forEach((filterItem) => {
+      url += `&tag=${filterItem.name}`;
+    });
 
-    if (filter.length) {
-      filter.forEach((filterItem) => {
-        url += `&tag=${filterItem.name}`;
-      });
-    }
+    axios
+      .get(url)
+      .then(({ data }) => {
+        let list = data.data.map((item) => ({ ...item, gameReviewScore: 5 }));
+        setGameList([...list]);
+        setTotalPage(parseInt(data.maxpage));
+      })
+      .catch();
+  };
 
+  useEffect(() => {
+    const url = `http://i7a303.p.ssafy.io:8080/api/games?page=1`;
     axios
       .get(url)
       .then(({ data }) => {
@@ -71,11 +78,11 @@ const GameMoa = (props) => {
         setTotalPage(parseInt(data.maxpage));
       })
       .catch();
-  },[page, search, filter]);
+  }, []);
 
   useEffect(() => {
-    handleApplyFilter()
-  }, [handleApplyFilter]);
+    handleApplyFilter();
+  }, [page]);
 
   return (
     <div className="w-full h-screen">
@@ -91,6 +98,7 @@ const GameMoa = (props) => {
         search={search}
         setFilter={setFilter}
         setSearch={setSearch}
+        setPage={setPage}
         handleApplyFilter={handleApplyFilter}
       />
       {/* 게임 리스트 */}

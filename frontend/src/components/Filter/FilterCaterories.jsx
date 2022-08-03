@@ -8,19 +8,16 @@ const FilterCaterories = (props) => {
   const checkedItemHandler = (item, isChecked) => {
     if (isChecked) {
       //필터에 추가
-      const list = [
-        ...filter,
-        { category: id, item: item.id, name: item.name },
-      ];
-      setFilter(list);
+      setFilter([...filter, { category: id, item: item.id, name: item.name }]);
     } else if (!isChecked) {
       //필터에 있는 체크 삭제
-      const list = filter.filter((filterItem) => {
-        return filterItem.category !== id || filterItem.item !== item.id
-          ? true
-          : false;
-      });
-      setFilter(list);
+      setFilter(
+        filter.filter((filterItem) => {
+          return filterItem.category !== id || filterItem.item !== item.id
+            ? true
+            : false;
+        })
+      );
     }
   };
 
