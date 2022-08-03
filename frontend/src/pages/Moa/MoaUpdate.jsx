@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
+// update 페이지에서 db를 불러온 뒤 수정 후 다시 서버로 보내 db에 저장
 const MoaUpdate = (props) => {
   const [ moa, setMoa ] = useState({
     partyId: '',
@@ -27,10 +27,11 @@ const onChange = (event) => {
         ...moa,
         [name]: value,
     })
-}
+};
 
 const onClick = (event) => {
-// close 필드값 상태 변경 close: true로
+// partyStatus 필드값 상태 변경 true로
+// partyStatus = true;
 
 }
 // 수정된 데이터 보내서 저장
@@ -57,10 +58,9 @@ const handleSubmit = (e) => {
         }
     });
 }
-    
+  
   useEffect((e) => {
     // 라우터 쿼리 가져오기
-    // party_id가 같으면 '수정 버튼' 보이게 하기 => detail 페이지에서 해결
     // party_id가 같은 데이터 가져오기
     // axios로 api 요청 보내서 다시 데이터 가져오기
     const url = `http://localhost:8080/api/moazone/${moa.partyId}`;

@@ -14,7 +14,7 @@ function MoaCreate() {
         partyDescription: '',
         chatLink: '',
         partyTags: '',
-        partyStatus: false,
+        partyStatus: false, //모집중false
     });
     // 파티 태그 요소 하드 코딩
     const partyTagList = {
