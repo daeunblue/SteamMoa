@@ -19,6 +19,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+
 @NoArgsConstructor
 public class User {
     // 유저 식별자 PK
@@ -64,6 +65,11 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Tactic> tacticList = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return this.userId +", "+this.userServiceId+", "+this.userPoint;
+    }
     // mappedBy : (주인이 아닌 테이블엔티티에 붙임 + 기준 : 주인 테이블에서의 객체명)
 
 }

@@ -67,13 +67,10 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> result = new HashMap<>();
         // 디비에 유저 정보 조회 (userId 를 통한 조회).
         User user = userRepository.findByUserServiceId(userServiceId).get();
-//        System.out.println("user.getuserId() : "+user.getUserId());
+        System.out.println("user.getuserId() : "+user.getUserId());
         result.put("user",user);
         if(user.getUserId() == null){
             System.out.println("아이디 에 해당하는 사용자 없음");
-        }else{
-            System.out.println("반환값 없음");
-            result.put("user", user);
         }
         return result;
     }

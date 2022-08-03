@@ -44,15 +44,18 @@ public class UserController {
 
         try {
             User user = (User) userService.getUserInfoByUserId(userServiceId).get("user");
+//            System.out.println(user.toString());
             UserDto userDto = new UserDto();
             //builder 패턴 적용해야함
-//            userDto.builder().
-//            result =
+            userDto.setUserId(user.getUserId());
+            userDto.setUserServiceId(user.getUserServiceId());
+            userDto.setUserPoint(user.getUserPoint());
+            result.put("user",userDto);
+            result.put("message","Success");
         } catch (Exception e) { // 에러코드 정리해서 처리해야할 부분
             result.put("message","Fail");
             return ResponseEntity.status(403).body(result);
         }
-
         return ResponseEntity.status(200).body(result);
     }
 
