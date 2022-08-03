@@ -1,6 +1,7 @@
 package com.ssafy.backend.db.entity.game;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.tactic.Tactic;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -73,6 +74,10 @@ public class Game {
     @OneToMany(mappedBy = "game")
     @JsonManagedReference
     private List<Tactic> tactics = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Review> reviewList = new ArrayList<>();
 
     // Constructor for unit test
     public Game(Long id, String sgi, String name){

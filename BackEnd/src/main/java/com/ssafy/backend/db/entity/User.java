@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.tactic.Tactic;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,6 +66,10 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Tactic> tacticList = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviewList = new ArrayList<>();
 
     @Override
     public String toString() {
