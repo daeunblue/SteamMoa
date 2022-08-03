@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.tactic.Tactic;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +21,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-
-@NoArgsConstructor
+@Builder
 public class User {
     // 유저 식별자 PK
     @Id
@@ -76,5 +76,9 @@ public class User {
         return this.userId +", "+this.userServiceId+", "+this.userPoint;
     }
     // mappedBy : (주인이 아닌 테이블엔티티에 붙임 + 기준 : 주인 테이블에서의 객체명)
+
+    public User() {
+    }
+
 
 }

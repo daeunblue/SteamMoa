@@ -38,4 +38,18 @@ public class Review {
     @JoinColumn(name="game_id", nullable = false)
     private Game game;
 
+    public void setUser(User user){
+        this.user = user;
+        if(!user.getReviewList().contains(user)){
+            user.getReviewList().add(this);
+        }
+    }
+
+    public void setGame(Game game){
+        this.game = game;
+        if(!game.getReviewList().contains(game)){
+            game.getReviewList().add(this);
+        }
+    }
+
 }
