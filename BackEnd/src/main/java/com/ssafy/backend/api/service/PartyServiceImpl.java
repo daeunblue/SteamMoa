@@ -105,8 +105,8 @@ public class PartyServiceImpl implements PartyService{
     public boolean createParty(PartyPostReq partyInfo) {
         Party party = new Party();
 
-        // 게임 존재하는지 확인 후 실패 응답
-        if (gameRepository.findById(partyInfo.getGameId())==null)
+        // 멀티게임 맞는지 확인 후 실패 응답
+        if (!gameRepository.findAllMultiGameByOnlyName("").contains(gameRepository.findByGameId(partyInfo.getGameId())))
             return false;
         party.setGame(gameRepository.findByGameId(partyInfo.getGameId()));
         party.setTitle(partyInfo.getPartyTitle());

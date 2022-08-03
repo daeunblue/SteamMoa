@@ -51,7 +51,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                 "left join ggenrestorage\n" +
                 "on gamegenre.genre_id = ggenrestorage.genre_id\n";
 
-        if(tag.length != 0){
+        if(tag != null && tag.length != 0){
             sql += "where \n";
             for (int i = 0; i < tag.length; i++) {
                 sql += "ggenrestorage.genre like \'" + tag[i] + "\'\n";
@@ -103,7 +103,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                     "left join ggenrestorage\n" +
                     "on gamegenre.genre_id = ggenrestorage.genre_id\n";
 
-            if(tag.length != 0){
+            if(tag != null && tag.length != 0){
                 sql += "where \n";
                 for (int i = 0; i < tag.length; i++) {
                     sql += "ggenrestorage.genre like \'" + tag[i] + "\'\n";
