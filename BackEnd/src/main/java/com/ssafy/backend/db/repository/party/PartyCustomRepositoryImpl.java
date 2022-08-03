@@ -64,7 +64,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                 "inner join game\n" +
                 "on gamegenre.game_id = game.game_id\n" +
                 "where game.game_name like \'%" + searchString + "%\' and game.game_price != -1 ) as game\n" +
-                "left join party\n" +
+                "inner join party\n" +
                 "on party.game_id = game.game_id\n";
 
         if (sortString.equals("1"))
@@ -80,7 +80,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
         List<Party> partylist = query.getResultList();
         List<Party> partylist_status = new ArrayList<>();
         for (Party p: partylist) {
-            if(p.getStatus().equals(partyStatus))
+            if(p!= null && p.getStatus().equals(partyStatus))
                 partylist_status.add(p);
         }
         return partylist_status;
@@ -116,7 +116,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                     "inner join game\n" +
                     "on gamegenre.game_id = game.game_id\n" +
                     "where game.game_name like \'%" + searchString + "%\' and game.game_price != -1 ) as game\n" +
-                    "left join party\n" +
+                    "inner join party\n" +
                     "on party.game_id = game.game_id\n";
 
             if (sortString.equals("1"))
@@ -132,7 +132,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
             List<Party> partylist = query.getResultList();
             List<Party> partylist_status = new ArrayList<>();
             for (Party p: partylist) {
-                if(p.getStatus().equals(partyStatus))
+                if(p!= null && p.getStatus().equals(partyStatus))
                     partylist_status.add(p);
             }
             return partylist_status.size();
