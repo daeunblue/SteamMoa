@@ -6,18 +6,15 @@ import { useNavigate } from 'react-router-dom';
 
 const MoaUpdate = (props) => {
   const [ moa, setMoa ] = useState({
-    // party_id: '',
-    // party_title: '',
-    // game_name: '',
-    // start_time: '',
-    // max_player: '',
-    party_description: '',
-    chat_link: '',
-    ptag_content: '',
-    party_users: '',
-    party_status: '',
-    ptag_content: '',
-    close: false,
+    partyId: '',
+    // partyTitle: '',
+    // gameName: '',
+    // startTime: '',
+    // maxPlayer: '',
+    partyDescription: '',
+    chatLink: '',
+    partyTags: '',
+    partyStatus: false,
 
 });
 // 파티 태그 하드코딩
@@ -41,15 +38,15 @@ const handleSubmit = (e) => {
     e.preventDefault();
     console.log(e.target);
     axios.put("http://localhost:8080/api/moazone", {
-        party_id: moa.party_id,
-        party_title: moa.party_title,
-        game_name: moa.game_name,
-        start_time: moa.start_time,
-        max_player: moa.max_player,
-        party_description: moa.party_description,
-        chat_link: moa.chat_link,
-        ptag_content: moa.ptag_content,
-        close: moa.close,
+        // partyId: moa.partyId,
+        // partyTitle: moa.partyTitle,
+        // gameName: moa.gameName,
+        // startTime: moa.startTime,
+        // maxPlayer: moa.maxPlayer,
+        partyDescription: moa.partyDescription,
+        chatLink: moa.chatLink,
+        partyTags: moa.partyTags,
+        partyStatus: moa.partyStatus,
     })
     .then(function (res) {
         //성공시 리다이렉트 어디로?
@@ -63,13 +60,14 @@ const handleSubmit = (e) => {
     
   useEffect((e) => {
     // 라우터 쿼리 가져오기
+    // party_id가 같으면 '수정 버튼' 보이게 하기 => detail 페이지에서 해결
     // party_id가 같은 데이터 가져오기
     // axios로 api 요청 보내서 다시 데이터 가져오기
-    const url = `http://localhost:8080/api/moazone/${moa.party_id}`;
+    const url = `http://localhost:8080/api/moazone/${moa.partyId}`;
     axios.get(url)
     .then(function (res) {
       })
-    });
+    }, []);
 
   return (
     <>
@@ -88,22 +86,22 @@ const handleSubmit = (e) => {
                   </div>
                   <div className='flex-none'>
                     <button 
-                    name="close"
-                    value={moa.close}
+                    name="partyStatus"
+                    value={moa.partyStatus}
                     onClick={onClick}
                     className='bg-moa-purple rounded-sm'>모집 완료</button>
                   </div>
                 </div>
                     <input 
-                    name="party_title"
-                    value={moa.party_title}
+                    name="partyTitle"
+                    value={moa.partyTitle}
                     onChange={onChange}
                     className="w-full text-main-500 bg-mainBtn-disabled rounded-lg mb-3" type="text" placeholder="파티 모집 제목" disabled />
                 <div className="grid grid-flow-col mb-3">
                     <span className="col-span-1 ">플레이 게임</span>
                     <input 
-                    name="game_name"
-                    value={moa.game_name}
+                    name="gameName"
+                    value={moa.gameName}
                     onChange={onChange}
                     className="col-span-12 text-main-500 bg-mainBtn-disabled rounded-lg" type="text" placeholder="게임 제목을 검색하세요" disabled />
                 </div>
@@ -111,8 +109,8 @@ const handleSubmit = (e) => {
                     <div className="grid grid-flow-col col-span-1 mx-2">
                         <span className="col-span-1">플레이 인원</span>
                         <input 
-                        name="max_player"
-                        value={moa.max_player}
+                        name="maxPlayer"
+                        value={moa.maxPlayer}
                         onChange={onChange}
                         className="col-span-4 w-full text-main-500 bg-mainBtn-disabled rounded-lg" type="text" disabled />
                     </div>
@@ -120,8 +118,8 @@ const handleSubmit = (e) => {
                         <span className="col-span-1">시작시간</span>
                         <div className="col-span-7">
                         <input 
-                        name="start_time"
-                        value={moa.start_time}
+                        name="startTime"
+                        value={moa.startTime}
                         onChange={onChange}
                         className="w-full text-main-500 bg-mainBtn-disabled rounded-lg" type="date" disabled />
                         </div>
@@ -129,16 +127,16 @@ const handleSubmit = (e) => {
                 </div>
                 <div className="mb-3">
                     <textarea 
-                    name="game_description"
-                    value={moa.game_description}
+                    name="gameDescription"
+                    value={moa.gameDescription}
                     onChange={onChange}
                     className="w-full text-main-500 bg-createInput-gray rounded-lg" rows="10" placeholder="모집 내용 쓰는 곳"></textarea>
                 </div>
                 <div className="grid grid-flow-col mb-8">
                     <span className="col-span-1">음성 채팅 링크</span>
                     <input 
-                    name="chat_link"
-                    value={moa.chat_link}
+                    name="chatLink"
+                    value={moa.chatLink}
                     onChange={onChange}
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
@@ -146,8 +144,8 @@ const handleSubmit = (e) => {
                 <div className="grid grid-flow-col mb-8">
                     <span className="col-span-1">파티 태그</span>
                     <input 
-                    name="ptag_content" 
-                    value={moa.ptag_content} 
+                    name="partyTags" 
+                    value={moa.partyTags} 
                     onChange={onChange} 
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
