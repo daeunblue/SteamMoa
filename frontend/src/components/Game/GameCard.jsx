@@ -1,8 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Badge from "../Badge";
 
-const GameListItem = (props) => {
-  const { gameName, gameImgpath, gameTags, gameReviewScore } = props.game;
+const GameCard = (props) => {
+  const { gameId, gameName, gameImgpath, gameTags, gameReviewScore } =
+    props.game;
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/gamemoa/detail/${gameId}`);
+  };
 
   const renderStar = () => {
     let list = [];
@@ -20,7 +28,7 @@ const GameListItem = (props) => {
   };
 
   return (
-    <div className="flex flex-col bg-card-lightgray">
+    <div className="flex flex-col bg-card-lightgray" onClick={handleClick}>
       <img src={gameImgpath} alt="" />
       <div className="contentsContainer m-2">
         {/* 게임이름 */}
@@ -33,12 +41,14 @@ const GameListItem = (props) => {
         <div className="flex overflow-hidden">
           {/* key값 설정 */}
           {gameTags.length > 2
-            ? gameTags.slice(0, 2).map((tag) => <Badge name={tag} />)
-            : gameTags.map((tag) => <Badge name={tag} />)}
+            ? gameTags
+                .slice(0, 2)
+                .map((tag, index) => <Badge key={index} name={tag} />)
+            : gameTags.map((tag, index) => <Badge key={index} name={tag} />)}
         </div>
       </div>
     </div>
   );
 };
 
-export default GameListItem;
+export default GameCard;

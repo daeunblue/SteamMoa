@@ -73,7 +73,7 @@ const SignupForm = (props) => {
   };
 
   const handleIdCheck = (e) => {
-    const url = `http://localhost:8080/api/auth/signup/duplicated/${user.service_id}`;
+    const url = `http://i7a303.p.ssafy.io:8080/api/auth/signup/duplicated/${user.service_id}`;
     axios
       .get(url)
       .then(({ data }) => {
@@ -118,14 +118,14 @@ const SignupForm = (props) => {
     }
 
     axios
-      .post("http://localhost:8080/api/auth", {
+      .post("http://i7a303.p.ssafy.io:8080/api/auth", {
         user_name: user.name,
         user_service_id: user.service_id,
         user_service_pw: user.service_pw,
         user_steam_id: steamId,
       })
-      .then(({ status, message }) => {
-        alert(message);
+      .then(({ status, data }) => {
+        alert(data.message);
         if (status === 200) {
           navigate("/login");
         } else {

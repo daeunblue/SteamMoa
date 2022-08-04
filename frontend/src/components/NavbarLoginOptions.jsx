@@ -1,15 +1,37 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { useRecoilState } from "recoil";
+import { auth } from "../recoil/Auth";
+
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 
 
 const NavbarLoginOptions = (props) => {
-  const isLoggedin = true
-  if (!isLoggedin)
+  const [userAuth, setAuth] = useRecoilState(auth);
+  const navigate = useNavigate();
+
+  useEffect(
+   ()=>{
+   } ,
+   [userAuth.isLoggedIn]
+  )
+  const onLogOut = () => {
+    setAuth({
+      isLoggedIn:false, //인증상태
+      token:null, //access token
+      userId: null,
+    });
+    sessionStorage.setItem('token', '')
+    navigate('/')
+    console.log('logout')
+  }
+
+  if (!userAuth.isLoggedIn)
     return (
       <>
-        <Link to="/" className="text-white text-xs font-sans mr-3 font-bold">
+        <Link to="/signup" className="text-white text-xs font-sans mr-3 font-bold">
           회원가입
         </Link>
         <Link
@@ -26,13 +48,13 @@ const NavbarLoginOptions = (props) => {
         <Link to="/" className="text-white text-xs font-sans mr-2 font-bold">
           파티 만들기
         </Link>
-        <Link to="/" className="text-white text-xs font-sans mx-2 font-bold">
+        <div className="text-white text-xs font-sans mx-2 font-bold hover:cursor-pointer" onClick={onLogOut}>
           로그아웃
-        </Link>
+        </div>
         {/* 알림 */}
         <Link to="/" className="text-white w-4 h-5 mx-2"><FontAwesomeIcon icon={faBell} /></Link> 
         {/* 마이페이지 */}
-        <Link to="/" className="text-white w-4 h-5 ml-2 mr-1"><FontAwesomeIcon icon={faUser} /></Link>
+        <Link to={`/mypage/${userAuth.userId}`} className="text-white w-4 h-5 ml-2 mr-1"><FontAwesomeIcon icon={faUser} /></Link>
       </>
     );
 };

@@ -33,6 +33,7 @@ function Router() {
       <Route path="/gamemoa/detail/:game_id" element={<GameDetail/>}/>
       {/* 프로필 */}
       <Route path="/profile/:user_id/*" element={<Profile/>}/>
+      <Route path="/mypage/:user_id/*" element={<Profile/>}/>
       {/* 통합검색 */}
       <Route path="/search/:keyword" element={<Search/>}/>
     </Routes>

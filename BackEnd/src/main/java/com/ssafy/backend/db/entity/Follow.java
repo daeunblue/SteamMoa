@@ -1,5 +1,6 @@
 package com.ssafy.backend.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
@@ -14,7 +15,8 @@ public class Follow {
     private Long followId;
 
     // 하나의 사용자는 여러 구독 테이블을 가진다.
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User fromUser;
 

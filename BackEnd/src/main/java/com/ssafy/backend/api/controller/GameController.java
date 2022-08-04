@@ -7,6 +7,7 @@ import com.ssafy.backend.db.entity.game.GamelistDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,16 +29,16 @@ public class GameController {
 
     @GetMapping("")
     @ApiOperation(value = "게임 리스트 전체 조회", notes = "전체 게임 리스트를 조회.")
-    public ResponseEntity<?> getGameListAll(@RequestParam(required = false, defaultValue = "0") int page){
-        List<GamelistDTO> result = gameService.getGameList(page);
+    public ResponseEntity<?> getGameListAll(@RequestParam(required = false, defaultValue = "1") int page){
+        JSONObject result = gameService.getGameList(page-1);
         return ResponseEntity.status(200).body(result);
     }
 
 
     @GetMapping("/search")
     @ApiOperation(value = "게임 리스트 조건 조회", notes = "검색어, 필터에 맞는 게임들을 조회.")
-    public ResponseEntity<?> getGameListFiltered(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "") String name, @RequestParam(value = "tag", required = false, defaultValue = "") String[] tags){
-        List<GamelistDTO> result = gameService.searchGameList(page, name, tags);
+    public ResponseEntity<?> getGameListFiltered(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "") String name, @RequestParam(value = "tag", required = false, defaultValue = "") String[] tags){
+        JSONObject result = gameService.searchGameList(page-1, name, tags);
         return ResponseEntity.status(200).body(result);
     }
 

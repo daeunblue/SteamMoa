@@ -1,8 +1,12 @@
 package com.ssafy.backend.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.ssafy.backend.db.entity.review.Review;
+import com.ssafy.backend.db.entity.party.Puser;
+import com.ssafy.backend.db.entity.tactic.Tactic;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,17 +50,42 @@ public class User {
     @Column(name = "user_point", nullable = false)
     private Double userPoint;
 
-    @OneToMany(mappedBy = "notice")
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<NoticeList> nLists = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @JsonManagedReference
     private List<UserTag> uTagLists = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser")
+    @JsonManagedReference
     private List<Follow> uFollowList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "user_id")
-//    private List<UserTag> uFollowingList = new ArrayList<>();
+    // 양방향 일대다
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Puser> pusers = new ArrayList<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Tactic> tacticList = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviewList = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return this.userId +", "+this.userServiceId+", "+this.userPoint;
+    }
+    // mappedBy : (주인이 아닌 테이블엔티티에 붙임 + 기준 : 주인 테이블에서의 객체명)
+
+    // 일대다
+    public void addReview (Review review){
+        this.reviewList.add(review);
+        if(review.getUser() != this){
+            review.setUser(this);
+        }
+    }
 }
