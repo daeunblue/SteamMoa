@@ -1,78 +1,126 @@
 import React, { useState } from "react";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleDown,
-  faAngleUp,
-  faRotateRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleUp, faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import FilterCaterories from "./Filter/FilterCaterories";
 import FilterBadge from "./Filter/FilterBadge";
+import { getGamesSearch } from "../api/Game";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { gameSearchFilter, gamePage, gameSearchWord, gameMaxPage } from "../recoil/Game";
 
 const SearchContainer = (props) => {
-  const { filter, search, setFilter, setSearch, handleApplyFilter } = props;
-  const { filters } = props.categories;
-
-  const [ishidden, setIsHidden] = useState(true);
-
-  const bgColor = [
-    "",
-    "bg-moa-pink",
-    "bg-moa-yellow",
-    "bg-moa-green",
-    "bg-moa-purple",
-  ];
-
-  const onChangeSearch = (e) => {
-    e.preventDefault();
-    setSearch(e.target.value);
+  const categories = {
+    filters: [
+      {
+        id: 1,
+        name: "장르",
+        items: [
+          {
+            id: 37,
+            name: "Free to Play",
+          },
+          {
+            id: 23,
+            name: "Indie",
+          },
+          {
+            id: 1,
+            name: "Action",
+          },
+          {
+            id: 25,
+            name: "Adventure",
+          },
+          {
+            id: 4,
+            name: "Casual",
+          },
+          {
+            id: 28,
+            name: "Simulation",
+          },
+          {
+            id: 2,
+            name: "Strategy",
+          },
+          {
+            id: 3,
+            name: "RPG",
+          },
+          {
+            id: 18,
+            name: "Sports",
+          },
+          {
+            id: 9,
+            name: "Racing",
+          },
+        ],
+      },
+    ],
   };
+  const setGameList = props.setGameList;
 
-  const handleArcodion = () => {
-    setIsHidden(!ishidden);
-  };
+  const [page, setPage] = useRecoilState(gamePage);
+  const searchWord = useRecoilValue(gameSearchWord);
+  const setMaxPage = useSetRecoilState(gameMaxPage);
+  const setSearchFilter = useSetRecoilState(gameSearchFilter);
+  const [filter, setFilter] = useState([]);
 
   const handleResetFilter = () => {
     setFilter([]);
+    getGamesSearch(page, [], searchWord)
+      .then(({ data }) => {
+        setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
+        setMaxPage(parseInt(data.maxPage));
+        setPage(1);
+      })
+      .catch();
   };
 
   const deleteHandler = (category_id, filterItem_id) => {
     setFilter(
       filter.filter((filterItem) => {
-        return filterItem.category !== category_id ||
-          filterItem.item !== filterItem_id
+        return filterItem.category !== category_id || filterItem.item !== filterItem_id
           ? true
           : false;
       })
     );
   };
 
+  const handleSearchFilter = () => {
+    setSearchFilter([...filter]);
+    getGamesSearch(page, filter, searchWord)
+      .then(({ data }) => {
+        setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
+        setMaxPage(parseInt(data.maxPage));
+        setPage(1);
+      })
+      .catch();
+  };
+
+  const [ishidden, setIsHidden] = useState(true);
+  const handleArcodion = () => {
+    setIsHidden(!ishidden);
+  };
+
+  const bgColor = ["", "bg-moa-pink", "bg-moa-yellow", "bg-moa-green", "bg-moa-purple"];
   const setBgColor = (id) => bgColor[id];
 
   return (
     <div className="w-per75 mx-auto mb-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to">
       {/* header : 검색바, 정렬 Select, 펼침버튼 */}
-      <div className="w-full grid grid-cols-2 grid-rows-1 p-5">
+      <div className="w-full grid grid-cols-2 p-5">
         {/* 검색바, 정렬 */}
         <div className="grid grid-cols-5 gap-2">
           {/* 검색바 */}
-          <SearchBar
-            search={search}
-            onChangeSearch={onChangeSearch}
-            handleApplyFilter={handleApplyFilter}
-          />
+          <SearchBar setGameList={setGameList} setFilter={setFilter} />
         </div>
         {/* 아코디언 버튼 */}
-        <div
-          className="flex flex-row-reverse items-center"
-          onClick={handleArcodion}
-        >
+        <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
           <span className="text-main-100">상세조건</span>
           {ishidden ? (
-            <FontAwesomeIcon
-              className="text-main-100 mr-2"
-              icon={faAngleDown}
-            />
+            <FontAwesomeIcon className="text-main-100 mr-2" icon={faAngleDown} />
           ) : (
             <FontAwesomeIcon className="text-main-100 mr-2" icon={faAngleUp} />
           )}
@@ -83,7 +131,7 @@ const SearchContainer = (props) => {
         <hr className="m-auto w-per95 h-px bg-main-100" />
         {/* body : 필터링 항목 */}
         <div className="w-full pt-5 pb-3">
-          {filters.map((category) => (
+          {categories.filters.map((category) => (
             <FilterCaterories
               key={category.id}
               category={category}
@@ -94,8 +142,8 @@ const SearchContainer = (props) => {
         </div>
         <hr className="m-auto w-per95 h-px bg-main-200" />
         {/* footer : 태그, 필터링 초기화 */}
-        <div className="w-full grid grid-cols-12 py-2 px-5 ">
-          <div className="col-span-10 grid grid-cols-10 items-center">
+        <div className="w-full grid laptop:grid-cols-12 py-2 px-5 mobile:grid-cols-2">
+          <div className="items-center grid gap-1 laptop:grid-cols-7 laptop:col-span-10 tablet:grid-cols-3 tablet:col-span-9 mobile:grid-cols-2 mobile:col-span-7">
             {filter.map((filterItem, index) => (
               <FilterBadge
                 key={index}
@@ -107,19 +155,17 @@ const SearchContainer = (props) => {
               />
             ))}
           </div>
-          <div className="col-span-2 flex flex-row justify-end items-center">
+          <div className="laptop:col-span-2 tablet:col-span-3 mobile:col-span-5 flex flex-row justify-end items-center ">
             <button
-              onClick={handleApplyFilter}
-              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 px-6 rounded-lg"
-            >
+              onClick={handleSearchFilter}
+              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 px-6 rounded-lg">
               적용
             </button>
             <button
               onClick={handleResetFilter}
-              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 rounded-lg"
-            >
+              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 rounded-lg whitespace-nowrap">
               <FontAwesomeIcon className="mr-2" icon={faRotateRight} />
-              초기화
+              필터 초기화
             </button>
           </div>
         </div>
