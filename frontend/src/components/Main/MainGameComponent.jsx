@@ -31,7 +31,7 @@ const MainGameComponent = (props) => {
       <div className='flex flex-col justify-end w-per70'>
         <div className='whitespace-nowrap text-ellipsis overflow-hidden text-white text-sm'>{game.gameName}</div>
         <div className='tags'>
-          <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded">Default</span>
+          <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded">Default</span>
         </div>
       </div>
 
