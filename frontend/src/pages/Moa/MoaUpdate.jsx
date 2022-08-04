@@ -6,15 +6,11 @@ import { useNavigate } from 'react-router-dom';
 // update 페이지에서 db를 불러온 뒤 수정 후 다시 서버로 보내 db에 저장
 const MoaUpdate = (props) => {
   const [ moa, setMoa ] = useState({
-    partyId: '',
-    // partyTitle: '',
-    // gameName: '',
-    // startTime: '',
-    // maxPlayer: '',
     partyDescription: '',
     chatLink: '',
     partyTags: '',
     partyStatus: false,
+    partyUsers: '',
 
 });
 // 파티 태그 하드코딩
@@ -29,30 +25,25 @@ const onChange = (event) => {
     })
 };
 
-const onClick = (event) => {
-// partyStatus 필드값 상태 변경 true로
-// partyStatus = true;
-
-}
 // 수정된 데이터 보내서 저장
 const handleSubmit = (e) => {
     e.preventDefault();
     console.log(e.target);
-    axios.put("http://localhost:8080/api/moazone", {
-        // partyId: moa.partyId,
-        // partyTitle: moa.partyTitle,
-        // gameName: moa.gameName,
-        // startTime: moa.startTime,
-        // maxPlayer: moa.maxPlayer,
+    axios.put("http://i7a303.p.ssafy.io:8080/api/moazone", {
+        partyTitle: moa.partyTitle,
+        gameName: moa.gameName,
+        startTime: moa.startTime,
+        maxPlayer: moa.maxPlayer,
         partyDescription: moa.partyDescription,
         chatLink: moa.chatLink,
         partyTags: moa.partyTags,
         partyStatus: moa.partyStatus,
+        partyUsers: moa.partyUsers,
     })
     .then(function (res) {
-        //성공시 리다이렉트 어디로?
+        //성공시 리다이렉트 해당 게시글로
         if (res.statusCode === 200 ){
-            navigate('/')
+            navigate(`/${moa.partyId}`)
         } else {
             alert(res.data.message);
         }
@@ -60,14 +51,14 @@ const handleSubmit = (e) => {
 }
   
   useEffect((e) => {
-    // 라우터 쿼리 가져오기
     // party_id가 같은 데이터 가져오기
+    const url = `http://i7a303.p.ssafy.io:8080/api/moazone/${moa.partyId}`;
     // axios로 api 요청 보내서 다시 데이터 가져오기
-    const url = `http://localhost:8080/api/moazone/${moa.partyId}`;
     axios.get(url)
-    .then(function (res) {
-      })
-    }, []);
+    .then(({data}) => {
+        setMoa(data);
+        })
+    });
 
   return (
     <>
@@ -88,7 +79,7 @@ const handleSubmit = (e) => {
                     <button 
                     name="partyStatus"
                     value={moa.partyStatus}
-                    onClick={onClick}
+                    onClick={onChange}
                     className='bg-moa-purple rounded-sm'>모집 완료</button>
                   </div>
                 </div>
@@ -149,8 +140,13 @@ const handleSubmit = (e) => {
                     onChange={onChange} 
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
-                <div className='w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black'>
-                  {/* <ProfileUser /> */}
+                {/* <PartyUsers /> */}
+                <div 
+                className='w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black'
+                name="partyUsers"
+                value={moa.partyUsers}
+                onChange={onChange}
+                >
                 </div>
                 </div>
             </div>

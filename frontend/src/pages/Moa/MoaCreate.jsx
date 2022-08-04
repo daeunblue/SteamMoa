@@ -14,7 +14,6 @@ function MoaCreate() {
         partyDescription: '',
         chatLink: '',
         partyTags: '',
-        partyStatus: false, //모집중false
     });
     // 파티 태그 요소 하드 코딩
     const partyTagList = {
@@ -36,7 +35,7 @@ function MoaCreate() {
     const handleSubmit = (e) => {
         e.preventDefault();
         // console.log(e.target)
-        axios.post("http://localhost:8080/api/moazone", {
+        axios.post("http://i7a303.p.ssafy.io:8080/api/moazone", {
             partyTitle: moa.partyTitle,
             gameName: moa.gameName,
             startTime: moa.startTime,
@@ -44,7 +43,6 @@ function MoaCreate() {
             partyDescription: moa.partyDescription,
             chatLink: moa.chatLink,
             partyTags: moa.partyTags,
-            partyStatus: moa.partyStatus,
         })
         .then(function (res) {
             console.log(res)
@@ -84,7 +82,7 @@ function MoaCreate() {
                 {/* 게임 검색 요청 보내기 */}
                 <div className="grid grid-flow-col mb-3">
                     <span className="col-span-1">플레이 게임</span>
-                    {/* SearchContainer 컴포넌트 삽입 */}
+                    {/* Search 컴포넌트 삽입 */}
                     <input 
                     name="game_name" 
                     value={moa.gameName} 
