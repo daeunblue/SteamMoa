@@ -1,7 +1,11 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
+import com.ssafy.backend.api.request.UserUpdatePutReq;
+import com.ssafy.backend.db.entity.UserTag;
 import com.ssafy.backend.db.entity.follow.Follow;
+import com.ssafy.backend.db.repository.UTagStorageRepository;
+import com.ssafy.backend.db.repository.UserTagRepository;
 import com.ssafy.backend.db.repository.follow.FollowRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +17,9 @@ import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -27,6 +30,12 @@ import java.util.NoSuchElementException;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserTagRepository userTagRepository;
+
+    @Autowired
+    UTagStorageRepository uTagStorageRepository;
 
     @Autowired
     FollowRepository followRepository;
@@ -70,6 +79,7 @@ public class UserServiceImpl implements UserService {
     public Map<String,Object> getUserInfoByUserId(String userServiceId) {
         Map<String, Object> result = new HashMap<>();
         // 디비에 유저 정보 조회 (userId 를 통한 조회).
+        System.out.println("조회 시작");
         User user = userRepository.findByUserServiceId(userServiceId).get();
         System.out.println("user.getuserId() : "+user.getUserId());
         result.put("user",user);
@@ -124,16 +134,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean updateUser(User user) {
+    public boolean updateUser(Long userId, UserUpdatePutReq userUpdatePutReq) {
         try{
+            User user = userRepository.findById(userId).get();
+
+            // userName 수정
+            user.setUserName(userUpdatePutReq.getUserName());
+
+            // userTags 수정
+            for (UserTag ut: user.getUTagLists()) {
+                userTagRepository.delete(ut);
+            }
+            user.setUTagLists(new ArrayList<>());
+
+            UserTag userTag;
+            for (String tag:userUpdatePutReq.getUserTags()) {
+                userTag = new UserTag();
+                userTag.setUTagStorage(uTagStorageRepository.findById(Long.parseLong(tag)).get());
+                userTagRepository.save(userTag);
+                System.out.println(userTag.getUTagStorage().getContent());
+                user.addUTagLists(userTag);
+            }
+
+
             userRepository.save(user);
             System.out.println(user.getUserName());
             System.out.println("User 수정 요청 성공");
+
+
 //            User sUser = userRepository.findByUserId(user.getUserId()).get();
 //            sUser.setUserPoint(user.getUserPoint());
 //            sUser.setUserName(user.getUserName());
             return true;
         }catch(Exception e){
+            e.printStackTrace();
             System.out.println("User 수정 요청 실패");
             return false;
         }
