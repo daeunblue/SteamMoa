@@ -1,5 +1,6 @@
 package com.ssafy.backend.api.controller;
 
+import com.ssafy.backend.api.request.UserFollowPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
 import com.ssafy.backend.api.response.UserRes;
 import com.ssafy.backend.api.service.UserService;
@@ -90,6 +91,56 @@ public class UserController {
 
         return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint()));
 
+    }
+
+    // Authentication 추가해야하는 API
+    @PostMapping("/follow")
+    @ApiOperation(value = "유저 팔로우 추가", notes = "user_service_id에 해당하는 유저를 팔로우")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> followUser(@RequestBody UserFollowPostReq userFollowPostReq){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        String FollowingUserId = userFollowPostReq.getFollowingUserId();
+        String FollowUserId = userFollowPostReq.getFollowerUserId();
+        boolean result = userService.followUser(FollowingUserId, FollowUserId);
+
+        if(result){
+            resultMap.put("message","Success");
+            return ResponseEntity.status(200).body(resultMap);
+        }else{
+            resultMap.put("message","Fail");
+            return ResponseEntity.status(400).body(resultMap);
+        }
+    }
+
+
+
+    // Authentication 추가해야하는 API
+    @DeleteMapping("/unfollow")
+    @ApiOperation(value = "유저 팔로우 삭제", notes = "user_service_id에 해당하는 유저를 언팔로우")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> unFollowUser(@RequestBody UserFollowPostReq userFollowPostReq){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        String FollowingUserId = userFollowPostReq.getFollowingUserId();
+        String FollowUserId = userFollowPostReq.getFollowerUserId();
+        boolean result = userService.unFollowUser(FollowingUserId, FollowUserId);
+
+        if(result){
+            resultMap.put("message","Success");
+            return ResponseEntity.status(200).body(resultMap);
+        }else{
+            resultMap.put("message","Fail");
+            return ResponseEntity.status(400).body(resultMap);
+        }
     }
 }
 

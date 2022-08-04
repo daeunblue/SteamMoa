@@ -30,7 +30,7 @@ public class PartyDTO {
     private int curPlayer;
     private LocalDateTime startTime;
     private LocalDateTime writeTime;
-    private String status;
+    private String partyStatus;
     private List<PartyPlayerDTO> partyPlayers = new ArrayList<>();
     private String partyDescription;
     private String chatLink;
@@ -48,7 +48,7 @@ public class PartyDTO {
         this.curPlayer = p.getCurPlayer();
         this.startTime = p.getStartTime();
         this.writeTime = p.getWriteTime();
-        this.status = p.getStatus();
+        this.partyStatus = p.getStatus();
         for (Puser puser: p.getPusers()) {
             this.partyPlayers.add(new PartyPlayerDTO(puser));
         }

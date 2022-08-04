@@ -1,7 +1,6 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
-import com.ssafy.backend.db.entity.Follow;
 import com.ssafy.backend.db.entity.User;
 
 import java.util.List;
@@ -16,7 +15,6 @@ public interface UserService {
 
     Map<String, Object> getUserInfoByUserId(String userServiceId);
     User getUserByUserId(String userId);
-    List<Follow> getFollowByUserId(Long userId);
 
     // 유효성 검사
     boolean checkSteamIdDuplicate(String steamId);
@@ -27,4 +25,8 @@ public interface UserService {
 
     boolean deleteUser(String userServiceId);
     boolean updateUser(User user);
+
+    // 팔로우 기능
+    boolean followUser(String followingUserId, String follwerUserId);
+    boolean unFollowUser(String followingUserId, String follwerUserId);
 }
