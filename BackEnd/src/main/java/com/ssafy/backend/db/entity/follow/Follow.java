@@ -18,12 +18,13 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followId;
 
-    // 팔로잉 (상대방 아이디)
-    @Column(name = "following_id", nullable = false)
-    private Long followingId;
-
     // 팔로워 (나)
     @Column(name = "follower_id", nullable = false)
-    private Long followerId;
+    private String followerUserId;
+
+    // 팔로잉 (상대방 아이디)
+    @Column(name = "following_id", nullable = false)
+    private String followingUserId;
+
 
 }

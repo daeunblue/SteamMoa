@@ -91,5 +91,17 @@ public class UserController {
         return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint()));
 
     }
+
+    // Authentication 추가해야하는 API
+    @PostMapping("/follow")
+    @ApiOperation(value = "유저 팔로우 추가", notes = "user_service_id에 해당하는 유저를 팔로우")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> followUser(@RequestBody ){
+
+    }
 }
 
