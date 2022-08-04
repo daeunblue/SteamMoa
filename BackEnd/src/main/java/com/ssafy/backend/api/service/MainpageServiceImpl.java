@@ -34,12 +34,33 @@ public class MainpageServiceImpl implements MainpageService{
 
         // 파티
         List<Party> parties = partyRepository.findAllPartyByFilter("", null, "", "3", pageable);
+        System.out.println("파티 사이즈: "+parties.size());
         parties.forEach(Party->resultItem.addParties(Party));
 
         // 기획상품
-        gameRepository.findAllMultiGameForBests().forEach(Game->resultItem.addBests(Game));
-        gameRepository.findAllMultiGameForFrees().forEach(Game->resultItem.addFrees(Game));
-        gameRepository.findAllMultiGameForToday().forEach(Game->resultItem.addToday(Game));
+
+        List<Game> templist;
+        templist = gameRepository.findAllMultiGameForBests();
+        while(resultItem.getBests().size() < 15) {
+            Game tempgame = templist.get((int) (Math.random() * templist.size()));
+            if(resultItem.getBests().contains(tempgame))
+                continue;
+            resultItem.addBests(tempgame);
+        }
+        templist = gameRepository.findAllMultiGameForFrees();
+        while(resultItem.getFrees().size() < 15) {
+            Game tempgame = templist.get((int) (Math.random() * templist.size()));
+            if(resultItem.getFrees().contains(tempgame))
+                continue;
+            resultItem.addFrees(templist.get((int) (Math.random() * templist.size())));
+        }
+        templist = gameRepository.findAllMultiGameForToday();
+        while(resultItem.getToday().size() < 15) {
+            Game tempgame = templist.get((int) (Math.random() * templist.size()));
+            if(resultItem.getToday().contains(tempgame))
+                continue;
+            resultItem.addToday(templist.get((int) (Math.random() * templist.size())));
+        }
 
         return resultItem;
     }
