@@ -7,6 +7,7 @@ import com.ssafy.backend.api.service.UserService;
 import com.ssafy.backend.common.auth.SsafyUserDetails;
 import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.api.response.UserDto;
+import com.ssafy.backend.db.entity.UserTag;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +53,15 @@ public class UserController {
             userDto.setUserId(user.getUserId());
             userDto.setUserServiceId(user.getUserServiceId());
             userDto.setUserPoint(user.getUserPoint());
+            for (UserTag tag:user.getUTagLists()) {
+                System.out.println(tag.getUTagStorage().getContent());
+                userDto.addUserTags(tag.getUTagStorage().getContent());
+            }
             result.put("user",userDto);
             result.put("message","Success");
         } catch (Exception e) { // 에러코드 정리해서 처리해야할 부분
             result.put("message","Fail");
+            e.printStackTrace();
             return ResponseEntity.status(403).body(result);
         }
         return ResponseEntity.status(200).body(result);
@@ -79,17 +85,16 @@ public class UserController {
             SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
             User user = userDetails.getUser();
             String userServiceId = user.getUserServiceId();
-            // userName 수정
-            user.setUserName(userUpdatePutReq.getUser_name());
-            userService.updateUser(user);
+            userService.updateUser(user.getUserId(), userUpdatePutReq);
             result = userService.getUserInfoByUserId(userServiceId);
         } catch (Exception e) {
+            e.printStackTrace();
             return (ResponseEntity<? extends UserRes>) ResponseEntity.badRequest();
         }
 
         User user = (User) result.get("user");
 
-        return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint()));
+        return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint(), user.getUTagLists()));
 
     }
 

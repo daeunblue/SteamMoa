@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -23,10 +25,21 @@ public class UserDto {
     @ApiModelProperty(name="유저 매너 점수", example="36.5")
     private double userPoint;      // 매너 점수
 
-    public UserDto(long userId, String userServiceId, double userPoint) {
+    @ApiModelProperty(name="사용자 태그 목록", example="[\"즐겜\", \"생존겜 러버\"]")
+    private List<String> userTags=new ArrayList<>();
+
+    public UserDto(long userId, String userServiceId, double userPoint, List<String> userTags) {
         this.userId = userId;
         this.userServiceId = userServiceId;
         this.userPoint = userPoint;
+        for (String tag:userTags) {
+            this.userTags.add(tag);
+        }
     }
+
+    public void addUserTags(String userTag){
+        this.userTags.add(userTag);
+    }
+
 //    private String authToken; // 사용자 인증 정보 토큰
 }
