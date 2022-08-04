@@ -96,4 +96,28 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
         List<Game> gamelist = query.getResultList();
         return gamelist.size();
     }
+
+    @Override
+    public List<Game> findAllMultiGameForBests() {
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game_score >= 85;";
+        Query query = em.createNativeQuery(sql, Game.class);
+        List<Game> gamelist = query.getResultList();
+        return gamelist;
+    }
+
+    @Override
+    public List<Game> findAllMultiGameForFrees() {
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game_price <= 3000;";
+        Query query = em.createNativeQuery(sql, Game.class);
+        List<Game> gamelist = query.getResultList();
+        return gamelist;
+    }
+
+    @Override
+    public List<Game> findAllMultiGameForToday() {
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game_score >= 65;";
+        Query query = em.createNativeQuery(sql, Game.class);
+        List<Game> gamelist = query.getResultList();
+        return gamelist;
+    }
 }
