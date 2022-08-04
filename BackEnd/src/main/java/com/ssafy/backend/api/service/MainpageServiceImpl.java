@@ -37,10 +37,9 @@ public class MainpageServiceImpl implements MainpageService{
         parties.forEach(Party->resultItem.addParties(Party));
 
         // 기획상품
-        List<Game> games = gameRepository.findAllMultiGame(pageable);
-        games.forEach(Game->resultItem.addBests(Game));
-        games.forEach(Game->resultItem.addFrees(Game));
-        games.forEach(Game->resultItem.addToday(Game));
+        gameRepository.findAllMultiGameForBests().forEach(Game->resultItem.addBests(Game));
+        gameRepository.findAllMultiGameForFrees().forEach(Game->resultItem.addFrees(Game));
+        gameRepository.findAllMultiGameForToday().forEach(Game->resultItem.addToday(Game));
 
         return resultItem;
     }
