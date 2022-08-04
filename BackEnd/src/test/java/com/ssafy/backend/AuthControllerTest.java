@@ -23,9 +23,9 @@ public class AuthControllerTest {
     public void requestBodyTest(){
         UserDto userDto = new UserDto();
         userDto.setUserServiceId("user_id");
-        userDto.setUserServicePw("user_pass");
+//        userDto.setUserServicePw("user_pass");
 
-    //        authController.login(userDto);
+          //        authController.login(userDto);
 
     }
 }

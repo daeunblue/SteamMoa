@@ -8,11 +8,8 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@ToString
-//@NoArgsConstructor
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 @ApiModel("userDto")
 public class UserDto {
@@ -26,5 +23,10 @@ public class UserDto {
     @ApiModelProperty(name="유저 매너 점수", example="36.5")
     private double userPoint;      // 매너 점수
 
+    public UserDto(long userId, String userServiceId, double userPoint) {
+        this.userId = userId;
+        this.userServiceId = userServiceId;
+        this.userPoint = userPoint;
+    }
 //    private String authToken; // 사용자 인증 정보 토큰
 }
