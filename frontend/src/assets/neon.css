@@ -1,0 +1,25 @@
+.miniMoa-neonText {
+  color: #fff;
+  text-shadow:
+    0 0 1px #fff,
+    0 0 3px #fff,
+    0 0 4px #fff,
+    0 0 8px #FA448C,
+    0 0 10px #FA448C,
+    0 0 10px #FA448C,
+    0 0 20px #FA448C,
+    0 0 20px #FA448C;
+}
+
+.miniGameMoa-neonText {
+  color: #fff;
+  text-shadow:
+    0 0 1px #fff,
+    0 0 3px #fff,
+    0 0 4px #fff,
+    0 0 8px #345ea8,
+    0 0 10px #345ea8,
+    0 0 10px #345ea8,
+    0 0 20px #345ea8,
+    0 0 20px #345ea8;
+}

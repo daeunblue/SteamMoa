@@ -77,10 +77,13 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
             sql += "order by party.game_id";
 
         Query query = em.createNativeQuery(sql, Party.class);
-        List<Party> partylist = query.getResultList();
+        List<Party> partylist = query
+                .setMaxResults(pageable.getPageSize())
+                .setFirstResult(pageable.getPageSize()*pageable.getPageNumber())
+                .getResultList();
         List<Party> partylist_status = new ArrayList<>();
         for (Party p: partylist) {
-            if(p!= null && p.getStatus().equals(partyStatus))
+            if(p!= null && (partyStatus.equals("")||p.getStatus().equals(partyStatus)))
                 partylist_status.add(p);
         }
         return partylist_status;
@@ -132,7 +135,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
             List<Party> partylist = query.getResultList();
             List<Party> partylist_status = new ArrayList<>();
             for (Party p: partylist) {
-                if(p!= null && p.getStatus().equals(partyStatus))
+                if(p!= null && (partyStatus.equals("")||p.getStatus().equals(partyStatus)))
                     partylist_status.add(p);
             }
             return partylist_status.size();

@@ -26,6 +26,13 @@ module.exports = {
       maxWidth:{
         '144':'144px'
       },
+      minWidth:{
+        '90':'90px',
+        '144':'144px'
+      },
+      maxWidth:{
+        '144':'144px'
+      },
       width:{
         'per5':'5%',
         'per10':'10%',
@@ -51,6 +58,7 @@ module.exports = {
         'per110':'110%',
         'per115':'115%',
         'per120':'120%',
+        'per500':'500%'
       },
       height: {
         per5: "5%",
