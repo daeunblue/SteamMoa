@@ -33,8 +33,8 @@ const FilterCaterories = (props) => {
 
   return (
     <div className="grid grid-cols-12 mb-2">
-      <span className="col-span-2 font-semibold text-white ml-10">{name}</span>
-      <div className=" col-span-10 grid grid-cols-7 gap-3">
+      <span className="col-span-2 font-semibold text-white m-auto ">{name}</span>
+      <div className=" col-span-10 grid laptop:grid-cols-5 tablet:grid-cols-4 mobile:grid-cols-2 gap-2 whitespace-nowrap">
         {items.map((item) => (
           <FilterItems
             key={item.id}

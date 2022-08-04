@@ -43,7 +43,7 @@ const SearchBar = (props) => {
   }, []);
 
   return (
-    <div id="search-bar" className="col-span-3 flex felx-row bg-searchbar-gray rounded-lg">
+    <div id="search-bar" className="laptop:col-span-3 tablet:col-span-5 mobile:col-span-5 flex felx-row bg-searchbar-gray rounded-lg">
       <div className="flex w-per5 inset-y-0 left-0 items-center pl-3 pointer-events-none">
         <FontAwesomeIcon className="text-detailContent-light" icon={faSearch} />
       </div>
