@@ -49,6 +49,10 @@ const handleSubmit = (e) => {
         }
     });
 }
+
+const handleCancel = () => {
+    navigate(`/`);
+}
   
   useEffect((e) => {
     // party_id가 같은 데이터 가져오기
@@ -152,7 +156,7 @@ const handleSubmit = (e) => {
             </div>
             <div className="flex mt-5">
                     <div className="m-auto">
-                    <button className="w-32 h-14 mx-3 bg-mainBtn-disabled rounded-sm">취소</button>
+                    <button onClick={handleCancel} className="w-32 h-14 mx-3 bg-mainBtn-disabled rounded-sm">취소</button>
                     <button onClick={handleSubmit} className="w-32 h-14 mx-3 bg-moa-purple rounded-sm">수정 완료</button>
                     </div>
             </div>

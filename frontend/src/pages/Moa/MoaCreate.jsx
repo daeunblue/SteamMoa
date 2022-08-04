@@ -1,13 +1,14 @@
 import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import axios from "axios";
-
+import { moaCreate } from "../../api/Moazone";
+import moaGameSearchBox from "../../components/Moa/moaGameSearchBox";
 
 // 글을 작성하고 입력 버튼을 누르면 db에 저장
 // update 페이지에서 db를 불러온 뒤 수정 후 다시 서버로 보내 db에 저장
 function MoaCreate() {
     const [ moa, setMoa ] = useState({
+        gameId: '', // gameId 어디서 가져올지
         partyTitle: '',
         gameName: '',
         startTime: '',
@@ -15,12 +16,13 @@ function MoaCreate() {
         partyDescription: '',
         chatLink: '',
         partyTags: '',
+        userId: '', // 방장의 userId 어디서 가져올지
     });
     // 파티 태그 요소 하드 코딩
-    const partyTagList = {
+    // const partyTagList = {
 
-    };
-
+    // };
+    
     const navigate = useNavigate();
 
     // 데이터 변경사항 저장
@@ -34,24 +36,16 @@ function MoaCreate() {
     // 데이터 보내기
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(e.target)
-        axios.post("http://i7a303.p.ssafy.io:8080/api/moazone", {
-            partyTitle: moa.partyTitle,
-            gameName: moa.gameName,
-            startTime: moa.startTime,
-            maxPlayer: moa.maxPlayer,
-            partyDescription: moa.partyDescription,
-            chatLink: moa.chatLink,
-            partyTags: moa.partyTags,
-        })
-        .then(function (res) {
-            console.log(res)
+        console.log(e.target)
+        moaCreate(moa)
+        .then(({data}) =>  {
+            console.log(data)
             //성공시
-            if (res.status === 200) {
+            if (data.status === 200) {
                 navigate('/');
             //실패시
             } else {
-                alert(res.data.message);
+                alert(data.message);
             }
         });
     }
@@ -80,19 +74,8 @@ function MoaCreate() {
                     onChange={onChange} 
                     className="w-full text-main-500 bg-createInput-gray rounded-lg mb-3" type="text" placeholder="파티 모집 제목"/>
                 {/* 게임 검색 요청 보내기 */}
-                <div className="grid grid-flow-col mb-3">
-                    <span className="col-span-1">플레이 게임</span>
-                    {/* Search 컴포넌트 삽입 */}
-                    <input 
-                    name="game_name" 
-                    value={moa.gameName} 
-                    onChange={onChange}  
-                    className="col-span-12 text-main-500 bg-createInput-gray rounded-lg" type="text" placeholder="게임 제목을 검색하세요" />
-                    <div> 
-                        <button type="submit" className="h-10 p-2.5 ml-2 font-medium text-white bg-moa-pink-dark rounded-lg border focus:ring-4 focus:outline-none">
-                        검색
-                        </button>
-                    </div>
+                <div>
+                    <moaGameSearchBox onChange={onChange}/>
                 </div>
                 <div className="grid grid-flow-col mb-3">
                     <div className="grid grid-flow-col col-span-1 mx-2">
