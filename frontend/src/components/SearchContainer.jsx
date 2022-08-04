@@ -28,21 +28,7 @@ const SearchContainer = (props) => {
             name: "Casual",
           },
         ],
-      },
-      {
-        id: 3,
-        name: "가격대",
-        items: [
-          {
-            id: 1,
-            name: "무료",
-          },
-          {
-            id: 2,
-            name: "유료",
-          },
-        ],
-      },
+      }
     ],
   };
   const setGameList = props.setGameList;
@@ -50,11 +36,18 @@ const SearchContainer = (props) => {
   const [page, setPage] = useRecoilState(gamePage);
   const searchWord = useRecoilValue(gameSearchWord);
   const setMaxPage = useSetRecoilState(gameMaxPage);
-  const [searchFilter, setSearchFilter] = useRecoilState(gameSearchFilter);
+  const setSearchFilter = useSetRecoilState(gameSearchFilter);
   const [filter, setFilter] = useState([]);
 
   const handleResetFilter = () => {
     setFilter([]);
+    getGamesSearch(page, [], searchWord)
+      .then(({ data }) => {
+        setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
+        setMaxPage(parseInt(data.maxPage));
+        setPage(1);
+      })
+      .catch();
   };
 
   const deleteHandler = (category_id, filterItem_id) => {
@@ -69,7 +62,7 @@ const SearchContainer = (props) => {
 
   const handleSearchFilter = () => {
     setSearchFilter([...filter]);
-    getGamesSearch(page, searchFilter, searchWord)
+    getGamesSearch(page, filter, searchWord)
       .then(({ data }) => {
         setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
         setMaxPage(parseInt(data.maxPage));
@@ -93,7 +86,7 @@ const SearchContainer = (props) => {
         {/* 검색바, 정렬 */}
         <div className="grid grid-cols-5 gap-2">
           {/* 검색바 */}
-          <SearchBar setGameList={setGameList} />
+          <SearchBar setGameList={setGameList} setFilter={ setFilter } />
         </div>
         {/* 아코디언 버튼 */}
         <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
@@ -144,7 +137,7 @@ const SearchContainer = (props) => {
               onClick={handleResetFilter}
               className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 rounded-lg">
               <FontAwesomeIcon className="mr-2" icon={faRotateRight} />
-              초기화
+              필터 초기화
             </button>
           </div>
         </div>
