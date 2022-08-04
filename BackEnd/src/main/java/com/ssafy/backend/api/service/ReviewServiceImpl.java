@@ -8,12 +8,14 @@ import com.ssafy.backend.db.repository.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class ReviewServiceImpl implements ReviewService{
 
     @Autowired
@@ -25,6 +27,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Autowired
     GameRepository gameRepository;
     @Override
+    @Transactional
     public boolean createOrUpdateReview(ReviewPostReq reviewPostReq) {
         Review review = new Review();
         Long gameId = reviewPostReq.getGameId();
@@ -58,7 +61,6 @@ public class ReviewServiceImpl implements ReviewService{
         List<Review> list = new ArrayList<>();
         list = reviewRepository.findAllByUserUserServiceId(userServiceId).get();
 
-
         return list;
     }
 
@@ -72,6 +74,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
+    @Transactional
     public boolean deleteReview(Long reviewId) {
         reviewRepository.delete(reviewRepository.findByReviewId(reviewId).get());
         try{
