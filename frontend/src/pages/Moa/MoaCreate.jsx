@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import axios from "axios";
+
 
 // 글을 작성하고 입력 버튼을 누르면 db에 저장
 // update 페이지에서 db를 불러온 뒤 수정 후 다시 서버로 보내 db에 저장
@@ -21,7 +22,6 @@ function MoaCreate() {
     };
 
     const navigate = useNavigate();
-    // const history = useHistory();
 
     // 데이터 변경사항 저장
     const onChange = (event) => {
@@ -55,10 +55,10 @@ function MoaCreate() {
             }
         });
     }
-
-    // const handleCancel = () => {
-    //     history.goBack();
-    // }
+    
+    const handleCancel = () => {
+        navigate('/');
+    }
 
   return (
     <>
@@ -142,7 +142,7 @@ function MoaCreate() {
             </div>
             <div className="flex mt-5">
                     <div className="m-auto">
-                    {/* <button onClick={handleCancel} className="w-32 h-14 mx-3 bg-mainBtn-disabled rounded-sm">취소</button> */}
+                    <button onClick={handleCancel} className="w-32 h-14 mx-3 bg-mainBtn-disabled rounded-sm">취소</button>
                     <button onClick={handleSubmit} className="w-32 h-14 mx-3 bg-moa-pink-dark rounded-sm">파티 만들기</button>
                     </div>
             </div>
