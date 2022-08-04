@@ -59,10 +59,6 @@ public class User {
     @JsonManagedReference
     private List<UserTag> uTagLists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "fromUser")
-    @JsonManagedReference
-    private List<Follow> uFollowList = new ArrayList<>();
-
     // 양방향 일대다
     @OneToMany(mappedBy = "user")
     @JsonManagedReference

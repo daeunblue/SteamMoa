@@ -1,10 +1,10 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
-import com.ssafy.backend.db.entity.Follow;
+import com.ssafy.backend.db.entity.follow.Follow;
+import com.ssafy.backend.db.repository.follow.FollowRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -26,6 +27,9 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    FollowRepository followRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -81,15 +85,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-
-    @Override
-    @Transactional
-    public List<Follow> getFollowByUserId(Long userId) {
-        List<Object> fList = userRepository.findAllByUserId(userId).get();
-        log.debug("getFollowByUserId"+fList.toString());
-        return null;
-    }
-
     @Override
     @Transactional
     public boolean checkSteamIdDuplicate(String userSteamId) {
@@ -142,6 +137,47 @@ public class UserServiceImpl implements UserService {
             System.out.println("User 수정 요청 실패");
             return false;
         }
+    }
+
+    @Override
+    @Transactional
+    public boolean followUser(String followerUserId, String followingUserId) {
+        boolean result = followRepository.existsByFollowerUserIdAndFollowingUserId(followerUserId, followingUserId);
+        System.out.println("result : "+ result);
+
+        // 이전 동일한 구독 이력이 있는지 확인
+        // 있다면 -> 그냥 반환
+        // 없다면 -> 구독 테이블 업데이트
+        if(result){
+            System.out.println("이미 구독했습니다.");
+            return false;
+        }else{
+            Follow follow = new Follow();
+            follow.setFollowerUserId(followerUserId);
+            follow.setFollowingUserId(followingUserId);
+            System.out.println(follow.toString());
+            followRepository.save(follow);
+            return true;
+        }
+
+//        try{
+//
+//        }catch (NoSuchElementException e){
+//
+//        }
+    }
+
+    @Override
+    @Transactional
+    public boolean unFollowUser(String followingUserId, String follwerUserId) {
+        boolean result = followRepository.existsByFollowerUserIdAndFollowingUserId(follwerUserId, followingUserId);
+
+        if(result){
+            Follow follow = followRepository.findByFollowerUserIdAndFollowingUserId(follwerUserId, followingUserId).get();
+            followRepository.delete(follow);
+            return true;
+        }
+        return false;
     }
 
 }
