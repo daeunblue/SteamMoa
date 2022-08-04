@@ -1,36 +1,57 @@
 import React, { useState } from "react";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleDown,
-  faAngleUp,
-  faRotateRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleUp, faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import FilterCaterories from "./Filter/FilterCaterories";
 import FilterBadge from "./Filter/FilterBadge";
+import { getGamesSearch } from "../api/Game";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { gameSearchFilter, gamePage, gameSearchWord, gameMaxPage } from "../recoil/Game";
 
 const SearchContainer = (props) => {
-  const { filter, search, setFilter, setSearch, handleApplyFilter } = props;
-  const { filters } = props.categories;
-
-  const [ishidden, setIsHidden] = useState(true);
-
-  const bgColor = [
-    "",
-    "bg-moa-pink",
-    "bg-moa-yellow",
-    "bg-moa-green",
-    "bg-moa-purple",
-  ];
-
-  const onChangeSearch = (e) => {
-    e.preventDefault();
-    setSearch(e.target.value);
+  const categories = {
+    filters: [
+      {
+        id: 1,
+        name: "장르",
+        items: [
+          {
+            id: 1,
+            name: "Action",
+          },
+          {
+            id: 2,
+            name: "Indie",
+          },
+          {
+            id: 3,
+            name: "Casual",
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: "가격대",
+        items: [
+          {
+            id: 1,
+            name: "무료",
+          },
+          {
+            id: 2,
+            name: "유료",
+          },
+        ],
+      },
+    ],
   };
+  const setGameList = props.setGameList;
 
-  const handleArcodion = () => {
-    setIsHidden(!ishidden);
-  };
+  const [page, setPage] = useRecoilState(gamePage);
+  const searchWord = useRecoilValue(gameSearchWord);
+  const setMaxPage = useSetRecoilState(gameMaxPage);
+  const [searchFilter, setSearchFilter] = useRecoilState(gameSearchFilter);
+  const [filter, setFilter] = useState([]);
 
   const handleResetFilter = () => {
     setFilter([]);
@@ -39,14 +60,30 @@ const SearchContainer = (props) => {
   const deleteHandler = (category_id, filterItem_id) => {
     setFilter(
       filter.filter((filterItem) => {
-        return filterItem.category !== category_id ||
-          filterItem.item !== filterItem_id
+        return filterItem.category !== category_id || filterItem.item !== filterItem_id
           ? true
           : false;
       })
     );
   };
 
+  const handleSearchFilter = () => {
+    setSearchFilter([...filter]);
+    getGamesSearch(page, searchFilter, searchWord)
+      .then(({ data }) => {
+        setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
+        setMaxPage(parseInt(data.maxPage));
+        setPage(1);
+      })
+      .catch();
+  };
+
+  const [ishidden, setIsHidden] = useState(true);
+  const handleArcodion = () => {
+    setIsHidden(!ishidden);
+  };
+
+  const bgColor = ["", "bg-moa-pink", "bg-moa-yellow", "bg-moa-green", "bg-moa-purple"];
   const setBgColor = (id) => bgColor[id];
 
   return (
@@ -56,23 +93,13 @@ const SearchContainer = (props) => {
         {/* 검색바, 정렬 */}
         <div className="grid grid-cols-5 gap-2">
           {/* 검색바 */}
-          <SearchBar
-            search={search}
-            onChangeSearch={onChangeSearch}
-            handleApplyFilter={handleApplyFilter}
-          />
+          <SearchBar setGameList={setGameList} />
         </div>
         {/* 아코디언 버튼 */}
-        <div
-          className="flex flex-row-reverse items-center"
-          onClick={handleArcodion}
-        >
+        <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
           <span className="text-main-100">상세조건</span>
           {ishidden ? (
-            <FontAwesomeIcon
-              className="text-main-100 mr-2"
-              icon={faAngleDown}
-            />
+            <FontAwesomeIcon className="text-main-100 mr-2" icon={faAngleDown} />
           ) : (
             <FontAwesomeIcon className="text-main-100 mr-2" icon={faAngleUp} />
           )}
@@ -83,7 +110,7 @@ const SearchContainer = (props) => {
         <hr className="m-auto w-per95 h-px bg-main-100" />
         {/* body : 필터링 항목 */}
         <div className="w-full pt-5 pb-3">
-          {filters.map((category) => (
+          {categories.filters.map((category) => (
             <FilterCaterories
               key={category.id}
               category={category}
@@ -109,15 +136,13 @@ const SearchContainer = (props) => {
           </div>
           <div className="col-span-2 flex flex-row justify-end items-center">
             <button
-              onClick={handleApplyFilter}
-              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 px-6 rounded-lg"
-            >
+              onClick={handleSearchFilter}
+              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 px-6 rounded-lg">
               적용
             </button>
             <button
               onClick={handleResetFilter}
-              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 rounded-lg"
-            >
+              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 rounded-lg">
               <FontAwesomeIcon className="mr-2" icon={faRotateRight} />
               초기화
             </button>
