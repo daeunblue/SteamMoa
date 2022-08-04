@@ -4,7 +4,10 @@ function GameSearch() {
 
     
   return (
-    <div>GameSearch</div>
+    <>
+    <div>GameSearchBox // 모아존 글작성 게임id 검색</div>
+    
+    </>
   )
 }
 
