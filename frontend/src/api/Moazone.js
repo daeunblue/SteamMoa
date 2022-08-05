@@ -44,6 +44,5 @@ export const getMoaListSearch = (page, searchWord, searchSort, searchFilter) => 
     url += `&partyTags=${tag.item}`;
   });
 
-  console.log(url);
   return api.get(url);
 };

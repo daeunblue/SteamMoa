@@ -26,7 +26,6 @@ function MoaCard(props) {
   let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
 
   const formatTime = () => {
-    //2022-08-26T00:15
     const week = ["일", "월", "화", "수", "목", "금", "토"];
     const dateTime = startTime.split("T");
     const date = dateTime[0].split("-");

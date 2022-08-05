@@ -3,20 +3,19 @@ import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import PaginationItem from "../PaginationItem";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { moaSearchWord, moaSearchFilter, moaPage, moaMaxPage, moaSearchSort } from "../../recoil/Moazone";
+import { moaPage, moaMaxPage } from "../../recoil/Moazone";
 
 const Pagination = (props) => {
   const PAGE_COUNT = 10;
   const [page, setPage] = useRecoilState(moaPage);
-  const [maxPage] = useRecoilValue(moaMaxPage);
+  const maxPage = useRecoilValue(moaMaxPage);
 
-  //그려질 리스트 정리하기 ex. 1-10
   const getPaginationList = (currPage, perCount) => {
     let pageList = [];
 
     const tmp = Math.floor((currPage - 1) / perCount);
-    const start = 1 + tmp * perCount; //1,11,21,31...
-    let end = start + perCount; //10,20,30,40...
+    const start = 1 + tmp * perCount; 
+    let end = start + perCount;
 
     end = end > maxPage ? maxPage + 1 : end;
 

@@ -23,7 +23,7 @@ const SearchBar = (props) => {
     debounceSearch(e.target.value);
   };
 
-  const debounceSearch = useCallback(//검색어 입력 시 필터 초기화, 정렬 초기화
+  const debounceSearch = useCallback(
     debounce((_word) => {
       setFilter([]);
       setSearchFilter([]);
