@@ -1,6 +1,7 @@
 package com.ssafy.backend.db.entity;
 
 import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.game.GamelistDTO;
 import com.ssafy.backend.db.entity.party.Party;
 import com.ssafy.backend.db.entity.party.PartylistDTO;
 import lombok.Getter;
@@ -16,9 +17,9 @@ import java.util.List;
 public class MainpageDTO {
     private List<Banner> banners = new ArrayList<>();
     private List<PartylistDTO> parties = new ArrayList<>();
-    private List<MainpageGamelistDTO> bests = new ArrayList<>();
-    private List<MainpageGamelistDTO> frees = new ArrayList<>();
-    private List<MainpageGamelistDTO> today = new ArrayList<>();
+    private List<GamelistDTO> bests = new ArrayList<>();
+    private List<GamelistDTO> frees = new ArrayList<>();
+    private List<GamelistDTO> today = new ArrayList<>();
 
     public void addBanners(Banner banner){
         banners.add(banner);
@@ -27,12 +28,12 @@ public class MainpageDTO {
         parties.add(new PartylistDTO(party));
     }
     public void addBests(Game game){
-        bests.add(new MainpageGamelistDTO(game));
+        bests.add(new GamelistDTO(game));
     }
     public void addFrees(Game game){
-        frees.add(new MainpageGamelistDTO(game));
+        frees.add(new GamelistDTO(game));
     }
     public void addToday(Game game){
-        today.add(new MainpageGamelistDTO(game));
+        today.add(new GamelistDTO(game));
     }
 }
