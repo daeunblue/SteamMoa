@@ -53,6 +53,8 @@ public class UserController {
             userDto.setUserId(user.getUserId());
             userDto.setUserServiceId(user.getUserServiceId());
             userDto.setUserPoint(user.getUserPoint());
+            userDto.setUserName(user.getUserName());
+
             for (UserTag tag:user.getUTagLists()) {
                 System.out.println(tag.getUTagStorage().getContent());
                 userDto.addUserTags(tag.getUTagStorage().getContent());
