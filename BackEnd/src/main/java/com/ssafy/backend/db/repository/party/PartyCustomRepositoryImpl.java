@@ -51,7 +51,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                 "(\n" +
                 "\tselect party.game_id, party.party_id, party.party_title, party.max_player, party.cur_player, party.start_time, party.write_time, party.party_status, party.chat_link, party.party_description, party.is_closed\n" +
                 "    from party \n" +
-                "    inner join partytag as partytag\n" +
+                "    left join partytag as partytag\n" +
                 "    on party.party_id = partytag.party_id\n";
 
         // 파티 태그
@@ -113,7 +113,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                     "(\n" +
                     "\tselect party.game_id, party.party_id, party.party_title, party.max_player, party.cur_player, party.start_time, party.write_time, party.party_status, party.chat_link, party.party_description, party.is_closed\n" +
                     "    from party \n" +
-                    "    inner join partytag as partytag\n" +
+                    "    left join partytag as partytag\n" +
                     "    on party.party_id = partytag.party_id\n";
 
             // 파티 태그
