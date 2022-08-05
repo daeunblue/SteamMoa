@@ -4,6 +4,7 @@ import com.ssafy.backend.db.entity.follow.Follow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,4 +15,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     boolean existsByFollowerUserIdAndFollowingUserId (String followerUserId, String followingUserId);
 
     Optional<Follow> findByFollowerUserIdAndFollowingUserId(String followerUserId, String followingUserId);
+    Optional<List<Follow>> findAllByFollowingUserId(String followingUserId);
+    Optional<List<Follow>> findAllByFollowerUserId(String followerUserId);
 }

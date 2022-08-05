@@ -11,10 +11,12 @@ import lombok.Data;
 @ApiModel("UserFollowPostRequest")
 public class UserFollowPostReq {
 
-    @ApiModelProperty(name="팔로우 할 유저 ID", example="user_id")
-    String followingUserId;
 
     @ApiModelProperty(name="본인 ID", example="user_id2")
     String followerUserId;
+
+    @ApiModelProperty(name="팔로우 할 유저 ID", example="user_id")
+    String followingUserId;
+
 
 }
