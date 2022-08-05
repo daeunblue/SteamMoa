@@ -27,5 +27,5 @@ export const moaSearchFilter = atom({
 //모아존 정렬 정보
 export const moaSearchSort = atom({
   key: "moaSearchSort",
-  default: 1,
+  default: "1",
 });
