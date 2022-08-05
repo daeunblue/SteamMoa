@@ -1,6 +1,8 @@
 package com.ssafy.backend.db.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,13 +10,15 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UTagStorage {
 
     @Id
-    @Column(name = "utag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "utag_id")
     private Long utagId;
 
-    @OneToMany(mappedBy = "uTagStorage")
-    private List<UserTag> uTagList = new ArrayList<>();
+    @Column(name="utag_content")
+    private String content;
 }

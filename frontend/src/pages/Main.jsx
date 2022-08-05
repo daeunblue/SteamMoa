@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar'
-import Banner from '../components/Banner'
-import MiniMoa from '../components/MiniMoa'
-import MiniGameMoa from '../components/MiniGameMoa'
-// import axios from 'axios's
+
+import Banner from '../components/Main/Banner'
+import MiniMoa from '../components/Main/MiniMoa'
+import MiniGameMoa from '../components/Main/MiniGameMoa'
+
 
 const Main = () => {
   // useEffect(

@@ -4,6 +4,8 @@ import com.ssafy.backend.db.entity.game.Game;
 import com.ssafy.backend.db.entity.game.GameDTO;
 import com.ssafy.backend.db.entity.game.GamelistDTO;
 import com.ssafy.backend.db.repository.game.GameRepository;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,19 +21,41 @@ public class GameServiceImpl implements GameService {
     private GameRepository gameRepository;
 
     @Override
-    public List<GamelistDTO> getGameList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+    public JSONObject getGameList(int page) {
+        Pageable pageable = PageRequest.of(page, 12);
         List<GamelistDTO> resultlist = new ArrayList<>();
         gameRepository.findAllMultiGame(pageable).forEach(Game->resultlist.add(new GamelistDTO(Game)));
-        return resultlist;
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("maxPage", Integer.toString(gameRepository.findAllMultiGame()/12+1));
+
+        JSONArray data = new JSONArray();
+        for (GamelistDTO g : resultlist) {
+            data.add(g);
+        }
+
+        jsonObject.put("data", data);
+
+        return jsonObject;
     }
 
     @Override
-    public List<GamelistDTO> searchGameList(int page, String searchString, String[] tags) {
-        Pageable pageable = PageRequest.of(page, 10);
+    public JSONObject searchGameList(int page, String searchString, String[] tags) {
+        Pageable pageable = PageRequest.of(page, 12);
         List<GamelistDTO> resultlist = new ArrayList<>();
         gameRepository.findAllMultiGameByFilter(searchString, tags, pageable).forEach(Game->resultlist.add(new GamelistDTO(Game)));
-        return resultlist;
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("maxPage", Integer.toString(gameRepository.findAllMultiGameByFilter(searchString, tags)/12+1));
+
+        JSONArray data = new JSONArray();
+        for (GamelistDTO g : resultlist) {
+            data.add(g);
+        }
+
+        jsonObject.put("data", data);
+
+        return jsonObject;
     }
 
     @Override

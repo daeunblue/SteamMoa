@@ -41,7 +41,7 @@ const Navbar = (props) => {
         </div>
         <div className="h-10 flex justify-between items-center">
           <div className='flex'>
-            <NavLink exact to="/" className={({isActive}) => (isActive ? activeClass: inactiveClass)}>홈</NavLink>
+            <NavLink exact="true" to="/" className={({isActive}) => (isActive ? activeClass: inactiveClass)}>홈</NavLink>
             <NavLink to="/moazone" className={({isActive}) => (isActive ? activeClass: inactiveClass)}>모아존</NavLink>
             <NavLink to="/gamemoa" className={({isActive}) => (isActive ? activeClass: inactiveClass)}>게임 모아</NavLink>
           </div>
