@@ -109,6 +109,14 @@ const ProfileUserUpdate = (props) => {
             }
             ).catch((err)=>{
               console.log(err)
+              FailureToast.fire(
+                {
+                  customClass: {
+                    confirmButton: 'mx-2 rounded py-1 px-5 bg-moa-pink-dark text-white w-full',
+                  },
+                  icon: 'error',
+                  title: `Server Error! 잠시 후 다시 시도해주세요`
+                })
             })
         } else if (res.isDismissed){
           navigate(-1)
