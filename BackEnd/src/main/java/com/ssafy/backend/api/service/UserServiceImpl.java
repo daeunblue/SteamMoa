@@ -17,9 +17,7 @@ import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -175,7 +173,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean followUser(String followerUserId, String followingUserId) {
+    public boolean followUser(String followingUserId, String followerUserId) {
         boolean result = followRepository.existsByFollowerUserIdAndFollowingUserId(followerUserId, followingUserId);
         System.out.println("result : "+ result);
 
@@ -189,7 +187,6 @@ public class UserServiceImpl implements UserService {
             Follow follow = new Follow();
             follow.setFollowerUserId(followerUserId);
             follow.setFollowingUserId(followingUserId);
-            System.out.println(follow.toString());
             followRepository.save(follow);
             return true;
         }
@@ -213,6 +210,35 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+    @Override
+    @Transactional
+    public List<Follow> getFollower(String userServiceId) { // 현재 유저를 구독하고 있는 사람들의 목록
+        List<Follow> result = new ArrayList<>();
+
+        result = followRepository.findAllByFollowingUserId(userServiceId).get();
+//        try{
+//
+//        }catch(NoSuchElementException e){
+//
+//        }
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public List<Follow> getFollowing(String userServiceId) {     // 현재 유저가 구독하고 있는 사람들의 목록
+        List<Follow> result = new ArrayList<>();
+
+        result = followRepository.findAllByFollowerUserId(userServiceId).get();
+//        try{
+//
+//        }catch(NoSuchElementException e){
+//
+//        }
+        return result;
+    }
+
 
 }
 
