@@ -1,38 +1,38 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const MainGameComponent = (props) => {
-  const size = props.size
-  const type = props.type
-  let titlesize;
-  if (size==='lg'){
-    titlesize = "text-sm"
-  } else {
-    titlesize = "text-xs"
+  const navigate = useNavigate()
+  const {type, game} = props
+  let bg = "bg-moa-pink"
+  let text = "TODAY"
+  let subText ="추천!"
+  if (type==='best'){
+    bg = "bg-moa-purple-dark"
+    text = "BEST"
+  } else if (type === 'free'){
+    bg = "bg-moa-green-dark"
+    text = "FREE"
+    subText = "무료"
   }
-  const game = {
-      "gameId": 63,
-      "gameName": "Alone Again: The Countryside",
-      "gameTags": [
-        "Action",
-        "Strategy",
-        "Indie",
-        "Early Access"
-      ],
-      "gameImgpath": "https://cdn.akamai.steamstatic.com/steam/apps/9010/header.jpg?t=1573221747",
-      "gameReviewScore": 100,
-      "gamePrice": 11500
-    }
+
+  const onClickRecommend = ()=>{
+    navigate(`/gamemoa/detail/${game.gameId}`)
+  }
+
     
   return (
-    <div className='w-full flex h-[30%] justify-between'>
-      <div className='overflow-hidden w-per20 relative pt-[20%] mr-2.5 rounded'>
+    <div className='w-full flex h-[30%] justify-between bg-main-400 rounded opacity-90 hover:opacity-100 hover:scale-[102%] drop-shadow-md'
+          onClick={onClickRecommend}>
+      <div className='overflow-hidden w-per20 relative pt-[20%] rounded'>
         <img src={game.gameImgpath} alt="" className='drop-shadow-md object-cover h-full absolute top-0 left-0'/>
       </div>
-      <div className='flex flex-col justify-end w-per70'>
-        <div className='whitespace-nowrap text-ellipsis overflow-hidden text-white text-sm'>{game.gameName}</div>
-        <div className='tags'>
-          <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2 py-0.5 rounded">Default</span>
+      <div className='flex flex-col justify-center w-per70 mr-3'>
+        <div className='tags flex'>
+          <span className={`${bg} text-white text-[0.9vw] font-semibold mr-2 px-2 py-0.5 rounded`}>{text}</span>
+          <span className="bg-moa-yellow-dark text-main-500 text-[0.9vw] font-semibold mr-2 px-2 py-0.5 rounded">{subText}</span>
         </div>
+        <div className='whitespace-nowrap text-ellipsis overflow-hidden text-white text-[1.2vw] mt-[3%]'>{game.gameName}</div>
       </div>
 
     </div>

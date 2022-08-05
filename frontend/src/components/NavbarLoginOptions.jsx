@@ -9,6 +9,7 @@ import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 
 
 const NavbarLoginOptions = (props) => {
+
   const [userAuth, setAuth] = useRecoilState(auth);
   const navigate = useNavigate();
 
