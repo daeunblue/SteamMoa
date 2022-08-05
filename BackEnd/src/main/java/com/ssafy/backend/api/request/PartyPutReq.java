@@ -11,18 +11,18 @@ import lombok.Data;
 @ApiModel("PartyPutRequest")
 public class PartyPutReq {
 
-	@ApiModelProperty(name="파티 설명", example="partyDescription")
+	@ApiModelProperty(name="파티 설명", example="제발 들어와주세요")
 	String partyDescription;
 
-	@ApiModelProperty(name="외부 소통 링크(디스코드 등)", example="chatLink")
+	@ApiModelProperty(name="외부 소통 링크(디스코드 등)", example="https://newlink.com")
 	String chatLink;
 
-	@ApiModelProperty(name="파티 성향 태그", example="partyTags")
+	@ApiModelProperty(name="파티 성향 태그(태그 코드)", example="[\"1\", \"2\"]")
 	String[] partyTags;
 
-	@ApiModelProperty(name="파티 유저 목록", example="partyUsers")
+	@ApiModelProperty(name="파티 유저 목록(서비스 ID)", example="[\"ssafy123\"]")
 	String[] partyUsers;
 
-	@ApiModelProperty(name="파티 진행 상태", example="partyStatus")
+	@ApiModelProperty(name="파티 진행 상태", example="1")
 	String partyStatus;
 }
