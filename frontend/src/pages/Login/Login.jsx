@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+
 import Navbar from "../../components/Navbar.jsx";
+import jwt_decode from 'jwt-decode';
 import axios from "axios";
 
+import { useRecoilState } from "recoil";
+import { auth } from "../../recoil/Auth";
+
+
 const Login = (props) => {
+  const [userAuth, setAuth] = useRecoilState(auth);
   const [user, setUser] = useState({
     service_id: "",
     service_pw: "",
@@ -20,7 +28,7 @@ const navigate = useNavigate();
 
   const login = () => {
     axios
-      .post("/api/auth/login", {
+      .post("http://i7a303.p.ssafy.io:8080/api/auth/login", {
         user_service_id: user.service_id,
         user_service_pw: user.service_pw,
       })
@@ -28,11 +36,24 @@ const navigate = useNavigate();
           console.log(response);
         //  로그인 후 처리 -> 
         // 1. status 200일때 메인 페이지 or 원래 있던 페이지로 리다이렉트
-        if (response.status === '200') {
+        // res.data.status / res.status => int
+        if (response.status === 200) {
+          const token = response.data.accessToken
+          //토큰 디코딩, 아이디 받기
+          const decoded =  jwt_decode(token);
+          const userId = decoded.sub
+          
+          sessionStorage.setItem('token', token)
+          const payload = {
+            isLoggedIn: true,
+            token: token,
+            userId: userId
+          }
+          setAuth(payload)
           navigate('/');
         // 2. 나머지는 오류 메시지 보여주기 (toast로)
         } else {
-          alert(response.message);
+          alert(response.data.message);
         }
       })
         .catch(() => {
