@@ -16,30 +16,44 @@ const SearchContainer = (props) => {
         name: "장르",
         items: [
           {
+            id: 37,
+            name: "Free to Play",
+          },
+          {
+            id: 23,
+            name: "Indie",
+          },
+          {
             id: 1,
             name: "Action",
           },
           {
+            id: 25,
+            name: "Adventure",
+          },
+          {
+            id: 4,
+            name: "Casual",
+          },
+          {
+            id: 28,
+            name: "Simulation",
+          },
+          {
             id: 2,
-            name: "Indie",
+            name: "Strategy",
           },
           {
             id: 3,
-            name: "Casual",
-          },
-        ],
-      },
-      {
-        id: 3,
-        name: "가격대",
-        items: [
-          {
-            id: 1,
-            name: "무료",
+            name: "RPG",
           },
           {
-            id: 2,
-            name: "유료",
+            id: 18,
+            name: "Sports",
+          },
+          {
+            id: 9,
+            name: "Racing",
           },
         ],
       },
@@ -50,11 +64,18 @@ const SearchContainer = (props) => {
   const [page, setPage] = useRecoilState(gamePage);
   const searchWord = useRecoilValue(gameSearchWord);
   const setMaxPage = useSetRecoilState(gameMaxPage);
-  const [searchFilter, setSearchFilter] = useRecoilState(gameSearchFilter);
+  const setSearchFilter = useSetRecoilState(gameSearchFilter);
   const [filter, setFilter] = useState([]);
 
   const handleResetFilter = () => {
     setFilter([]);
+    getGamesSearch(page, [], searchWord)
+      .then(({ data }) => {
+        setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
+        setMaxPage(parseInt(data.maxPage));
+        setPage(1);
+      })
+      .catch();
   };
 
   const deleteHandler = (category_id, filterItem_id) => {
@@ -69,7 +90,7 @@ const SearchContainer = (props) => {
 
   const handleSearchFilter = () => {
     setSearchFilter([...filter]);
-    getGamesSearch(page, searchFilter, searchWord)
+    getGamesSearch(page, filter, searchWord)
       .then(({ data }) => {
         setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
         setMaxPage(parseInt(data.maxPage));
@@ -89,11 +110,11 @@ const SearchContainer = (props) => {
   return (
     <div className="w-per75 mx-auto mb-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to">
       {/* header : 검색바, 정렬 Select, 펼침버튼 */}
-      <div className="w-full grid grid-cols-2 grid-rows-1 p-5">
+      <div className="w-full grid grid-cols-2 p-5">
         {/* 검색바, 정렬 */}
         <div className="grid grid-cols-5 gap-2">
           {/* 검색바 */}
-          <SearchBar setGameList={setGameList} />
+          <SearchBar setGameList={setGameList} setFilter={setFilter} />
         </div>
         {/* 아코디언 버튼 */}
         <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
@@ -121,8 +142,8 @@ const SearchContainer = (props) => {
         </div>
         <hr className="m-auto w-per95 h-px bg-main-200" />
         {/* footer : 태그, 필터링 초기화 */}
-        <div className="w-full grid grid-cols-12 py-2 px-5 ">
-          <div className="col-span-10 grid grid-cols-10 items-center">
+        <div className="w-full grid laptop:grid-cols-12 py-2 px-5 mobile:grid-cols-2">
+          <div className="items-center grid gap-1 laptop:grid-cols-7 laptop:col-span-10 tablet:grid-cols-3 tablet:col-span-9 mobile:grid-cols-2 mobile:col-span-7">
             {filter.map((filterItem, index) => (
               <FilterBadge
                 key={index}
@@ -134,7 +155,7 @@ const SearchContainer = (props) => {
               />
             ))}
           </div>
-          <div className="col-span-2 flex flex-row justify-end items-center">
+          <div className="laptop:col-span-2 tablet:col-span-3 mobile:col-span-5 flex flex-row justify-end items-center ">
             <button
               onClick={handleSearchFilter}
               className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 px-6 rounded-lg">
@@ -142,9 +163,9 @@ const SearchContainer = (props) => {
             </button>
             <button
               onClick={handleResetFilter}
-              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 rounded-lg">
+              className="text-white text-xs bg-mainBtn-blue hover:bg-mainBtn-blue-hover m-1 p-2 rounded-lg whitespace-nowrap">
               <FontAwesomeIcon className="mr-2" icon={faRotateRight} />
-              초기화
+              필터 초기화
             </button>
           </div>
         </div>

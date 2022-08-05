@@ -1,31 +1,34 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from "react-redux";
-import { DELETE_AUTH } from "../slices/auth";
+
+import { useRecoilState } from "recoil";
+import { auth } from "../recoil/Auth";
 
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 
 
 const NavbarLoginOptions = (props) => {
-  const auth = useSelector(state => state.auth);
-  const {isLoggedIn} = useSelector(state => state.auth);
-  
+  const [userAuth, setAuth] = useRecoilState(auth);
+  const navigate = useNavigate();
+
   useEffect(
    ()=>{
-    console.log(auth)
    } ,
-   [isLoggedIn]
+   [userAuth.isLoggedIn]
   )
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const onLogOut = () => {
-    dispatch(DELETE_AUTH());
+    setAuth({
+      isLoggedIn:false, //인증상태
+      token:null, //access token
+      userId: null,
+    });
+    sessionStorage.setItem('token', '')
     navigate('/')
     console.log('logout')
   }
 
-  if (!isLoggedIn)
+  if (!userAuth.isLoggedIn)
     return (
       <>
         <Link to="/signup" className="text-white text-xs font-sans mr-3 font-bold">
@@ -51,7 +54,7 @@ const NavbarLoginOptions = (props) => {
         {/* 알림 */}
         <Link to="/" className="text-white w-4 h-5 mx-2"><FontAwesomeIcon icon={faBell} /></Link> 
         {/* 마이페이지 */}
-        <Link to="/" className="text-white w-4 h-5 ml-2 mr-1"><FontAwesomeIcon icon={faUser} /></Link>
+        <Link to={`/mypage/${userAuth.userId}`} className="text-white w-4 h-5 ml-2 mr-1"><FontAwesomeIcon icon={faUser} /></Link>
       </>
     );
 };

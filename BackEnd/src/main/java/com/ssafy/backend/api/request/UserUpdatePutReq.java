@@ -11,6 +11,8 @@ import lombok.Data;
 @ApiModel("UserUpdatePutRequest")
 public class UserUpdatePutReq {
 	@ApiModelProperty(name="유저 ID", example="사용자 이름")
-	String user_name;
+	String userName;
 
+	@ApiModelProperty(name="유저 성향 태그", example="[\"1\", \"2\"]")
+	String[] userTags;
 }

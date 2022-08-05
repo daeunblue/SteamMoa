@@ -3,11 +3,11 @@ import "./App.css";
 import { RecoilRoot } from "recoil";
 
 function App() {
-  return (
+  return(
     <RecoilRoot>
       <Router />
     </RecoilRoot>
-  );
+  )
 }
 
 export default App;

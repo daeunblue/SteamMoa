@@ -1,6 +1,7 @@
 package com.ssafy.backend.db.entity.game;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.tactic.Tactic;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="game")
 public class Game {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -74,6 +77,10 @@ public class Game {
     @JsonManagedReference
     private List<Tactic> tactics = new ArrayList<>();
 
+    @OneToMany(mappedBy = "game")
+    @JsonManagedReference
+    private List<Review> reviewList = new ArrayList<>();
+
     // Constructor for unit test
     public Game(Long id, String sgi, String name){
         this.gameId = id;
@@ -82,4 +89,10 @@ public class Game {
     }
 
 
+    public void addReview(Review review) {
+        this.reviewList.add(review);
+        if(review.getGame() != this){
+            review.setGame(this);
+        }
+    }
 }
