@@ -3,6 +3,7 @@ package com.ssafy.backend.api.service;
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
 import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.follow.Follow;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public interface UserService {
     boolean updateUser(Long userId, UserUpdatePutReq userUpdatePutReq);
 
     // 팔로우 기능
-    boolean followUser(String followingUserId, String follwerUserId);
-    boolean unFollowUser(String followingUserId, String follwerUserId);
+    boolean followUser(String followingUserId, String followerUserId);
+    boolean unFollowUser(String followingUserId, String followerUserId);
+    List<Follow> getFollower(String userServiceId);
+    List<Follow> getFollowing(String userServiceId);
 }
