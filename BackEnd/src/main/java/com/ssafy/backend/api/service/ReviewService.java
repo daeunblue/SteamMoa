@@ -10,6 +10,8 @@ public interface ReviewService {
 
     List<Review> findReviewByUserServiceId(String userServiceId);
 
+    List<Review> findReviewByGameId(Long gameId);
+
     boolean existReview(Long reviewId);
 
     boolean deleteReview(Long reviewId);

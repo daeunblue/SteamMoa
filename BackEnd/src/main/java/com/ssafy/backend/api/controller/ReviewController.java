@@ -69,6 +69,24 @@ public class ReviewController {
         }
     }
 
+    @GetMapping("/game/{game_id}")
+    @ApiOperation(value = "게임에 해당하는 리뷰 반환", notes = "game_id에 대한 리뷰 정보 반환")
+    public ResponseEntity<? extends Map<String,Object>> findReviewByGameId(@PathVariable("game_id")Long gameId){
+        Map<String,Object> resultMap = new HashMap<>();
+
+        List<Review> result = reviewService.findReviewByGameId(gameId);
+
+        if(result.size() == 0){
+            resultMap.put("message","Fail, 조회 결과 없음");
+            return ResponseEntity.status(400).body(resultMap);
+        }else{
+            resultMap.put("message","Success");
+            resultMap.put("reviews", result);
+            return ResponseEntity.status(200).body(resultMap);
+        }
+    }
+
+
     @DeleteMapping("/{review_id}")
     @ApiOperation(value = "리뷰 삭제", notes = "review_id에 해당하는 리뷰글 삭제")
     public ResponseEntity<? extends Map<String,Object>> deleteReview(@PathVariable("review_id")Long reviewId){
