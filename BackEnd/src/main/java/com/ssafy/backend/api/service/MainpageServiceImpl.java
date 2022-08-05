@@ -33,7 +33,7 @@ public class MainpageServiceImpl implements MainpageService{
         banners.forEach(Banner->resultItem.addBanners(Banner));
 
         // 파티
-        List<Party> parties = partyRepository.findAllPartyByFilter("", null, "", "3", pageable);
+        List<Party> parties = partyRepository.findAllPartyByFilter("", null, new String[]{"1"}, "1", pageable);
         System.out.println("파티 사이즈: "+parties.size());
         parties.forEach(Party->resultItem.addParties(Party));
 
