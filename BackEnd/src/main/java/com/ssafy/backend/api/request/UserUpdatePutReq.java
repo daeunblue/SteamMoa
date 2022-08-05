@@ -15,4 +15,7 @@ public class UserUpdatePutReq {
 
 	@ApiModelProperty(name="유저 성향 태그", example="[\"1\", \"2\"]")
 	String[] userTags;
+
+	@ApiModelProperty(name = "유저 PassWord", example = "수정할 password")
+	String userPassword;
 }

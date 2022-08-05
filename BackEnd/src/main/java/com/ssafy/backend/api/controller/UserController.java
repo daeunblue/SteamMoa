@@ -83,6 +83,7 @@ public class UserController {
          */
         Map<String, Object> result = new HashMap<>();
 
+        // Service 단으로 로직 옮겨야함 (추후작업)
         try {
             SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
             User user = userDetails.getUser();
@@ -96,7 +97,7 @@ public class UserController {
 
         User user = (User) result.get("user");
 
-        return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint(), user.getUTagLists()));
+        return ResponseEntity.ok(UserRes.of(200, "회원 정보 수정 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint(), user.getUTagLists()));  // 비밀번호는 넘기지 않음 (수정만 처리)
 
     }
 

@@ -156,15 +156,14 @@ public class UserServiceImpl implements UserService {
                 user.addUTagLists(userTag);
             }
 
+            // 비밀번호 수정
+            user.setPassword(passwordEncoder.encode(userUpdatePutReq.getUserPassword()));
+
 
             userRepository.save(user);
             System.out.println(user.getUserName());
             System.out.println("User 수정 요청 성공");
 
-
-//            User sUser = userRepository.findByUserId(user.getUserId()).get();
-//            sUser.setUserPoint(user.getUserPoint());
-//            sUser.setUserName(user.getUserName());
             return true;
         }catch(Exception e){
             e.printStackTrace();
