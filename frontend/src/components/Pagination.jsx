@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import PaginationItem from "./PaginationItem";
 import { getGamesSearch } from "../api/Game";
 import { useRecoilState, useRecoilValue } from "recoil";

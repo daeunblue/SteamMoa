@@ -1,18 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import PaginationItem from "../PaginationItem";
-import { getMoaListSearch } from "../../api/Moazone";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { moaSearchWord, moaSearchFilter, moaPage, moaMaxPage } from "../../recoil/Moazone";
+import { moaSearchWord, moaSearchFilter, moaPage, moaMaxPage, moaSearchSort } from "../../recoil/Moazone";
 
 const Pagination = (props) => {
   const PAGE_COUNT = 10;
-  const setMoaList = props.setMoaList;
   const [page, setPage] = useRecoilState(moaPage);
-  const [maxPage, setMaxPage] = useRecoilState(moaMaxPage);
-  const searchWord = useRecoilValue(moaSearchWord);
-  const searchFilter = useRecoilValue(moaSearchFilter);
+  const [maxPage] = useRecoilValue(moaMaxPage);
 
   //그려질 리스트 정리하기 ex. 1-10
   const getPaginationList = (currPage, perCount) => {
@@ -31,17 +27,6 @@ const Pagination = (props) => {
 
     return pageList;
   };
-
-  // useEffect(
-  //   () =>
-  //     getMoaListSearch()
-  //       .then(({ data }) => {
-  //         setMoaList([...data.data]);
-  //         setMaxPage(parseInt(data.maxPage));
-  //       })
-  //       .catch(),
-  //   [page]
-  // );
 
   const onClickPrev = () => {
     let newPage = page - 1 > 1 ? page - 1 : 1;

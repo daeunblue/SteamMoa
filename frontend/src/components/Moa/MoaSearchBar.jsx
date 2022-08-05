@@ -3,16 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getMoaListSearch } from "../../api/Moazone";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { moaSearchWord, moaPage, moaMaxPage, moaSearchFilter } from "../../recoil/Moazone";
+import { moaSearchWord, moaPage, moaMaxPage, moaSearchFilter, moaSearchSort } from "../../recoil/Moazone";
 import { debounce } from "lodash";
 
 const SearchBar = (props) => {
-  const { setMoaList , setFilter} = props;
+  const { setMoaList, setFilter } = props;
+  const [word, setWord] = useState("");
+
   const [page, setPage] = useRecoilState(moaPage);
   const setMaxPage = useSetRecoilState(moaMaxPage);
   const setSearchFilter = useSetRecoilState(moaSearchFilter);
+  const setSearchSort = useSetRecoilState(moaSearchSort);
   const setSearchWord = useSetRecoilState(moaSearchWord);
-  const [word, setWord] = useState("");
+  
 
   const onChange = (e) => {
     e.preventDefault();
@@ -20,11 +23,12 @@ const SearchBar = (props) => {
     debounceSearch(e.target.value);
   };
 
-  const debounceSearch = useCallback(
+  const debounceSearch = useCallback(//검색어 입력 시 필터 초기화, 정렬 초기화
     debounce((_word) => {
       setFilter([]);
       setSearchFilter([]);
-      getMoaListSearch()
+      setSearchSort(0);
+      getMoaListSearch(page, _word, 0, [])
         .then(({ data }) => {
           setMoaList([...data.data]);
           setMaxPage(parseInt(data.maxPage));
@@ -43,7 +47,7 @@ const SearchBar = (props) => {
   }, []);
 
   return (
-    <div id="search-bar" className="laptop:col-span-3 tablet:col-span-5 mobile:col-span-5 flex felx-row bg-searchbar-gray rounded-lg">
+    <div id="search-bar" className="col-span-3 flex felx-row bg-searchbar-gray rounded-lg">
       <div className="flex w-per5 inset-y-0 left-0 items-center pl-3 pointer-events-none">
         <FontAwesomeIcon className="text-detailContent-light" icon={faSearch} />
       </div>
@@ -51,7 +55,7 @@ const SearchBar = (props) => {
         type="text"
         id="search"
         className="w-per95 mx-2 text-sm text-gray-900 bg-transparent border-none focus:outline-hidden focus:border-none "
-        placeholder="모아글을 검색하세요"
+        placeholder="게임 이름으로 검색하세요"
         value={word}
         onChange={onChange}
       />
