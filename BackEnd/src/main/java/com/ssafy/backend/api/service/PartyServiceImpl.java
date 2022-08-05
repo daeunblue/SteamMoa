@@ -2,6 +2,7 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
+import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.GameDTO;
 import com.ssafy.backend.db.entity.game.GamelistDTO;
 import com.ssafy.backend.db.entity.party.*;
@@ -11,6 +12,7 @@ import com.ssafy.backend.db.repository.party.PartyRepository;
 import com.ssafy.backend.db.repository.party.PartyTagRepository;
 import com.ssafy.backend.db.repository.party.PtagStorageRepository;
 import com.ssafy.backend.db.repository.party.PuserRepository;
+import jdk.vm.ci.meta.Local;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,13 +77,13 @@ public class PartyServiceImpl implements PartyService{
      */
     @Override
     @Transactional
-    public JSONObject searchPartyList(int page, String searchString, String[] tags, String partyStatus, String sortString) {
+    public JSONObject searchPartyList(int page, String searchString, String[] partyTags, String[] partyStatuses, String sortString) {
         Pageable pageable = PageRequest.of(page, 12);
         List<PartylistDTO> resultlist = new ArrayList<>();
-        partyRepository.findAllPartyByFilter(searchString, tags, partyStatus, sortString, pageable).forEach(Party->resultlist.add(new PartylistDTO(Party)));
+        partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString, pageable).forEach(Party->resultlist.add(new PartylistDTO(Party)));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxPage", Integer.toString(partyRepository.findAllPartyByFilter(searchString, tags, partyStatus, sortString)/12+1));
+        jsonObject.put("maxPage", Integer.toString(partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString)/12+1));
 
         JSONArray data = new JSONArray();
         for (PartylistDTO p : resultlist) {
@@ -113,7 +117,8 @@ public class PartyServiceImpl implements PartyService{
         party.setMaxPlayer(Integer.parseInt(partyInfo.getMaxPlayer()));
         party.setCurPlayer(1);
         party.setDescription(partyInfo.getPartyDescription());
-        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime()));
+        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).plusHours(9));
+        party.setWriteTime(LocalDateTime.now().plusHours(9));
         party.setChatLink(partyInfo.getChatLink());
         party.setStatus("1");
 
@@ -131,10 +136,11 @@ public class PartyServiceImpl implements PartyService{
         }
 
         // 유저 존재하는지 확인 후 실패 응답
-        if (puserRepository.findById(Long.parseLong(partyInfo.getUserId()))==null)
+        Optional<User> user = userRepository.findByUserServiceId(partyInfo.getUserId());
+        if (user == null)
             return false;
         Puser puser = new Puser();
-        puser.setUser(userRepository.findById(Long.parseLong(partyInfo.getUserId())).get());
+        puser.setUser(user.get());
         puser.setLeader(true);
         puserRepository.save(puser);
         party.addPuser(puser);
@@ -193,12 +199,12 @@ public class PartyServiceImpl implements PartyService{
         }
 
         Puser puser;
-        for (String id:partyInfo.getPartyUsers()) {
-            if(party.getPusers().contains(puserRepository.findByUserAndParty(userRepository.findById(Long.parseLong(id)).get(), partyRepository.findByPartyId(partyId))))
+        for (String service_id:partyInfo.getPartyUsers()) {
+            if(party.getPusers().contains(puserRepository.findByUserAndParty(userRepository.findByUserServiceId(service_id).get(), partyRepository.findByPartyId(partyId))))
                 continue;
 
             puser = new Puser();
-            puser.setUser(userRepository.findById(Long.parseLong(id)).get());
+            puser.setUser(userRepository.findByUserServiceId(service_id).get());
             puserRepository.save(puser);
             party.addPuser(puser);
         }

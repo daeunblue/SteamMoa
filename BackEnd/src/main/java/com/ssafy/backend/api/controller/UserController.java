@@ -2,12 +2,14 @@ package com.ssafy.backend.api.controller;
 
 import com.ssafy.backend.api.request.UserFollowPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
+import com.ssafy.backend.api.response.FollowDto;
 import com.ssafy.backend.api.response.UserRes;
 import com.ssafy.backend.api.service.UserService;
 import com.ssafy.backend.common.auth.SsafyUserDetails;
 import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.api.response.UserDto;
 import com.ssafy.backend.db.entity.UserTag;
+import com.ssafy.backend.db.entity.follow.Follow;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -147,5 +150,50 @@ public class UserController {
             return ResponseEntity.status(400).body(resultMap);
         }
     }
+
+    @GetMapping("/follow/{user_service_id}")
+    @ApiOperation(value = "유저 팔로잉 리스트 반환", notes = "user_service_id에 해당하는 유저가 팔로우하고 있는 사용자들의 목록 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getUserFollowingList(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = new HashMap<>();
+
+
+        FollowDto followDto = new FollowDto();
+        List<Follow> followList = userService.getFollowing(userServiceId);
+        for(Follow follow:followList){
+            followDto.addUserServiceId(follow.getFollowingUserId());
+        }
+        resultMap.put("followings",followDto);
+        resultMap.put("message","Success");
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
+
+    @GetMapping("/follower/{user_service_id}")
+    @ApiOperation(value = "유저 팔로워 리스트 반환", notes = "user_service_id에 해당하는 유저를 팔로우하고 있는 사용자들의 목록 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getUserFollowerLIst(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = new HashMap<>();
+
+
+        FollowDto followDto = new FollowDto();
+        List<Follow> followList = userService.getFollower(userServiceId);
+        for(Follow follow:followList){
+            followDto.addUserServiceId(follow.getFollowerUserId());
+        }
+        resultMap.put("followers",followDto);
+        resultMap.put("message","Success");
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
+
 }
 

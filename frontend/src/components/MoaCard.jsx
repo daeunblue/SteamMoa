@@ -5,7 +5,6 @@ function MoaCard(props) {
   const navigate = useNavigate();
   const {
     partyId,
-    gameId,
     gameImgPath,
     gameName,
     partyTitle,
@@ -13,7 +12,6 @@ function MoaCard(props) {
     curPlayer,
     startTime,
     partyIsUrgent,
-    writeTime,
     partyStatus,
   } = props.party;
 
@@ -28,7 +26,6 @@ function MoaCard(props) {
   let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
 
   const formatTime = () => {
-    //2022-08-26T00:15
     const week = ["일", "월", "화", "수", "목", "금", "토"];
     const dateTime = startTime.split("T");
     const date = dateTime[0].split("-");
@@ -47,8 +44,8 @@ function MoaCard(props) {
       id={partyId}
       className="flex flex-col opacity-90 bg-card-lightgray hover:cursor-pointer hover:opacity-100"
       onClick={onClickCard}>
-      <img src={gameImgPath} alt="game image" />
-      <div className="flex flex-col justify-between mx-2">
+      <img src={gameImgPath} alt="게임이미지" />
+      <div className="flex flex-col justify-between m-2">
         <div className="flex">
           <div
             className={`p-auto rounded flex justify-center items-center w-per25 text-xs font-blackSans text-white mr-2 ${
@@ -57,9 +54,9 @@ function MoaCard(props) {
             <span>{partyIsUrgent ? statusMsg[0] : statusMsg[partyStatus]}</span>
           </div>
 
-          <div className="font-blackSans text-base">{partyTitle}</div>
+          <div className="font-blackSans text-base whitespace-nowrap overflow-hidden text-ellipsis">{partyTitle}</div>
         </div>
-        <div className=" font-blackSans text-xs mt-1 mb-2 whitespace-nowrap overflow-hidden text-ellipsis">[{gameName}]</div>
+        <div className=" font-blackSans text-xs my-1 whitespace-nowrap overflow-hidden text-ellipsis">[{gameName}]</div>
         <div className=" flex justify-between">
           <span className="text-xs font-sans font-semibold">{formatTime()}</span>
           <span className="text-xs font-sans  font-semibold">

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +29,13 @@ public class PartyDTO {
     private List<String> partyTags = new ArrayList<>();
     private int maxPlayer;
     private int curPlayer;
-    private LocalDateTime startTime;
-    private LocalDateTime writeTime;
+    private String startTime;
+    private String writeTime;
     private String partyStatus;
     private List<PartyPlayerDTO> partyPlayers = new ArrayList<>();
     private String partyDescription;
     private String chatLink;
+    private boolean partyIsUrgent;
 
     public PartyDTO(Party p){
         this.gameId = p.getGame().getGameId();
@@ -46,13 +48,17 @@ public class PartyDTO {
         }
         this.maxPlayer = p.getMaxPlayer();
         this.curPlayer = p.getCurPlayer();
-        this.startTime = p.getStartTime();
-        this.writeTime = p.getWriteTime();
+        this.startTime = p.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+        this.writeTime = p.getWriteTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         this.partyStatus = p.getStatus();
         for (Puser puser: p.getPusers()) {
             this.partyPlayers.add(new PartyPlayerDTO(puser));
         }
         this.partyDescription = p.getDescription();
         this.chatLink = p.getChatLink();
+        if(p.getStartTime().isBefore(LocalDateTime.now().plusHours(9).plusDays(1)))
+            this.partyIsUrgent = true;
+        else
+            this.partyIsUrgent = false;
     }
 }

@@ -14,6 +14,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<List<Review>> findAllByUserUserServiceId(String userServiceId);
 
+    Optional<List<Review>> findAllByGameGameId(Long gameId);
+
     boolean existsByReviewId(Long reviewId);
 
     Optional<Review> findByReviewId(Long reviewId);
