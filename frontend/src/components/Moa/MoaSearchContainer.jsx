@@ -85,7 +85,7 @@ const MoazoneSearchContainer = (props) => {
   const setMaxPage = useSetRecoilState(moaMaxPage);
   const setSearchFilter = useSetRecoilState(moaSearchFilter);
 
-  const handleResetFilter = () => {//필터 리셋 -> 정렬, 검색어 그대로 두고 필터만 수정
+  const handleResetFilter = () => {
     setFilter([]);
     setSearchFilter([]);
     getMoaListSearch(page, searchWord, searchSort, [])
