@@ -20,7 +20,7 @@ public class PartyTag {
     private Long partytagId;
 
     // 양방향 다대일
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference
     @JoinColumn(name="party_id")
     private Party party;

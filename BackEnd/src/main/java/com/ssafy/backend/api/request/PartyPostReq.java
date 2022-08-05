@@ -22,16 +22,16 @@ public class PartyPostReq {
 	@ApiModelProperty(name="파티 설명", example="빨리 모여라~")
 	String partyDescription;
 
-	@ApiModelProperty(name="게임 플레이 약속 시간", example="2021-11-08T11:44:30.327959")
+	@ApiModelProperty(name="게임 플레이 약속 시간", example="2022-08-26T12:15")
 	String startTime;
 
 	@ApiModelProperty(name="외부 소통 링크(디스코드 등)", example="http://localhost:8080/swagger-ui.html#/Party/createPartyUsingPOST")
 	String chatLink;
 
-	@ApiModelProperty(name="파티 성향 태그", example="[\"1\", \"2\"]")
+	@ApiModelProperty(name="파티 성향 태그(태그 코드)", example="[\"1\", \"2\"]")
 	String[] partyTags;
 
-	@ApiModelProperty(name="파티장 유저 ID", example="1")
+	@ApiModelProperty(name="파티장 유저 서비스 ID", example="ssafy123")
 	String userId;
 
 

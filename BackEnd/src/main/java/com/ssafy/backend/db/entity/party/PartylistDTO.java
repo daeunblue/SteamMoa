@@ -27,7 +27,9 @@ public class PartylistDTO {
     private LocalDateTime startTime;
     private LocalDateTime writeTime;
 
-    private String status;
+    private String partyStatus;
+
+    private boolean partyIsUrgent;
 
     public PartylistDTO(Party p){
         this.partyId = p.getPartyId();
@@ -39,7 +41,11 @@ public class PartylistDTO {
         this.curPlayer = p.getCurPlayer();
         this.startTime = p.getStartTime();
         this.writeTime = p.getWriteTime();
-        this.status = p.getStatus();
+        this.partyStatus = p.getStatus();
+        if(p.getStartTime().isBefore(LocalDateTime.now().plusHours(9).plusDays(1)))
+            this.partyIsUrgent = true;
+        else
+            this.partyIsUrgent = false;
 
         System.out.println("파티 list DTO 생성: "+this.partyTitle);
     }
