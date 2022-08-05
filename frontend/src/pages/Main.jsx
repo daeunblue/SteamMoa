@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import Banner from '../components/Main/Banner'
 import MiniMoa from '../components/Main/MiniMoa'
 import MiniGameMoa from '../components/Main/MiniGameMoa'
+import MainGameSpread from '../components/Main/MainGameSpread'
 import { getMainInfo } from '../api/Main'
 
 
@@ -38,6 +39,8 @@ const Main = () => {
         <MiniMoa parties={parties}/>
         {/* 게임존 */}
         <MiniGameMoa bests={bestGames} frees={freeGames} today={todayGames}/>
+
+        <MainGameSpread bests={bestGames} frees={freeGames} today={todayGames}/>
       </div>
 
       <div className='h-20'></div>

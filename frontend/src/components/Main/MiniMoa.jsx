@@ -53,7 +53,7 @@ const MiniMoa = (props) => {
   }
 
   return (
-    <div className='mini-moa bg-miniMoa-dark rounded flex justify-center items-center my-8 tablet:mt-12'>
+    <div className='mini-moa bg-miniMoa-dark rounded flex justify-center items-center my-9 tablet:mt-12'>
       <div 
         className='w-10 tablet:w-14 laptop:w-16 hover:cursor-pointer text-center'
         onClick={() => {
