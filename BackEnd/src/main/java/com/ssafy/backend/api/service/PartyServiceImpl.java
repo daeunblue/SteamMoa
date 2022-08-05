@@ -77,13 +77,13 @@ public class PartyServiceImpl implements PartyService{
      */
     @Override
     @Transactional
-    public JSONObject searchPartyList(int page, String searchString, String[] tags, String partyStatus, String sortString) {
+    public JSONObject searchPartyList(int page, String searchString, String[] partyTags, String[] partyStatuses, String sortString) {
         Pageable pageable = PageRequest.of(page, 12);
         List<PartylistDTO> resultlist = new ArrayList<>();
-        partyRepository.findAllPartyByFilter(searchString, tags, partyStatus, sortString, pageable).forEach(Party->resultlist.add(new PartylistDTO(Party)));
+        partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString, pageable).forEach(Party->resultlist.add(new PartylistDTO(Party)));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxPage", Integer.toString(partyRepository.findAllPartyByFilter(searchString, tags, partyStatus, sortString)/12+1));
+        jsonObject.put("maxPage", Integer.toString(partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString)/12+1));
 
         JSONArray data = new JSONArray();
         for (PartylistDTO p : resultlist) {

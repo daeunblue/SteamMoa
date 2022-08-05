@@ -53,11 +53,10 @@ public class PartyController {
             "모집 실패: 5\n" +
             "sort\n" +
             "파티 생성 최근순: 1\n" +
-            "파티 생성 오래된순: 2\n" +
-            "마감 날짜 가까운 순: 3\n" +
-            "게임이름순: 4")
-    public ResponseEntity<?> getPartyListFiltered(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "") String searchString, @RequestParam(value = "genre", required = false, defaultValue = "") String[] tags, @RequestParam(required = false, defaultValue = "1") String partyStatus, @RequestParam(required = false, defaultValue = "1") String sortString){
-        JSONObject result = partyService.searchPartyList(page-1, searchString, tags, partyStatus, sortString);
+            "마감 날짜 가까운 순: 2\n" +
+            "마감 인원 많은 순:3")
+    public ResponseEntity<?> getPartyListFiltered(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "") String searchString, @RequestParam(value = "partyTags", required = false, defaultValue = "") String[] partyTags, @RequestParam(required = false, defaultValue = "") String[] partyStatuses, @RequestParam(required = false, defaultValue = "1") String sortString){
+        JSONObject result = partyService.searchPartyList(page-1, searchString, partyTags, partyStatuses, sortString);
         return ResponseEntity.status(200).body(result);
     }
 
