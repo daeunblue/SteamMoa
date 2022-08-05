@@ -1,18 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect } from "react";
-import PaginationItem from "./PaginationItem";
-import { getGamesSearch } from "../api/Game";
+import React from "react";
+import PaginationItem from "../PaginationItem";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { gameSearchWord, gameSearchFilter, gamePage, gameMaxPage } from "../recoil/Game";
+import { moaSearchWord, moaSearchFilter, moaPage, moaMaxPage, moaSearchSort } from "../../recoil/Moazone";
 
 const Pagination = (props) => {
   const PAGE_COUNT = 10;
-  const setGameList = props.setGameList;
-  const [page, setPage] = useRecoilState(gamePage);
-  const [maxPage, setMaxPage] = useRecoilState(gameMaxPage);
-  const searchWord = useRecoilValue(gameSearchWord);
-  const searchFilter = useRecoilValue(gameSearchFilter);
+  const [page, setPage] = useRecoilState(moaPage);
+  const [maxPage] = useRecoilValue(moaMaxPage);
 
   //그려질 리스트 정리하기 ex. 1-10
   const getPaginationList = (currPage, perCount) => {
@@ -31,13 +27,6 @@ const Pagination = (props) => {
 
     return pageList;
   };
-
-  useEffect(() => getGamesSearch(page, searchFilter, searchWord)
-    .then(({ data }) => {
-      setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
-      setMaxPage(parseInt(data.maxPage));
-    })
-    .catch(), [page]);
 
   const onClickPrev = () => {
     let newPage = page - 1 > 1 ? page - 1 : 1;
