@@ -30,7 +30,7 @@ function Router() {
       <Route path="/moazone/update/:party_id" element={<MoaUpdate/>}/>
       {/* 게임모아 */}
       <Route path="/gamemoa" element={<GameMoa/>}/>
-      <Route path="/gamemoa/detail/:game_id" element={<GameDetail/>}/>
+      <Route path="/gamemoa/detail/:game_id/*" element={<GameDetail/>}/>
       {/* 프로필 */}
       <Route path="/profile/:user_id/*" element={<Profile/>}/>
       <Route path="/mypage/:user_id/*" element={<Profile/>}/>
