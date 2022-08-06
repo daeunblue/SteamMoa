@@ -17,8 +17,9 @@ export const moaUpdate = (moa, partyId) => {
   return apiAuth.put(url, moa)
 }
 // 모아글 생성시 게임ID 검색
-export const moaGameSearch = () => {
-  const url = `moazone/games`;
+export const moaGameSearch = (gameName) => {
+  let url = `moazone/games?`;
+  url += `game_name=${gameName}`;
   return apiAuth.get(url);
 }
 

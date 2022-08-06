@@ -1,26 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/Navbar';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { moaUpdate } from '../../api/Moazone';
+import MoaPartyUserCard from '../../components/Moa/MoaPartyUserCard';
 
 // update 페이지에서 db를 불러온 뒤 수정 후 다시 서버로 보내 db에 저장
 const MoaUpdate = (props) => {
-  const [ moa, setMoa ] = useState({
-    partyDescription: '',
-    chatLink: '',
-    partyTags: '',
-    partyStatus: false,
-    partyUsers: '',
+    
+    const location = useLocation();
+    const _partyId = location.state.partyId
 
-});
+    const [ moa, setMoa ] = useState({})
+    
+    const [ updateMoa, setUpdateMoa ] = useState({
+        partyDescription: '',
+        chatLink: '',
+        partyTags: [],
+        partyStatus: '',
+        partyUsers: [],
+    });
+
+    console.log(updateMoa);
 // 파티 태그 하드코딩
 
 const navigate = useNavigate();
 // 데이터 변경사항 저장
 const onChange = (event) => {
-    const { name, value } = event.target;
-    setMoa({
-        ...moa,
+    let { name, value } = event.target;
+    if(name === 'partyTags'){
+        value=[...updateMoa.partyTags,value]
+        console.log(value);
+    }
+    setUpdateMoa({
+        ...updateMoa,
         [name]: value,
     })
 };
@@ -28,22 +41,11 @@ const onChange = (event) => {
 // 수정된 데이터 보내서 저장
 const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
-    axios.put("http://i7a303.p.ssafy.io:8080/api/moazone", {
-        partyTitle: moa.partyTitle,
-        gameName: moa.gameName,
-        startTime: moa.startTime,
-        maxPlayer: moa.maxPlayer,
-        partyDescription: moa.partyDescription,
-        chatLink: moa.chatLink,
-        partyTags: moa.partyTags,
-        partyStatus: moa.partyStatus,
-        partyUsers: moa.partyUsers,
-    })
-    .then(function (res) {
-        //성공시 리다이렉트 해당 게시글로
+    console.log(updateMoa);
+    moaUpdate(updateMoa, _partyId)
+    .then((res)=>{
         if (res.statusCode === 200 ){
-            navigate(`/${moa.partyId}`)
+            navigate(`/${moa._partyId}`)
         } else {
             alert(res.data.message);
         }
@@ -53,17 +55,25 @@ const handleSubmit = (e) => {
 const handleCancel = () => {
     navigate(`/`);
 }
-  
+
+
   useEffect((e) => {
-    // party_id가 같은 데이터 가져오기
-    const url = `http://i7a303.p.ssafy.io:8080/api/moazone/${moa.partyId}`;
+    // partyId가 같은 데이터 가져오기
+    const url = `http://i7a303.p.ssafy.io:8080/api/moazone/${_partyId}`;
     // axios로 api 요청 보내서 다시 데이터 가져오기
     axios.get(url)
     .then(({data}) => {
         setMoa(data);
+        setUpdateMoa({...updateMoa,
+            partyDescription: data.partyDescription,
+            chatLink: data.chatLink,
+            partyTags: data.partyTags,
+            partyStatus: data.partyStatus
+            })
         })
-    });
+    },[]);
 
+  
   return (
     <>
       <Navbar />
@@ -107,7 +117,7 @@ const handleCancel = () => {
                         name="maxPlayer"
                         value={moa.maxPlayer}
                         onChange={onChange}
-                        className="col-span-4 w-full text-main-500 bg-mainBtn-disabled rounded-lg" type="text" disabled />
+                        className="col-span-4 w-full text-main-500 bg-mainBtn-disabled rounded-lg" type="number" disabled />
                     </div>
                     <div className="grid grid-flow-col col-span-2">
                         <span className="col-span-1">시작시간</span>
@@ -116,14 +126,14 @@ const handleCancel = () => {
                         name="startTime"
                         value={moa.startTime}
                         onChange={onChange}
-                        className="w-full text-main-500 bg-mainBtn-disabled rounded-lg" type="date" disabled />
+                        className="w-full text-main-500 bg-mainBtn-disabled rounded-lg" type="datetime-local" disabled />
                         </div>
                     </div>
                 </div>
                 <div className="mb-3">
                     <textarea 
-                    name="gameDescription"
-                    value={moa.gameDescription}
+                    name="partyDescription"
+                    value={updateMoa.partyDescription}
                     onChange={onChange}
                     className="w-full text-main-500 bg-createInput-gray rounded-lg" rows="10" placeholder="모집 내용 쓰는 곳"></textarea>
                 </div>
@@ -131,19 +141,29 @@ const handleCancel = () => {
                     <span className="col-span-1">음성 채팅 링크</span>
                     <input 
                     name="chatLink"
-                    value={moa.chatLink}
+                    value={updateMoa.chatLink}
                     onChange={onChange}
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
                 {/* 파티 태그 하드 코딩 */}
-                <div className="grid grid-flow-col mb-8">
-                    <span className="col-span-1">파티 태그</span>
-                    <input 
-                    name="partyTags" 
-                    value={moa.partyTags} 
-                    onChange={onChange} 
-                    className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
+                {/* <div>
+                    {
+                        items.map((item)=>
+                            <div key={item.id} >
+                        <input
+                        //  checked={checkedList.ic? true : false}
+                        onChange={onCheckedElement} value={item.name} id={item.id} name={item.id} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
+                        <label htmlFor={item.id} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item.name}</label>
+                        </div>
+                         )
+                        //  checkedList.includes(item.id)
+                    }
                 </div>
+                <div>
+                    {checkedList.map((item)=>
+                         <span key={item.id} onClick={()=>onRemove(item.id)}>{item.name}</span>
+                    )}
+                </div> */}
                 {/* <PartyUsers /> */}
                 <div 
                 className='w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black'
@@ -151,6 +171,7 @@ const handleCancel = () => {
                 value={moa.partyUsers}
                 onChange={onChange}
                 >
+                    <MoaPartyUserCard />
                 </div>
                 </div>
             </div>
