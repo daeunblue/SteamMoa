@@ -1,5 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import '../assets/style.css'
+
 
 const Banner = () => {
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const Banner = () => {
 
   return (
     
-    <div className='carousel-container w-full overflow-hidden'>
+    <div className='carousel-container w-full overflow-hidden h-auto relative'>
       <div
         className='carousel-items w-full flex ease-in duration-700'
         // translate3d() 메소드는 현재 위치에서 해당 요소를 주어진 x축과 y축, z축의 거리만큼 이동시킵니다.
@@ -48,16 +50,17 @@ const Banner = () => {
             <img src={banner.img} alt="bannerImg" className='w-full hover:cursor-pointer' key={index} onClick={()=>navigate(`${banner.path}`)}/> 
         )}
       </div>
-      <div className="slideshowDots flex justify-center mt-2">
+      <div className="slideshowDots flex items-center justify-center mt-2 absolute-carousel">
         {banners.map((_, idx) => (
           <div
             key={idx}
-            className={index === idx ? " rounded-full w-1.5 h-1.5 bg-gray-500 mx-1" : "rounded-full w-1.5 h-1.5 bg-white mx-1"}
+            className={index === idx ? " rounded-full w-1 h-1 tablet:w-1.5 tablet:h-1.5 laptop:w-2 laptop:h-2 bg-moa-pink-dark mx-1 tablet:mx-1.5" : "rounded-full w-1 h-1 tablet:w-1.5 tablet:h-1.5 laptop:w-2 laptop:h-2 bg-white mx-1 tablet:mx-1.5"}
             onClick={() => {
               setIndex(idx);
             }}
           ></div>
         ))}
+
       </div>
 
     </div>
