@@ -1,9 +1,9 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { getGamesSearch } from "../api/Game";
+import { getGamesSearch } from "../../api/Game";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { gameSearchWord, gamePage, gameMaxPage, gameSearchFilter } from "../recoil/Game";
+import { gameSearchWord, gamePage, gameMaxPage, gameSearchFilter } from "../../recoil/Game";
 import { debounce } from "lodash";
 
 const SearchBar = (props) => {
@@ -24,12 +24,12 @@ const SearchBar = (props) => {
     debounce((_word) => {
       setFilter([]);
       setSearchFilter([]);
-      getGamesSearch(page, [], _word)
+      setPage(1);
+      setSearchWord(_word);
+      getGamesSearch(1, [], _word)
         .then(({ data }) => {
           setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
           setMaxPage(parseInt(data.maxPage));
-          setPage(1);
-          setSearchWord(_word);
         })
         .catch();
     }, 750),
@@ -51,7 +51,7 @@ const SearchBar = (props) => {
         type="text"
         id="search"
         className="w-per95 mx-2 text-sm text-gray-900 bg-transparent border-none focus:outline-hidden focus:border-none "
-        placeholder="모아글을 검색하세요"
+        placeholder="게임 이름으로 검색하세요"
         value={word}
         onChange={onChange}
       />

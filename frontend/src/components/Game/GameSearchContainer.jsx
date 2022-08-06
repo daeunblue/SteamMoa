@@ -1,24 +1,20 @@
 import React, { useState } from "react";
-import SearchBar from "./SearchBar";
+import GameSearchBar from "./GameSearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faRotateRight } from "@fortawesome/free-solid-svg-icons";
-import FilterCaterories from "./Filter/FilterCaterories";
-import FilterBadge from "./Filter/FilterBadge";
-import { getGamesSearch } from "../api/Game";
+import FilterCaterories from "../Filter/FilterCaterories";
+import FilterBadge from "../Filter/FilterBadge";
+import { getGamesSearch } from "../../api/Game";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { gameSearchFilter, gamePage, gameSearchWord, gameMaxPage } from "../recoil/Game";
+import { gameSearchFilter, gamePage, gameSearchWord, gameMaxPage } from "../../recoil/Game";
 
-const SearchContainer = (props) => {
+const GameSearchContainer = (props) => {
   const categories = {
     filters: [
       {
         id: 1,
         name: "장르",
         items: [
-          {
-            id: 37,
-            name: "Free to Play",
-          },
           {
             id: 23,
             name: "Indie",
@@ -68,12 +64,13 @@ const SearchContainer = (props) => {
   const [filter, setFilter] = useState([]);
 
   const handleResetFilter = () => {
+    setPage(1);
     setFilter([]);
-    getGamesSearch(page, [], searchWord)
+    setSearchFilter([]);
+    getGamesSearch(1, [], searchWord)
       .then(({ data }) => {
         setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
         setMaxPage(parseInt(data.maxPage));
-        setPage(1);
       })
       .catch();
   };
@@ -89,12 +86,13 @@ const SearchContainer = (props) => {
   };
 
   const handleSearchFilter = () => {
+    setPage(1);
     setSearchFilter([...filter]);
-    getGamesSearch(page, filter, searchWord)
+    getGamesSearch(1, [...filter], searchWord)
       .then(({ data }) => {
         setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
         setMaxPage(parseInt(data.maxPage));
-        setPage(1);
+        console.log(filter);
       })
       .catch();
   };
@@ -114,7 +112,7 @@ const SearchContainer = (props) => {
         {/* 검색바, 정렬 */}
         <div className="grid grid-cols-5 gap-2">
           {/* 검색바 */}
-          <SearchBar setGameList={setGameList} setFilter={setFilter} />
+          <GameSearchBar setGameList={setGameList} setFilter={setFilter} />
         </div>
         {/* 아코디언 버튼 */}
         <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
@@ -174,4 +172,4 @@ const SearchContainer = (props) => {
   );
 };
 
-export default SearchContainer;
+export default GameSearchContainer;
