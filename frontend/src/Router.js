@@ -12,6 +12,7 @@ import GameMoa from "./pages/Game/GameMoa";
 import GameDetail from "./pages/Game/GameDetail";
 import Profile from "./pages/Profile";
 import Search from "./pages/Search";
+import NotFound from "./pages/NotFound";
 
 
 function Router() {
@@ -35,7 +36,8 @@ function Router() {
       <Route path="/profile/:user_id/*" element={<Profile/>}/>
       <Route path="/mypage/:user_id/*" element={<Profile/>}/>
       {/* 통합검색 */}
-      <Route path="/search/:keyword" element={<Search/>}/>
+      <Route path="/search/*" element={<Search />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 };
