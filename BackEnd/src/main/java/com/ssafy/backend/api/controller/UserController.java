@@ -195,5 +195,44 @@ public class UserController {
         return ResponseEntity.status(200).body(resultMap);
     }
 
+    @GetMapping("/profile/{user_service_id}/parties/proceeding")
+    @ApiOperation(value = "내가 참여중인 파티", notes = "내가 생성하거나 참여한 파티 중 모집 중, 모집 완료, 플레이 중인 파티를 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesProceeding(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = userService.getMyPartiesProceeding(userServiceId);
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
+
+    @GetMapping("/profile/{user_service_id}/parties/completed")
+    @ApiOperation(value = "내가 참여했고 이제 완료된 파티", notes = "내가 생성했거나 참여했던 파티 중 모집이 실패했거나 플레이가 종료된 파티를 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesCompleted(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = userService.getMyPartiesCompleted(userServiceId);
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
+
+
+    @GetMapping("/profile/{user_service_id}/parties/created")
+    @ApiOperation(value = "내가 작성한 파티", notes = "내가 지금까지 생성한 모든 파티를 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesCreated(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = userService.getMyPartiesCreated(userServiceId);
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
 }
 

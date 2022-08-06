@@ -4,6 +4,7 @@ import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
 import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.follow.Follow;
+import com.ssafy.backend.db.entity.game.Game;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -36,4 +37,8 @@ public interface UserService {
     boolean unFollowUser(String followingUserId, String followerUserId);
     List<Follow> getFollower(String userServiceId);
     List<Follow> getFollowing(String userServiceId);
+
+    Map<String, Object> getMyPartiesProceeding(String userServiceId);
+    Map<String, Object> getMyPartiesCompleted(String userServiceId);
+    Map<String, Object> getMyPartiesCreated(String userServiceId);
 }

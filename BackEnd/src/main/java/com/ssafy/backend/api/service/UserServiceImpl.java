@@ -4,9 +4,15 @@ import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
 import com.ssafy.backend.db.entity.UserTag;
 import com.ssafy.backend.db.entity.follow.Follow;
+import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.party.Party;
+import com.ssafy.backend.db.entity.party.PartylistDTO;
+import com.ssafy.backend.db.entity.party.Puser;
 import com.ssafy.backend.db.repository.UTagStorageRepository;
 import com.ssafy.backend.db.repository.UserTagRepository;
 import com.ssafy.backend.db.repository.follow.FollowRepository;
+import com.ssafy.backend.db.repository.party.PartyRepository;
+import com.ssafy.backend.db.repository.party.PuserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -17,6 +23,7 @@ import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Part;
 import java.util.*;
 
 /**
@@ -40,6 +47,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    PuserRepository puserRepository;
+
+    @Autowired
+    PartyRepository partyRepository;
 
     @Override
     @Transactional
@@ -237,6 +250,57 @@ public class UserServiceImpl implements UserService {
 //
 //        }
         return result;
+    }
+
+    @Override
+    public Map<String, Object> getMyPartiesProceeding(String userServiceId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<PartylistDTO> parties = new ArrayList<>();
+
+        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        for (Puser p: pusers) {
+            Party party_temp = partyRepository.findByPusersContains(p);
+            String partyStatus_temp = party_temp.getStatus();
+            if(partyStatus_temp.equals("1") || partyStatus_temp.equals("2") ||partyStatus_temp.equals("3"))
+                parties.add(new PartylistDTO(party_temp));
+        }
+
+        resultMap.put("parties", parties);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> getMyPartiesCompleted(String userServiceId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<PartylistDTO> parties = new ArrayList<>();
+
+        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        for (Puser p: pusers) {
+            Party party_temp = partyRepository.findByPusersContains(p);
+            String partyStatus_temp = party_temp.getStatus();
+            if(partyStatus_temp.equals("4") ||partyStatus_temp.equals("5"))
+                parties.add(new PartylistDTO(party_temp));
+        }
+
+        resultMap.put("parties", parties);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> getMyPartiesCreated(String userServiceId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<PartylistDTO> parties = new ArrayList<>();
+
+        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        for (Puser p: pusers) {
+            System.out.println(p.getUser().getUserServiceId());
+            if(p.isLeader()) {
+                parties.add(new PartylistDTO(partyRepository.findByPusersContains(p)));
+            }
+        }
+
+        resultMap.put("parties", parties);
+        return resultMap;
     }
 
 
