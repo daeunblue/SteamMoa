@@ -65,6 +65,14 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
+    public List<Review> findReviewByGameId(Long gameId) {
+        List<Review> list = new ArrayList<>();
+        list = reviewRepository.findAllByGameGameId(gameId).get();
+
+        return list;
+    }
+
+    @Override
     public boolean existReview(Long reviewId) {
         boolean result = reviewRepository.existsByReviewId(reviewId);
 

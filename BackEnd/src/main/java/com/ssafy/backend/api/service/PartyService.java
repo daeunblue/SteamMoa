@@ -21,7 +21,7 @@ public interface PartyService {
         필터링: 게임 이름, 파티 상태, 게임 장르
         정렬: 파티 생성 최근순 (디폴트), 마감 날짜 가까운 순, 게임 이름 순
      */
-    JSONObject searchPartyList(int page, String searchString, String[] tags, String partyStatus, String sortString);
+    JSONObject searchPartyList(int page, String searchString, String[] partyTags, String[] partyStatuses, String sortString);
 
     // 파티 생성
     boolean createParty(PartyPostReq PartyInfo);

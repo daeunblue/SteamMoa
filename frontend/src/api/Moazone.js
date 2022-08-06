@@ -26,12 +26,24 @@ export const moaGameSearch = (gameName) => {
 // 모아글 상세
 export const moaDetail = (partyId) => {
   const url = `moazone/${partyId}`;
-  return apiAuth.get(url)
-}
+  return apiAuth.get(url);
+};
 
 // 모아글 검색
-export const moaSearch = () => {
-  const url = `moazone/search`;
-  return apiAuth.get(url);
-}
+export const getMoaListSearch = (page, searchWord, searchSort, searchFilter) => {
+  let url = `moazone/search?page=${page}`;
+  url += searchWord ? `&searchString=${searchWord}`:"";
+  url += searchSort ? `&sortString=${searchSort}` : "";
+  
+  const partyStatuses = searchFilter.filter((filter) => (filter.category === 1 ? true : false));
+  const partyTags = searchFilter.filter((filter) => (filter.category === 2 ? true : false));
 
+  partyStatuses.forEach((status) => {
+    url += `&partyStatuses=${status.item}`;
+  });
+  partyTags.forEach((tag) => {
+    url += `&partyTags=${tag.item}`;
+  });
+
+  return apiAuth.get(url);
+};

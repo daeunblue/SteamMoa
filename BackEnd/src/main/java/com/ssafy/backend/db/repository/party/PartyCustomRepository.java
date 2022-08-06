@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PartyCustomRepository {
 
-    List<Party> findAllPartyByFilter(String searchString, String[] tags, String partyStatus, String sortString, Pageable pageable);
-    int findAllPartyByFilter(String searchString, String[] tags, String partyStatus, String sortString);
+    List<Party> findAllPartyByFilter(String searchString, String[] partyTags, String[] partyStatuses, String sortString, Pageable pageable);
+    int findAllPartyByFilter(String searchString, String[] partyTags, String[] partyStatuses, String sortString);
 
 }
