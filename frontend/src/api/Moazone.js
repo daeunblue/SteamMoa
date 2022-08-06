@@ -43,6 +43,6 @@ export const getMoaListSearch = (page, searchWord, searchSort, searchFilter) => 
   partyTags.forEach((tag) => {
     url += `&partyTags=${tag.item}`;
   });
-
+  console.log(url);
   return api.get(url);
 };
