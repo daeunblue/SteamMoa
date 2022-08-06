@@ -1,7 +1,11 @@
 package com.ssafy.backend.db.entity.game;
 
+import com.ssafy.backend.db.entity.review.Review;
+import com.ssafy.backend.db.repository.ReviewRepository;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +15,28 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class GamelistDTO {
+    @Autowired
+    private ReviewRepository reviewRepository;
+
     private Long gameId;
     private String gameName;
     private List<String> gameTags;
     private String gameImgpath;
-    private int gameReviewScore;
+    private int gameReviewScore = -1;
     private int gamePrice;
 
-    public GamelistDTO() {
+    public GamelistDTO(Game g, int reviewScore) {
+        this.gameId = g.getGameId();
+        this.gameName = g.getName();
+        this.gameTags = new ArrayList<>();
+        this.gameImgpath = g.getImgpath();
+        this.gamePrice = g.getPrice();
+        this.gameReviewScore = reviewScore;
+
+        for (Gamegenre gameGenre : g.getGamegenres())
+            this.gameTags.add(gameGenre.getGenre().getGenre());
     }
 
     public GamelistDTO(Game g) {
@@ -27,10 +44,9 @@ public class GamelistDTO {
         this.gameName = g.getName();
         this.gameTags = new ArrayList<>();
         this.gameImgpath = g.getImgpath();
-        this.gameReviewScore = 100; // Dummy Value
         this.gamePrice = g.getPrice();
 
         for (Gamegenre gameGenre : g.getGamegenres())
-            gameTags.add(gameGenre.getGenre().getGenre());
+            this.gameTags.add(gameGenre.getGenre().getGenre());
     }
 }
