@@ -17,7 +17,7 @@
 .star-rating {  
   display:flex;
   flex-direction: row-reverse;
-  font-size:min(max(30px, 5vw), 40px);
+  font-size:min(max(20px, 3vw), 40px);
   justify-content:space-around;
   text-align:center;
   width:25%;
