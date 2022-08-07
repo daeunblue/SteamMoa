@@ -3,6 +3,8 @@ import Badge from '../Badge';
 
 function MoaUserCard(moa) {
 
+  
+
     const neonBox = {
         backgroundColor: "rgba(255, 255, 255, 0.9)",
         margin:"50px",

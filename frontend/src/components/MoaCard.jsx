@@ -15,6 +15,8 @@ function MoaCard(props) {
     partyStatus,
   } = props.party;
 
+  console.log(props.party.partyId);
+
   let bgColors = [
     "bg-moa-pink",
     "bg-moa-green",
@@ -37,7 +39,8 @@ function MoaCard(props) {
   };
 
   const onClickCard = () => {
-    navigate(`/moazone/detail/${partyId}`, { state: {partyId: partyId} });
+    // navigate(`/moazone/detail/${partyId}`);
+    navigate(`/moazone/detail/${partyId}`);
   };
   return (
     <div

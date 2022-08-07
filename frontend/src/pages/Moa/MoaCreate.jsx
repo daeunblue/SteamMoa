@@ -1,4 +1,4 @@
-import React, { useRef, useState} from "react";
+import React, { useEffect, useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { moaCreate } from "../../api/Moazone";
@@ -13,79 +13,65 @@ function MoaCreate() {
 
     const user = useRecoilState(auth);
     const userId = user[0].userId;
-    console.log("userId : ", userId);
 
     const [ moa, setMoa ] = useState({
         chatLink: '',
-        gameId: 457,
+        gameId: 0,
         maxPlayer: 0,
         partyDescription: '',
-        partyTags:[],
+        partyTags:["1","2"],
         partyTitle: '',
         startTime: '',
-        userId: '',
+        userId: userId,
     });
+
+    console.log('moa ; ',moa);
 
     // 파티 태그 요소 하드 코딩
 
-    const items= [
-        {
-          id: '1',
-          name: "즐겜",
-        },
-        {
-          id: '2',
-          name: "빡겜",
-        },
-        {
-          id: '3',
-          name: "공략겜",
-        },
-        {
-          id: '4',
-          name: "무지성겜",
-        },
-        {
-          id: '5',
-          name: "친목겜",
-        },
-      ]
+    const items= [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
+    
     
     const navigate = useNavigate();
     
-    const [ checkedList, setCheckedList ] = useState();
+    const [ checkedList, setCheckedList ] = useState([]);
 
-    // console.log('Object.key(checkedList) ; ',Object.keys(checkedList));
 
     const onCheckedElement = (event) => {
-        console.log('dfd');
-        const {checked,value,name} =event.target
-        console.log('checked : ',checked);
-        console.log('value : ',value);
-        console.log('name : ',name);
+        const {checked,value} = event.target
 
         if (checked) {
-            console.log([...checkedList, {id:name,name:value}]);
-          setCheckedList([...checkedList,{id:name,name:value}]);
+            let newChk=[...checkedList]
+            newChk.push(value)
+            setCheckedList(newChk);
         } else if (!checked) {
-          setCheckedList(checkedList.filter(el => el.id !== name));
+          setCheckedList(checkedList.filter(el => el !== value));
         }
-        setMoa({...moa,partyTags: checkedList }); 
+
+        // setMoa({...moa,partyTags: checkedList }); // 단계 밀려서 뒤로 넘김
         
     }
-    console.log('checkedList : ',checkedList);
-    console.log('moa : ',moa);
 
-    const onRemove = (itemId) => {
-        console.log(itemId);
-        setCheckedList(checkedList.filter(el => el.id !== itemId));
+    const onRemove = (item) => {
+        console.log(item);
+        setCheckedList(checkedList.filter(el => el !== item));
       };
     ////////////////////////////////////////////
+
+    // useEffect(() => {
+    //     setMoa({
+    //         ...moa,
+    //         partyTags: checkedList,
+    //     });
+    // }, [checkedList])
     
 
     // 데이터 변경사항 저장
     const onChange = (event) => {
         let { name, value } = event.target;
+
+        if(name==='maxPlayer') value=Number(value);
+
         setMoa({
             ...moa,
             [name]: value,
@@ -93,20 +79,17 @@ function MoaCreate() {
     }
 
     const onGameChange = (gameId) =>{
-        console.log(gameId);
         setMoa({
             ...moa,
             gameId: gameId
         })
-
     }
 
     // 데이터 보내기
     const handleSubmit = (e) => {
         console.log(moa);
         e.preventDefault();
-        // console.log(e.target)
-        moaCreate(moa)
+        moaCreate()
         .then((data) =>  {
             console.log('data : ',data)
             if (data.status === 200) {
@@ -180,24 +163,24 @@ function MoaCreate() {
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
                 {/* 파티 태그 하드 코딩 */}
-                {/* <div>
+                <div className="w-full">
                     {
-                        items.map((item)=>
-                            <div key={item.id} >
+                        items.map((item ,index)=>
+                            <div key={index} >
                         <input
-                        //  checked={checkedList.ic? true : false}
-                        onChange={onCheckedElement} value={item.name} id={item.id} name={item.id} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
-                        <label htmlFor={item.id} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item.name}</label>
+                         checked={checkedList.includes(`${index+1}`)? true : false}
+                        onChange={onCheckedElement} value={index+1} id={item} name={item} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
+                        <label htmlFor={item} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item}</label>
                         </div>
                          )
-                        //  checkedList.includes(item.id)
+                        //  checkedList.includes(item.id)s
                     }
                 </div>
-                <div>
+                <div className="w-full rounded-lg ml-2 font-medium">
                     {checkedList.map((item)=>
-                         <span key={item.id} onClick={()=>onRemove(item.id)}>{item.name}</span>
+                         <span key={item} onClick={()=>onRemove(item)}>{items[item-1]}</span>
                     )}
-                </div> */}
+                </div>
                 </div>
             </div>
             <div className="flex mt-5">

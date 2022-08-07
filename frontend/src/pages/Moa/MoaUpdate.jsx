@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/Navbar';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { moaUpdate } from '../../api/Moazone';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { moaDelete, moaUpdate } from '../../api/Moazone';
 import MoaPartyUserCard from '../../components/Moa/MoaUserCard';
+import { moaDetail } from '../../api/Moazone';
 
 const MoaUpdate = (props) => {
     
-    const location = useLocation();
-    const _partyId = location.state.partyId
-    console.log('partyId: ', _partyId);
+   const params = useParams();
+   const partyId = params.party_id;
     const [ moa, setMoa ] = useState({})
     const [ updateMoa, setUpdateMoa ] = useState({
         partyDescription: '',
@@ -20,30 +20,51 @@ const MoaUpdate = (props) => {
     });
 
     console.log(updateMoa);
-// 파티 태그 하드코딩
 
-const navigate = useNavigate();
-// 데이터 변경사항 저장
-const onChange = (event) => {
-    let { name, value } = event.target;
-    if(name === 'partyTags'){
-        value=[...updateMoa.partyTags,value]
-        console.log(value);
+    // 파티 태그 하드코딩
+    const items= [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
+    const [ checkedList, setCheckedList ] = useState([]);
+
+    const onCheckedElement = (event) => {
+        const {checked,value} = event.target
+
+        if (checked) {
+            let newChk=[...checkedList]
+            newChk.push(value)
+            setCheckedList(newChk);
+        } else if (!checked) {
+          setCheckedList(checkedList.filter(el => el !== value));
+        }
+        // setMoa({...moa,partyTags: checkedList }); 
     }
-    setUpdateMoa({
-        ...updateMoa,
-        [name]: value,
-    })
-};
+
+    const onRemove = (item) => {
+        console.log(item);
+        setCheckedList(checkedList.filter(el => el !== item));
+      };
+
+    const navigate = useNavigate();
+    // 데이터 변경사항 저장
+    const onChange = (event) => {
+        let { name, value } = event.target;
+        if(name === 'partyTags'){
+            value=[...updateMoa.partyTags,value]
+            console.log(value);
+        }
+        setUpdateMoa({
+            ...updateMoa,
+            [name]: value,
+        })
+    };
 
 // 수정된 데이터 보내서 저장
 const handleSubmit = (e) => {
     e.preventDefault();
     console.log(updateMoa);
-    moaUpdate(updateMoa, _partyId)
+    moaUpdate(updateMoa, partyId)
     .then((res)=>{
         if (res.statusCode === 200 ){
-            navigate(`/${moa._partyId}`)
+            navigate(`/${moa.partyId}`)
         } else {
             alert(res.data.message);
         }
@@ -54,9 +75,21 @@ const handleCancel = () => {
     navigate(`/`);
 }
 
+// 파티 삭제
+const handleDeleteParty = (e) => {
+    e.preventDefault();
+    moaDelete(partyId)
+    .then((res)=> {
+        console.log(res);
+        if (res.status === 200) {
+            alert(res.data);
+            navigate('/moazone')
+        }
+    })
+}
+
   useEffect((e) => {
-    const url = `http://i7a303.p.ssafy.io:8080/api/moazone/${_partyId}`;
-    axios.get(url)
+    moaDetail(partyId)
     .then(({data}) => {
         setMoa(data);
         setUpdateMoa({...updateMoa,
@@ -67,7 +100,6 @@ const handleCancel = () => {
             })
         })
     },[]);
-
   
   return (
     <>
@@ -84,13 +116,7 @@ const handleCancel = () => {
                   <div className='flex-none'>
                     <span>파티 모집 수정하기</span>
                   </div>
-                  <div className='flex-none'>
-                    <button 
-                    name="partyStatus"
-                    value={moa.partyStatus}
-                    onClick={onChange}
-                    className='bg-moa-purple rounded-sm'>모집 완료</button>
-                  </div>
+                  <button className="rounded-lg "onClick={handleDeleteParty}>파티 삭제하기</button>
                 </div>
                     <input 
                     name="partyTitle"
@@ -141,24 +167,19 @@ const handleCancel = () => {
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
                 {/* 파티 태그 하드 코딩 */}
-                {/* <div>
+                <div>
                     {
-                        items.map((item)=>
-                            <div key={item.id} >
+                        items.map((item ,index)=>
+                            <div key={index} >
                         <input
-                        //  checked={checkedList.ic? true : false}
-                        onChange={onCheckedElement} value={item.name} id={item.id} name={item.id} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
-                        <label htmlFor={item.id} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item.name}</label>
+                         checked={checkedList.includes(`${index+1}`)? true : false}
+                        onChange={onCheckedElement} value={index+1} id={item} name={item} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
+                        <label htmlFor={item} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item}</label>
                         </div>
                          )
                         //  checkedList.includes(item.id)
                     }
                 </div>
-                <div>
-                    {checkedList.map((item)=>
-                         <span key={item.id} onClick={()=>onRemove(item.id)}>{item.name}</span>
-                    )}
-                </div> */}
                 {/* <PartyUsers /> */}
                 <div 
                 className='w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black'
