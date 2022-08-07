@@ -25,9 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service("partyService")
 public class PartyServiceImpl implements PartyService{
@@ -172,16 +170,65 @@ public class PartyServiceImpl implements PartyService{
     // 파티 수정
     @Override
     @Transactional
-    public boolean updateParty(Long partyId, PartyPutReq partyInfo) {
+    public String updateParty(Long partyId, PartyPutReq partyInfo) {
         Party party = partyRepository.findByPartyId(partyId);
+
+
+        // 멤버 수정
+        // 파티장 찾기
+        String leader_serviceId = null;
+        Set<String> member_serviceIds = new HashSet<>();
+
+        for (String service_id:partyInfo.getPartyUsers()) {
+            if(!userRepository.findByUserServiceId(service_id).isPresent())
+                return "fail: 유효하지 않은 사용자 아이디를 추가하려고 하고 있습니다.";
+
+            List<Puser> userpartysearch = puserRepository.findAllByUserAndParty(userRepository.findByUserServiceId(service_id).get(), partyRepository.findByPartyId(partyId));
+
+            if(userpartysearch.size() != 0 && userpartysearch.get(0).isLeader())
+                leader_serviceId = service_id;
+            else
+                member_serviceIds.add(service_id);
+        }
+
+        // 파티장 없으면 오류
+        if(leader_serviceId == null)
+            return "fail: 파티 멤버 배열 안에 파티장이 없습니다.";
+
+        // 파티원 모두 날리기
+        for (Puser u: party.getPusers()) {
+                puserRepository.delete(u);
+        }
+        party.setPusers(new ArrayList<>());
+
+        // 파티장 저장
+        Puser puser = new Puser();
+        puser.setUser(userRepository.findByUserServiceId(leader_serviceId).get());
+        puser.setLeader(true);
+        puserRepository.save(puser);
+        party.addPuser(puser);
+
+        // 파티원 모두 저장
+        for (String service_id: member_serviceIds) {
+            puser = new Puser();
+            puser.setUser(userRepository.findByUserServiceId(service_id).get());
+            puserRepository.save(puser);
+            party.addPuser(puser);
+        }
+
+        party.setCurPlayer(partyInfo.getPartyUsers().length);
+
+
 
         party.setDescription(partyInfo.getPartyDescription());
         party.setChatLink(partyInfo.getChatLink());
+
 
         // 태그 수정
         for (PartyTag pt: party.getPartyTags()) {
             partyTagRepository.delete(pt);
         }
+        party.setPartyTags(new ArrayList<>());
 
         PartyTag partyTag;
         for (String tag:partyInfo.getPartyTags()) {
@@ -191,32 +238,13 @@ public class PartyServiceImpl implements PartyService{
             party.addPartyTag(partyTag);
         }
 
-        // 멤버 수정
-        // 파티장만 놔두고 다 지운 다음에, 멤버 추가(이미 있는 멤버는 추가 안 함)
-        for (Puser u: party.getPusers()) {
-            if(!u.isLeader())
-                puserRepository.delete(u);
-        }
-
-        Puser puser;
-        for (String service_id:partyInfo.getPartyUsers()) {
-            if(party.getPusers().contains(puserRepository.findByUserAndParty(userRepository.findByUserServiceId(service_id).get(), partyRepository.findByPartyId(partyId))))
-                continue;
-
-            puser = new Puser();
-            puser.setUser(userRepository.findByUserServiceId(service_id).get());
-            puserRepository.save(puser);
-            party.addPuser(puser);
-        }
-
-        party.setCurPlayer(partyInfo.getPartyUsers().length);
 
         // 파티 상태 수정
         party.setStatus(partyInfo.getPartyStatus());
 
         partyRepository.save(party);
 
-        return true;
+        return "success";
     }
 
     // 파티 삭제

@@ -61,13 +61,13 @@ public class Party {
     private String status;
 
     // 양방향 일대다
-    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "party", cascade = CascadeType.DETACH)
     @JsonManagedReference
     @NotFound(action = NotFoundAction.IGNORE)
     private List<PartyTag> partyTags = new ArrayList<>();
 
     // 양방향 일대다
-    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "party", cascade = CascadeType.DETACH)
     @JsonManagedReference
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Puser> pusers = new ArrayList<>();
