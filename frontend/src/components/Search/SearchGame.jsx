@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { getSearchLists } from "../../api/Search";
 import GameCard from "../Game/GameCard";
 import MoaCard from "../MoaCard";
+import TacticSearchCard from "./TacticSearchCard";
 
 const SearchGame = (props) => {
   const [searchParams] = useSearchParams();
@@ -172,7 +173,88 @@ const SearchGame = (props) => {
       partyStatus: "1",
     },
   ]);
-  const [tacticList, setTacticList] = useState([]);
+  const [tacticList, setTacticList] = useState([
+    {
+      tacticId: 1,
+      tacticTitle: "A게임에 대한 공략",
+      tacticContent: "공략글 내용입니다람쥐다람쥐공략글 내용입니다람쥐다람쥐공략글 내용입니다람쥐다람쥐공략글 내용입니다람쥐다람쥐공략글 내용입니다람쥐다람쥐공략글 내용입니다람쥐다람쥐공략글 내용입니다람쥐다람쥐",
+      userId: 1,
+      gameId: 234,
+      userServiceId: "namm",
+      gameName: "Between Two Stars Between Two Stars",
+      gameImgPath: "https://cdn.akamai.steamstatic.com/steam/apps/1928190/header.jpg?t=1650456298",
+    },
+    {
+      tacticId: 2,
+      tacticTitle: "A게임에 대한 공략",
+      tacticContent: "공략글 내용입니다람쥐다람쥐",
+      userId: 1,
+      gameId: 234,
+      userServiceId: "user_id",
+      gameName: "Between Between Two Stars Between Two Stars Stars",
+      gameImgPath: "https://cdn.akamai.steamstatic.com/steam/apps/1928190/header.jpg?t=1650456298",
+    },
+    {
+      tacticId: 3,
+      tacticTitle: "A게임에 대한 공략",
+      tacticContent: "공략글 내용입니다람쥐다람쥐",
+      userId: 1,
+      gameId: 234,
+      userServiceId: "user_id",
+      gameName: "Between Two Stars",
+      gameImgPath: "https://cdn.akamai.steamstatic.com/steam/apps/1928190/header.jpg?t=1650456298",
+    },
+    {
+      tacticId: 4,
+      tacticTitle: "A게임에 대한 공략",
+      tacticContent: "공략글 내용입니다람쥐다람쥐",
+      userId: 1,
+      gameId: 234,
+      userServiceId: "namm",
+      gameName: "Between Two Stars",
+      gameImgPath: "https://cdn.akamai.steamstatic.com/steam/apps/1928190/header.jpg?t=1650456298",
+    },
+    {
+      tacticId: 5,
+      tacticTitle: "A게임에 대한 공략",
+      tacticContent: "공략글 내용입니다람쥐다람쥐",
+      userId: 1,
+      gameId: 234,
+      userServiceId: "user_id",
+      gameName: "Between Two Stars",
+      gameImgPath: "https://cdn.akamai.steamstatic.com/steam/apps/1928190/header.jpg?t=1650456298",
+    },
+    {
+      tacticId: 6,
+      tacticTitle: "A게임에 대한 공략",
+      tacticContent: "공략글 내용입니다람쥐다람쥐",
+      userId: 1,
+      gameId: 234,
+      userServiceId: "user_id",
+      gameName: "Between Two Stars",
+      gameImgPath: "https://cdn.akamai.steamstatic.com/steam/apps/1928190/header.jpg?t=1650456298",
+    },
+    {
+      tacticId: 7,
+      tacticTitle: "A게임에 대한 공략",
+      tacticContent: "공략글 내용입니다람쥐다람쥐",
+      userId: 1,
+      gameId: 234,
+      userServiceId: "namm",
+      gameName: "Between Two Stars",
+      gameImgPath: "https://cdn.akamai.steamstatic.com/steam/apps/1928190/header.jpg?t=1650456298",
+    },
+    {
+      tacticId: 8,
+      tacticTitle: "A게임에 대한 공략",
+      tacticContent: "공략글 내용입니다람쥐다람쥐",
+      userId: 1,
+      gameId: 234,
+      userServiceId: "user_id",
+      gameName: "Between Two Stars",
+      gameImgPath: "https://cdn.akamai.steamstatic.com/steam/apps/1928190/header.jpg?t=1650456298",
+    },
+  ]);
 
   //   useEffect(() => {
   //     getSearchLists("content", keyword)
@@ -222,9 +304,9 @@ const SearchGame = (props) => {
           <span className="font-blackSans text-3xl text-moa-green">공략모아</span>
         </div>
         <div className="w-full grid grid-cols-4 gap-2">
-          {/* {tacticList.map((tactic) => (
-            
-          ))} */}
+          {tacticList.map((tactic) => (
+            <TacticSearchCard key={tactic.tacticId} tactic={tactic} />
+          ))}
         </div>
       </div>
     </div>
