@@ -24,7 +24,7 @@ public interface PartyService {
     JSONObject searchPartyList(int page, String searchString, String[] partyTags, String[] partyStatuses, String sortString);
 
     // 파티 생성
-    boolean createParty(PartyPostReq PartyInfo);
+    String createParty(PartyPostReq PartyInfo);
 
     // 파티 생성시 게임ID 검색
     List<PartyCreateGamelistDTO> searchPartyCreateGamelist(String searchString);
@@ -33,7 +33,7 @@ public interface PartyService {
     PartyDTO getPartyDetail(Long partyId);
 
     // 파티 수정
-    boolean updateParty(Long partyId, PartyPutReq partyInfo);
+    String updateParty(Long partyId, PartyPutReq partyInfo);
 
     // 파티 삭제
     boolean deleteParty(Long partyId);
