@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+
+import { Routes, Route, useSearchParams, useNavigate } from "react-router-dom";
+import SearchUser from "../components/Search/SearchUser";
+import SearchGame from "../components/Search/SearchGame";
 import Navbar from "../components/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { Routes, Route } from "react-router-dom";
-import SearchUser from "../components/Search/SearchUser";
-import SearchGame from "../components/Search/SearchGame";
+
 
 const Search = (props) => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get("word");
+  const [searchWord, setSearchWord] = useState(keyword);
+
+
+  const onChangeSearch = (e) => {
+    e.preventDefault();
+    setSearchWord(e.target.value);
+  };
+
+  const onKeyPress = (e) => {
+    if (e.key === "Enter" && e.target.value.trim()) {
+      onSearch();
+    }
+  };
+
+  const onSearch = () => {
+    if (searchWord.startsWith("@")) {
+      navigate(`/search/user?word=${encodeURIComponent(searchWord.slice(1, searchWord.length))}`);
+    } else {
+      navigate(`/search/game?word=${encodeURIComponent(searchWord)}`);
+    }  
+  };
+
   return (
     <div className="w-full h-full">
       <Navbar />
@@ -27,17 +54,18 @@ const Search = (props) => {
           <input
             type="text"
             id="search"
+            value={searchWord}
+            onChange={onChangeSearch}
+            onKeyUp={ onKeyPress }
             className="w-per95 text-lg text-gray-800 bg-transparent border-0 focus:border-none focus:border-slate-500border-transparent focus:border-transparent focus:ring-0"
           />
         </div>
       </div>
       {/* 검색 결과 화면 */}
-      <div className="w-per75 mx-auto">
-        <Routes>
-          <Route path="user/:id" element={<SearchUser/>}></Route>
-          <Route path="game/:keyword" element={<SearchGame/>}></Route>
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="user" element={<SearchUser />}></Route>
+        <Route path="game" element={<SearchGame />}></Route>
+      </Routes>
     </div>
   );
 };

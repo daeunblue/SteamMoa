@@ -28,11 +28,10 @@ const Navbar = (props) => {
 
   const onSearch = () => {
     if (search.startsWith("@")) {
-      navigate(`/search/user/${search.slice(1, search.length)}`);
+      navigate(`/search/user?word=${encodeURIComponent(search.slice(1, search.length))}`);
     } else {
-      navigate(`/search/game/${search}`);
+      navigate(`/search/game?word=${encodeURIComponent(search)}`);
     }
-    
   };
 
   return (
