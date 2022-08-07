@@ -107,6 +107,9 @@ module.exports = {
         "moa-purple": "#8D38D0",
         "moa-purple-light": "#A366D2",
         "moa-purple-dark": "#68279B",
+        "moa-blue":"#4461FA",
+        "moa-blue-dark":"#2A39C2",
+
 
         // component colors : 미묘한 차이...
         'centerDiv-blue':'#374050', // 가운데 80% 색상 들어가는 경우

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 const SquareGameComponent = (props)=>{
-  const navigate = useNavigate
+  const navigate = useNavigate()
   const {game} = props
   const onClickRecommend = ()=>{
     navigate(`/gamemoa/detail/${game.gameId}`)
