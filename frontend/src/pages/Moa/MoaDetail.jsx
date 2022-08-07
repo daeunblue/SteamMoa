@@ -1,27 +1,70 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
 import { moaDetail } from '../../api/Moazone';
+import MoaCard from '../../components/MoaCard';
 import Navbar from '../../components/Navbar';
 
-function MoaDetail() {
-  const navigate =useNavigate();
- const location= useLocation();
- const partyId=location.state.partyId
- const [detailMoa,setDetailMoa]=useState();
+function MoaDetail (props) {
+
+  // {
+  //   "gameId": 1,
+  //   "gameImgPath": "https://cdn.akamai.steamstatic.com/steam/apps/2069590/header.jpg?t=1658197219",
+  //   "gameName": "Radial Flow Playtest",
+  //   "partyId": 4,
+  //   "partyTitle": "게임 같이 하실 분~",
+  //   "partyTags": [],
+  //   "maxPlayer": 5,
+  //   "curPlayer": 1,
+  //   "startTime": "2021-11-08 11:44:30.327959",
+  //   "writeTime": "2022-08-02 23:47:20.381272",
+  //   "partyStatus": "1",
+  //   "partyPlayers": [
+  //   {
+  //   "playerId": 1,
+  //   "playerName": "김싸피",
+  //   "leader": true
+  //   }
+  //   ],
+  //   "partyDescription": "new party_description",
+  //   "chatLink": "https new chat_link"
+  //   }
+   
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
+  const partyId = location.state.partyId;
+
+  const [ detailMoa, setDetailMoa ] = useState();
+  // const { 
+  //   gameId, 
+  //   gameImgPath, 
+  //   gameName, 
+  //   partyTitle, 
+  //   maxPalyer, 
+  //   curPlayer, 
+  //   startTime, 
+  //   partyIsUrgent, 
+  //   partyStatus,
+  //   partyPlayers,
+  //   partyDescription,
+  //   chatLink,
+  // } = props.party;
+
 
   useEffect(() => {
     moaDetail(partyId)
     .then((res)=>{
+      console.log('res: ', res)
       setDetailMoa(res.data)
     console.log(res.data);
     })
-  }, [])
-
+  }, [partyId])
   console.log(detailMoa);
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/moazone/update/${partyId}`,{state:detailMoa})
+    navigate(`/moazone/update/${partyId}`, {state: partyId})
 
   }
   return (
@@ -30,7 +73,11 @@ function MoaDetail() {
     // <button onClick={handleSubmit}>수정하기</button>
     <>
     <Navbar />
-    <div className="w-per75 h-screen m-auto text-white font-sans">
+    <p>여기는 detail 페이지</p>
+    <div className="w-per75 h-screen m-auto text-white font-sans"> 
+    <div>
+      <MoaCard detailMoa={detailMoa}/>
+    </div>
       <div className='m-auto'>
         <img className="w-full" src={detailMoa.gameImgPath} alt="게임 이미지" />
       </div>
@@ -56,10 +103,6 @@ function MoaDetail() {
         >파티 모집 내용</div>
       </div>
 
-
-      
-      
-      
     </div>
     </>
   )

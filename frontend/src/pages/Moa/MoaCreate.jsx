@@ -51,12 +51,11 @@ function MoaCreate() {
         },
       ]
     
-    
     const navigate = useNavigate();
     
-    const [ checkedList, setCheckedList ] = useState(new Set());
+    const [ checkedList, setCheckedList ] = useState();
 
-    console.log('Object.key(checkedList) ; ',Object.keys(checkedList));
+    // console.log('Object.key(checkedList) ; ',Object.keys(checkedList));
 
     const onCheckedElement = (event) => {
         console.log('dfd');
@@ -181,7 +180,7 @@ function MoaCreate() {
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
                 {/* 파티 태그 하드 코딩 */}
-                <div>
+                {/* <div>
                     {
                         items.map((item)=>
                             <div key={item.id} >
@@ -198,7 +197,7 @@ function MoaCreate() {
                     {checkedList.map((item)=>
                          <span key={item.id} onClick={()=>onRemove(item.id)}>{item.name}</span>
                     )}
-                </div>
+                </div> */}
                 </div>
             </div>
             <div className="flex mt-5">

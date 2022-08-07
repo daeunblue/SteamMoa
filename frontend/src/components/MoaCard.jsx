@@ -37,7 +37,7 @@ function MoaCard(props) {
   };
 
   const onClickCard = () => {
-    navigate(`/moazone/detail/${partyId}`);
+    navigate(`/moazone/detail/${partyId}`, { state: {partyId: partyId} });
   };
   return (
     <div

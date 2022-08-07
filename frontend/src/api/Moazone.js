@@ -25,7 +25,7 @@ export const moaGameSearch = (gameName) => {
 
 // 모아글 상세
 export const moaDetail = (partyId) => {
-  const url = `moazone/${partyId}`;
+  const url = `moazone/detail/${partyId}`;
   return apiAuth.get(url);
 };
 

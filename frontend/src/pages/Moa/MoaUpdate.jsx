@@ -3,16 +3,14 @@ import Navbar from '../../components/Navbar';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { moaUpdate } from '../../api/Moazone';
-import MoaPartyUserCard from '../../components/Moa/MoaPartyUserCard';
+import MoaPartyUserCard from '../../components/Moa/MoaUserCard';
 
-// update 페이지에서 db를 불러온 뒤 수정 후 다시 서버로 보내 db에 저장
 const MoaUpdate = (props) => {
     
     const location = useLocation();
     const _partyId = location.state.partyId
-
+    console.log('partyId: ', _partyId);
     const [ moa, setMoa ] = useState({})
-    
     const [ updateMoa, setUpdateMoa ] = useState({
         partyDescription: '',
         chatLink: '',
@@ -56,11 +54,8 @@ const handleCancel = () => {
     navigate(`/`);
 }
 
-
   useEffect((e) => {
-    // partyId가 같은 데이터 가져오기
     const url = `http://i7a303.p.ssafy.io:8080/api/moazone/${_partyId}`;
-    // axios로 api 요청 보내서 다시 데이터 가져오기
     axios.get(url)
     .then(({data}) => {
         setMoa(data);
