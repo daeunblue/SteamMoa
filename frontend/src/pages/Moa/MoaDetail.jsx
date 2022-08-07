@@ -62,7 +62,7 @@ function MoaDetail() {
   // 파티 수정 (파티장만 가능)
   const handlePartyUpdate = (e) => {
     e.preventDefault();
-    navigate(`/moazone/update/${partyId}`);
+    navigate(`/moazone/update/${partyId}`); //update 페이지로 이동
 
   }
 
@@ -102,7 +102,11 @@ function MoaDetail() {
           </div>
           {/* <div className="text-xs font-sans font-semibold" name="startTime">파티시간: {formatTime()} </div> */}
           <div className="text-xs font-sans font-semibold">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
-          <div><MoaUserCard /></div>
+          <div>
+            {detailMoa.partyPlayers.map((player)=>{
+              <MoaUserCard player={player}/>
+            })}
+          </div>
           <div>파티 모집 내용</div>
           <div className="px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light w-full text-black"> {detailMoa.partyDescription}</div>
         </div>

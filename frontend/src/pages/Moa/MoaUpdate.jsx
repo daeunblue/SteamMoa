@@ -180,6 +180,11 @@ const handleDeleteParty = (e) => {
                         //  checkedList.includes(item.id)
                     }
                 </div>
+                <div className="w-full rounded-lg ml-2 font-medium">
+                    {checkedList.map((item)=>
+                         <span key={item} onClick={()=>onRemove(item)}>{items[item-1]}</span>
+                    )}
+                </div>
                 {/* <PartyUsers /> */}
                 <div 
                 className='w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black'

@@ -1,9 +1,21 @@
-import React from 'react'
-import Badge from '../Badge';
+import React, { useEffect, useState } from 'react'
+import { getUserInfo } from '../../api/User';
 
-function MoaUserCard(moa) {
+function MoaUserCard(player) {
+  // user 정보 가져오는 api 호출 후 user 객체 가지고있기
+  const [ user, setUser ] = useState({
+    userPoint: '',
+  });
 
-  
+  console.log(user);
+
+  useEffect((e) => {
+    getUserInfo(player.playerName)
+    .then((res) => {
+      console.log(res);
+      setUser(res);
+    })
+  }, [])
 
     const neonBox = {
         backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -21,17 +33,17 @@ function MoaUserCard(moa) {
         //             inset 0 0 0.05rem #FA448C; 
                 
     };
+
+    
   return (
     // moaPartyUserCard
-    <div className='w-per20 h-per15' style={neonBox}>
-        {/* 뱃지 */}
-        <Badge/>
-        {/* 매너온도 */}
-        
+    <div className='w-per20 h-per15 text-black' style={neonBox}>
+        {/* 유저 매너 온도 */}
+        <div>{user.userPoint}</div>
         {/* 유저아이디 */}
+        <div>{player.playerId}</div>
 
     </div>
-    // 뱃지, 매너온도(숫자), 유저아이디 들어가야 함
     // 유저 강퇴도 가능해야 함 => x 버튼 만들어서 누르면 유저 리스트에서 삭제
   )
 }

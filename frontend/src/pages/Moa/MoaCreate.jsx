@@ -19,7 +19,7 @@ function MoaCreate() {
         gameId: 0,
         maxPlayer: 0,
         partyDescription: '',
-        partyTags:["1","2"],
+        partyTags:[],
         partyTitle: '',
         startTime: '',
         userId: userId,
@@ -173,7 +173,7 @@ function MoaCreate() {
                         <label htmlFor={item} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item}</label>
                         </div>
                          )
-                        //  checkedList.includes(item.id)s
+                        //  checkedList.includes(item.id)
                     }
                 </div>
                 <div className="w-full rounded-lg ml-2 font-medium">
