@@ -28,7 +28,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/SSAFY/Downloads/STEAMMOA_GIT/BackEnd",
+    "last_opened_file_path": "C:/Users/SSAFY/IdeaProjects/SSAFY",
     "nodejs_package_manager_path": "npm"
   }
 }]]></component>
@@ -41,6 +41,7 @@
       <option name="presentableId" value="Default" />
       <updated>1658680075119</updated>
       <workItem from="1658680076686" duration="295000" />
+      <workItem from="1659880569082" duration="26000" />
     </task>
     <servers />
   </component>

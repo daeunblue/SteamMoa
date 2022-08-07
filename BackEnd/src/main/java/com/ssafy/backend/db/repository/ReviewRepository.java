@@ -11,8 +11,10 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByGameGameIdAndUserUserServiceId(Long gameId, String userServiceId);
-
+    Optional<Review> findByUserUserServiceIdAndGameGameId(String userServiceId, Long gameId);
     Optional<List<Review>> findAllByUserUserServiceId(String userServiceId);
+
+    Optional<List<Review>> findAllByGameGameId(Long gameId);
 
     boolean existsByReviewId(Long reviewId);
 

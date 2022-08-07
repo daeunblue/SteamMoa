@@ -6,7 +6,9 @@ import '../../assets/neon.css'
 
 
 const MiniMoa = (props) => {
+  const {parties} = props
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640 ? true:false)
+  const [index, setIndex] = useState(0);
   
   //choose the screen size 
   const handleResize = () => {
@@ -16,37 +18,42 @@ const MiniMoa = (props) => {
       setIsMobile(false)
     }
   }
-  const [index, setIndex] = useState(0);
+
   useEffect(()=>{
     window.addEventListener("resize", handleResize)
   }  , 
   [index, isMobile]
   )
 
-  const party = {
-    'party_id':1234567,
-    'party_status': '마감임박',
-    'game_name': 'Goose Goose Duck',
-    'game_img': 'https://sysrqmts.com/images/games/goose-goose-duck.jpg',
-    'party_title': '구스구스덕 12인팟',
-    'start_time': '2022.07.10',
-    'cur_player': 10,
-    'max_player': 12,
+  const moaCarousel = (parties) => {
+    if(parties.length){
+      return(
+        [...Array(5)].map((_, index) => {
+          if (isMobile) {
+              return(
+                  <MoaCard party={parties[index]} key={index}></MoaCard>
+              )
+            } else {
+              
+              return(
+              <div className='w-full grid grid-cols-3 gap-1' key={index}>
+                {[...Array(3)].map((_, idx)=>{
+                  return(
+                  <MoaCard party={parties[3*index+idx]} key={3*index+idx}></MoaCard>)
+                })}
+              </div>
+              )
+          }
+        })
+      )
+    }
+    else{
+      return ''
+    }
   }
-  const party1 = {
-    'party_id':1234567,
-    'party_status': '마감임박',
-    'game_name': 'Goose Goose Duck',
-    'game_img': 'https://cdn.akamai.steamstatic.com/steam/apps/1426210/header_koreana.jpg?t=1654700680',
-    'party_title': '구스구스덕 12인팟',
-    'start_time': '2022.07.10',
-    'cur_player': 10,
-    'max_player': 12,
-  }
-  const parties = [party, party, party, party1, party1, party1, party, party, party, party1, party1, party1, party, party, party, ]
- 
+
   return (
-    <div className='mini-moa bg-miniMoa-dark rounded flex justify-center items-center my-8 tablet:mt-12'>
+    <div className='mini-moa bg-miniMoa-dark rounded flex justify-center items-center my-9 tablet:mt-12'>
       <div 
         className='w-10 tablet:w-14 laptop:w-16 hover:cursor-pointer text-center'
         onClick={() => {
@@ -66,23 +73,10 @@ const MiniMoa = (props) => {
             // translate3d() 메소드는 현재 위치에서 해당 요소를 주어진 x축과 y축, z축의 거리만큼 이동시킵니다.
             style={{transform: `translate3d(${-index*20}%,0,0)`}}
             >
-            { [...Array(5)].map((_, index) => {
-              if (isMobile) {
-                  return(
-                      <MoaCard party={parties[index]} key={index}></MoaCard>
-                  )
-                } else {
-                  
-                  return(
-                  <div className='w-full grid grid-cols-3 gap-1' key={index}>
-                    {[...Array(3)].map((_, idx)=>{
-                      return(
-                      <MoaCard party={parties[3*index+idx]} key={3*index+idx}></MoaCard>)
-                    })}
-                  </div>
-                  )
-              }
-            })}
+            { 
+              moaCarousel(parties)
+            } 
+
           </div>
           <div className="slideshowDots flex justify-center mt-2">
             {[...Array(5)].map((_, idx) => (

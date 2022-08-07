@@ -1,5 +1,8 @@
 package com.ssafy.backend.db.entity.game;
 
+import com.ssafy.backend.api.service.ReviewService;
+import com.ssafy.backend.db.entity.review.Review;
+import com.ssafy.backend.db.repository.ReviewRepository;
 import com.ssafy.backend.db.repository.game.GCategoryStorageRepository;
 import com.ssafy.backend.db.repository.game.GGenreStorageRepository;
 import com.ssafy.backend.db.repository.game.GameCategoryRepository;
@@ -29,10 +32,15 @@ public class GameDTO {
     private GameCategoryRepository gameCategoryRepository;
     @Autowired
     private GCategoryStorageRepository gCategoryStorageRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
+    @Autowired
+    private ReviewService reviewService;
 
     private Long gameId;
     private String steamgameId;
     private String name;
+    private int reviewScore = -1;
     private double score;
     private String imgpath;
     private int age;
@@ -49,6 +57,34 @@ public class GameDTO {
     private List<String> categories;
 
     public GameDTO() {
+    }
+
+    public GameDTO(Game g, int reviewScore) {
+        this.gameId = g.getGameId();
+        this.steamgameId = g.getSteamgameId();
+        this.name = g.getName();
+        this.score = g.getScore();
+        this.imgpath = g.getImgpath();
+        this.age = g.getAge();
+        this.isFree = g.isFree();
+        this.description = g.getDescription();
+        this.languages = g.getLanguages();
+        this.developers = g.getDevelopers();
+        this.price = g.getPrice();
+        this.discount = g.getDiscount();
+        this.isWindow = g.isWindow();
+        this.isMac = g.isMac();
+        this.reviewScore = reviewScore;
+
+        List<String> genres_temp = new ArrayList<>();
+        for (Gamegenre gameGenre : g.getGamegenres())
+            genres_temp.add(gameGenre.getGenre().getGenre());
+        this.genres = genres_temp;
+
+        List<String> categories_temp = new ArrayList<>();
+        for (Gamecategory gameCategory : g.getGamecategories())
+            categories_temp.add(gameCategory.getCategory().getCategory());
+        this.categories = categories_temp;
     }
 
     public GameDTO(Game g) {

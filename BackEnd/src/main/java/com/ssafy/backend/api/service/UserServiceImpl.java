@@ -1,10 +1,20 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
-import com.ssafy.backend.db.entity.Follow;
+import com.ssafy.backend.api.request.UserUpdatePutReq;
+import com.ssafy.backend.db.entity.UserTag;
+import com.ssafy.backend.db.entity.follow.Follow;
+import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.party.Party;
+import com.ssafy.backend.db.entity.party.PartylistDTO;
+import com.ssafy.backend.db.entity.party.Puser;
+import com.ssafy.backend.db.repository.UTagStorageRepository;
+import com.ssafy.backend.db.repository.UserTagRepository;
+import com.ssafy.backend.db.repository.follow.FollowRepository;
+import com.ssafy.backend.db.repository.party.PartyRepository;
+import com.ssafy.backend.db.repository.party.PuserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,9 +23,8 @@ import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.Part;
+import java.util.*;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -28,7 +37,22 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
+    UserTagRepository userTagRepository;
+
+    @Autowired
+    UTagStorageRepository uTagStorageRepository;
+
+    @Autowired
+    FollowRepository followRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    PuserRepository puserRepository;
+
+    @Autowired
+    PartyRepository partyRepository;
 
     @Override
     @Transactional
@@ -66,6 +90,7 @@ public class UserServiceImpl implements UserService {
     public Map<String,Object> getUserInfoByUserId(String userServiceId) {
         Map<String, Object> result = new HashMap<>();
         // 디비에 유저 정보 조회 (userId 를 통한 조회).
+        System.out.println("조회 시작");
         User user = userRepository.findByUserServiceId(userServiceId).get();
         System.out.println("user.getuserId() : "+user.getUserId());
         result.put("user",user);
@@ -79,15 +104,6 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserId(String userId) {
         User user = userRepository.findByUserServiceId(userId).get();
         return user;
-    }
-
-
-    @Override
-    @Transactional
-    public List<Follow> getFollowByUserId(Long userId) {
-        List<Object> fList = userRepository.findAllByUserId(userId).get();
-        log.debug("getFollowByUserId"+fList.toString());
-        return null;
     }
 
     @Override
@@ -129,20 +145,203 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean updateUser(User user) {
+    public boolean updateUser(Long userId, UserUpdatePutReq userUpdatePutReq) {
         try{
+            User user = userRepository.findById(userId).get();
+
+            // userName 수정
+            user.setUserName(userUpdatePutReq.getUserName());
+
+            // userTags 수정
+            for (UserTag ut: user.getUTagLists()) {
+                userTagRepository.delete(ut);
+            }
+            user.setUTagLists(new ArrayList<>());
+
+            UserTag userTag;
+            for (String tag:userUpdatePutReq.getUserTags()) {
+                userTag = new UserTag();
+                userTag.setUTagStorage(uTagStorageRepository.findById(Long.parseLong(tag)).get());
+                userTagRepository.save(userTag);
+                System.out.println(userTag.getUTagStorage().getContent());
+                user.addUTagLists(userTag);
+            }
+
+
             userRepository.save(user);
             System.out.println(user.getUserName());
             System.out.println("User 수정 요청 성공");
+
+
 //            User sUser = userRepository.findByUserId(user.getUserId()).get();
 //            sUser.setUserPoint(user.getUserPoint());
 //            sUser.setUserName(user.getUserName());
             return true;
         }catch(Exception e){
+            e.printStackTrace();
             System.out.println("User 수정 요청 실패");
             return false;
         }
     }
+
+    @Override
+    @Transactional
+    public boolean updateUserScore(Long userId, Integer score) {
+//        try{
+//
+//        }catch (Exception e){
+//
+//        }
+        Optional<User> oUser = userRepository.findByUserId(userId);
+        if(oUser.isPresent()){
+            User user = userRepository.findByUserId(userId).get();
+            Double curPoint = user.getUserPoint();
+            /* 1~5까지 평가 점수가 들어오면 1(매우 나쁨) ~ 3(평균) ~ 5(매우 좋음) 각 단계를 0.1도씩 차등을 두어 처리*/
+            switch (score){
+                case 1:
+                    curPoint -= 0.2;
+                    break;
+                case 2:
+                    curPoint -= 0.1;
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    curPoint += 0.1;
+                    break;
+                case 5:
+                    curPoint += 0.2;
+                    break;
+            }
+            user.setUserPoint(curPoint);
+            userRepository.save(user);
+            System.out.println("현재 User의 온도: "+user.getUserPoint());
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    @Override
+    @Transactional
+    public boolean followUser(String followingUserId, String followerUserId) {
+        boolean result = followRepository.existsByFollowerUserIdAndFollowingUserId(followerUserId, followingUserId);
+        System.out.println("result : "+ result);
+
+        // 이전 동일한 구독 이력이 있는지 확인
+        // 있다면 -> 그냥 반환
+        // 없다면 -> 구독 테이블 업데이트
+        if(result){
+            System.out.println("이미 구독했습니다.");
+            return false;
+        }else{
+            Follow follow = new Follow();
+            follow.setFollowerUserId(followerUserId);
+            follow.setFollowingUserId(followingUserId);
+            followRepository.save(follow);
+            return true;
+        }
+
+//        try{
+//
+//        }catch (NoSuchElementException e){
+//
+//        }
+    }
+
+    @Override
+    @Transactional
+    public boolean unFollowUser(String followingUserId, String follwerUserId) {
+        boolean result = followRepository.existsByFollowerUserIdAndFollowingUserId(follwerUserId, followingUserId);
+
+        if(result){
+            Follow follow = followRepository.findByFollowerUserIdAndFollowingUserId(follwerUserId, followingUserId).get();
+            followRepository.delete(follow);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public List<Follow> getFollower(String userServiceId) { // 현재 유저를 구독하고 있는 사람들의 목록
+        List<Follow> result = new ArrayList<>();
+
+        result = followRepository.findAllByFollowingUserId(userServiceId).get();
+//        try{
+//
+//        }catch(NoSuchElementException e){
+//
+//        }
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public List<Follow> getFollowing(String userServiceId) {     // 현재 유저가 구독하고 있는 사람들의 목록
+        List<Follow> result = new ArrayList<>();
+
+        result = followRepository.findAllByFollowerUserId(userServiceId).get();
+//        try{
+//
+//        }catch(NoSuchElementException e){
+//
+//        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getMyPartiesProceeding(String userServiceId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<PartylistDTO> parties = new ArrayList<>();
+
+        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        for (Puser p: pusers) {
+            Party party_temp = partyRepository.findByPusersContains(p);
+            String partyStatus_temp = party_temp.getStatus();
+            if(partyStatus_temp.equals("1") || partyStatus_temp.equals("2") ||partyStatus_temp.equals("3"))
+                parties.add(new PartylistDTO(party_temp));
+        }
+
+        resultMap.put("parties", parties);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> getMyPartiesCompleted(String userServiceId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<PartylistDTO> parties = new ArrayList<>();
+
+        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        for (Puser p: pusers) {
+            Party party_temp = partyRepository.findByPusersContains(p);
+            String partyStatus_temp = party_temp.getStatus();
+            if(partyStatus_temp.equals("4") ||partyStatus_temp.equals("5"))
+                parties.add(new PartylistDTO(party_temp));
+        }
+
+        resultMap.put("parties", parties);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> getMyPartiesCreated(String userServiceId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<PartylistDTO> parties = new ArrayList<>();
+
+        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        for (Puser p: pusers) {
+            System.out.println(p.getUser().getUserServiceId());
+            if(p.isLeader()) {
+                parties.add(new PartylistDTO(partyRepository.findByPusersContains(p)));
+            }
+        }
+
+        resultMap.put("parties", parties);
+        return resultMap;
+    }
+
 
 }
 

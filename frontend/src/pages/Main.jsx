@@ -1,35 +1,46 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
+
 import Banner from '../components/Main/Banner'
 import MiniMoa from '../components/Main/MiniMoa'
 import MiniGameMoa from '../components/Main/MiniGameMoa'
-// import axios from 'axios's
+import MainGameSpread from '../components/Main/MainGameSpread'
+import { getMainInfo } from '../api/Main'
+
 
 const Main = () => {
-  // useEffect(
-  //   axios({
-  //     url: 'http://i7a303.p.ssafy.io:8080/v2/api/main', // 통신할 웹문서
-  //     method: 'get', // 통신 방식
-  //   }).then((res) => {
-  //     const parties = res.parties
-  //     const bestGames = res.bests
-  //     const freeGames = res.frees
-  //     const todayGames = res.today
-  //   }).catch((err)=>{
-  //     console.log(err)
-  //   })
-  // )
+  const [parties, setParties] = useState([]);
+  const [bestGames, setBestGames] = useState([]);
+  const [freeGames, setFreeGames] = useState([]);
+  const [todayGames, setTodayGames] = useState([]);
+
+  useEffect(
+    ()=>{
+      getMainInfo()
+        .then((res)=> {
+          console.log(res)
+          setParties([...res.data.parties])
+          setBestGames([...res.data.bests])
+          setFreeGames([...res.data.frees])
+          setTodayGames([...res.data.today])
+        }).catch((err)=>{
+          console.log(err)
+        })
+    }, []
+  )
 
   return (
     <>
       <Navbar></Navbar>
       <div className='w-per75 m-auto'>
         {/* 배너 Carousel*/}
-        <Banner></Banner>
+        <Banner/>
         {/* 미니 모아 */}
-        <MiniMoa></MiniMoa>
+        <MiniMoa parties={parties}/>
         {/* 게임존 */}
-        <MiniGameMoa></MiniGameMoa>
+        <MiniGameMoa bests={bestGames} frees={freeGames} today={todayGames}/>
+
+        <MainGameSpread bests={bestGames} frees={freeGames} today={todayGames}/>
       </div>
 
       <div className='h-20'></div>

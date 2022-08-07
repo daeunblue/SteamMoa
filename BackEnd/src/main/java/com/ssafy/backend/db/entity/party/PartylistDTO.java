@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /*
     응답용 DTO.
@@ -24,10 +25,12 @@ public class PartylistDTO {
     private String partyTitle;
     private int maxPlayer;
     private int curPlayer;
-    private LocalDateTime startTime;
-    private LocalDateTime writeTime;
+    private String startTime;
+    private String writeTime;
 
-    private String status;
+    private String partyStatus;
+
+    private boolean partyIsUrgent;
 
     public PartylistDTO(Party p){
         this.partyId = p.getPartyId();
@@ -37,9 +40,13 @@ public class PartylistDTO {
         this.partyTitle = p.getTitle();
         this.maxPlayer = p.getMaxPlayer();
         this.curPlayer = p.getCurPlayer();
-        this.startTime = p.getStartTime();
-        this.writeTime = p.getWriteTime();
-        this.status = p.getStatus();
+        this.startTime = p.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+        this.writeTime = p.getWriteTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+        this.partyStatus = p.getStatus();
+        if(p.getStartTime().isBefore(LocalDateTime.now().plusHours(9).plusDays(1)))
+            this.partyIsUrgent = true;
+        else
+            this.partyIsUrgent = false;
 
         System.out.println("파티 list DTO 생성: "+this.partyTitle);
     }
