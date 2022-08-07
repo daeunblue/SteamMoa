@@ -44,7 +44,7 @@ const GameDetail = (props) => {
         }
 
         )
-    }, []
+    }, [gameId]
   )
   const tagInfo = [...gameDetail.genres]
   if (gameDetail.free) {
@@ -96,11 +96,13 @@ const GameDetail = (props) => {
           </div>
           {/* description */}
           <div className="px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-main-400 w-full">
-            <p className="w-full text-white text-xs tablet:text-sm laptop:text-base text-justify leading-relaxed" dangerouslySetInnerHTML={ {__html: gameDetail.description} }></p>
+            <p className="w-full text-white text-xs tablet:text-sm laptop:text-base text-justify leading-relaxed flex flex-col items-center
+                         [&_img]:mx-auto [&_img]:mt-2 [&_img]:mb-4 [&_img]:w-per75 [&_h1]:text-xl" 
+                dangerouslySetInnerHTML={ {__html: gameDetail.description} }></p>
           </div>
         </div>
         {/* 리뷰, 공략 */}
-        <div>
+        <div className="w-full px-[2.5%]">
           {/* tab */}
           <div className="bg-slate-300">
             <NavLink to={`/gamemoa/detail/${gameId}`}>리뷰</NavLink>
@@ -109,7 +111,7 @@ const GameDetail = (props) => {
           {/* list */}
           <div className="bg-white">
             <Routes>
-              <Route path="" element={<GameReviewList />} />
+              <Route path="" element={<GameReviewList/>} />
               <Route path="tactic" element={<GameTacticList />} />
             </Routes>
           </div>
