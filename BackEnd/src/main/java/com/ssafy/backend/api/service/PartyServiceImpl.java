@@ -104,12 +104,21 @@ public class PartyServiceImpl implements PartyService{
      */
     @Override
     @Transactional
-    public boolean createParty(PartyPostReq partyInfo) {
+    public String createParty(PartyPostReq partyInfo) {
         Party party = new Party();
 
         // 멀티게임 맞는지 확인 후 실패 응답
         if (!gameRepository.findAllMultiGameByOnlyName("").contains(gameRepository.findByGameId(partyInfo.getGameId())))
-            return false;
+            return "fail: 유효한 game id가 아닙니다.";
+        // 파티 태그 존재하는지 확인 후 실패 응답
+        for (String tag:partyInfo.getPartyTags()) {
+            if (!ptagStorageRepository.findById(Long.parseLong(tag)).isPresent())
+                return "fail: 유효한 파티 태그 코드가 아닙니다.";
+        }
+        // 유저 존재하는지 확인 후 실패 응답
+        if (!userRepository.findByUserServiceId(partyInfo.getUserId()).isPresent())
+            return "fail: 유효한 유저 아이디가 아닙니다.";
+
         party.setGame(gameRepository.findByGameId(partyInfo.getGameId()));
         party.setTitle(partyInfo.getPartyTitle());
         party.setMaxPlayer(Integer.parseInt(partyInfo.getMaxPlayer()));
@@ -123,10 +132,6 @@ public class PartyServiceImpl implements PartyService{
 
         PartyTag partyTag;
         for (String tag:partyInfo.getPartyTags()) {
-            // 파티 태그 존재하는지 확인 후 실패 응답
-            if (ptagStorageRepository.findById(Long.parseLong(tag))==null)
-                return false;
-
             partyTag = new PartyTag();
             partyTag.setPtagStorage(ptagStorageRepository.findById(Long.parseLong(tag)).get());
             partyTagRepository.save(partyTag);
@@ -135,8 +140,6 @@ public class PartyServiceImpl implements PartyService{
 
         // 유저 존재하는지 확인 후 실패 응답
         Optional<User> user = userRepository.findByUserServiceId(partyInfo.getUserId());
-        if (user == null)
-            return false;
         Puser puser = new Puser();
         puser.setUser(user.get());
         puser.setLeader(true);
@@ -146,7 +149,7 @@ public class PartyServiceImpl implements PartyService{
 
         partyRepository.save(party);
 
-        return true;
+        return "success";
     }
 
     // 파티 생성시 게임ID 검색

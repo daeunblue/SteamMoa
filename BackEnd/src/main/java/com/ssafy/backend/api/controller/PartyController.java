@@ -66,8 +66,9 @@ public class PartyController {
     @PostMapping("")
     @ApiOperation(value = "새로운 파티 생성", notes = "파티장이 새로운 파티를 생성한다.")
     public ResponseEntity<?> createParty(@RequestBody PartyPostReq partyPostReq){
-        boolean result = partyService.createParty(partyPostReq);
-        return ResponseEntity.status(200).body(result);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("message", partyService.createParty(partyPostReq));
+        return ResponseEntity.status(200).body(resultMap);
     }
 
     // 파티 생성시 게임ID 검색
