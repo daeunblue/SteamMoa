@@ -8,6 +8,7 @@ import com.ssafy.backend.db.entity.party.PartyTag;
 import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.party.Puser;
 import com.ssafy.backend.db.entity.tactic.Tactic;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     // 유저 식별자 PK
     @Id

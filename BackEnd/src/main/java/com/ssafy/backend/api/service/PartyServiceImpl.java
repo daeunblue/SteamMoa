@@ -12,7 +12,6 @@ import com.ssafy.backend.db.repository.party.PartyRepository;
 import com.ssafy.backend.db.repository.party.PartyTagRepository;
 import com.ssafy.backend.db.repository.party.PtagStorageRepository;
 import com.ssafy.backend.db.repository.party.PuserRepository;
-import jdk.vm.ci.meta.Local;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
