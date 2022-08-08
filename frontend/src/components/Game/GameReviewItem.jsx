@@ -1,10 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 const GameReviewItem = (props) => {
   const {review} = props
-  const writer = "someone"
-  const time = "2022.08.07"
+  function leftPad(value) {
+    if (value >= 10) {
+        return value;
+    }
+
+    return `0${value}`;
+  }
+
+  function toStringByFormatting(source, delimiter = '.') {
+    const year = source.getFullYear();
+    const month = leftPad(source.getMonth() + 1);
+    const day = leftPad(source.getDate());
+
+    return [year, month, day].join(delimiter);}
+
+  const time = toStringByFormatting(new Date(review.currentDate))
   let starCol= ""
   if (review.reviewScore <3){
     starCol = "text-moa-blue"
@@ -16,14 +30,12 @@ const GameReviewItem = (props) => {
 
 
 
-
-
   return (
     <div className='border rounded p-2 drop-shadow-lg my-1'>
       {/* 작성자+시간 */}
       <div>
         {/* 작성자 */}
-        <Link to={`/profile/${writer}`} className='text-xs text-center hover:cursor-pointer'>{writer}</Link>
+        <Link to={`/profile/${review.userServiceId}`} className='text-xs text-center font-semibold hover:cursor-pointer'>{review.userServiceId}</Link>
         <span className='text-xs text-center'> | </span>
         {/* 시간 */}
         <span className='text-xs text-center'>{time}</span>
@@ -32,13 +44,13 @@ const GameReviewItem = (props) => {
       <div className='flex items-center h-5 overflow-hidden mb-2'>
         {/* 별 */}
         <div className='mr-2'>
-          {[...Array(review.reviewScore)].map((_, index)=>{
+          {(review.reviewScore ? [...Array(Math.floor(review.reviewScore))].map((_, index)=>{
             return (
             <>
               <span className={`text-lg tablet:text-xl laptop:text-3xl ${starCol} align-text-center py-1`}>&#9733;</span>
             </>)
-          })}
-          {[...Array(5-review.reviewScore)].map((_, index)=>{
+          }) : <></>)}
+          {[...Array(5-Math.floor(review.reviewScore))].map((_, index)=>{
             return (
             <>
               <span className={`text-lg tablet:text-xl laptop:text-3xl text-searchbar-gray algitn-text-center py-1`}>&#9733;</span>

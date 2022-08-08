@@ -15,6 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 아래와 같이, Query Method 인터페이스(반환값, 메소드명, 인자) 정의를 하면 자동으로 Query Method 구현됨.
     Optional<User> findByUserId(Long userId);
     Optional<User> findByUserServiceId(String userServiceId);
+    Optional<List<User>> findAllByUserServiceIdContains(String userServiceId);
     Optional<List<Object>> findAllByUserId(Long userId);
 
 //    Optional<List<Follow>> findUserUserIdBy(Long userId);
