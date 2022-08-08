@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar';
 import axios from 'axios';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { moaDelete, moaUpdate } from '../../api/Moazone';
-import MoaPartyUserCard from '../../components/Moa/MoaUserCard';
+import MoaUserCard from '../../components/Moa/MoaUserCard';
 import { moaDetail } from '../../api/Moazone';
 
 const MoaUpdate = (props) => {
@@ -19,7 +19,7 @@ const MoaUpdate = (props) => {
         partyUsers: [],
     });
 
-    console.log(updateMoa);
+    console.log("updateMoa는: ",updateMoa);
 
     // 파티 태그 하드코딩
     const items= [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
@@ -192,7 +192,7 @@ const handleDeleteParty = (e) => {
                 value={moa.partyUsers}
                 onChange={onChange}
                 >
-                    <MoaPartyUserCard />
+                    <MoaUserCard />
                 </div>
                 </div>
             </div>

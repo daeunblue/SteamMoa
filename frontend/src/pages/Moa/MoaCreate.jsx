@@ -7,21 +7,19 @@ import MoaGameSearchBox from "../../components/Moa/MoaGameSearchBox";
 import { auth } from "../../recoil/Auth";
 import { useRecoilState } from "recoil";
 
-// 글을 작성하고 입력 버튼을 누르면 db에 저장
-// update 페이지에서 db를 불러온 뒤 수정 후 다시 서버로 보내 db에 저장
 function MoaCreate() {
 
     const user = useRecoilState(auth);
     const userId = user[0].userId;
 
     const [ moa, setMoa ] = useState({
-        chatLink: '',
+        chatLink: '채팅링크',
         gameId: 0,
         maxPlayer: 0,
-        partyDescription: '',
+        partyDescription: '파티 설명',
         partyTags:[],
-        partyTitle: '',
-        startTime: '',
+        partyTitle: '파티글 모집 제목',
+        startTime: '2022-08-08T02:02',
         userId: userId,
     });
 
@@ -38,7 +36,7 @@ function MoaCreate() {
 
 
     const onCheckedElement = (event) => {
-        const {checked,value} = event.target
+        const {checked, value} = event.target
 
         if (checked) {
             let newChk=[...checkedList]
@@ -49,6 +47,7 @@ function MoaCreate() {
         }
 
         // setMoa({...moa,partyTags: checkedList }); // 단계 밀려서 뒤로 넘김
+        // console.log(checkedList);
         
     }
 
@@ -58,12 +57,12 @@ function MoaCreate() {
       };
     ////////////////////////////////////////////
 
-    // useEffect(() => {
-    //     setMoa({
-    //         ...moa,
-    //         partyTags: checkedList,
-    //     });
-    // }, [checkedList])
+    useEffect(() => {
+        setMoa({
+            ...moa,
+            partyTags: checkedList,
+        });
+    }, [checkedList])
     
 
     // 데이터 변경사항 저장
@@ -87,9 +86,9 @@ function MoaCreate() {
 
     // 데이터 보내기
     const handleSubmit = (e) => {
-        console.log(moa);
+        console.log("글생성 버튼 클릭후 찍히는 moa는...", moa);
         e.preventDefault();
-        moaCreate()
+        moaCreate(moa)
         .then((data) =>  {
             console.log('data : ',data)
             if (data.status === 200) {
@@ -165,8 +164,8 @@ function MoaCreate() {
                 {/* 파티 태그 하드 코딩 */}
                 <div className="w-full">
                     {
-                        items.map((item ,index)=>
-                            <div key={index} >
+                        items.map((item, index)=>
+                            <div key={index}>
                         <input
                          checked={checkedList.includes(`${index+1}`)? true : false}
                         onChange={onCheckedElement} value={index+1} id={item} name={item} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>

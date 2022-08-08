@@ -5,9 +5,10 @@ function MoaUserCard(player) {
   // user 정보 가져오는 api 호출 후 user 객체 가지고있기
   const [ user, setUser ] = useState({
     userPoint: '',
+    playerId: '',
   });
 
-  console.log(user);
+  console.log("유저 객체: ", user);
 
   useEffect((e) => {
     getUserInfo(player.playerName)
@@ -38,6 +39,8 @@ function MoaUserCard(player) {
   return (
     // moaPartyUserCard
     <div className='w-per20 h-per15 text-black' style={neonBox}>
+        {/* 매너 온도에 따른 티어 이미지 */}
+        
         {/* 유저 매너 온도 */}
         <div>{user.userPoint}</div>
         {/* 유저아이디 */}
