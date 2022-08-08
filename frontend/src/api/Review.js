@@ -21,6 +21,6 @@ export const getUserReviews = (userServiceId) => {
 };
 
 export const getGameReviews = (gameId) => {
-  const url = `game/reviews/${gameId}`;
+  const url = `game/reviews/game/${gameId}`;
   return api.get(url);
 };
