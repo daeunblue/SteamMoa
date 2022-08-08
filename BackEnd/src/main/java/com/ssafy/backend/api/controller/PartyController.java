@@ -136,4 +136,19 @@ public class PartyController {
             return ResponseEntity.status(400).body(result);
         }
     }
+
+    // 파티를 임의로 모집마감하는 API
+    @PutMapping("/{partyid}/close")
+    @ApiOperation(value = "파티 임의 모집마감", notes = "파티 상태를 모집 중에서 모집 완료 상태로 바꾼다.")
+    public ResponseEntity<? extends Map<String,Object>> closeParty(@PathVariable("partyid") Long partyid){
+        Map<String,Object> result = new HashMap<>();
+
+        if(partyService.closeParty(partyid)){
+            result.put("message","Success");
+            return ResponseEntity.status(200).body(result);
+        }else{
+            result.put("message","Fail");
+            return ResponseEntity.status(400).body(result);
+        }
+    }
 }

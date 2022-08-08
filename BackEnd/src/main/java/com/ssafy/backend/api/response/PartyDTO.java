@@ -30,6 +30,7 @@ public class PartyDTO {
     private int curPlayer;
     private String startTime;
     private String writeTime;
+    private String writerId;
     private String partyStatus;
     private List<PartyPlayerDTO> partyPlayers = new ArrayList<>();
     private String partyDescription;
@@ -52,6 +53,8 @@ public class PartyDTO {
         this.partyStatus = p.getStatus();
         for (Puser puser: p.getPusers()) {
             this.partyPlayers.add(new PartyPlayerDTO(puser));
+            if(puser.isLeader())
+                this.writerId = puser.getUser().getUserServiceId();
         }
         this.partyDescription = p.getDescription();
         this.chatLink = p.getChatLink();

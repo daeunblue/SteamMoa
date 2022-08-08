@@ -286,4 +286,18 @@ public class PartyServiceImpl implements PartyService{
 
         return list;
     }
+
+    @Override
+    public boolean closeParty(Long partyId) {
+        if(partyRepository.findByPartyId(partyId) == null)
+            return false;
+
+        Party party = partyRepository.findByPartyId(partyId);
+        if(party.getStatus().equals("1"))
+            party.setStatus("2");
+        else if(party.getStatus().equals("2"))
+            party.setStatus("1");
+        partyRepository.save(party);
+        return true;
+    }
 }

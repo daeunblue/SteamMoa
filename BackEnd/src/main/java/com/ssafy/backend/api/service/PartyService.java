@@ -38,4 +38,8 @@ public interface PartyService {
 
     // 파티 평가를 위한 정보 반환
     List<PUserEvalDto> getPlayersForEvaluate(Long partyId, String userServiceId);
+
+    // 파티를 임의 모집마감하는 API
+    boolean closeParty(Long partyId);
+
 }
