@@ -34,4 +34,13 @@ public class MainpageController {
         MainpageDTO result = mainpageService.getMainpage();
         return ResponseEntity.status(200).body(result);
     }
+
+
+    @GetMapping("/search")
+    @ApiOperation(value = "통합 검색", notes = "type: user -> 유저 정보 검색 \n type: content -> '게임 이름'을 받아서 파티, 게임, 공략글을 검색")
+    public ResponseEntity<?> getIntegratedSearch(@RequestParam(required = true, defaultValue = "content") String type, @RequestParam(required = false, defaultValue = "lucky") String keyword){
+        Map<String,Object> result = mainpageService.getIntegratedSearch(type, keyword);
+        return ResponseEntity.status(200).body(result);
+    }
+
 }
