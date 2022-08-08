@@ -1,4 +1,4 @@
-package com.ssafy.backend.db.entity;
+package com.ssafy.backend.db.entity.notice;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

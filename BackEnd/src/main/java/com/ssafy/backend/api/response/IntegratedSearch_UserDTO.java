@@ -1,19 +1,10 @@
-package com.ssafy.backend.db.entity;
+package com.ssafy.backend.api.response;
 
-import com.ssafy.backend.api.response.UserDto;
-import com.ssafy.backend.db.entity.game.Game;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
-import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
-import com.ssafy.backend.db.entity.party.Puser;
-import com.ssafy.backend.db.entity.review.Review;
-import com.ssafy.backend.db.entity.tactic.Tactic;
-import com.ssafy.backend.db.repository.party.PartyRepository;
-import com.ssafy.backend.db.repository.party.PuserRepository;
+import com.ssafy.backend.db.entity.user.User;
+import com.ssafy.backend.db.entity.user.UserTag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;

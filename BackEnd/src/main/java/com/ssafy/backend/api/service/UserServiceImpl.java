@@ -2,14 +2,13 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
-import com.ssafy.backend.db.entity.UserTag;
+import com.ssafy.backend.db.entity.user.UserTag;
 import com.ssafy.backend.db.entity.follow.Follow;
-import com.ssafy.backend.db.entity.game.Game;
 import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
+import com.ssafy.backend.api.response.PartylistDTO;
 import com.ssafy.backend.db.entity.party.Puser;
-import com.ssafy.backend.db.repository.UTagStorageRepository;
-import com.ssafy.backend.db.repository.UserTagRepository;
+import com.ssafy.backend.db.repository.user.UTagStorageRepository;
+import com.ssafy.backend.db.repository.user.UserTagRepository;
 import com.ssafy.backend.db.repository.follow.FollowRepository;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import com.ssafy.backend.db.repository.party.PuserRepository;
@@ -19,11 +18,10 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.entity.user.User;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Part;
 import java.util.*;
 
 /**

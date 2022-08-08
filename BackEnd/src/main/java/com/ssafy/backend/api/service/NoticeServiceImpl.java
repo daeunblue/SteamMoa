@@ -1,9 +1,9 @@
 package com.ssafy.backend.api.service;
 
-import com.ssafy.backend.db.entity.Notice;
-import com.ssafy.backend.db.entity.NoticeDTO;
-import com.ssafy.backend.db.repository.NoticeRepository;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.entity.notice.Notice;
+import com.ssafy.backend.api.response.NoticeDTO;
+import com.ssafy.backend.db.repository.notice.NoticeRepository;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,9 +2,9 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
-import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.response.PUserEvalDto;
-import com.ssafy.backend.db.entity.party.*;
+import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
+import com.ssafy.backend.api.response.PartyDTO;
 import org.json.simple.JSONObject;
 
 import java.util.List;

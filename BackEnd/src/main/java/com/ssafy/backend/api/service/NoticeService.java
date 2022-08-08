@@ -1,8 +1,6 @@
 package com.ssafy.backend.api.service;
 
-import com.ssafy.backend.db.entity.NoticeDTO;
-import com.ssafy.backend.db.entity.game.GameDTO;
-import org.json.simple.JSONObject;
+import com.ssafy.backend.api.response.NoticeDTO;
 
 import java.util.List;
 

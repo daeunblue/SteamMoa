@@ -1,7 +1,6 @@
-package com.ssafy.backend.db.repository;
+package com.ssafy.backend.db.repository.notice;
 
-import com.ssafy.backend.db.entity.Notice;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.notice.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,8 @@
-package com.ssafy.backend.db.entity.game;
+package com.ssafy.backend.api.response;
 
-import com.ssafy.backend.db.entity.review.Review;
-import com.ssafy.backend.db.repository.ReviewRepository;
+import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.game.Gamegenre;
+import com.ssafy.backend.db.repository.review.ReviewRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

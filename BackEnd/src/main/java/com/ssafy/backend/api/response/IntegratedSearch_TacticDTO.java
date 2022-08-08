@@ -1,16 +1,9 @@
-package com.ssafy.backend.db.entity;
+package com.ssafy.backend.api.response;
 
-import com.ssafy.backend.db.entity.game.Game;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
-import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
 import com.ssafy.backend.db.entity.tactic.Tactic;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

@@ -1,4 +1,4 @@
-package com.ssafy.backend.db.repository;
+package com.ssafy.backend.db.repository.review;
 
 import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.tactic.Tactic;
