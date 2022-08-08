@@ -21,7 +21,7 @@ public interface GameRepository extends JpaRepository<Game, Long>, GameCustomRep
     Optional<List<Game>> findTop8ByNameContains(String name);
 
     // 멀티게임, 그리고 판매중(가격이 -1이 아닌)인 게임만 불러오도록 쿼리 수정 필요
-    @Query(value = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1",
+    @Query(value = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 order by game.game_score desc",
             countQuery="select count(*) from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1",
             nativeQuery = true)
     List<Game> findAllMultiGame(Pageable pageable);

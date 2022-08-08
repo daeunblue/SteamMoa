@@ -16,6 +16,17 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
     @Autowired
     EntityManager em;
 
+
+    @Override
+    public List<Game> findAllMultiGameByOnlyName(String name){
+        // 쿼리문 생성
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game.game_name like \'%" + name + "%\' order by game.game_score desc";
+        Query query = em.createNativeQuery(sql, Game.class);
+        List<Game> gamelist = query.getResultList();
+        return gamelist;
+    }
+
+
     @Override
     public List<Game> findAllMultiGameByFilter(String name, String[] tag, Pageable pageable) {
 
@@ -44,7 +55,8 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
         sql +=  ") as gamegenre\n" +
                 "inner join game\n" +
                 "on gamegenre.game_id = game.game_id\n" +
-                "where game.game_name like \'%" + name + "%\' and game.game_price != -1";
+                "where game.game_name like \'%" + name + "%\' and game.game_price != -1\n" +
+                "order by game.game_score desc";
 
         Query query = em.createNativeQuery(sql, Game.class);
         List<Game> gamelist = query
@@ -53,14 +65,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
                 .getResultList();
         return gamelist;
     }
-    @Override
-    public List<Game> findAllMultiGameByOnlyName(String name){
-        // 쿼리문 생성
-        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game.game_name like \'%" + name + "%\'";
-        Query query = em.createNativeQuery(sql, Game.class);
-        List<Game> gamelist = query.getResultList();
-        return gamelist;
-    }
+
 
     @Override
     public int findAllMultiGameByFilter(String name, String[] tag) {
