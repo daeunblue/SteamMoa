@@ -5,8 +5,7 @@ import SearchUser from "../components/Search/SearchUser";
 import SearchGame from "../components/Search/SearchGame";
 import Navbar from "../components/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-
+import { faSearch, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 const Search = (props) => {
   const navigate = useNavigate();
@@ -14,6 +13,9 @@ const Search = (props) => {
   const keyword = searchParams.get("word");
   const [searchWord, setSearchWord] = useState(keyword);
 
+  useEffect(() => {
+    setSearchWord(keyword);
+  }, [keyword]);
 
   const onChangeSearch = (e) => {
     e.preventDefault();
@@ -28,10 +30,18 @@ const Search = (props) => {
 
   const onSearch = () => {
     if (searchWord.startsWith("@")) {
-      navigate(`/search/user?word=${encodeURIComponent(searchWord.slice(1, searchWord.length))}`);
+      navigate(
+        `/search/user?word=${encodeURIComponent(
+          searchWord.slice(1, searchWord.length)
+        )}`
+      );
     } else {
       navigate(`/search/game?word=${encodeURIComponent(searchWord)}`);
-    }  
+    }
+  };
+
+  const handleScrollUp = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -47,16 +57,22 @@ const Search = (props) => {
           <span className="text-moa-purple">@사용자</span>를 검색해보세요
         </span>
         {/* 검색어 입력 */}
-        <div id="search-bar" className="w-per50 h-14 flex felx-row bg-searchbar-gray rounded-lg">
+        <div
+          id="search-bar"
+          className="w-per50 h-14 flex felx-row bg-searchbar-gray rounded-lg"
+        >
           <div className="flex w-per5 items-center ml-5 pointer-events-none">
-            <FontAwesomeIcon className="text-detailContent-light text-2xl" icon={faSearch} />
+            <FontAwesomeIcon
+              className="text-detailContent-light text-2xl"
+              icon={faSearch}
+            />
           </div>
           <input
             type="text"
             id="search"
             value={searchWord}
             onChange={onChangeSearch}
-            onKeyUp={ onKeyPress }
+            onKeyUp={onKeyPress}
             className="w-per95 text-lg text-gray-800 bg-transparent border-0 focus:border-none focus:border-slate-500border-transparent focus:border-transparent focus:ring-0"
           />
         </div>
@@ -66,6 +82,12 @@ const Search = (props) => {
         <Route path="user" element={<SearchUser />}></Route>
         <Route path="game" element={<SearchGame />}></Route>
       </Routes>
+      <button
+        className="fixed bottom-2 right-2 w-10 h-10 bg-moa-pink hover:bg-moa-pink-dark text-white rounded-full"
+        onClick={handleScrollUp}
+      >
+        <FontAwesomeIcon icon={faArrowUp} />
+      </button>
     </div>
   );
 };

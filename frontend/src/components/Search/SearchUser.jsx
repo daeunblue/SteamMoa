@@ -1,244 +1,77 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getSearchLists } from "../../api/Search";
+import MiniPagination from "../MiniPagination";
 import ProfileSearchUser from "../Profile/ProfileSearchUser";
+import { range } from "lodash";
 
 const SearchUser = (props) => {
   const [searchParams] = useSearchParams();
   const keyword = decodeURIComponent(searchParams.get("word"));
-  const [userList, setUserList] = useState([
-    {
-      userId: 1,
-      userName: "사용자 이름",
-      userServiceId: "user_id",
-      userPoint: 39.5,
-      userTags: ["즐겜러", "빡겜러"],
-      userParties: [
-        {
-          partyId: 16,
-          gameId: 457,
-          gameImgPath:
-            "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-          gameName: "Starting Life In Another World Naked",
-          partyTitle: "Title",
-          maxPlayer: 3,
-          curPlayer: 1,
-          startTime: "2021-11-08T20:44",
-          writeTime: "2022-08-05T00:41",
-          partyStatus: "1",
-          partyIsUrgent: true,
-          },
-          {
-            partyId: 17,
-            gameId: 457,
-            gameImgPath:
-              "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-            gameName: "Starting Life In Another World Naked",
-            partyTitle: "Title",
-            maxPlayer: 3,
-            curPlayer: 1,
-            startTime: "2021-11-08T20:44",
-            writeTime: "2022-08-05T00:41",
-            partyStatus: "1",
-            partyIsUrgent: true,
-          },
-          {
-            partyId: 18,
-            gameId: 457,
-            gameImgPath:
-              "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-            gameName: "Starting Life In Another World Naked",
-            partyTitle: "Title",
-            maxPlayer: 3,
-            curPlayer: 1,
-            startTime: "2021-11-08T20:44",
-            writeTime: "2022-08-05T00:41",
-            partyStatus: "1",
-            partyIsUrgent: true,
-          },
-      ],
-    },
-    {
-      userId: 2,
-      userName: "사용자 이름",
-      userServiceId: "user_id",
-      userPoint: 33.5,
-      userTags: ["즐겜러", "빡겜러"],
-      userParties: [
-        {
-          partyId: 16,
-          gameId: 457,
-          gameImgPath:
-            "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-          gameName: "Starting Life In Another World Naked",
-          partyTitle: "Title",
-          maxPlayer: 3,
-          curPlayer: 1,
-          startTime: "2021-11-08T20:44",
-          writeTime: "2022-08-05T00:41",
-          partyStatus: "1",
-          partyIsUrgent: true,
-        },
-      ],
-    },
-    {
-      userId: 10,
-      userName: "사용자 이름",
-      userServiceId: "user_id",
-      userPoint: 34.5,
-      userTags: ["즐겜러", "빡겜러"],
-      userParties: [
-        {
-          partyId: 16,
-          gameId: 457,
-          gameImgPath:
-            "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-          gameName: "Starting Life In Another World Naked",
-          partyTitle: "Title",
-          maxPlayer: 3,
-          curPlayer: 1,
-          startTime: "2021-11-08T20:44",
-          writeTime: "2022-08-05T00:41",
-          partyStatus: "1",
-          partyIsUrgent: true,
-        },
-      ],
-    },
-    {
-      userId: 3,
-      userName: "사용자 이름",
-      userServiceId: "user_id",
-      userPoint: 35.5,
-      userTags: ["즐겜러", "빡겜러"],
-      userParties: [
-        {
-          partyId: 16,
-          gameId: 457,
-          gameImgPath:
-            "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-          gameName: "Starting Life In Another World Naked",
-          partyTitle: "Title",
-          maxPlayer: 3,
-          curPlayer: 1,
-          startTime: "2021-11-08T20:44",
-          writeTime: "2022-08-05T00:41",
-          partyStatus: "1",
-          partyIsUrgent: true,
-        },
-      ],
-    },
-    {
-      userId: 4,
-      userName: "사용자 이름",
-      userServiceId: "user_id",
-      userPoint: 36.5,
-      userTags: ["즐겜러", "빡겜러"],
-      userParties: [
-        {
-          partyId: 16,
-          gameId: 457,
-          gameImgPath:
-            "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-          gameName: "Starting Life In Another World Naked",
-          partyTitle: "Title",
-          maxPlayer: 3,
-          curPlayer: 1,
-          startTime: "2021-11-08T20:44",
-          writeTime: "2022-08-05T00:41",
-          partyStatus: "1",
-          partyIsUrgent: true,
-        },
-      ],
-    },
-    {
-      userId: 5,
-      userName: "사용자 이름",
-      userServiceId: "user_id",
-      userPoint: 37.5,
-      userTags: ["즐겜러", "빡겜러"],
-      userParties: [
-        {
-          partyId: 16,
-          gameId: 457,
-          gameImgPath:
-            "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-          gameName: "Starting Life In Another World Naked",
-          partyTitle: "Title",
-          maxPlayer: 3,
-          curPlayer: 1,
-          startTime: "2021-11-08T20:44",
-          writeTime: "2022-08-05T00:41",
-          partyStatus: "1",
-          partyIsUrgent: true,
-        },
-      ],
-    },
-    {
-      userId: 6,
-      userName: "사용자 이름",
-      userServiceId: "user_id",
-      userPoint: 36.5,
-      userTags: ["즐겜러", "빡겜러"],
-      userParties: [
-        {
-          partyId: 16,
-          gameId: 457,
-          gameImgPath:
-            "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-          gameName: "Starting Life In Another World Naked",
-          partyTitle: "Title",
-          maxPlayer: 3,
-          curPlayer: 1,
-          startTime: "2021-11-08T20:44",
-          writeTime: "2022-08-05T00:41",
-          partyStatus: "1",
-          partyIsUrgent: true,
-        },
-      ],
-    },
-    {
-      userId: 7,
-      userName: "사용자 이름",
-      userServiceId: "user_id",
-      userPoint: 38.5,
-      userTags: ["즐겜러", "빡겜러"],
-      userParties: [
-        {
-          partyId: 16,
-          gameId: 457,
-          gameImgPath:
-            "https://cdn.akamai.steamstatic.com/steam/apps/2050430/header.jpg?t=1658495323",
-          gameName: "Starting Life In Another World Naked",
-          partyTitle: "Title",
-          maxPlayer: 3,
-          curPlayer: 1,
-          startTime: "2021-11-08T20:44",
-          writeTime: "2022-08-05T00:41",
-          partyStatus: "1",
-          partyIsUrgent: true,
-        },
-      ],
-    },
-  ]);
 
-  //   useEffect(() => {
-  //     getSearchLists("user", keyword)
-  //       .then(({ data }) => {
-  //         setUserList([...data.users]);
-  //       })
-  //       .catch();
-  //   });
+  const [userList, setUserList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [contentCnt, setContentCnt] = useState(0);
+  const [totPage, setTotPage] = useState(1);
+  const [viewablePages, setViewablePages] = useState([]);
+  const reviewsPerPage = 5;
+  const [showContents, setShowContents] = useState([]);
+
+  useEffect(() => {
+    getSearchLists("user", keyword.slice(1, keyword.length))
+      .then(({ data }) => {
+        const { users } = data;
+        setUserList([...users]);
+      })
+      .catch();
+  }, [keyword]);
+
+  useEffect(() => {
+    setContentCnt(userList.length);
+    setTotPage(Math.ceil(contentCnt / reviewsPerPage));
+    setViewablePages(
+      userList.length ? [...range(1, Math.min(totPage, 5) + 1)] : []
+    );
+  }, [userList, contentCnt, totPage]);
+
+  useEffect(() => {
+    const tmp = userList.slice(
+      (page - 1) * reviewsPerPage,
+      page * reviewsPerPage
+    );
+    setShowContents(tmp);
+  }, [page, userList]);
 
   return (
     <div className="w-per50 mx-auto">
       <div className="w-full py-7">
         <div className="w-full flex flex-row justify-between items-end text-white mb-2">
-          <span className="font-blackSans text-3xl text-moa-purple">유저모아</span>
+          <span className="font-blackSans text-3xl text-moa-purple">
+            유저모아
+          </span>
         </div>
-        <div className="w-full grid grid-cols-1 gap-3">
-          {userList.map((user) => (
-              <ProfileSearchUser key={ user.userId } user={user} />
-          ))}
+        {showContents.length ? (
+          <div className="w-full grid grid-cols-1 gap-3">
+            {showContents.map((user) => (
+              <ProfileSearchUser key={user.userId} user={user} />
+            ))}
+          </div>
+        ) : (
+          <div>해당 유저가 없습니다.</div>
+        )}
+
+        <div className="flex flex-row justify-center text-white mt-3">
+          {userList.length ? (
+            <MiniPagination
+              totPage={totPage}
+              page={page}
+              viewablePages={viewablePages}
+              setPage={setPage}
+              setViewablePages={setViewablePages}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
