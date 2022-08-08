@@ -1,4 +1,4 @@
-package com.ssafy.backend.db.entity;
+package com.ssafy.backend.db.entity.banner;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

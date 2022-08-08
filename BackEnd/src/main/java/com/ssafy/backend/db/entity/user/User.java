@@ -1,10 +1,9 @@
-package com.ssafy.backend.db.entity;
+package com.ssafy.backend.db.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.ssafy.backend.db.entity.party.PartyTag;
 import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.party.Puser;
 import com.ssafy.backend.db.entity.tactic.Tactic;

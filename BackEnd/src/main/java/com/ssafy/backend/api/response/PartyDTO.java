@@ -1,16 +1,15 @@
-package com.ssafy.backend.db.entity.party;
+package com.ssafy.backend.api.response;
 
-import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.party.Party;
+import com.ssafy.backend.db.entity.party.PartyTag;
+import com.ssafy.backend.db.entity.party.Puser;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /*
     응답용 DTO.

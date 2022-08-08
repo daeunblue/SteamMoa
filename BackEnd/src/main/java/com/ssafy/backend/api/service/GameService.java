@@ -1,12 +1,7 @@
 package com.ssafy.backend.api.service;
 
-import com.ssafy.backend.db.entity.game.Game;
-import com.ssafy.backend.db.entity.game.GameDTO;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
+import com.ssafy.backend.api.response.GameDTO;
 import org.json.simple.JSONObject;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 /**
  *	게임 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.

@@ -1,8 +1,10 @@
-package com.ssafy.backend.db.entity.game;
+package com.ssafy.backend.api.response;
 
 import com.ssafy.backend.api.service.ReviewService;
-import com.ssafy.backend.db.entity.review.Review;
-import com.ssafy.backend.db.repository.ReviewRepository;
+import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.game.Gamecategory;
+import com.ssafy.backend.db.entity.game.Gamegenre;
+import com.ssafy.backend.db.repository.review.ReviewRepository;
 import com.ssafy.backend.db.repository.game.GCategoryStorageRepository;
 import com.ssafy.backend.db.repository.game.GGenreStorageRepository;
 import com.ssafy.backend.db.repository.game.GameCategoryRepository;

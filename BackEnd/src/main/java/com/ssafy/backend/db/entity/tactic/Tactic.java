@@ -1,8 +1,7 @@
 package com.ssafy.backend.db.entity.tactic;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.game.Game;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

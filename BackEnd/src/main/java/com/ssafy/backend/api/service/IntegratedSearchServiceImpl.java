@@ -1,14 +1,13 @@
 package com.ssafy.backend.api.service;
 
-import com.ssafy.backend.db.entity.*;
+import com.ssafy.backend.api.response.*;
 import com.ssafy.backend.db.entity.game.Game;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
 import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
 import com.ssafy.backend.db.entity.party.Puser;
 import com.ssafy.backend.db.entity.tactic.Tactic;
-import com.ssafy.backend.db.repository.TacticRepository;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.entity.user.User;
+import com.ssafy.backend.db.repository.tactic.TacticRepository;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import com.ssafy.backend.db.repository.party.PuserRepository;

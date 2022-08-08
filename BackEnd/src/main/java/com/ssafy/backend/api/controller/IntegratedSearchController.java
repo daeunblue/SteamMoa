@@ -1,8 +1,6 @@
 package com.ssafy.backend.api.controller;
 
 import com.ssafy.backend.api.service.IntegratedSearchService;
-import com.ssafy.backend.api.service.MainpageService;
-import com.ssafy.backend.db.entity.MainpageDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

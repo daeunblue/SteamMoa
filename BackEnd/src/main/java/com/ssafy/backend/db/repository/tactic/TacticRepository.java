@@ -1,4 +1,4 @@
-package com.ssafy.backend.db.repository;
+package com.ssafy.backend.db.repository.tactic;
 
 import com.ssafy.backend.db.entity.tactic.Tactic;
 import org.springframework.data.jpa.repository.JpaRepository;

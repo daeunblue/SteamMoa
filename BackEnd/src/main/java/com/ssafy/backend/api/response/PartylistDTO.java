@@ -1,7 +1,6 @@
-package com.ssafy.backend.db.entity.party;
+package com.ssafy.backend.api.response;
 
-import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.party.Party;
 import lombok.Getter;
 import lombok.Setter;
 

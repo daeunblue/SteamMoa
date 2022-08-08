@@ -1,6 +1,6 @@
-package com.ssafy.backend.db.repository;
+package com.ssafy.backend.db.repository.user;
 
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,7 @@
 package com.ssafy.backend.api.controller;
 
-import com.ssafy.backend.api.service.IntegratedSearchService;
 import com.ssafy.backend.api.service.NoticeService;
-import com.ssafy.backend.db.entity.NoticeDTO;
+import com.ssafy.backend.api.response.NoticeDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
