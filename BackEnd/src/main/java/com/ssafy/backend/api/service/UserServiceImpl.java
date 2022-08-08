@@ -2,14 +2,13 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
-import com.ssafy.backend.db.entity.UserTag;
+import com.ssafy.backend.db.entity.user.UserTag;
 import com.ssafy.backend.db.entity.follow.Follow;
-import com.ssafy.backend.db.entity.game.Game;
 import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
+import com.ssafy.backend.api.response.PartylistDTO;
 import com.ssafy.backend.db.entity.party.Puser;
-import com.ssafy.backend.db.repository.UTagStorageRepository;
-import com.ssafy.backend.db.repository.UserTagRepository;
+import com.ssafy.backend.db.repository.user.UTagStorageRepository;
+import com.ssafy.backend.db.repository.user.UserTagRepository;
 import com.ssafy.backend.db.repository.follow.FollowRepository;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import com.ssafy.backend.db.repository.party.PuserRepository;
@@ -19,11 +18,10 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.entity.user.User;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Part;
 import java.util.*;
 
 /**
@@ -182,6 +180,45 @@ public class UserServiceImpl implements UserService {
             System.out.println("User 수정 요청 실패");
             return false;
         }
+    }
+
+    @Override
+    @Transactional
+    public boolean updateUserScore(Long userId, Integer score) {
+//        try{
+//
+//        }catch (Exception e){
+//
+//        }
+        Optional<User> oUser = userRepository.findByUserId(userId);
+        if(oUser.isPresent()){
+            User user = userRepository.findByUserId(userId).get();
+            Double curPoint = user.getUserPoint();
+            /* 1~5까지 평가 점수가 들어오면 1(매우 나쁨) ~ 3(평균) ~ 5(매우 좋음) 각 단계를 0.1도씩 차등을 두어 처리*/
+            switch (score){
+                case 1:
+                    curPoint -= 0.2;
+                    break;
+                case 2:
+                    curPoint -= 0.1;
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    curPoint += 0.1;
+                    break;
+                case 5:
+                    curPoint += 0.2;
+                    break;
+            }
+            user.setUserPoint(curPoint);
+            userRepository.save(user);
+            System.out.println("현재 User의 온도: "+user.getUserPoint());
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     @Override

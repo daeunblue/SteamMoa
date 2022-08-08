@@ -1,6 +1,6 @@
 package com.ssafy.backend.db.entity.party;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

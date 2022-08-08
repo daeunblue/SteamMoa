@@ -1,7 +1,7 @@
 package com.ssafy.backend.db.entity.review;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.game.Game;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -38,6 +39,8 @@ public class Review {
     @JoinColumn(name="game_id")
     private Game game;
 
+    @Column(name="local_date_time", nullable = false)
+    private LocalDateTime localDateTime;
     public void setUser(User user) {
         if(this.user != null) {
             this.user.getReviewList().remove(this);

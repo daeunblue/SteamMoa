@@ -2,9 +2,8 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.follow.Follow;
-import com.ssafy.backend.db.entity.game.Game;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -31,6 +30,9 @@ public interface UserService {
 
     @Transactional
     boolean updateUser(Long userId, UserUpdatePutReq userUpdatePutReq);
+
+    // 매너온도 변경
+    boolean updateUserScore(Long userId, Integer score);
 
     // 팔로우 기능
     boolean followUser(String followingUserId, String followerUserId);

@@ -1,18 +1,16 @@
 package com.ssafy.backend.api.controller;
 
+import com.ssafy.backend.api.request.PartyEvalPostReq;
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
+import com.ssafy.backend.api.response.PUserEvalDto;
 import com.ssafy.backend.api.service.PartyService;
-import com.ssafy.backend.common.model.response.BaseResponseBody;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
-import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartyCreateGamelistDTO;
-import com.ssafy.backend.db.entity.party.PartyDTO;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
+import com.ssafy.backend.api.service.UserService;
+import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
+import com.ssafy.backend.api.response.PartyDTO;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +33,9 @@ public class PartyController {
 
     @Autowired
     PartyRepository partyRepository;
+
+    @Autowired
+    UserService userService;
 
     // 파티 전체 목록
     @GetMapping("")
@@ -102,5 +103,52 @@ public class PartyController {
     public ResponseEntity<?> deleteParty(@PathVariable("partyid") Long partyid){
         boolean result = partyService.deleteParty(partyid);
         return ResponseEntity.status(200).body(result);
+    }
+
+    @GetMapping("/eval/{party_id}/{user_service_id}")
+    @ApiOperation(value = "파티원 평가에 필요한 정보 반환 (user_service_id)만 제외하고 전달")
+    public ResponseEntity<? extends Map<String,Object>> getEvaluationPartyInfo(@PathVariable("party_id")Long partyId, @PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> result = new HashMap<>();
+        PartyDTO partyDTO = partyService.getPartyDetail(partyId);
+
+        if(partyDTO == null){
+            result.put("message","Fail");
+            return ResponseEntity.status(400).body(result);
+        }else{
+            result.put("party",partyDTO);
+            List<PUserEvalDto> pUserEvalDto = partyService.getPlayersForEvaluate(partyId, userServiceId);
+            result.put("users",pUserEvalDto);
+            result.put("message","Success");
+            return ResponseEntity.status(200).body(result);
+        }
+    }
+
+    @PostMapping("/eval")
+    @ApiOperation(value = "파티원 평가", notes = "파티원에 대한 평가 진행.")
+    public ResponseEntity<? extends Map<String,Object>> postEvaluation(@RequestBody PartyEvalPostReq partyEvalPostReq){
+        Map<String,Object> result = new HashMap<>();
+
+        if(userService.updateUserScore(partyEvalPostReq.getUserId(),partyEvalPostReq.getScore())){
+            result.put("message","Success");
+            return ResponseEntity.status(200).body(result);
+        }else{
+            result.put("message","Fail");
+            return ResponseEntity.status(400).body(result);
+        }
+    }
+
+    // 파티를 임의로 모집마감하는 API
+    @PutMapping("/{partyid}/close")
+    @ApiOperation(value = "파티 임의 모집마감", notes = "파티 상태를 모집 중에서 모집 완료 상태로 바꾼다.")
+    public ResponseEntity<? extends Map<String,Object>> closeParty(@PathVariable("partyid") Long partyid){
+        Map<String,Object> result = new HashMap<>();
+
+        if(partyService.closeParty(partyid)){
+            result.put("message","Success");
+            return ResponseEntity.status(200).body(result);
+        }else{
+            result.put("message","Fail");
+            return ResponseEntity.status(400).body(result);
+        }
     }
 }

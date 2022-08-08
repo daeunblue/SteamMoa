@@ -1,10 +1,10 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.db.entity.game.Game;
-import com.ssafy.backend.db.entity.game.GameDTO;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
+import com.ssafy.backend.api.response.GameDTO;
+import com.ssafy.backend.api.response.GamelistDTO;
 import com.ssafy.backend.db.entity.review.Review;
-import com.ssafy.backend.db.repository.ReviewRepository;
+import com.ssafy.backend.db.repository.review.ReviewRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

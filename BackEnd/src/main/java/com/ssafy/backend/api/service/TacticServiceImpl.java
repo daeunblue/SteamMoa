@@ -4,15 +4,14 @@ import com.ssafy.backend.api.request.TacticPostReq;
 import com.ssafy.backend.api.request.TacticPutReq;
 import com.ssafy.backend.api.response.TacticDto;
 import com.ssafy.backend.db.entity.tactic.Tactic;
-import com.ssafy.backend.db.repository.TacticRepository;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.repository.tactic.TacticRepository;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class TacticServiceImpl implements TacticService{

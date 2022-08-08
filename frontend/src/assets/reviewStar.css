@@ -40,3 +40,19 @@
 .star-rating label:hover ~ label {
   color:#fc0 !important;
 }
+
+.star-rating-disabled {  
+  display:flex;
+  flex-direction: row-reverse;
+  font-size:min(max(20px, 3vw), 40px);
+  justify-content:space-around;
+  text-align:center;
+  width:25%;
+}
+.star-rating-disabled label {
+  color:#ccc;
+}
+
+.star-rating-disabled input {
+  display:none;
+}

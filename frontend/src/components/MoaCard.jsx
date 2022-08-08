@@ -38,8 +38,8 @@ function MoaCard(props) {
     return result;
   };
 
-  const onClickCard = () => {
-    // navigate(`/moazone/detail/${partyId}`);
+  const onClickCard = (e) => {
+    e.stopPropagation();
     navigate(`/moazone/detail/${partyId}`);
   };
   return (

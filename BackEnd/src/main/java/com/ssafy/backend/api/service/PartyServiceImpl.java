@@ -2,28 +2,27 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
-import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.db.entity.game.GameDTO;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
+import com.ssafy.backend.api.response.PUserEvalDto;
+import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
+import com.ssafy.backend.api.response.PartyDTO;
+import com.ssafy.backend.api.response.PartylistDTO;
+import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.party.*;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import com.ssafy.backend.db.repository.party.PartyTagRepository;
 import com.ssafy.backend.db.repository.party.PtagStorageRepository;
 import com.ssafy.backend.db.repository.party.PuserRepository;
-import jdk.vm.ci.meta.Local;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -262,5 +261,43 @@ public class PartyServiceImpl implements PartyService{
             System.out.println("Party 삭제 요청 실패");
             return false;
         }
+    }
+
+    @Override
+    public List<PUserEvalDto> getPlayersForEvaluate(Long partyId, String userServiceId) {
+        // 파티원들의 정보 저장
+        List<PUserEvalDto> list = new ArrayList<>();
+
+        List<Puser> pUserList = partyRepository.findByPartyId(partyId).getPusers();
+
+        for (Puser puser: pUserList) {
+            PUserEvalDto pUserEvalDto = new PUserEvalDto();
+            if(puser.getUser().getUserServiceId().equals(userServiceId)) continue; // 본인은 제외하고 평가 리스트 보내기
+            pUserEvalDto.setUserServiceId(puser.getUser().getUserServiceId());
+            pUserEvalDto.setUserId(puser.getPuserId());
+            list.add(pUserEvalDto);
+        }
+
+//        try{
+//
+//        }catch (Exception e){
+//
+//        }
+
+        return list;
+    }
+
+    @Override
+    public boolean closeParty(Long partyId) {
+        if(partyRepository.findByPartyId(partyId) == null)
+            return false;
+
+        Party party = partyRepository.findByPartyId(partyId);
+        if(party.getStatus().equals("1"))
+            party.setStatus("2");
+        else if(party.getStatus().equals("2"))
+            party.setStatus("1");
+        partyRepository.save(party);
+        return true;
     }
 }
