@@ -32,6 +32,9 @@ public interface UserService {
     @Transactional
     boolean updateUser(Long userId, UserUpdatePutReq userUpdatePutReq);
 
+    // 매너온도 변경
+    boolean updateUserScore(Long userId, Integer score);
+
     // 팔로우 기능
     boolean followUser(String followingUserId, String followerUserId);
     boolean unFollowUser(String followingUserId, String followerUserId);

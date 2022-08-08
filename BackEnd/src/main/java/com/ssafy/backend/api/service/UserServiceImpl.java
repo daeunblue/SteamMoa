@@ -186,6 +186,45 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public boolean updateUserScore(Long userId, Integer score) {
+//        try{
+//
+//        }catch (Exception e){
+//
+//        }
+        Optional<User> oUser = userRepository.findByUserId(userId);
+        if(oUser.isPresent()){
+            User user = userRepository.findByUserId(userId).get();
+            Double curPoint = user.getUserPoint();
+            /* 1~5까지 평가 점수가 들어오면 1(매우 나쁨) ~ 3(평균) ~ 5(매우 좋음) 각 단계를 0.1도씩 차등을 두어 처리*/
+            switch (score){
+                case 1:
+                    curPoint -= 0.2;
+                    break;
+                case 2:
+                    curPoint -= 0.1;
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    curPoint += 0.1;
+                    break;
+                case 5:
+                    curPoint += 0.2;
+                    break;
+            }
+            user.setUserPoint(curPoint);
+            userRepository.save(user);
+            System.out.println("현재 User의 온도: "+user.getUserPoint());
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    @Override
+    @Transactional
     public boolean followUser(String followingUserId, String followerUserId) {
         boolean result = followRepository.existsByFollowerUserIdAndFollowingUserId(followerUserId, followingUserId);
         System.out.println("result : "+ result);
