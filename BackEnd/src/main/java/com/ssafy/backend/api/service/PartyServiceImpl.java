@@ -2,6 +2,7 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
+import com.ssafy.backend.api.response.PUserEvalDto;
 import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.GameDTO;
 import com.ssafy.backend.db.entity.game.GamelistDTO;
@@ -261,5 +262,29 @@ public class PartyServiceImpl implements PartyService{
             System.out.println("Party 삭제 요청 실패");
             return false;
         }
+    }
+
+    @Override
+    public List<PUserEvalDto> getPlayersForEvaluate(Long partyId, String userServiceId) {
+        // 파티원들의 정보 저장
+        List<PUserEvalDto> list = new ArrayList<>();
+
+        List<Puser> pUserList = partyRepository.findByPartyId(partyId).getPusers();
+
+        for (Puser puser: pUserList) {
+            PUserEvalDto pUserEvalDto = new PUserEvalDto();
+            if(puser.getUser().getUserServiceId().equals(userServiceId)) continue; // 본인은 제외하고 평가 리스트 보내기
+            pUserEvalDto.setUserServiceId(puser.getUser().getUserServiceId());
+            pUserEvalDto.setUserId(puser.getPuserId());
+            list.add(pUserEvalDto);
+        }
+
+//        try{
+//
+//        }catch (Exception e){
+//
+//        }
+
+        return list;
     }
 }

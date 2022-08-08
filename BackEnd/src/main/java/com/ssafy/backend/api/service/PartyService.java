@@ -3,10 +3,8 @@ package com.ssafy.backend.api.service;
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
 import com.ssafy.backend.api.request.UserRegisterPostReq;
-import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartyCreateGamelistDTO;
-import com.ssafy.backend.db.entity.party.PartyDTO;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
+import com.ssafy.backend.api.response.PUserEvalDto;
+import com.ssafy.backend.db.entity.party.*;
 import org.json.simple.JSONObject;
 
 import java.util.List;
@@ -38,4 +36,6 @@ public interface PartyService {
     // 파티 삭제
     boolean deleteParty(Long partyId);
 
+    // 파티 평가를 위한 정보 반환
+    List<PUserEvalDto> getPlayersForEvaluate(Long partyId, String userServiceId);
 }
