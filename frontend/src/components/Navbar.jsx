@@ -8,7 +8,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = (props) => {
   const navigate = useNavigate();
-  
+
   const activeClass =
     "text-white border-b-2 border-main-100 text-xs laptop:text-base tablet:text-sm mobile:text-xs font-blackSans mx-4 block min-w-10 text-center";
   const inactiveClass =
@@ -23,16 +23,16 @@ const Navbar = (props) => {
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       onSearch();
+      setSearch("");
     }
   };
 
   const onSearch = () => {
     if (search.startsWith("@")) {
-      navigate(`/search/user/${search.slice(1, search.length)}`);
+      navigate(`/search/user?word=${encodeURIComponent(search)}`);
     } else {
-      navigate(`/search/game/${search}`);
+      navigate(`/search/game?word=${encodeURIComponent(search)}`);
     }
-    
   };
 
   return (
@@ -56,24 +56,32 @@ const Navbar = (props) => {
             <NavLink
               exact="true"
               to="/"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+              className={({ isActive }) =>
+                isActive ? activeClass : inactiveClass
+              }
+            >
               홈
             </NavLink>
             <NavLink
               to="/moazone"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+              className={({ isActive }) =>
+                isActive ? activeClass : inactiveClass
+              }
+            >
               모아존
             </NavLink>
             <NavLink
               to="/gamemoa"
-              className={({ isActive }) => (isActive ? activeClass : inactiveClass)}>
+              className={({ isActive }) =>
+                isActive ? activeClass : inactiveClass
+              }
+            >
               게임 모아
             </NavLink>
           </div>
           <div className="h-per70 w-52">
             {/* 검색바 */}
-            <div
-              className="flex items-center p-1 w-full text-gray-900 bg-gray-400 rounded-lg border border-gray-500 sm:text-xs focus:ring-slate-500 focus:border-slate-500 h-full">
+            <div className="flex items-center p-1 w-full text-gray-900 bg-gray-400 rounded-lg border border-gray-500 sm:text-xs focus:ring-slate-500 focus:border-slate-500 h-full">
               <input
                 type="text"
                 id="small-input"

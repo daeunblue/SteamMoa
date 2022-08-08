@@ -36,7 +36,8 @@ function MoaCard(props) {
     return result;
   };
 
-  const onClickCard = () => {
+  const onClickCard = (e) => {
+    e.stopPropagation();
     navigate(`/moazone/detail/${partyId}`);
   };
   return (
