@@ -18,11 +18,13 @@ public class PartyPlayerDTO {
 
     private Long playerId;
     private String playerName;
+    private String userId;
     private boolean isLeader;
 
     public PartyPlayerDTO(Puser pu) {
         this.playerId = pu.getUser().getUserId();
         this.playerName = pu.getUser().getUserName();
+        this.userId = pu.getUser().getUserServiceId();
         this.isLeader = pu.isLeader();
     }
 }
