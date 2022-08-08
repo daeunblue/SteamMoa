@@ -2,6 +2,7 @@ package com.ssafy.backend.api.controller;
 
 import com.ssafy.backend.api.request.ReviewPostReq;
 import com.ssafy.backend.api.request.TacticPostReq;
+import com.ssafy.backend.api.response.ReviewDto;
 import com.ssafy.backend.api.service.ReviewService;
 import com.ssafy.backend.db.entity.review.Review;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,14 +76,24 @@ public class ReviewController {
     public ResponseEntity<? extends Map<String,Object>> findReviewByGameId(@PathVariable("game_id")Long gameId){
         Map<String,Object> resultMap = new HashMap<>();
 
+
         List<Review> result = reviewService.findReviewByGameId(gameId);
+        List<ReviewDto> customResult = new ArrayList<>();
+        for (Review review : result) {
+            ReviewDto reviewDto = new ReviewDto();
+            reviewDto.setReviewId(review.getReviewId());
+            reviewDto.setReviewContent(review.getReviewContent());
+            reviewDto.setReviewScore(review.getReviewScore());
+            reviewDto.setUserId(review.getUser().getUserId());
+            customResult.add(reviewDto);
+        }
 
         if(result.size() == 0){
             resultMap.put("message","Fail, 조회 결과 없음");
             return ResponseEntity.status(400).body(resultMap);
         }else{
             resultMap.put("message","Success");
-            resultMap.put("reviews", result);
+            resultMap.put("reviews", customResult);
             return ResponseEntity.status(200).body(resultMap);
         }
     }
