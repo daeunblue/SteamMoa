@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 파티 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -64,8 +66,9 @@ public class PartyController {
     @PostMapping("")
     @ApiOperation(value = "새로운 파티 생성", notes = "파티장이 새로운 파티를 생성한다.")
     public ResponseEntity<?> createParty(@RequestBody PartyPostReq partyPostReq){
-        boolean result = partyService.createParty(partyPostReq);
-        return ResponseEntity.status(200).body(result);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("message", partyService.createParty(partyPostReq));
+        return ResponseEntity.status(200).body(resultMap);
     }
 
     // 파티 생성시 게임ID 검색
@@ -88,8 +91,9 @@ public class PartyController {
     @PutMapping("/{partyid}")
     @ApiOperation(value = "파티 수정", notes = "파티장이 파티 정보를 수정하는 경우, 파티원이 파티를 가입하거나 탈퇴하는 경우 호출.")
     public ResponseEntity<?> updateParty(@PathVariable("partyid") Long partyid, @RequestBody PartyPutReq partyPutReq){
-        boolean result = partyService.updateParty(partyid, partyPutReq);
-        return ResponseEntity.status(200).body(result);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("message", partyService.updateParty(partyid, partyPutReq));
+        return ResponseEntity.status(200).body(resultMap);
     }
 
     // 파티 삭제
