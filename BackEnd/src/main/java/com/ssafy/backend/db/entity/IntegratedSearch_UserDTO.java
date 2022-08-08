@@ -21,10 +21,20 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class IntegratedSearch_UserDTO extends User {
+public class IntegratedSearch_UserDTO {
+    private Long userId;
+    private String userName;
+    private String userServiceId;
+    private double userPoint;
+    private List<String> userTags = new ArrayList<>();
     private List<PartylistDTO> userParties = new ArrayList<>();
 
     public IntegratedSearch_UserDTO(User u) {
-        super(u.getUserId(), u.getUserSteamId(), u.getUserServiceId(), u.getPassword(), u.getUserName(), u.isAdmin(), u.getUserPoint(), u.getNLists(), u.getUTagLists(), u.getPusers(), u.getTacticList(), u.getReviewList());
+        this.userId = u.getUserId();
+        this.userName = u.getUserName();
+        this.userServiceId = u.getUserServiceId();
+        this.userPoint = u.getUserPoint();
+        for(UserTag userTag: u.getUTagLists())
+            this.userTags.add(userTag.getUTagStorage().getContent());
     }
 }
