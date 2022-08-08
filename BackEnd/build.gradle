@@ -37,6 +37,8 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa'
     // jwt
     implementation("com.auth0:java-jwt:3.10.3")
+    // scheduler
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 // https://mvnrepository.com/artifact/junit/junit
 
     

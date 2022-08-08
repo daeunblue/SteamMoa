@@ -55,10 +55,6 @@ public class User {
     @Column(name = "user_point", nullable = false)
     private Double userPoint;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<NoticeList> nLists = new ArrayList<>();
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     @NotFound(action = NotFoundAction.IGNORE)
