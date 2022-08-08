@@ -75,7 +75,6 @@ const MiniMoa = (props) => {
             >
             { 
               moaCarousel(parties)
-                
             } 
 
           </div>
