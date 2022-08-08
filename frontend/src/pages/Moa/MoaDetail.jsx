@@ -29,6 +29,8 @@ function MoaDetail() {
     chatLink: '',
   });
 
+  const [reset,setReset]=useState(1);
+
   let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
 
   const formatTime = () => {
@@ -48,22 +50,27 @@ function MoaDetail() {
     .then((res)=>{ //중괄호 언제붙이는지 궁금?
       setDetailMoa(res.data)
     }).catch(error=>console.log(error))
-  }, [])
+  }, [reset])
 
 
   console.log('detailMoa : ',detailMoa);
   // 파티 참여 (파티장 빼고 가능)
   const handlePartyJoin = (e) => {
     e.preventDefault();
+    console.log(e);
     // partyPlayers에 userId 추가
-    setDetailMoa()
+    // const newPartyPlayers = [...detailMoa.partyPlayers, {[e.target.name]:e.target.value}]
+    // setDetailMoa({...detailMoa, partyPlayers:newPartyPlayers })
+    
+    // 모아 업데이트 api 호출
+    setReset(2);
+
 
   }
   // 파티 수정 (파티장만 가능)
   const handlePartyUpdate = (e) => {
     e.preventDefault();
     navigate(`/moazone/update/${partyId}`); //update 페이지로 이동
-
   }
 
   const handlePartyShare = (e) => {
@@ -94,11 +101,11 @@ function MoaDetail() {
             {/* <div name="partyStatus" value={detailMoa.partyStatus}>{detailMoa.partyStatus}</div> */}
             <div className="font-blackSans text-base whitespace-nowrap overflow-hidden text-ellipsis" name="partyTitle" value={detailMoa.partyTitle}>{detailMoa.partyTitle}</div>
             <button className="" onClick={handlePartyJoin}>파티 참여하기</button>
-            <button onClick={handlePartyUpdate}>파티 수정하기</button>
+            {detailMoa.partyPlayers.leader && <button onClick={handlePartyUpdate}>파티 수정하기</button>}
+            {!detailMoa.partyPlayers.leader && <button className="" onClick={handlePartyShare}>파티 공유하기</button>}
           </div>
           <div className="flex">
             <div className="" name="partyTags" value={detailMoa.partyTags}>아아아 {detailMoa.partyTags}</div>
-            <button className="" onClick={handlePartyShare}>파티 공유하기</button>
           </div>
           {/* <div className="text-xs font-sans font-semibold" name="startTime">파티시간: {formatTime()} </div> */}
           <div className="text-xs font-sans font-semibold">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
