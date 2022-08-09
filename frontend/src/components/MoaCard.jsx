@@ -17,6 +17,8 @@ function MoaCard(props) {
     partyTags,
   } = props.party;
 
+  console.log(props.party.partyId);
+
   let bgColors = [
     "bg-moa-pink",
     "bg-moa-green",

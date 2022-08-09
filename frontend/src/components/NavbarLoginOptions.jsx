@@ -46,7 +46,7 @@ const NavbarLoginOptions = (props) => {
   else
     return (
       <>
-        <Link to="/" className="text-white text-xs font-sans mr-2 font-bold">
+        <Link to="/moazone/create" className="text-white text-xs font-sans mr-2 font-bold">
           파티 만들기
         </Link>
         <div className="text-white text-xs font-sans mx-2 font-bold hover:cursor-pointer" onClick={onLogOut}>
