@@ -1,54 +1,83 @@
 import React from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileLines, faChampagneGlasses } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = (props) => {
-  const userName = props.user
-  const isMypage = props.isMypage
-  const userProfileInfo = props.userProfile
+  const {isMypage, userProfile, followerList, followingList, tier} = props
+  const profileName = userProfile.userServiceId
+  const param = useParams()
+  const subParam = Object.values(param)
+  const isMain = subParam.includes('')
 
   const midLocation = (isMypage ? "mypage":"profile")
-
+  const titleName = (isMypage ? "나의": `${profileName}님의`)
+  
   const menus = [
-    {title:'나의 파티',
+    {title:`Party`,
       submenus: [
-      {name:'참여 중인 파티', path:`/${midLocation}/${userName}/curparty`}, 
-      {name:'종료된 파티', path:`/${midLocation}/${userName}/pastparty`}]},
-    {title:'나의 글',
+      {name:`${titleName} 파티`, path:`/${midLocation}/${profileName}/myparty`}, 
+      {name:'진행 파티', path:`/${midLocation}/${profileName}/curparty`}, 
+      {name:'종료 파티', path:`/${midLocation}/${profileName}/pastparty`}],
+     icon:             
+            <FontAwesomeIcon
+            icon={faChampagneGlasses}
+            className="text-center"
+            />
+          },
+    {title:'Posting',
       submenus: [
-      {name: '내가 쓴 리뷰글', path:`/${midLocation}/${userName}/myreview`},
-      {name:'내가 쓴 공략글', path:`/${midLocation}/${userName}/mywalkthrough`} ]},
+      {name: '게임 리뷰', path:`/${midLocation}/${profileName}/myreview`},
+      {name: '게임 공략', path:`/${midLocation}/${profileName}/mywalkthrough`} ],
+      icon:             
+            <FontAwesomeIcon
+            icon={faFileLines}
+            className="text-center"
+            />
+    },
     ]
   return (
-    <div className='h-screen bg-sidebar-light w-per25' >
+    <div className='h-screen bg-sidebar-light w-per25 min-w-[90px]' >
       {/* 프로필 */}
       <NavLink
-        to={`/${midLocation}/${userName}`}
+        to={`/${midLocation}/${profileName}`}
+        className={ (isMain ?'block py-5 px-[10%] bg-moa-yellow-dark hover:cursor-pointer shadow-inner':'block py-5 px-[10%] bg-sidebar-dark hover:cursor-pointer')}
       >
-      <div className='p-5 bg-sidebar-dark hover:cursor-pointer'>
         <div className='flex justify-around items-center'>
-          <img src="../../ImgAssets/TierGold.png" alt="" className='w-9'/>
-          <span className='text-sm font-blackSans text-white'>{userName}</span>
+          <img src={`../../ImgAssets/Tier${tier}.png`} alt="" className='w-per20 min-w-[35px]'/>
+          <div className='flex flex-col justify-center'>
+            <span className='text-xs font-blackSans text-white'>{profileName}</span>
+            <div className='grid grid-cols-1 laptop:grid-cols-2 gap-1'>
+              <span className='text-white text-[10px]'>{`팔로우: ${followingList.length}`}</span>
+              <span className='text-white text-[10px]'>{`팔로워: ${followerList.length}`}</span>
+            </div>
+          </div>
         </div>
-      </div>
       </NavLink>
       {/* 메뉴 */}
-      <div>
+      <div className='p-[10%]'>
       {menus.map((menu,index) => {
         return (
-          <div key={index}>
-            <div className=''>{menu.title}</div>
-            {menu.submenus.map((submenu,idx)=>{
-              return (
-                <div key={idx}>    
-                  <NavLink 
-                    // style={{color: "gray", textDecoration: "none"}}
-                    className={({isActive}) => (isActive ? "text-white": "text-gray-600")}
-                    to={submenu.path}>
-                      {submenu.name}
-                  </NavLink>
-                </div> 
-                  )
-            })}
+          <div key={index} className='mb-8'>
+            <div className='flex text-lg font-bold text-white'>
+              <div className='mr-1.5'>{menu.icon}</div>
+              <div className=''>{menu.title}</div>
+            </div>
+            <hr className='text-gray-300 my-1'/>
+            <div className=''>
+              {menu.submenus.map((submenu,idx)=>{
+                return (
+                  <div key={idx} className="py-1">    
+                    <NavLink 
+                      // style={{color: "gray", textDecoration: "none"}}
+                      className={({isActive}) => (isActive ? "text-white flex justify-end px-2 font-bold bg-moa-yellow rounded py-0.5": "text-gray-400 py-0.5")}
+                      to={submenu.path}>
+                        {submenu.name}
+                    </NavLink>
+                  </div> 
+                    )
+              })}
+            </div>
           </div>
         )
       }) 
