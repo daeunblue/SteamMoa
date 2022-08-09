@@ -38,4 +38,10 @@ public class MainpageDTO {
     public void addToday(Game game){
         today.add(new GamelistDTO(game));
     }
+    public void addHots(Game game){
+        hots.add(new GamelistDTO(game));
+    }
+    public void addPicks(Game game){
+        picks.add(new GamelistDTO(game));
+    }
 }
