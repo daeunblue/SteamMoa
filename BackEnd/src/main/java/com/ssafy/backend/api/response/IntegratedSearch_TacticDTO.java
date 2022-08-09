@@ -14,7 +14,7 @@ public class IntegratedSearch_TacticDTO extends Tactic {
     private String gameImgPath;
 
     public IntegratedSearch_TacticDTO(Tactic t) {
-        super(t.getTacticId(), t.getTacticTitle(), t.getTacticContent(), t.getUser(), t.getGame());
+        super(t.getTacticId(), t.getTacticTitle(), t.getTacticContent(), t.getCreateTime(), t.getUser(), t.getGame());
         this.userServiceId = t.getUser().getUserServiceId();
         this.gameName = t.getGame().getName();
         this.gameImgPath = t.getGame().getImgpath();

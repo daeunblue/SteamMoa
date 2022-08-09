@@ -2,6 +2,7 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
+import com.ssafy.backend.api.response.UserDto;
 import com.ssafy.backend.db.entity.user.UserTag;
 import com.ssafy.backend.db.entity.follow.Follow;
 import com.ssafy.backend.db.entity.party.Party;
@@ -15,6 +16,7 @@ import com.ssafy.backend.db.repository.party.PuserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -88,13 +90,24 @@ public class UserServiceImpl implements UserService {
     public Map<String,Object> getUserInfoByUserId(String userServiceId) {
         Map<String, Object> result = new HashMap<>();
         // 디비에 유저 정보 조회 (userId 를 통한 조회).
-        System.out.println("조회 시작");
         User user = userRepository.findByUserServiceId(userServiceId).get();
-        System.out.println("user.getuserId() : "+user.getUserId());
-        result.put("user",user);
         if(user.getUserId() == null){
             System.out.println("아이디 에 해당하는 사용자 없음");
+            result.put("message","Fail");
+            return result;
+        }else{
+            UserDto userDto = new UserDto();
+            userDto.setUserId(user.getUserId());
+            userDto.setUserServiceId(user.getUserServiceId());
+            userDto.setUserPoint(user.getUserPoint());
+            for (UserTag tag:user.getUTagLists()) {
+                userDto.addUserTags(tag.getUTagStorage().getContent());
+            }
+            userDto.setUserName(user.getUserName());
+            result.put("user",userDto);
+            result.put("message","Success");
         }
+
         return result;
     }
 

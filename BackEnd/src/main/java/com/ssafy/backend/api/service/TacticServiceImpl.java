@@ -10,6 +10,7 @@ import com.ssafy.backend.db.repository.game.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,8 @@ public class TacticServiceImpl implements TacticService{
             tacticDto.setGameId(tactic.getGame().getGameId());
             tacticDto.setTacticTitle(tactic.getTacticTitle());
             tacticDto.setTacticContent(tactic.getTacticContent());
+            tacticDto.setCreateTime(tactic.getCreateTime());
+            tacticDto.setUserServiceId(tactic.getUser().getUserServiceId());
             resultList.add(tacticDto);
         }
         return resultList;
@@ -43,6 +46,7 @@ public class TacticServiceImpl implements TacticService{
 
     @Override
     public List<TacticDto> getTacticsByUserId(Long userId) {
+
         List<Tactic> list = tacticRepository.findByUserUserId(userId).get();
         List<TacticDto> resultList = new ArrayList<>();
 
@@ -53,6 +57,7 @@ public class TacticServiceImpl implements TacticService{
             tacticDto.setGameId(tactic.getGame().getGameId());
             tacticDto.setTacticTitle(tactic.getTacticTitle());
             tacticDto.setTacticContent(tactic.getTacticContent());
+            tacticDto.setCreateTime(tactic.getCreateTime());
             resultList.add(tacticDto);
         }
 
@@ -72,6 +77,7 @@ public class TacticServiceImpl implements TacticService{
             }
             tactic.setUser(userRepository.findByUserId(tacticPostReq.getUserId()).get());
             tactic.setGame(gameRepository.findByGameId(tacticPostReq.getGameId()));
+            tactic.setCreateTime(LocalDateTime.now());
             tacticRepository.save(tactic);
             return true;
         }catch (Exception e){
