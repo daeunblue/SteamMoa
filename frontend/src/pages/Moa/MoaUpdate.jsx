@@ -11,6 +11,7 @@ const MoaUpdate = (props) => {
    const params = useParams();
    const partyId = params.party_id;
     const [ moa, setMoa ] = useState({})
+
     const [ updateMoa, setUpdateMoa ] = useState({
         partyDescription: '',
         chatLink: '',
@@ -19,11 +20,18 @@ const MoaUpdate = (props) => {
         partyUsers: [],
     });
 
+
+    console.log("moa: ",moa);
     console.log("updateMoa는: ",updateMoa);
 
+    
     // 파티 태그 하드코딩
+
+
     const items= [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
     const [ checkedList, setCheckedList ] = useState([]);
+    console.log("updateMoa는: ",updateMoa);
+    console.log("checkedList: ",checkedList);
 
     const onCheckedElement = (event) => {
         const {checked,value} = event.target
@@ -63,8 +71,8 @@ const handleSubmit = (e) => {
     console.log("수정 완료 버튼 클릭시 : ",updateMoa); //파티유저 리스트에 파티장을 추가해야 함??
     moaUpdate(updateMoa, partyId)
     .then((res)=>{
-        if (res.statusCode === 200 ){
-            navigate(`/${moa.partyId}`)
+        if (res.status === 200 ){
+            navigate(`/moazone/detail/${moa.partyId}`)
         } else {
             alert(res.data.message);
         }
@@ -93,14 +101,33 @@ const handleDeleteParty = (e) => {
     moaDetail(partyId)
     .then(({data}) => {
         setMoa(data);
+        console.log(data.partyPlayers);
+        console.log(data.partyPlayers[0].userId);
         setUpdateMoa({...updateMoa,
             partyDescription: data.partyDescription,
             chatLink: data.chatLink,
             partyTags: data.partyTags,
-            partyStatus: data.partyStatus
+            partyStatus: data.partyStatus,
+            partyUsers: [data.partyPlayers[0].userId],
+        })
+        setCheckedList(()=>{
+            const list=[];
+            data.partyTags.forEach((tag)=>{
+                const idx= items.findIndex((item)=>item===tag);
+                list.push(`${idx+1}`);
             })
+            return list
+        })
         })
     },[]);
+
+    useEffect(() => {
+        setUpdateMoa({
+            ...updateMoa,
+            partyTags: checkedList,
+        });
+    }, [checkedList])
+    
   
   return (
     <>
@@ -181,7 +208,6 @@ const handleDeleteParty = (e) => {
                             <label htmlFor={item} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item}</label>
                             </div>
                             )
-                            //  checkedList.includes(item.id)
                             }
                     </div>
                     <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
@@ -199,7 +225,9 @@ const handleDeleteParty = (e) => {
                 value={moa.partyUsers}
                 onChange={onChange}
                 >
-                    <MoaUserCard />
+                {moa.partyPlayers&&moa.partyPlayers.map((player, playerId)=>{
+                  return <MoaUserCard key={playerId} player={player}/>
+                })}
                 </div>
                 </div>
             </div>

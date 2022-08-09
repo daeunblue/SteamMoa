@@ -34,11 +34,24 @@ function MoaDetail() {
     partyDescription:'',
     chatLink: '',
     writerId: '',
+    partyIsUrgent: false,
   });
 
-  const [reset, setReset ]= useState(1);
+  const items= [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
+
+  console.log(user);
+  console.log(detailMoa);
 
   let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
+  let bgColors = [
+    "bg-moa-pink",
+    "bg-moa-green",
+    "bg-mainBtn-disabled",
+    "moa-yellow",
+    "bg-moa-purple",
+    "bg-mainBtn-disabled",
+  ];
+
 
   // const formatTime = () => {
   //   const week = ["일", "월", "화", "수", "목", "금", "토"];
@@ -51,58 +64,63 @@ function MoaDetail() {
   //   return result;
   // };
 
-  // console.log("포맷타임: ", formatTime());
+  const [ updateMoa, setUpdateMoa ] = useState({
+    partyDescription: '',
+    chatLink: '',
+    partyTags: [],
+    partyStatus: '',
+    partyUsers: [],
+  });
 
-  useEffect(
-    () => {
-     moaDetail(partyId)
-    .then((res)=>{ //중괄호 언제붙이는지 궁금?
-      setDetailMoa(res.data)
-    }).catch(error=>console.log(error))
-  }, [reset])
+const [reRender,setReRender]=useState();
+// console.log(updateMoa);
 
-  // partyStatus에 1,2,3,4,5 에 대한 문구 switch문으로 작성
-  // switch (key) {
-  //   case value:
-      
-  //     break;
-  
-  //   default:
-  //     break;
-  // }
+useEffect(() => {
+  moaDetail(partyId)
+  .then(({data}) => {
+    setDetailMoa(data);
 
-  console.log('detailMoa : ', detailMoa);
+      const list=[];
+      data.partyTags.forEach((tag)=>{
+      const idx= items.findIndex((item)=>item===tag);
+      list.push(`${idx+1}`);
+    })
 
-  //파티 참여자 유저 아이디
-  const temp = () => {
-    return detailMoa.partyPlayers.map((p) => p.userId)
-  };
-  // console.log('temp 함수에서 받은 유저 아이디: ', temp())
-  // console.log('유저 아이디: ', userId);
-  // console.log(typeof(userId), typeof(temp()))
+      const users=[];
+      data.partyPlayers.forEach((player)=>{
+        users.push(player.userId)
+    })
+
+      setUpdateMoa({...updateMoa,
+          partyDescription: data.partyDescription,
+          chatLink: data.chatLink,
+          partyTags: list,
+          partyStatus: Number(data.partyStatus),
+          partyUsers: users,
+      })
+      })
+  },[reRender]);
+
 
   const handlePartyJoin = (e) => {
     e.preventDefault();
-    console.log("파티참여하기 버튼 누른 후: ",e);
-    // partyPlayers에 userId 추가
-    // const newPartyPlayers = [...detailMoa.partyPlayers, {[e.target.name]:e.target.value}]
-    // setDetailMoa({...detailMoa, partyPlayers:newPartyPlayers })
-    
-    // 모아 업데이트 api 호출
-    setReset(2);
+    const newPartyPlayers=[...updateMoa.partyUsers]
+    newPartyPlayers.push(userId)
+    console.log("뉴 파티플레이어 리스트: ", newPartyPlayers)
+    setUpdateMoa((updateMoa)=>{
+      return ({...updateMoa, partyUsers:newPartyPlayers})
+      
+    })
+    onUpdate()
+  }
 
-    const tempMoa = { 
-      chatLink: detailMoa.chatLink,
-      partyDescription: detailMoa.partyDescription,
-      partyStatus: detailMoa.partyStatus,
-      partyTags: detailMoa.partyTags,
-      partyUsers: temp()
-    }
-
-    moaUpdate(tempMoa, partyId).then((res)=> {
-      console.log("moaUpdate 호출 후: ",res);
+  const onUpdate=()=>{
+    console.log(updateMoa);
+    moaUpdate(updateMoa, partyId)
+      .then((res)=> {
+      console.log("moaUpdate 호출 후: ", res);
+      setReRender(res)
     });
-
   }
   // 파티 수정 (파티장만 가능)
   const handlePartyUpdate = (e) => {
@@ -132,21 +150,37 @@ function MoaDetail() {
       <div className="p-[2.5%] mb-4">
         <div>
           <div className='grid grid-flow-col '>
-            <span className='hover:cursor-pointer rounded-2xl font-bold text-white text-[2vw] tablet:text-[1.2vw] laptop:text-base px-1.5 tablet:px-2.5 py-0.5 bg-moa-blue hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2'>{detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}</span>
-            <div name="partyStatus" value={detailMoa.partyStatus}>{detailMoa.partyStatus}</div>
-            {/* partyStatus switch문으로 1,2,3,4,5 문구로 표시할 수 있게 */}
-            <div className="font-blackSans text-base whitespace-nowrap overflow-hidden text-ellipsis" name="partyTitle" value={detailMoa.partyTitle}>{detailMoa.partyTitle}</div>
-            {detailMoa.writerId === userId && <button className="" onClick={handlePartyUpdate}>파티 수정하기</button>}
-            {detailMoa.writerId !== userId && <button className="" onClick={handlePartyJoin}>파티 참여하기</button>}
-            <button className="" onClick={handlePartyShare}>파티 공유하기</button>
+            <div
+            className={`p-auto rounded flex justify-center items-center w-per25 text-xs font-blackSans text-white mr-2 
+            ${detailMoa.partyIsUrgent ? bgColors[0] : bgColors[detailMoa.partyStatus]}`}>
+            <span>{detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}</span>
           </div>
+            <div 
+            className="font-blackSans text-base whitespace-nowrap overflow-hidden text-ellipsis" 
+            name="partyTitle" 
+            value={detailMoa.partyTitle}>
+              {detailMoa.partyTitle}
+            </div>
+            <div>{detailMoa.writerId === userId && <button className="hover:cursor-pointer rounded-2xl font-bold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-moa-blue hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2" onClick={handlePartyUpdate}>파티 수정하기</button>}</div>
+            <div>{detailMoa.writerId !== userId && <button className="hover:cursor-pointer rounded-2xl font-bold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-moa-blue hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2" onClick={handlePartyJoin}>파티 참여하기</button>}</div>
+            
+            <button className="hover:cursor-pointer rounded-2xl font-bold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-1 bg-moa-pink hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center" onClick={handlePartyShare}>파티 공유하기</button>
+          </div>
+
           <div className="flex">
-            <div className="" name="partyTags" value={detailMoa.partyTags}>{detailMoa.partyTags}</div>
+          {detailMoa.partyTags.map((item, idx) => {
+            return (
+              <div key={idx}
+              name="partyTags"
+              className="rounded-2xl font-semibold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-2.5 py-1 bg-moa-green-dark drop-shadow-lg text-center flex items-center mr-2">{item}</div>
+              )
+            })}
           </div>
           {/* <div className="text-xs font-sans font-semibold" name="startTime">파티시간: {formatTime()} </div> */}
-          <div className="text-xs font-sans font-semibold">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
+          <div className="text-base font-blackSans font-semibold">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div>
             {detailMoa.partyPlayers.map((player, playerId)=>{
+              // console.log('detail player :',player);
               return <MoaUserCard key={playerId} player={player}/>
             })}
           </div>
@@ -160,4 +194,4 @@ function MoaDetail() {
   )
 }
 
-export default MoaDetail
+export default MoaDetail;
