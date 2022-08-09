@@ -48,26 +48,14 @@ public class UserController {
 
         Map<String, Object> result = new HashMap<>();
 
-        try {
-            User user = (User) userService.getUserInfoByUserId(userServiceId).get("user");
-//            System.out.println(user.toString());
-            UserDto userDto = new UserDto();
-            //builder 패턴 적용해야함
-            userDto.setUserId(user.getUserId());
-            userDto.setUserServiceId(user.getUserServiceId());
-            userDto.setUserPoint(user.getUserPoint());
-            for (UserTag tag:user.getUTagLists()) {
-                System.out.println(tag.getUTagStorage().getContent());
-                userDto.addUserTags(tag.getUTagStorage().getContent());
-            }
-            result.put("user",userDto);
-            result.put("message","Success");
-        } catch (Exception e) { // 에러코드 정리해서 처리해야할 부분
-            result.put("message","Fail");
-            e.printStackTrace();
+        result = userService.getUserInfoByUserId(userServiceId);
+        if (result.get("message").equals("Fail")){
             return ResponseEntity.status(403).body(result);
+        }else{
+            return ResponseEntity.status(200).body(result);
         }
-        return ResponseEntity.status(200).body(result);
+
+
     }
 
     @PutMapping("/profile")

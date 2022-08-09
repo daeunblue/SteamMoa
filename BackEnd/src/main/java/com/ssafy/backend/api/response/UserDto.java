@@ -28,10 +28,15 @@ public class UserDto {
     @ApiModelProperty(name="사용자 태그 목록", example="[\"즐겜\", \"생존겜 러버\"]")
     private List<String> userTags=new ArrayList<>();
 
-    public UserDto(long userId, String userServiceId, double userPoint, List<String> userTags) {
+    @ApiModelProperty(name = "사용자 닉네임", example = "모아모아")
+    private String userName;
+
+
+    public UserDto(long userId, String userServiceId, double userPoint, List<String> userTags, String userName) {
         this.userId = userId;
         this.userServiceId = userServiceId;
         this.userPoint = userPoint;
+        this.userName = userName;
         for (String tag:userTags) {
             this.userTags.add(tag);
         }

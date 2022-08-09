@@ -41,6 +41,7 @@ public class Review {
 
     @Column(name="local_date_time", nullable = false)
     private LocalDateTime localDateTime;
+
     public void setUser(User user) {
         if(this.user != null) {
             this.user.getReviewList().remove(this);
