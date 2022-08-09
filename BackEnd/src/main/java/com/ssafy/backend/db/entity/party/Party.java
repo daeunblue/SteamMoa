@@ -38,7 +38,7 @@ public class Party {
     @Column(name = "cur_player")
     private int curPlayer;
 
-    @Column(name = "party_description")
+    @Column(name = "party_description", length = 5000)
     private String description;
 
     @Column(name = "start_time")
