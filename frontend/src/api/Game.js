@@ -7,7 +7,6 @@ export const getGamesSearch = (page, searchFilter, searchWord) => {
   searchFilter.forEach((filterItem) => {
     url += `&tag=${filterItem.name}`;
   });
-  console.log(url);
   return api.get(url);
 };
 
