@@ -197,6 +197,11 @@ public class PartyServiceImpl implements PartyService{
         if(leader_serviceId == null)
             return "fail: 파티 멤버 배열 안에 파티장이 없습니다.";
 
+        // 파티원 너무 많으면 오류
+        System.out.println(member_serviceIds);
+        if(member_serviceIds.size() + 1 > party.getMaxPlayer())
+            return "fail: 최대 파티 인원을 초과하였습니다.";
+
         // 파티원 모두 날리기
         for (Puser u: party.getPusers()) {
                 puserRepository.delete(u);
@@ -218,7 +223,7 @@ public class PartyServiceImpl implements PartyService{
             party.addPuser(puser);
         }
 
-        party.setCurPlayer(partyInfo.getPartyUsers().length);
+        party.setCurPlayer(member_serviceIds.size() + 1);
 
 
 
@@ -242,7 +247,10 @@ public class PartyServiceImpl implements PartyService{
 
 
         // 파티 상태 수정
-        party.setStatus(partyInfo.getPartyStatus());
+        if(party.getMaxPlayer() <= party.getCurPlayer())
+            party.setStatus("2");
+        else
+            party.setStatus("1");
 
         partyRepository.save(party);
 

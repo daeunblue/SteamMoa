@@ -16,9 +16,12 @@ import java.util.List;
 public class MainpageDTO {
     private List<Banner> banners = new ArrayList<>();
     private List<PartylistDTO> parties = new ArrayList<>();
+
     private List<GamelistDTO> bests = new ArrayList<>();
     private List<GamelistDTO> frees = new ArrayList<>();
     private List<GamelistDTO> today = new ArrayList<>();
+    private List<GamelistDTO> hots = new ArrayList<>();
+    private List<GamelistDTO> picks = new ArrayList<>();
 
     public void addBanners(Banner banner){
         banners.add(banner);

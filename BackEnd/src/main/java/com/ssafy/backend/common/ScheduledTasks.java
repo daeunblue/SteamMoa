@@ -33,7 +33,7 @@ public class ScheduledTasks {
 
     // 5초마다 파티 상태 자동 업데이트
     // 1 모집 중, 2 모집 완료, 3 플레이 중, 4 플레이 완료, 5 모집 실패
-    @Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void updatePartyStatus() {
 
         // 로그
