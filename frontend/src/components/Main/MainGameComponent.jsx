@@ -4,16 +4,17 @@ import { useNavigate } from 'react-router-dom'
 const MainGameComponent = (props) => {
   const navigate = useNavigate()
   const {type, game} = props
-  let bg = "bg-moa-pink"
+  let bg = "bg-moa-green-dark"
   let text = "TODAY"
   let subText ="추천!"
   if (type==='best'){
     bg = "bg-moa-purple-dark"
     text = "BEST"
-  } else if (type === 'free'){
-    bg = "bg-moa-green-dark"
-    text = "FREE"
-    subText = "무료"
+    subText= "고퀄"
+  } else if (type === 'hot'){
+    bg = "bg-moa-pink"
+    text = "HOT"
+    subText = "트렌드"
   }
 
   const onClickRecommend = ()=>{
