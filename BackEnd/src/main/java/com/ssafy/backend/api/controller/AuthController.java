@@ -8,7 +8,7 @@ import com.ssafy.backend.api.response.UserPwCheckPostRes;
 import com.ssafy.backend.api.service.UserService;
 import com.ssafy.backend.common.model.response.BaseResponseBody;
 import com.ssafy.backend.common.util.JwtTokenUtil;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

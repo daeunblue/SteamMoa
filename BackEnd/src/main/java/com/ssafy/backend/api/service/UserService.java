@@ -2,9 +2,8 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.follow.Follow;
-import com.ssafy.backend.db.entity.game.Game;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

@@ -1,16 +1,15 @@
-package com.ssafy.backend.db.entity.party;
+package com.ssafy.backend.api.response;
 
-import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.party.Party;
+import com.ssafy.backend.db.entity.party.PartyTag;
+import com.ssafy.backend.db.entity.party.Puser;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /*
     응답용 DTO.
@@ -31,6 +30,7 @@ public class PartyDTO {
     private int curPlayer;
     private String startTime;
     private String writeTime;
+    private String writerId;
     private String partyStatus;
     private List<PartyPlayerDTO> partyPlayers = new ArrayList<>();
     private String partyDescription;
@@ -53,6 +53,8 @@ public class PartyDTO {
         this.partyStatus = p.getStatus();
         for (Puser puser: p.getPusers()) {
             this.partyPlayers.add(new PartyPlayerDTO(puser));
+            if(puser.isLeader())
+                this.writerId = puser.getUser().getUserServiceId();
         }
         this.partyDescription = p.getDescription();
         this.chatLink = p.getChatLink();

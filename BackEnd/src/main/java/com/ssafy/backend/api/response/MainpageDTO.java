@@ -1,9 +1,8 @@
-package com.ssafy.backend.db.entity;
+package com.ssafy.backend.api.response;
 
+import com.ssafy.backend.db.entity.banner.Banner;
 import com.ssafy.backend.db.entity.game.Game;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
 import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -2,9 +2,9 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
-import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.response.PUserEvalDto;
-import com.ssafy.backend.db.entity.party.*;
+import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
+import com.ssafy.backend.api.response.PartyDTO;
 import org.json.simple.JSONObject;
 
 import java.util.List;
@@ -38,4 +38,8 @@ public interface PartyService {
 
     // 파티 평가를 위한 정보 반환
     List<PUserEvalDto> getPlayersForEvaluate(Long partyId, String userServiceId);
+
+    // 파티를 임의 모집마감하는 API
+    boolean closeParty(Long partyId);
+
 }

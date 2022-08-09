@@ -1,4 +1,4 @@
-package com.ssafy.backend.db.entity;
+package com.ssafy.backend.api.response;
 
 import com.ssafy.backend.db.entity.game.Game;
 import lombok.Getter;

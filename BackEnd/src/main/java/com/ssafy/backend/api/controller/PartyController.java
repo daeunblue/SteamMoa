@@ -6,16 +6,11 @@ import com.ssafy.backend.api.request.PartyPutReq;
 import com.ssafy.backend.api.response.PUserEvalDto;
 import com.ssafy.backend.api.service.PartyService;
 import com.ssafy.backend.api.service.UserService;
-import com.ssafy.backend.common.model.response.BaseResponseBody;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
-import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartyCreateGamelistDTO;
-import com.ssafy.backend.db.entity.party.PartyDTO;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
+import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
+import com.ssafy.backend.api.response.PartyDTO;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -134,6 +129,21 @@ public class PartyController {
         Map<String,Object> result = new HashMap<>();
 
         if(userService.updateUserScore(partyEvalPostReq.getUserId(),partyEvalPostReq.getScore())){
+            result.put("message","Success");
+            return ResponseEntity.status(200).body(result);
+        }else{
+            result.put("message","Fail");
+            return ResponseEntity.status(400).body(result);
+        }
+    }
+
+    // 파티를 임의로 모집마감하는 API
+    @PutMapping("/{partyid}/close")
+    @ApiOperation(value = "파티 임의 모집마감", notes = "파티 상태를 모집 중에서 모집 완료 상태로 바꾼다.")
+    public ResponseEntity<? extends Map<String,Object>> closeParty(@PathVariable("partyid") Long partyid){
+        Map<String,Object> result = new HashMap<>();
+
+        if(partyService.closeParty(partyid)){
             result.put("message","Success");
             return ResponseEntity.status(200).body(result);
         }else{
