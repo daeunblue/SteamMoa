@@ -52,6 +52,9 @@ public class MainpageServiceImpl implements MainpageService{
         List<Party> parties = partyRepository.findAllPartyByFilter("", null, new String[]{"1"}, "1", pageable);
         System.out.println("파티 사이즈: "+parties.size());
         parties.forEach(Party->resultItem.addParties(Party));
+        if(resultItem.getParties().size() > 20){
+            resultItem.setParties(resultItem.getParties().subList(0, 20));
+        }
 
         // 기획상품
 

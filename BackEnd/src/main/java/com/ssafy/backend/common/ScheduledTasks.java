@@ -12,6 +12,14 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+/*
+    스프링 스케줄러를 이용하여, 서버 작동 중에 자동으로 업데이트 되어야 하거나 처리되어야 하는 일을 구현합니다.
+
+    - 파티 상태 자동 업데이트
+    - 알림 발송
+ */
+
 @Slf4j
 @Component
 public class ScheduledTasks {
@@ -20,36 +28,49 @@ public class ScheduledTasks {
     @Autowired
     private NoticeService noticeService;
 
+    // 로그용
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm:ss:SSS");
 
     // 5초마다 파티 상태 자동 업데이트
     // 1 모집 중, 2 모집 완료, 3 플레이 중, 4 플레이 완료, 5 모집 실패
     @Scheduled(cron = "0/5 * * * * ?")
     public void updatePartyStatus() {
+
+        // 로그
         // log.info("fixedRate: 현재시간 - {}", formatter.format(LocalDateTime.now()));
 
+
         for(Party party: partyRepository.findAll()) {
+
+            // log.info("파티 번호: {}  플레이 시작: {}  현재: {}", party.getPartyId(), party.getStartTime(), LocalDateTime.now());
+
+            // 파티 상태가 4나 5이면 건너뛰기
             if(party.getStatus().equals("4") || party.getStatus().equals("5")) {
-                // 건너뛰기
                 continue;
             }
+
+
             else if(party.getStatus().equals("1")) {
                 // 1 모집 중에서 2 모집 완료로 : maxplayer = curplayer
                 if(party.getMaxPlayer() == party.getCurPlayer())
                     party.setStatus("2");
 
                 // 1 모집 중에서 5 모집 실패로 : 지금 시간이 플레이 시간을 지남 && maxplayer > curplayer
-                if(LocalDateTime.now().plusHours(9).isBefore(party.getStartTime()) && party.getMaxPlayer() > party.getCurPlayer())
+                if(LocalDateTime.now().isAfter(party.getStartTime()) && party.getMaxPlayer() > party.getCurPlayer())
                     party.setStatus("5");
             }
+
+
             else if(party.getStatus().equals("2")) {
                 // 2 모집 완료에서 3 플레이 중으로 : 지금 시간이 플레이 시간을 지남
-                if(LocalDateTime.now().plusHours(9).isBefore(party.getStartTime()))
+                if(LocalDateTime.now().isAfter(party.getStartTime()))
                     party.setStatus("3");
             }
+
+
             else if(party.getStatus().equals("3")) {
                 // 3 플레이 중에서 4 플레이 완료로 : 지금 시간이 플레이 시간 + 24h를 지남
-                if(LocalDateTime.now().plusHours(9).isBefore(party.getStartTime().plusDays(1))) {
+                if(LocalDateTime.now().isAfter(party.getStartTime().plusDays(1))) {
                     party.setStatus("4");
 
                     // 모든 파티원에게 평가 알림을 발송합니다. (알림을 알림 테이블에 집어넣습니다.)
