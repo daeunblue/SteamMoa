@@ -48,26 +48,14 @@ public class UserController {
 
         Map<String, Object> result = new HashMap<>();
 
-        try {
-            User user = (User) userService.getUserInfoByUserId(userServiceId).get("user");
-//            System.out.println(user.toString());
-            UserDto userDto = new UserDto();
-            //builder 패턴 적용해야함
-            userDto.setUserId(user.getUserId());
-            userDto.setUserServiceId(user.getUserServiceId());
-            userDto.setUserPoint(user.getUserPoint());
-            for (UserTag tag:user.getUTagLists()) {
-                System.out.println(tag.getUTagStorage().getContent());
-                userDto.addUserTags(tag.getUTagStorage().getContent());
-            }
-            result.put("user",userDto);
-            result.put("message","Success");
-        } catch (Exception e) { // 에러코드 정리해서 처리해야할 부분
-            result.put("message","Fail");
-            e.printStackTrace();
+        result = userService.getUserInfoByUserId(userServiceId);
+        if (result.get("message").equals("Fail")){
             return ResponseEntity.status(403).body(result);
+        }else{
+            return ResponseEntity.status(200).body(result);
         }
-        return ResponseEntity.status(200).body(result);
+
+
     }
 
     @PutMapping("/profile")
@@ -77,27 +65,23 @@ public class UserController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends UserRes> updateUserInfo(@ApiIgnore Authentication authentication, @RequestBody UserUpdatePutReq userUpdatePutReq) {
+    public ResponseEntity<? extends Map<String, Object>> updateUserInfo(@ApiIgnore Authentication authentication, @RequestBody UserUpdatePutReq userUpdatePutReq) {
         /**
          * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
          */
         Map<String, Object> result = new HashMap<>();
 
-        try {
-            SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-            User user = userDetails.getUser();
-            String userServiceId = user.getUserServiceId();
-            userService.updateUser(user.getUserId(), userUpdatePutReq);
-            result = userService.getUserInfoByUserId(userServiceId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return (ResponseEntity<? extends UserRes>) ResponseEntity.badRequest();
-        }
+        // (수정 필요) Service 단으로 넘겨서 처리해야하는 비즈니스 로직
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        String userServiceId = user.getUserServiceId();
+        userService.updateUser(user.getUserId(), userUpdatePutReq);
+        result = userService.getUserInfoByUserId(userServiceId);
 
-        User user = (User) result.get("user");
 
-        return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint(), user.getUTagLists()));
+        result.put("message","회원 정보 업데이트 성공");
+        return ResponseEntity.status(200).body(result);
 
     }
 

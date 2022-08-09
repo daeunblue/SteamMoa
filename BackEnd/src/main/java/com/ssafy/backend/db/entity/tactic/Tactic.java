@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,8 +26,11 @@ public class Tactic {
     @Column(name="tactic_title", nullable = false)
     private String tacticTitle;
 
-    @Column(name = "tactic_content", nullable = false)
+    @Column(name = "tactic_content", nullable = false, columnDefinition="TEXT", length = 50000)
     private String tacticContent;
+
+    @Column(name="local_date_time")
+    private LocalDateTime createTime;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
