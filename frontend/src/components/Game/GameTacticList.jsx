@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
+import GameTacticListItem from './GameTacticListItem';
 
-const GameTacticList = () => {
+const GameTacticList = (props) => {
+  const tactics = props.tactic;
+
   return (
-    <div>GameTacticList</div>
+    <div>
+      {tactics.map((tactic) => {
+        <GameTacticListItem gameId={tactic.gameId} />
+      })}
+    </div>
   )
 }
 

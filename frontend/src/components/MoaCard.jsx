@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Badge from "./Badge";
 
 function MoaCard(props) {
   const navigate = useNavigate();
@@ -13,7 +14,10 @@ function MoaCard(props) {
     startTime,
     partyIsUrgent,
     partyStatus,
+    partyTags,
   } = props.party;
+
+  console.log(props.party.partyId);
 
   let bgColors = [
     "bg-moa-pink",
@@ -55,14 +59,22 @@ function MoaCard(props) {
             <span>{partyIsUrgent ? statusMsg[0] : statusMsg[partyStatus]}</span>
           </div>
 
-          <div className="font-blackSans text-base whitespace-nowrap overflow-hidden text-ellipsis">{partyTitle}</div>
+          <div className="font-blackSans text-base whitespace-nowrap overflow-hidden text-ellipsis">
+            {partyTitle}
+          </div>
         </div>
-        <div className=" font-blackSans text-xs my-1 whitespace-nowrap overflow-hidden text-ellipsis">[{gameName}]</div>
+        <div className=" font-blackSans text-xs my-1 whitespace-nowrap overflow-hidden text-ellipsis">
+          [{gameName}]
+        </div>
         <div className=" flex justify-between">
           <span className="text-xs font-sans font-semibold">{formatTime()}</span>
           <span className="text-xs font-sans  font-semibold">
             {curPlayer}/{maxPlayer}
           </span>
+        </div>
+        <div className="flex overflow-hidden mt-1">
+          {/* key값 설정 */}
+          {partyTags.length ? partyTags.map((tag, index) => <Badge key={index} name={tag} />) : ""}
         </div>
       </div>
     </div>

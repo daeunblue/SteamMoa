@@ -4,6 +4,8 @@ import MoaCard from "./MoaCard";
 function MoaCardList(props) {
   const parties = props.moaList;
 
+
+  console.log(parties);
   return (
     <>
       <div className="w-full grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 laptop:gap-4 tablet:gap-2 mobile:gap-2">
