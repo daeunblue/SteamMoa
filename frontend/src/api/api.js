@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const defaultURL = "https://i7a303.p.ssafy.io:8080/api/";
+const defaultURL = "https://i7a303.p.ssafy.io/api/";
 
 export const api = axios.create({
   baseURL: defaultURL,

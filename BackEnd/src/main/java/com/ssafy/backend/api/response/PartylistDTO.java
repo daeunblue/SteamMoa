@@ -1,11 +1,14 @@
 package com.ssafy.backend.api.response;
 
 import com.ssafy.backend.db.entity.party.Party;
+import com.ssafy.backend.db.entity.party.PartyTag;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
     응답용 DTO.
@@ -26,8 +29,8 @@ public class PartylistDTO {
     private int curPlayer;
     private String startTime;
     private String writeTime;
-
     private String partyStatus;
+    private List<String> partyTags = new ArrayList<>();
 
     private boolean partyIsUrgent;
 
@@ -42,6 +45,9 @@ public class PartylistDTO {
         this.startTime = p.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         this.writeTime = p.getWriteTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         this.partyStatus = p.getStatus();
+        for (PartyTag pt: p.getPartyTags()) {
+            this.partyTags.add(pt.getPtagStorage().getContent());
+        }
         if(p.getStartTime().isBefore(LocalDateTime.now().plusHours(9).plusDays(1)))
             this.partyIsUrgent = true;
         else

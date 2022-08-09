@@ -4,18 +4,22 @@ import React from "react";
 import PaginationItem from "../PaginationItem";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { gamePage, gameMaxPage } from "../../recoil/Game";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-const GamePagination = (props) => {
+const GamePagination = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const PAGE_COUNT = 10;
-  const [page, setPage] = useRecoilState(gamePage);
+  const page = searchParams.get("page") ? parseInt(searchParams.get("page")) : 1;
+  const keyword = searchParams.get("word") ? searchParams.get("word") : "";
   const maxPage = useRecoilValue(gameMaxPage);
 
   const getPaginationList = (currPage, perCount) => {
     let pageList = [];
 
     const tmp = Math.floor((currPage - 1) / perCount);
-    const start = 1 + tmp * perCount; 
-    let end = start + perCount; 
+    const start = 1 + tmp * perCount;
+    let end = start + perCount;
 
     end = end > maxPage ? maxPage + 1 : end;
 
@@ -29,15 +33,15 @@ const GamePagination = (props) => {
 
   const onClickPrev = () => {
     let newPage = page - 1 > 1 ? page - 1 : 1;
-    setPage(newPage);
+    navigate(`/gamemoa?page=${encodeURIComponent(newPage)}&word=${encodeURIComponent(keyword)}`);
   };
   const onClickNext = () => {
     let newPage = page + 1 <= maxPage ? page + 1 : maxPage;
-    setPage(newPage);
+    navigate(`/gamemoa?page=${encodeURIComponent(newPage)}&word=${encodeURIComponent(keyword)}`);
   };
 
   const handlePageMove = (value) => {
-    setPage(value);
+    navigate(`/gamemoa?page=${encodeURIComponent(value)}&word=${encodeURIComponent(keyword)}`);
   };
 
   return (

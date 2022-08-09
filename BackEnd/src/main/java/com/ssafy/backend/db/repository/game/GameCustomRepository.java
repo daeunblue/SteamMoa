@@ -13,4 +13,7 @@ public interface GameCustomRepository {
     List<Game> findAllMultiGameForBests();
     List<Game> findAllMultiGameForFrees();
     List<Game> findAllMultiGameForToday();
+    List<Game> findAllMultiGameForHots();
+    List<Game> findAllMultiGameForPicks();
+    List<Game> findTop15MultiGameForRandom();
 }
