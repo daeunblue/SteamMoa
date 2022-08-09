@@ -65,7 +65,7 @@ public class User {
     private List<Puser> pusers = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user",       )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Tactic> tacticList = new ArrayList<>();
 
     @JsonManagedReference
