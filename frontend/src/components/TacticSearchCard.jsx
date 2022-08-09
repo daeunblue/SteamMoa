@@ -4,10 +4,8 @@ import { useNavigate } from "react-router-dom";
 const TacticSearchCard = (props) => {
   const navigate = useNavigate();
   const {
-    tacticId,
     tacticTitle,
     tacticContent,
-    userId,
     userServiceId,
     gameId,
     gameImgPath,
