@@ -1,15 +1,16 @@
 package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.ReviewPostReq;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.api.response.ReviewDto;
 import com.ssafy.backend.db.entity.review.Review;
-import com.ssafy.backend.db.repository.ReviewRepository;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.repository.review.ReviewRepository;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,7 @@ public class ReviewServiceImpl implements ReviewService{
                 review.setReviewScore(reviewPostReq.getReviewScore());
                 review.setUser(userRepository.findByUserServiceId(reviewPostReq.getUserServiceId()).get());
                 review.setGame(gameRepository.findByGameId(reviewPostReq.getGameId()));
+                review.setLocalDateTime(LocalDateTime.now());
                 reviewRepository.save(review);
             }
             return true;
@@ -57,11 +59,59 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public List<Review> findReviewByUserServiceId(String userServiceId) {
+    public List<ReviewDto> findReviewByUserServiceId(String userServiceId) {
         List<Review> list = new ArrayList<>();
         list = reviewRepository.findAllByUserUserServiceId(userServiceId).get();
 
-        return list;
+        List<ReviewDto> customResult = new ArrayList<>();
+        for (Review review : list) {
+            ReviewDto reviewDto = new ReviewDto();
+            reviewDto.setReviewId(review.getReviewId());
+            reviewDto.setReviewContent(review.getReviewContent());
+            reviewDto.setReviewScore(review.getReviewScore());
+            reviewDto.setUserServiceId(review.getUser().getUserServiceId());
+            reviewDto.setCurrentDate(review.getLocalDateTime());
+            customResult.add(reviewDto);
+        }
+        return customResult;
+    }
+
+    @Override
+    public List<ReviewDto> findReviewByGameId(Long gameId) {
+        List<Review> list = new ArrayList<>();
+        list = reviewRepository.findAllByGameGameId(gameId).get();
+
+        List<ReviewDto> customResult = new ArrayList<>();
+        for (Review review : list) {
+            ReviewDto reviewDto = new ReviewDto();
+            reviewDto.setReviewId(review.getReviewId());
+            reviewDto.setReviewContent(review.getReviewContent());
+            reviewDto.setReviewScore(review.getReviewScore());
+            reviewDto.setUserServiceId(review.getUser().getUserServiceId());
+            reviewDto.setCurrentDate(review.getLocalDateTime());
+            customResult.add(reviewDto);
+        }
+
+        return customResult;
+    }
+
+    @Override
+    @Transactional
+    public ReviewDto findeReviewByUserServiceIdAndGameId(String userServiceId, Long gameId) {
+        Review review = new Review();
+        ReviewDto reviewDto = new ReviewDto();
+
+        if(reviewRepository.findByUserUserServiceIdAndGameGameId(userServiceId, gameId).isPresent()){
+            review = reviewRepository.findByUserUserServiceIdAndGameGameId(userServiceId, gameId).get();
+
+            reviewDto.setReviewId(review.getReviewId());
+            reviewDto.setReviewContent(review.getReviewContent());
+            reviewDto.setReviewScore(review.getReviewScore());
+            reviewDto.setCurrentDate(review.getLocalDateTime());
+            reviewDto.setUserServiceId(review.getUser().getUserServiceId());
+        }
+
+        return reviewDto;
     }
 
     @Override

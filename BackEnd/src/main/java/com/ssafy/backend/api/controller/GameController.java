@@ -1,9 +1,7 @@
 package com.ssafy.backend.api.controller;
 
 import com.ssafy.backend.api.service.GameService;
-import com.ssafy.backend.db.entity.game.Game;
-import com.ssafy.backend.db.entity.game.GameDTO;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
+import com.ssafy.backend.api.response.GameDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +9,6 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 게임 관련 API 요청 처리를 위한 컨트롤러 정의.

@@ -1,15 +1,11 @@
 package com.ssafy.backend.db.entity.party;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.Game;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -48,9 +44,8 @@ public class Party {
     @Column(name = "start_time")
     private LocalDateTime startTime;
 
-    @CreationTimestamp
     @Column(name = "write_time")
-    private LocalDateTime writeTime = LocalDateTime.now();
+    private LocalDateTime writeTime;
 
     @Column(name = "chat_link", length = 1024)
     private String chatLink;
@@ -62,13 +57,13 @@ public class Party {
     private String status;
 
     // 양방향 일대다
-    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "party", cascade = CascadeType.DETACH)
     @JsonManagedReference
     @NotFound(action = NotFoundAction.IGNORE)
     private List<PartyTag> partyTags = new ArrayList<>();
 
     // 양방향 일대다
-    @OneToMany(mappedBy = "party", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "party", cascade = CascadeType.DETACH)
     @JsonManagedReference
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Puser> pusers = new ArrayList<>();

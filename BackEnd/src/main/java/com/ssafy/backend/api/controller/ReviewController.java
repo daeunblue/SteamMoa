@@ -2,6 +2,7 @@ package com.ssafy.backend.api.controller;
 
 import com.ssafy.backend.api.request.ReviewPostReq;
 import com.ssafy.backend.api.request.TacticPostReq;
+import com.ssafy.backend.api.response.ReviewDto;
 import com.ssafy.backend.api.service.ReviewService;
 import com.ssafy.backend.db.entity.review.Review;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +59,7 @@ public class ReviewController {
     public ResponseEntity<? extends Map<String,Object>> findReviewByUserServiceId(@PathVariable("user_service_id")String userServiceId){
         Map<String,Object> resultMap = new HashMap<>();
 
-        List<Review> result = reviewService.findReviewByUserServiceId(userServiceId);
+        List<ReviewDto> result = reviewService.findReviewByUserServiceId(userServiceId);
 
         if(result.size() == 0){
             resultMap.put("message","조회 결과가 없습니다");
@@ -68,6 +70,43 @@ public class ReviewController {
             return ResponseEntity.status(200).body(resultMap);
         }
     }
+
+    @GetMapping("/game/{game_id}")
+    @ApiOperation(value = "게임에 해당하는 리뷰 반환", notes = "game_id에 대한 리뷰 정보 반환")
+    public ResponseEntity<? extends Map<String,Object>> findReviewByGameId(@PathVariable("game_id")Long gameId){
+        Map<String,Object> resultMap = new HashMap<>();
+
+
+        List<ReviewDto> result = reviewService.findReviewByGameId(gameId);
+
+        if(result.size() == 0){
+            resultMap.put("message","Fail, 조회 결과 없음");
+            return ResponseEntity.status(400).body(resultMap);
+        }else{
+            resultMap.put("message","Success");
+            resultMap.put("reviews", result);
+            return ResponseEntity.status(200).body(resultMap);
+        }
+    }
+
+    @GetMapping("/{user_service_id}/{game_id}")
+    @ApiOperation(value = "유저의 리뷰 작성 여부 반환", notes = "user_service_id/game_id에 대한 리뷰 정보 반환")
+    public ResponseEntity<? extends Map<String,Object>> findReviewByUserServiceIdAndGameId(@PathVariable("user_service_id")String userServiceId, @PathVariable("game_id")Long gameId){
+        Map<String,Object> resultMap = new HashMap<>();
+
+        ReviewDto reviewDto = reviewService.findeReviewByUserServiceIdAndGameId(userServiceId,gameId);
+
+
+        if(reviewDto.getReviewId() == null){
+            resultMap.put("message","Fail");
+            return ResponseEntity.status(400).body(resultMap);
+        }else{
+            resultMap.put("message","조회 성공");
+            resultMap.put("review", reviewDto);
+            return ResponseEntity.status(200).body(resultMap);
+        }
+    }
+
 
     @DeleteMapping("/{review_id}")
     @ApiOperation(value = "리뷰 삭제", notes = "review_id에 해당하는 리뷰글 삭제")

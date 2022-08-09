@@ -1,14 +1,13 @@
 import { api } from "./api";
 
-export const getGamesSearch = (page, filter, search) => {
-  let url = `games/search?`;
-  url += `page=${page}`;
-  url += `&name=${search}`;
+export const getGamesSearch = (page, searchFilter, searchWord) => {
+  let url = `games/search?page=${page}`;
+  url += searchWord ? `&name=${searchWord}` : "";
 
-  filter.forEach((filterItem) => {
+  searchFilter.forEach((filterItem) => {
     url += `&tag=${filterItem.name}`;
   });
-
+  console.log(url);
   return api.get(url);
 };
 

@@ -4,7 +4,8 @@ import com.ssafy.backend.api.request.TacticPostReq;
 import com.ssafy.backend.api.request.TacticPutReq;
 import com.ssafy.backend.api.response.TacticDto;
 import com.ssafy.backend.api.service.TacticService;
-import com.ssafy.backend.db.entity.tactic.Tactic;
+import com.ssafy.backend.api.service.UserService;
+import com.ssafy.backend.db.entity.user.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class TacticController {
     @Autowired
     TacticService tacticService;
 
+    @Autowired
+    UserService userService;
+
     /** 공통적으로 해야하는것 : 빈값 왔을때 처리 해야함 **/
 
     @GetMapping("/game/{gameId}")
@@ -38,9 +42,11 @@ public class TacticController {
         return ResponseEntity.status(200).body(result);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/{user_service_id}")
     @ApiOperation(value="게임 공략 정보", notes = "user_id에 해당하는 게임 공략글 정보를 조회한다")
-    public ResponseEntity<?> getTacticsByUserId(@PathVariable("userId")Long userId){
+    public ResponseEntity<?> getTacticsByUserId(@PathVariable("user_service_id")String userServiceId){
+        User user = (User) userService.getUserInfoByUserId(userServiceId).get("user");
+        Long userId = user.getUserId();
         List<TacticDto> result = tacticService.getTacticsByUserId(userId);
         return ResponseEntity.status(200).body(result);
     }

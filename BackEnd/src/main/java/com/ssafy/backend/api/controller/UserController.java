@@ -1,11 +1,15 @@
 package com.ssafy.backend.api.controller;
 
+import com.ssafy.backend.api.request.UserFollowPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
+import com.ssafy.backend.api.response.FollowDto;
 import com.ssafy.backend.api.response.UserRes;
 import com.ssafy.backend.api.service.UserService;
 import com.ssafy.backend.common.auth.SsafyUserDetails;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.api.response.UserDto;
+import com.ssafy.backend.db.entity.user.UserTag;
+import com.ssafy.backend.db.entity.follow.Follow;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,10 +56,15 @@ public class UserController {
             userDto.setUserId(user.getUserId());
             userDto.setUserServiceId(user.getUserServiceId());
             userDto.setUserPoint(user.getUserPoint());
+            for (UserTag tag:user.getUTagLists()) {
+                System.out.println(tag.getUTagStorage().getContent());
+                userDto.addUserTags(tag.getUTagStorage().getContent());
+            }
             result.put("user",userDto);
             result.put("message","Success");
         } catch (Exception e) { // 에러코드 정리해서 처리해야할 부분
             result.put("message","Fail");
+            e.printStackTrace();
             return ResponseEntity.status(403).body(result);
         }
         return ResponseEntity.status(200).body(result);
@@ -78,18 +88,151 @@ public class UserController {
             SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
             User user = userDetails.getUser();
             String userServiceId = user.getUserServiceId();
-            // userName 수정
-            user.setUserName(userUpdatePutReq.getUser_name());
-            userService.updateUser(user);
+            userService.updateUser(user.getUserId(), userUpdatePutReq);
             result = userService.getUserInfoByUserId(userServiceId);
         } catch (Exception e) {
+            e.printStackTrace();
             return (ResponseEntity<? extends UserRes>) ResponseEntity.badRequest();
         }
 
         User user = (User) result.get("user");
 
-        return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint()));
+        return ResponseEntity.ok(UserRes.of(200, "회원 정보 조회 성공", user.getUserId(), user.getUserServiceId(), user.getUserPoint(), user.getUTagLists()));
 
+    }
+
+    // Authentication 추가해야하는 API
+    @PostMapping("/follow")
+    @ApiOperation(value = "유저 팔로우 추가", notes = "user_service_id에 해당하는 유저를 팔로우")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> followUser(@RequestBody UserFollowPostReq userFollowPostReq){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        String FollowingUserId = userFollowPostReq.getFollowingUserId();
+        String FollowUserId = userFollowPostReq.getFollowerUserId();
+        boolean result = userService.followUser(FollowingUserId, FollowUserId);
+
+        if(result){
+            resultMap.put("message","Success");
+            return ResponseEntity.status(200).body(resultMap);
+        }else{
+            resultMap.put("message","Fail");
+            return ResponseEntity.status(400).body(resultMap);
+        }
+    }
+
+
+
+    // Authentication 추가해야하는 API
+    @DeleteMapping("/unfollow")
+    @ApiOperation(value = "유저 팔로우 삭제", notes = "user_service_id에 해당하는 유저를 언팔로우")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> unFollowUser(@RequestBody UserFollowPostReq userFollowPostReq){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        String FollowingUserId = userFollowPostReq.getFollowingUserId();
+        String FollowUserId = userFollowPostReq.getFollowerUserId();
+        boolean result = userService.unFollowUser(FollowingUserId, FollowUserId);
+
+        if(result){
+            resultMap.put("message","Success");
+            return ResponseEntity.status(200).body(resultMap);
+        }else{
+            resultMap.put("message","Fail");
+            return ResponseEntity.status(400).body(resultMap);
+        }
+    }
+
+    @GetMapping("/follow/{user_service_id}")
+    @ApiOperation(value = "유저 팔로잉 리스트 반환", notes = "user_service_id에 해당하는 유저가 팔로우하고 있는 사용자들의 목록 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getUserFollowingList(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = new HashMap<>();
+
+
+        FollowDto followDto = new FollowDto();
+        List<Follow> followList = userService.getFollowing(userServiceId);
+        for(Follow follow:followList){
+            followDto.addUserServiceId(follow.getFollowingUserId());
+        }
+        resultMap.put("followings",followDto);
+        resultMap.put("message","Success");
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
+
+    @GetMapping("/follower/{user_service_id}")
+    @ApiOperation(value = "유저 팔로워 리스트 반환", notes = "user_service_id에 해당하는 유저를 팔로우하고 있는 사용자들의 목록 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getUserFollowerLIst(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = new HashMap<>();
+
+
+        FollowDto followDto = new FollowDto();
+        List<Follow> followList = userService.getFollower(userServiceId);
+        for(Follow follow:followList){
+            followDto.addUserServiceId(follow.getFollowerUserId());
+        }
+        resultMap.put("followers",followDto);
+        resultMap.put("message","Success");
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
+
+    @GetMapping("/profile/{user_service_id}/parties/proceeding")
+    @ApiOperation(value = "내가 참여중인 파티", notes = "내가 생성하거나 참여한 파티 중 모집 중, 모집 완료, 플레이 중인 파티를 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesProceeding(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = userService.getMyPartiesProceeding(userServiceId);
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
+
+    @GetMapping("/profile/{user_service_id}/parties/completed")
+    @ApiOperation(value = "내가 참여했고 이제 완료된 파티", notes = "내가 생성했거나 참여했던 파티 중 모집이 실패했거나 플레이가 종료된 파티를 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesCompleted(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = userService.getMyPartiesCompleted(userServiceId);
+
+        return ResponseEntity.status(200).body(resultMap);
+    }
+
+
+    @GetMapping("/profile/{user_service_id}/parties/created")
+    @ApiOperation(value = "내가 작성한 파티", notes = "내가 지금까지 생성한 모든 파티를 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesCreated(@PathVariable("user_service_id")String userServiceId){
+        Map<String, Object> resultMap = userService.getMyPartiesCreated(userServiceId);
+
+        return ResponseEntity.status(200).body(resultMap);
     }
 }
 

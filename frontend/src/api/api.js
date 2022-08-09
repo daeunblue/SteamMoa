@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const defaultURL = "http://i7a303.p.ssafy.io:8080/api/";
-const token = sessionStorage.getItem('token')
+const defaultURL = "https://i7a303.p.ssafy.io/api/";
 
 export const api = axios.create({
   baseURL: defaultURL,
@@ -9,5 +8,5 @@ export const api = axios.create({
 
 export const apiAuth = axios.create({
   baseURL: defaultURL,
-  headers: {'Authorization': `Bearer ${token}`},
+  headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
 });
