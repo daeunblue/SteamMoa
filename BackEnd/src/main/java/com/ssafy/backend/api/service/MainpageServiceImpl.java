@@ -57,8 +57,10 @@ public class MainpageServiceImpl implements MainpageService{
         }
 
         // 기획상품
-
         List<Game> templist;
+        List<Game> randlist;
+
+        // Bests
         templist = gameRepository.findAllMultiGameForBests();
         while(resultItem.getBests().size() < 15) {
             Game tempgame = templist.get((int) (Math.random() * templist.size()));
@@ -66,6 +68,8 @@ public class MainpageServiceImpl implements MainpageService{
                 continue;
             resultItem.addBests(tempgame);
         }
+
+        // Frees
         templist = gameRepository.findAllMultiGameForFrees();
         while(resultItem.getFrees().size() < 15) {
             Game tempgame = templist.get((int) (Math.random() * templist.size()));
@@ -73,12 +77,34 @@ public class MainpageServiceImpl implements MainpageService{
                 continue;
             resultItem.addFrees(templist.get((int) (Math.random() * templist.size())));
         }
+
+        // Today
         templist = gameRepository.findAllMultiGameForToday();
         while(resultItem.getToday().size() < 15) {
             Game tempgame = templist.get((int) (Math.random() * templist.size()));
             if(resultItem.getToday().contains(tempgame))
                 continue;
             resultItem.addToday(templist.get((int) (Math.random() * templist.size())));
+        }
+
+        // Hots
+        templist = gameRepository.findAllMultiGameForHots();
+        randlist = gameRepository.findTop15MultiGameForRandom();
+        for(int i = 0; i < 15; i++) {
+            if(i < templist.size())
+                resultItem.addHots(templist.get(i));
+            else
+                resultItem.addHots(randlist.get(i));
+        }
+
+        // Picks
+        templist = gameRepository.findAllMultiGameForPicks();
+        randlist = gameRepository.findTop15MultiGameForRandom();
+        for(int i = 0; i < 15; i++) {
+            if(i < templist.size())
+                resultItem.addPicks(templist.get(i));
+            else
+                resultItem.addPicks(randlist.get(i));
         }
 
         return resultItem;

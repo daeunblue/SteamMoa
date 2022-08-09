@@ -2,27 +2,28 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import GameSearchContainer from "../../components/Game/GameSearchContainer";
 import GameList from "../../components/Game/GameList";
-import GamePagination from "../../components/Game/GamePagination"
+import GamePagination from "../../components/Game/GamePagination";
 import { getGamesSearch } from "../../api/Game";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { gamePage, gameMaxPage, gameSearchFilter, gameSearchWord } from "../../recoil/Game";
+import { gameMaxPage, gameSearchFilter } from "../../recoil/Game";
+import { useSearchParams } from "react-router-dom";
 
-const GameMoa = (props) => {
+const GameMoa = () => {
   const [gameList, setGameList] = useState([]);
-  const page = useRecoilValue(gamePage);
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") ? parseInt(decodeURIComponent(searchParams.get("page"))) : 1;
+  const keyword = searchParams.get("word") ? decodeURIComponent(searchParams.get("word")) : "";
   const searchFilter = useRecoilValue(gameSearchFilter);
-  const searchWord = useRecoilValue(gameSearchWord);
   const setMaxPage = useSetRecoilState(gameMaxPage);
 
   useEffect(() => {
-    getGamesSearch(page, searchFilter, searchWord)
+    getGamesSearch(page, searchFilter, keyword)
       .then(({ data }) => {
-        setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
+        setGameList([...data.data]);
         setMaxPage(parseInt(data.maxPage));
-        console.log('handlePage');
       })
       .catch();
-  }, [page]);
+  }, [page, keyword, searchFilter]);
 
   return (
     <div className="w-full h-screen">
@@ -32,12 +33,12 @@ const GameMoa = (props) => {
         <img src="../ImgAssets/GameMoa_Main.gif" alt="게임모아 메인 배너" />
       </div>
       {/* 검색 컨테이너 */}
-      <GameSearchContainer setGameList={setGameList} />
+      <GameSearchContainer />
       {/* 게임 리스트 */}
       <GameList gameList={gameList} />
       {/* 페이지네이션 */}
       <div className="w-per75 m-auto flex justify-center py-5">
-        <GamePagination setGameList={setGameList} />
+        <GamePagination  />
       </div>
     </div>
   );
