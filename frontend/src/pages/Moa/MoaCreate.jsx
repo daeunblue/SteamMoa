@@ -48,7 +48,6 @@ function MoaCreate() {
 
         // setMoa({...moa,partyTags: checkedList }); // 단계 밀려서 뒤로 넘김
         // console.log(checkedList);
-        
     }
 
     const onRemove = (item) => {
@@ -92,7 +91,7 @@ function MoaCreate() {
         .then((data) =>  {
             console.log('data : ',data)
             if (data.status === 200) {
-                navigate('/');
+                navigate('/moazone');
             } else {
                 alert(data.message);
             }
@@ -162,23 +161,29 @@ function MoaCreate() {
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
                 {/* 파티 태그 하드 코딩 */}
-                <div className="w-full">
-                    {
-                        items.map((item, index)=>
-                            <div key={index}>
-                        <input
-                         checked={checkedList.includes(`${index+1}`)? true : false}
-                        onChange={onCheckedElement} value={index+1} id={item} name={item} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
-                        <label htmlFor={item} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item}</label>
-                        </div>
-                         )
-                        //  checkedList.includes(item.id)
-                    }
+                <div className="grid grid-flow-col">
+                <div>파티 태그</div>
+                <div>
+                    <div className='grid grid-flow-col'>
+                        {
+                            items.map((item, index)=>
+                                <div key={index}>
+                            <input
+                            checked={checkedList.includes(`${index+1}`)? true : false}
+                            onChange={onCheckedElement} value={index+1} id={item} name={item} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"/>
+                            <label htmlFor={item} className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">{item}</label>
+                            </div>
+                            )
+                            //  checkedList.includes(item.id)
+                        }
+                    </div>
+                    <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
+                        {checkedList.map((item)=>
+                            <span key={item} onClick={()=>onRemove(item)}>{items[item-1]}</span>
+                        )}
+                    </div>
                 </div>
-                <div className="w-full rounded-lg ml-2 font-medium">
-                    {checkedList.map((item)=>
-                         <span key={item} onClick={()=>onRemove(item)}>{items[item-1]}</span>
-                    )}
+
                 </div>
                 </div>
             </div>

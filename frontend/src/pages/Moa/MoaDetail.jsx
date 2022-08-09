@@ -40,18 +40,18 @@ function MoaDetail() {
 
   let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
 
-  const formatTime = () => {
-    const week = ["일", "월", "화", "수", "목", "금", "토"];
-    const dateTime = detailMoa.startTime.split("T");
-    const date = dateTime[0].split("-");
-    const month = date[1].startsWith("0") ? date[1].charAt(1) : date[1];
-    const day = date[2].startsWith("0") ? date[2].charAt(1) : date[2];
-    let dayOfWeek = week[new Date(dateTime[0]).getDay()];
-    const result = ` ${date[0]}.${month}.${day}.(${dayOfWeek}) ${dateTime[1]}`;
-    return result;
-  };
+  // const formatTime = () => {
+  //   const week = ["일", "월", "화", "수", "목", "금", "토"];
+  //   const dateTime = detailMoa.startTime.split("T");
+  //   const date = dateTime[0].split("-");
+  //   const month = date[1].startsWith("0") ? date[1].charAt(1) : date[1];
+  //   const day = date[2].startsWith("0") ? date[2].charAt(1) : date[2];
+  //   let dayOfWeek = week[new Date(dateTime[0]).getDay()];
+  //   const result = ` ${date[0]}.${month}.${day}.(${dayOfWeek}) ${dateTime[1]}`;
+  //   return result;
+  // };
 
-  console.log("포맷타임: ", formatTime());
+  // console.log("포맷타임: ", formatTime());
 
   useEffect(
     () => {
@@ -143,11 +143,11 @@ function MoaDetail() {
           <div className="flex">
             <div className="" name="partyTags" value={detailMoa.partyTags}>{detailMoa.partyTags}</div>
           </div>
-          <div className="text-xs font-sans font-semibold" name="startTime">파티시간: {formatTime()} </div>
+          {/* <div className="text-xs font-sans font-semibold" name="startTime">파티시간: {formatTime()} </div> */}
           <div className="text-xs font-sans font-semibold">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div>
-            {detailMoa.partyPlayers.map((player)=>{
-              return <MoaUserCard player={player}/>
+            {detailMoa.partyPlayers.map((player, playerId)=>{
+              return <MoaUserCard key={playerId} player={player}/>
             })}
           </div>
           <div>파티 모집 내용</div>

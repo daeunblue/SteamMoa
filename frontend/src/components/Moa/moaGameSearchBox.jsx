@@ -6,8 +6,6 @@ import { moaGameSearch } from '../../api/Moazone';
 const MoaGameSearchBox = (props) => {
 
 const inputRef=useRef();
-
-
   // const [ searchGame, setSearchGame ] = useState();
 
   // const onChangeSearch  = (e) => {
