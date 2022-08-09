@@ -5,7 +5,7 @@ import MoaCard from "../MoaCard";
 
 const ProfileSearchUser = (props) => {
   const navigate = useNavigate();
-  const { userId, userName, userServiceId, userPoint, userTags, userParties } =
+  const { userName, userServiceId, userPoint, userTags, userParties } =
     props.user;
   const tierMin = 33.5;
   const tierMax = 39.5;
@@ -26,7 +26,7 @@ const ProfileSearchUser = (props) => {
 
   const onClickUser = (e) => {
     e.preventDefault();
-    navigate(`/profile/${userId}`);
+    navigate(`/profile/${userServiceId}`);
   };
 
   return (
