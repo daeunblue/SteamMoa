@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import axios from "axios";
+import { getServiceIdDuplicate, postSignup } from "../../api/Auth";
 
 const SignupForm = (props) => {
   const location = useLocation();
@@ -73,9 +73,7 @@ const SignupForm = (props) => {
   };
 
   const handleIdCheck = (e) => {
-    const url = `http://i7a303.p.ssafy.io:8080/api/auth/signup/duplicated/${user.service_id}`;
-    axios
-      .get(url)
+    getServiceIdDuplicate(user.service_id)
       .then(({ data }) => {
         if (!(data.statusCode===200)) {
           setIdMessage("아이디가 중복되었습니다");
@@ -116,15 +114,13 @@ const SignupForm = (props) => {
       navigate("/signup");
       return;
     }
-
-    axios
-      .post("http://i7a303.p.ssafy.io:8080/api/auth", {
-        user_name: user.name,
-        user_service_id: user.service_id,
-        user_service_pw: user.service_pw,
-        user_steam_id: steamId,
-      })
-      .then(({ status, data }) => {
+    
+    postSignup({
+      user_name: user.name,
+      user_service_id: user.service_id,
+      user_service_pw: user.service_pw,
+      user_steam_id: steamId,
+    }).then(({ status, data }) => {
         alert(data.message);
         if (status === 200) {
           navigate("/login");

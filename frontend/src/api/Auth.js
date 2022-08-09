@@ -27,5 +27,5 @@ export const postPWCheck = (pw) => {
 //회원 탈퇴 [헤더필요]
 export const deleteUser = (userServiceId) => {
   const url = `auth/${userServiceId}`;
-  return api.delete(url, user);
+  return api.delete(url, userServiceId);
 };
