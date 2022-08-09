@@ -60,16 +60,16 @@ public class User {
     private List<UserTag> uTagLists = new ArrayList<>();
 
     // 양방향 일대다
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Puser> pusers = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Tactic> tacticList = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Review> reviewList = new ArrayList<>();
 
     @Override
