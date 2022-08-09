@@ -1,21 +1,13 @@
-import { api } from "./api";
-
-//tactic
-// {
-//     "gameId": 1,
-//     "tacticContent": "공략글 내용",
-//     "tacticTitle": "공략글 제목",
-//     "userId": 1
-// }
+import { api, apiAuth } from "./api";
 
 export const postTactics = (tactic) => {
   const url = `tactics`;
-  return api.post(url, tactic);
+  return apiAuth.post(url, tactic);
 };
 
 export const putTactics = (tactic) => {
   const url = `tactics`;
-  return api.put(url, tactic);
+  return apiAuth.put(url, tactic);
 };
 
 export const getTacticGame = (gameId) => {

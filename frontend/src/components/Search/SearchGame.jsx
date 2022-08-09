@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { getSearchLists } from "../../api/Search";
 import GameCard from "../Game/GameCard";
 import MoaCard from "../MoaCard";
-import TacticSearchCard from "./TacticSearchCard";
+import TacticSearchCard from "../TacticSearchCard";
 
 const SearchGame = (props) => {
   const [searchParams] = useSearchParams();
