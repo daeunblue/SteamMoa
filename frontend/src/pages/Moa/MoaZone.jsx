@@ -7,26 +7,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChampagneGlasses } from "@fortawesome/free-solid-svg-icons";
 import { getMoaListSearch } from "../../api/Moazone";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { moaMaxPage, moaPage, moaSearchWord, moaSearchSort, moaSearchFilter } from "../../recoil/Moazone";
-import { useNavigate } from "react-router-dom";
+import { moaMaxPage, moaSearchFilter } from "../../recoil/Moazone";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function MoaZone() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [moaList, setMoaList] = useState([]);
-  const page = useRecoilValue(moaPage);
+  const page = searchParams.get("page") ? parseInt(decodeURIComponent(searchParams.get("page"))) : 1;
+  const keyword = searchParams.get("word") ? decodeURIComponent(searchParams.get("word")) : "";
+  const sort = searchParams.get("sort") ? decodeURIComponent(searchParams.get("sort")) : "";
   const setMaxPage = useSetRecoilState(moaMaxPage);
-  const searchWord = useRecoilValue(moaSearchWord);
-  const searchSort = useRecoilValue(moaSearchSort);
   const searchFilter = useRecoilValue(moaSearchFilter);
 
   useEffect(() => {
-    getMoaListSearch(page, searchWord, searchSort, searchFilter)
+    getMoaListSearch(page, sort, keyword, searchFilter)
       .then(({ data }) => {
         setMoaList([...data.data]);
         setMaxPage(parseInt(data.maxPage));
       })
       .catch();
-  }, [page]);
+  }, [page, sort, keyword, searchFilter]);
 
   const handleNavigate = () => {
     navigate(`/moazone/create`);
@@ -38,7 +39,7 @@ function MoaZone() {
       {/* 모아존 배너 */}
       <img src="../../ImgAssets/MoaZone_Main.gif" alt="MoaZon Main" className="w-per75 m-auto" />
       {/* 검색 컨테이너 */}
-      <MoaSearchContainer setMoaList={setMoaList} />
+      <MoaSearchContainer />
       {/* 모아 만들기 버튼 */}
       <div className="w-per75 mx-auto my-3 flex justify-end">
         <button
@@ -54,7 +55,7 @@ function MoaZone() {
       </div>
       {/* 페이지네이션 */}
       <div className="w-per75 m-auto flex justify-center py-5">
-        <MoaPagination setMoaList={setMoaList} />
+        <MoaPagination />
       </div>
     </div>
   );

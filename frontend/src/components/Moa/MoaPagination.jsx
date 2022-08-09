@@ -4,10 +4,15 @@ import React from "react";
 import PaginationItem from "../PaginationItem";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { moaPage, moaMaxPage } from "../../recoil/Moazone";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-const Pagination = (props) => {
+const Pagination = () => {
   const PAGE_COUNT = 10;
-  const [page, setPage] = useRecoilState(moaPage);
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") ? parseInt(decodeURIComponent(searchParams.get("page"))) : 1;
+  const keyword = searchParams.get("word") ? decodeURIComponent(searchParams.get("word")) : "";
+  const sort = searchParams.get("sort") ? decodeURIComponent(searchParams.get("sort")) : "";
   const maxPage = useRecoilValue(moaMaxPage);
 
   const getPaginationList = (currPage, perCount) => {
@@ -29,15 +34,17 @@ const Pagination = (props) => {
 
   const onClickPrev = () => {
     let newPage = page - 1 > 1 ? page - 1 : 1;
-    setPage(newPage);
+    navigate(`/moazone?page=${newPage}${keyword ? "&word=" + encodeURIComponent(keyword):""}${sort ? "&sort=" + encodeURIComponent(sort):"" }`);
   };
   const onClickNext = () => {
     let newPage = page + 1 <= maxPage ? page + 1 : maxPage;
-    setPage(newPage);
+    //setPage(newPage);
+    navigate(`/moazone?page=${newPage}${keyword ? "&word=" + encodeURIComponent(keyword):""}${sort ? "&sort=" + encodeURIComponent(sort):"" }`);
   };
 
   const handlePageMove = (value) => {
-    setPage(value);
+    //setPage(value);
+    navigate(`/moazone?page=${value}${keyword ? "&word=" + encodeURIComponent(keyword):""}${sort ? "&sort=" + encodeURIComponent(sort):"" }`);
   };
 
   return (

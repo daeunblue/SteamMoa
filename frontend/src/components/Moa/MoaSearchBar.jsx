@@ -3,48 +3,46 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getMoaListSearch } from "../../api/Moazone";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { moaSearchWord, moaPage, moaMaxPage, moaSearchFilter, moaSearchSort } from "../../recoil/Moazone";
+import {
+  moaSearchWord,
+  moaPage,
+  moaMaxPage,
+  moaSearchFilter,
+  moaSearchSort,
+} from "../../recoil/Moazone";
 import { debounce } from "lodash";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const SearchBar = (props) => {
-  const { setMoaList, setFilter } = props;
-  const [word, setWord] = useState("");
+  const { setFilter } = props;
 
-  const [page, setPage] = useRecoilState(moaPage);
-  const setMaxPage = useSetRecoilState(moaMaxPage);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page")
+    ? parseInt(decodeURIComponent(searchParams.get("page")))
+    : 1;
+  const keyword = searchParams.get("word") ? decodeURIComponent(searchParams.get("word")) : "";
+  const sort = searchParams.get("sort") ? decodeURIComponent(searchParams.get("sort")) : "";
+
   const setSearchFilter = useSetRecoilState(moaSearchFilter);
-  const setSearchSort = useSetRecoilState(moaSearchSort);
-  const setSearchWord = useSetRecoilState(moaSearchWord);
-  
+  const [word, setWord] = useState(keyword);
 
   const onChange = (e) => {
     e.preventDefault();
     setWord(e.target.value);
-    debounceSearch(e.target.value);
   };
 
-  const debounceSearch = useCallback(
-    debounce((_word) => {
+  const onKeyUp = (e) => {
+    if (e.key === "Enter") {
       setFilter([]);
       setSearchFilter([]);
-      setSearchSort(0);
-      getMoaListSearch(page, _word, 0, [])
-        .then(({ data }) => {
-          setMoaList([...data.data]);
-          setMaxPage(parseInt(data.maxPage));
-          setPage(1);
-          setSearchWord(_word);
-        })
-        .catch();
-    }, 750),
-    []
-  );
-
-  useEffect(() => {
-    return () => {
-      debounceSearch.cancel();
-    };
-  }, []);
+      navigate(
+        `/moazone?page=${page}${word ? "&word=" + encodeURIComponent(word) : ""}${
+          sort ? "&sort=" + encodeURIComponent(sort) : ""
+        }`
+      );
+    }
+  };
 
   return (
     <div id="search-bar" className="col-span-3 flex felx-row bg-searchbar-gray rounded-lg">
@@ -58,6 +56,7 @@ const SearchBar = (props) => {
         placeholder="게임 이름으로 검색하세요"
         value={word}
         onChange={onChange}
+        onKeyUp={onKeyUp}
       />
     </div>
   );
