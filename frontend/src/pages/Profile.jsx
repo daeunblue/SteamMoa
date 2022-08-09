@@ -21,25 +21,25 @@ const Profile = () => {
     userId: '',
     userPoint: '',
     userServiceId: "",
-    userTags: []
+    userTags: [],
+    userName:''
   });
   let params = useParams()
   const location = useLocation()
   const accessId = params.user_id
+  const [subPage, setSubPage] = useState('')
   const [profileName,setProfileName] = useState("")
   const [followingList, setFollowingList] = useState([])
   const [followerList, setFollowerList] = useState([])
+  const [isMyPage, setIsMyPage] = useState(false)
 
   const navigate = useNavigate();
   const [userAuth, ] = useRecoilState(auth);
   const userId = userAuth.userId
   const isLoggedIn = userAuth.isLoggedIn
   const path = location.pathname
-  let isMypage = false
   const midLocation = path.slice(1,7)
-  if (midLocation==='mypage' & profileName === userId){
-    isMypage = true
-  }
+
   useEffect(
     ()=>{
       // 마이페이지인가 일반 프로필페이지인가
@@ -61,6 +61,8 @@ const Profile = () => {
         }
       }
 
+    setIsMyPage(true)
+
     getUserInfo(accessId)
     .then((res) => {
       console.log(res)
@@ -79,15 +81,16 @@ const Profile = () => {
     
     getUserFollowing(profileName)
     .then((res)=>{
-      setFollowingList(res.followings.userServiceIdList)
+      console.log(res)
+      setFollowingList(res.data.followings.userServiceIdList)
     }).catch((err)=>{console.log(err)})
 
     getUserFollowwers(profileName)
     .then((res)=>{
-      setFollowerList(res.followers.userServiceIdList)
+      setFollowerList(res.data.followers.userServiceIdList)
     }).catch((err)=>{console.log(err)})
     }
-    ,[accessId, profileName, midLocation, isLoggedIn, userId] 
+    ,[accessId, profileName, midLocation, isLoggedIn, userId, navigate] 
   )
 
   //매너온도
@@ -111,16 +114,16 @@ const Profile = () => {
     <>
       <Navbar/>
       <div className='w-per75 m-auto flex'>
-        <Sidebar isMypage={isMypage} userProfile={userProfile} followerList={followerList} followingList={followingList} tier={tier}></Sidebar>
+        <Sidebar setSubPage={setSubPage}isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList} tier={tier}></Sidebar>
         <div className='bg-centerDiv-blue w-full'>
           <Routes>
-            <Route exact="true" path="" element={<ProfileUser profileName={profileName} isMypage={isMypage} userProfile={userProfile} followerList={followerList} followingList={followingList}/>} />
-            <Route path="userupdate" element={<ProfileUserUpdate profileName={profileName} isMypage={isMypage}/>} />
-            <Route path="myparty" element={<ProfileMyParty profileName={profileName} isMypage={isMypage}/>} />
-            <Route path="curparty" element={<ProfileCurParty profileName={profileName} isMypage={isMypage}/>} />
-            <Route path="pastparty" element={<ProfilePastParty profileName={profileName} isMypage={isMypage}/>} />
-            <Route path="myreview" element={<ProfileMyReview profileName={profileName} isMypage={isMypage}/>} />
-            <Route path="mywalkthrough" element={<ProfileMyWalk profileName={profileName} isMypage={isMypage}/>} />
+            <Route exact="true" path="" element={<ProfileUser tier={tier} profileName={profileName} isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList}/>} />
+            <Route path="userupdate" element={<ProfileUserUpdate profileName={profileName} isMyPage={isMyPage}/>} />
+            <Route path="myparty" element={<ProfileMyParty profileName={profileName} isMyPage={isMyPage}/>} />
+            <Route path="curparty" element={<ProfileCurParty profileName={profileName} isMyPage={isMyPage}/>} />
+            <Route path="pastparty" element={<ProfilePastParty profileName={profileName} isMyPage={isMyPage}/>} />
+            <Route path="myreview" element={<ProfileMyReview profileName={profileName} isMyPage={isMyPage}/>} />
+            <Route path="mywalkthrough" element={<ProfileMyWalk profileName={profileName} isMyPage={isMyPage}/>} />
 
           </Routes>
         </div>

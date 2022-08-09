@@ -9,7 +9,7 @@ import { deleteReviews } from '../../api/Review';
 
 
 const GameReviewItem = (props) => {
-  const {review, setRerender} = props
+  const {review, setRerender, profile} = props
   const [userAuth, ] = useRecoilState(auth);
   const isMine = (review.userServiceId === userAuth.userId)
   function leftPad(value) {
@@ -73,7 +73,13 @@ const GameReviewItem = (props) => {
       <div className='w-full flex justify-between'>
         {/* 작성자 */}
         <div>
-          <Link to={`/profile/${review.userServiceId}`} className='text-xs text-center font-semibold hover:cursor-pointer'>{review.userServiceId}</Link>
+          {(!profile ? 
+            <Link to={`/profile/${review.userServiceId}`} className='text-xs text-center font-semibold hover:cursor-pointer'>{review.userServiceId}</Link>
+            : 
+            // 게임으로 리다이렉트
+            <Link to={`/profile/${review.userServiceId}`} className='text-xs text-center font-semibold hover:cursor-pointer'>게임</Link>
+            
+            )}
           <span className='text-xs text-center'> | </span>
           {/* 시간 */}
           <span className='text-xs text-center'>{time}</span>

@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines, faChampagneGlasses } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = (props) => {
-  const {isMypage, userProfile, followerList, followingList, tier} = props
+  const {setSubPage, isMyPage, userProfile, followerList, followingList, tier} = props
   const profileName = userProfile.userServiceId
   const param = useParams()
   const subParam = Object.values(param)
   const isMain = subParam.includes('')
 
-  const midLocation = (isMypage ? "mypage":"profile")
-  const titleName = (isMypage ? "나의": `${profileName}님의`)
+  const midLocation = (isMyPage ? "mypage":"profile")
+  const titleName = (isMyPage ? "나의": `${profileName}님의`)
+
+
   
   const menus = [
     {title:`Party`,
@@ -36,19 +38,20 @@ const Sidebar = (props) => {
             />
     },
     ]
+
   return (
-    <div className='h-screen bg-sidebar-light w-per25 min-w-[90px]' >
+    <div className={`h-screen bg-sidebar-light w-per25 min-w-[90px]`} >
       {/* 프로필 */}
       <NavLink
         to={`/${midLocation}/${profileName}`}
         className={ (isMain ?'block py-5 px-[10%] bg-moa-yellow-dark hover:cursor-pointer shadow-inner':'block py-5 px-[10%] bg-sidebar-dark hover:cursor-pointer')}
       >
         <div className='flex justify-around items-center'>
-          <img src={`../../ImgAssets/Tier${tier}.png`} alt="" className='w-per20 min-w-[35px]'/>
+          <img src={`../../ImgAssets/Tier${tier}.png`} alt="" className='w-per20 min-w-[35px] drop-shadow-md'/>
           <div className='flex flex-col justify-center'>
             <span className='text-xs font-blackSans text-white'>{profileName}</span>
             <div className='grid grid-cols-1 laptop:grid-cols-2 gap-1'>
-              <span className='text-white text-[10px]'>{`팔로우: ${followingList.length}`}</span>
+              <span className='text-white text-[10px]'>{`팔로잉: ${followingList.length}`}</span>
               <span className='text-white text-[10px]'>{`팔로워: ${followerList.length}`}</span>
             </div>
           </div>
@@ -69,7 +72,6 @@ const Sidebar = (props) => {
                 return (
                   <div key={idx} className="py-1">    
                     <NavLink 
-                      // style={{color: "gray", textDecoration: "none"}}
                       className={({isActive}) => (isActive ? "text-white flex justify-end px-2 font-bold bg-moa-yellow rounded py-0.5": "text-gray-400 py-0.5")}
                       to={submenu.path}>
                         {submenu.name}
