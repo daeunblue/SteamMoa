@@ -6,7 +6,7 @@ import { auth } from "../../recoil/Auth";
 import MiniPagination from '../MiniPagination'
 import { getGameReviews, getUserHasReviews } from '../../api/Review'
 import { useParams } from 'react-router-dom'
-import { has, range } from 'lodash'
+import { range } from 'lodash'
 
 
 const GameReviewList = () => {
@@ -38,14 +38,16 @@ const GameReviewList = () => {
       })
       .catch((err)=>{
         setErrMsg('리뷰가 존재하지 않습니다. 첫번째 리뷰를 작성해주세요 :)')
+        setContentList([])
+
       })
     if (userAuth.isLoggedIn){
-      getUserHasReviews(userAuth.userId, gameId).
-        then((res) => {
+      getUserHasReviews(userAuth.userId, gameId)
+        .then((res) => {
           console.log(res)
           setHasReview(res.data.review)
         }).catch((err)=>{
-          console.log(err)
+          setHasReview(false)
         })
 
     }
@@ -61,28 +63,32 @@ const GameReviewList = () => {
   useEffect(()=>{
     const tmp = contentList.slice((page-1)*reviewsPerPage,page*reviewsPerPage)
     setShowContents(tmp)
-  },[page, contentList,])
+  },[page, contentList,rerender])
 
 
   return (
     <div className='p-4 w-full'>
       {(hasReview? 
-        <div className='p-2'>
-          <span>나의 리뷰</span>
+        <div className='px-5 py-4 bg-[#C9D1F1] rounded'>
+          <div className='font-semibold text-gray-800 mb-2'>나의 리뷰</div>
           <GameReviewItem review={hasReview} setIsEditting={setIsEditting} setRerender={setRerender}/>
         </div>
         : <GameReviewCreate setRerender={setRerender} setIsEditting={setIsEditting} isEditting={isEditting} review={hasReview}></GameReviewCreate>)}
 
       <div className='my-5'>
-        {(!contentList.length ? <div>{errMsg}</div>:<></>)}
+        {(!contentList.length ? <div className='flex justify-center p-16 border border-gray-200 rounded'>{errMsg}</div>:<></>)}
         {showContents.map((review, index)=>{
           return(
             <GameReviewItem review={review} key={index}/>
           )
         })}
       </div>
+
       {(contentList.length ? 
-        <MiniPagination setRerender={setRerender} totPage={totPage} page={page} viewablePages={viewablePages} setPage={setPage} setViewablePages={setViewablePages}/> : <></> )}
+         <div className='flex justify-center'>
+          <MiniPagination setRerender={setRerender} rerender={rerender} totPage={totPage} page={page} viewablePages={viewablePages} setPage={setPage} setViewablePages={setViewablePages}/>
+         </div>
+         : <></> )}
       
     </div>
   )

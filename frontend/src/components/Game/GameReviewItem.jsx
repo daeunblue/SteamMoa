@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { auth } from "../../recoil/Auth";
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import Swal from 'sweetalert2'
 import { deleteReviews } from '../../api/Review';
 
@@ -55,13 +55,11 @@ const GameReviewItem = (props) => {
       .then((res) => {
         if (res.isConfirmed){
           deleteReviews(review.reviewId)
-            .then((res)=> {setRerender(rerender => rerender+1)})
+            .then((res)=> {
+              setRerender(rerender => rerender+1)})
             .catch((err)=>{console.log(err)})
         } 
-      }) .catch((err) =>{
-        console.log(err)
-      }
-      )
+      })
   
   }
 
@@ -70,7 +68,7 @@ const GameReviewItem = (props) => {
   }
 
   return (
-    <div className='border rounded p-3 drop-shadow-lg my-1'>
+    <div className='border rounded p-3 drop-shadow-md my-1.5 bg-white'>
       {/* 작성자+시간 */}
       <div className='w-full flex justify-between'>
         {/* 작성자 */}
@@ -82,11 +80,6 @@ const GameReviewItem = (props) => {
         </div>
         {(isMine ? 
           <div>
-            <FontAwesomeIcon
-              icon={faPencil}
-              onClick={onEdit}
-              className="w-3 h-3 text-center text-gray-500 hover:text-gray-800 mr-2"
-              />
             <FontAwesomeIcon
               icon={faTrashCan}
               onClick={onDelete}
@@ -114,7 +107,7 @@ const GameReviewItem = (props) => {
         <div className='text-xs pt-1 font-semibold'>{review.reviewScore}</div>
       </div>
       {/* content */}
-      <div className='text-sm'>{review.reviewContent}</div>
+      <div className='text-sm mb-1'>{review.reviewContent}</div>
     </div>
   )
 }

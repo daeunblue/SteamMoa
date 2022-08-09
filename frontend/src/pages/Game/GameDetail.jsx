@@ -6,6 +6,8 @@ import GameReviewList from "../../components/Game/GameReviewList";
 import GameTacticList from "../../components/Game/GameTacticList";
 
 const GameDetail = (props) => {
+  const param = useParams()
+  const isTactic = (Object.values(param).includes('tactic')? true:false)
   const navigate = useNavigate()
   const [gameDetail, setGameDetail] = useState({
     "gameGenreRepository": '',
@@ -31,6 +33,7 @@ const GameDetail = (props) => {
   })
   const params = useParams()
   const gameId = params.game_id
+  const tabDesign = `inline-flex py-3 px-6 rounded-t-lg border-b-2 border-transparent hover:text-gray-700 hover:border-indigo-400`
 
   useEffect(
     ()=>{
@@ -107,9 +110,15 @@ const GameDetail = (props) => {
         {/* 리뷰, 공략 */}
         <div className="w-full px-[2.5%]">
           {/* tab */}
-          <div className="bg-slate-300">
-            <NavLink to={`/gamemoa/detail/${gameId}`}>리뷰</NavLink>
-            <NavLink to={`/gamemoa/detail/${gameId}/tactic`}>공략</NavLink>
+          <div className="text-sm font-medium bg-indigo-200 text-center text-gray-500 border-b border-gray-300 rounded-t-lg">
+            <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
+              <li className="rounded-t-lg">
+                <NavLink to={`/gamemoa/detail/${gameId}`} className={ (!isTactic ? `bg-white border-0 shadow-[0_-4px_0.25em_rgba(0,0,0,0.3)] text-gray-700 ${tabDesign}`: `${tabDesign}`)}>Review</NavLink>
+              </li>
+              <li className="rounded-t-lg">
+                <NavLink to={`/gamemoa/detail/${gameId}/tactic`} className={({isActive}) => (isActive ?  `bg-white border-0 shadow-[0_-4px_0.25em_rgba(0,0,0,0.3)] text-gray-700 ${tabDesign}`: `${tabDesign}`)}>Tatic</NavLink>
+              </li>
+            </ul>
           </div>
           {/* list */}
           <div className="bg-white">
