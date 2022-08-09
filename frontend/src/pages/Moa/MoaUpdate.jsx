@@ -24,10 +24,6 @@ const MoaUpdate = (props) => {
     console.log("moa: ",moa);
     console.log("updateMoa는: ",updateMoa);
 
-    
-    // 파티 태그 하드코딩
-
-
     const items= [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
     const [ checkedList, setCheckedList ] = useState([]);
     console.log("updateMoa는: ",updateMoa);
@@ -68,7 +64,7 @@ const MoaUpdate = (props) => {
 // 수정된 데이터 보내서 저장
 const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("수정 완료 버튼 클릭시 : ",updateMoa); //파티유저 리스트에 파티장을 추가해야 함??
+    console.log("수정 완료 버튼 클릭시 : ",updateMoa);
     moaUpdate(updateMoa, partyId)
     .then((res)=>{
         if (res.status === 200 ){
@@ -194,7 +190,6 @@ const handleDeleteParty = (e) => {
                     onChange={onChange}
                     className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg" type="text" id="" />
                 </div>
-                {/* 파티 태그 하드 코딩 */}
                 <div className='grid grid-flow-col'>
                 <div>파티 태그</div>
                 <div>
@@ -217,8 +212,7 @@ const handleDeleteParty = (e) => {
                     </div>
                 </div>
                 </div>
-                
-                {/* <PartyUsers /> */}
+                <div>참가 파티원</div>
                 <div 
                 className='w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black'
                 name="partyUsers"
