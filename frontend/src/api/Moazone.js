@@ -36,11 +36,11 @@ export const moaDelete = (partyId) => {
 }
 
 // 모아글 검색
-export const getMoaListSearch = (page, searchWord, searchSort, searchFilter) => {
+export const getMoaListSearch = (page, searchSort, searchWord, searchFilter) => {
   let url = `moazone/search?page=${page}`;
-  url += searchWord ? `&searchString=${searchWord}`:"";
   url += searchSort ? `&sortString=${searchSort}` : "";
-  
+  url += searchWord ? `&searchString=${searchWord}` : "";
+
   const partyStatuses = searchFilter.filter((filter) => (filter.category === 1 ? true : false));
   const partyTags = searchFilter.filter((filter) => (filter.category === 2 ? true : false));
 

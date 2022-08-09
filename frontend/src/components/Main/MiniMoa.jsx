@@ -24,16 +24,16 @@ const MiniMoa = (props) => {
   }  , 
   [index, isMobile]
   )
-
+  
   const moaCarousel = (parties) => {
-    if(parties.length){
+    if(parties.length>=5){
       return(
         [...Array(5)].map((_, index) => {
           if (isMobile) {
               return(
                   <MoaCard party={parties[index]} key={index}></MoaCard>
               )
-            } else {
+            } else if(parties.length>=15){
               
               return(
               <div className='w-full grid grid-cols-3 gap-1' key={index}>

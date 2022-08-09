@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import FilterCaterories from "../Filter/FilterCaterories";
 import FilterBadge from "../Filter/FilterBadge";
-import { getMoaListSearch } from "../../api/Moazone";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { moaSearchFilter, moaPage, moaSearchWord, moaMaxPage, moaSearchSort } from "../../recoil/Moazone";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import { moaSearchFilter, moaMaxPage } from "../../recoil/Moazone";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const MoazoneSearchContainer = (props) => {
   const categories = {
@@ -17,19 +17,19 @@ const MoazoneSearchContainer = (props) => {
         name: "모집상태",
         items: [
           {
-            id: '1',
+            id: "1",
             name: "모집중",
           },
           {
-            id: '2',
+            id: "2",
             name: "모집완료",
           },
           {
-            id: '3',
+            id: "3",
             name: "게임중",
           },
           {
-            id: '4',
+            id: "4",
             name: "게임완료",
           },
         ],
@@ -39,19 +39,19 @@ const MoazoneSearchContainer = (props) => {
         name: "파티태그",
         items: [
           {
-            id: '1',
+            id: "1",
             name: "즐겜",
           },
           {
-            id: '2',
+            id: "2",
             name: "빡겜",
           },
           {
-            id: '3',
+            id: "3",
             name: "공략겜",
           },
           {
-            id: '4',
+            id: "4",
             name: "무지성겜",
           },
           {
@@ -76,25 +76,25 @@ const MoazoneSearchContainer = (props) => {
       },
     ],
   };
-  const setMoaList = props.setMoaList;
-  const [filter, setFilter] = useState([]);
 
-  const [page, setPage] = useRecoilState(moaPage);
-  const searchWord = useRecoilValue(moaSearchWord);
-  const [searchSort, setSearchSort] = useRecoilState(moaSearchSort);
-  const setMaxPage = useSetRecoilState(moaMaxPage);
-  const setSearchFilter = useSetRecoilState(moaSearchFilter);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page")
+    ? parseInt(decodeURIComponent(searchParams.get("page")))
+    : 1;
+  const keyword = searchParams.get("word") ? decodeURIComponent(searchParams.get("word")) : "";
+  const sort = searchParams.get("sort") ? decodeURIComponent(searchParams.get("sort")) : "";
+  const [searchFilter, setSearchFilter] = useRecoilState(moaSearchFilter);
+  const [filter, setFilter] = useState([...searchFilter]);
 
   const handleResetFilter = () => {
     setFilter([]);
     setSearchFilter([]);
-    getMoaListSearch(page, searchWord, searchSort, [])
-      .then(({ data }) => {
-        setMoaList([...data.data]);
-        setMaxPage(parseInt(data.maxPage));
-        setPage(1);
-      })
-      .catch();
+    navigate(
+      `/moazone?page=1${keyword ? "&word=" + encodeURIComponent(keyword) : ""}${
+        sort ? "&sort=" + encodeURIComponent(sort) : ""
+      }`
+    );
   };
 
   const handleDeleteTag = (category_id, filterItem_id) => {
@@ -107,27 +107,23 @@ const MoazoneSearchContainer = (props) => {
     );
   };
 
-  const handleSearch = () => {//필터검색 -> 검색어, 정렬, 필터
+  const handleSearch = () => {
+    //필터검색 -> 검색어, 정렬, 필터
     setSearchFilter([...filter]);
-    getMoaListSearch(page, searchWord, searchSort, [...filter])
-      .then(({ data }) => {
-        setMoaList([...data.data]);
-        setMaxPage(parseInt(data.maxPage));
-        setPage(1);
-      })
-      .catch();
+    navigate(
+      `/moazone?page=1${keyword ? "&word=" + encodeURIComponent(keyword) : ""}${
+        sort ? "&sort=" + encodeURIComponent(sort) : ""
+      }`
+    );
   };
 
-  const handleSelectChange = (sort) => { // wjdfuf qkRnaus 
-    setSearchSort(sort);
-    getMoaListSearch(page, searchWord, sort, filter)
-      .then(({ data }) => {
-        setMoaList([...data.data]);
-        setMaxPage(parseInt(data.maxPage));
-        setPage(1);
-      })
-      .catch();
-  }
+  const handleSelectChange = (sort) => {
+    navigate(
+      `/moazone?page=${page}${keyword ? "&word=" + encodeURIComponent(keyword) : ""}${
+        sort ? "&sort=" + encodeURIComponent(sort) : ""
+      }`
+    );
+  };
 
   const [ishidden, setIsHidden] = useState(true);
   const handleArcodion = () => {
@@ -150,8 +146,8 @@ const MoazoneSearchContainer = (props) => {
         {/* 검색바, 정렬 */}
         <div className="grid grid-cols-5 gap-2">
           {/* 검색바 */}
-          <MoaSearchBar setMoaList={setMoaList} setFilter={setFilter} />
-          <SelectInput options={categories.sort} handleSelectChange={ handleSelectChange } />
+          <MoaSearchBar setFilter={setFilter} />
+          <SelectInput options={categories.sort} handleSelectChange={handleSelectChange} />
         </div>
         {/* 아코디언 버튼 */}
         <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
