@@ -114,7 +114,7 @@ const GameDetail = (props) => {
           {/* list */}
           <div className="bg-white">
             <Routes>
-              <Route path="" element={<GameReviewList/>} />
+              <Route exact={true} path="" element={<GameReviewList/>} />
               <Route path="tactic" element={<GameTacticList />} />
             </Routes>
           </div>

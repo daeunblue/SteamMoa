@@ -3,9 +3,11 @@ import '../../assets/reviewStar.css'
 import { useRecoilState } from "recoil";
 import { auth } from "../../recoil/Auth";
 import {Link, useParams} from 'react-router-dom'
+import { postReviews } from '../../api/Review';
 
 
 const GameReviewCreate = (props) => {
+  const {setRerender} = props
   const params = useParams()
   const gameId = params.game_id
   const [userAuth, ] = useRecoilState(auth);
@@ -25,7 +27,12 @@ const GameReviewCreate = (props) => {
   };
 
   const onSubmit = () => {
-
+    postReviews(reviewData)
+      .then((res)=>{
+        setRerender(rerender => rerender+1)
+      }).catch((err)=>{
+        console.log(err)
+      })
   }
 
 
@@ -55,9 +62,9 @@ const GameReviewCreate = (props) => {
         <div className='flex justify-end'>
           <button className='disabled:bg-mainBtn-disabled
                                 disabled:hover:scale-100
-                                min-w-[80px] w-[8%] bg-moa-blue-dark text-center
+                                min-w-[80px] w-[8%] bg-moa-purple text-center
                                 py-1 tablet:py-1.5 drop-shadow-lg rounded
-                              text-white text-[0.7em] font-bold hover:scale-[102%] hover:bg-moa-blue' 
+                              text-white text-[0.7em] font-bold hover:scale-[102%] hover:bg-moa-purple-dark' 
                 onClick={onSubmit}
                 disabled={((reviewData.reviewContent&&reviewData.reviewScore)? false: true)}
                 >SUBMIT</button>
@@ -67,7 +74,7 @@ const GameReviewCreate = (props) => {
     )
   } else {
     return(
-      <div className="w-full px-[3%] py-2 tablet:py-4 bg-mainBtn-disabled rounded opacity-90">
+      <div className="w-full px-[3%] py-2 tablet:py-4 bg-mainBtn-disabled rounded opacity-80">
         <div className='mb-0.5 text-[1em] font-semibold text-gray-500'>리뷰 작성을 위해 <Link to={'/login'} className="text-[1.1em] text-moa-purple font-bold">로그인</Link>을 진행해주세요</div>
         <div className="flex items-center h-10">
           {/* 별점 label */}
