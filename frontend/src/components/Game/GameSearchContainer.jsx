@@ -64,12 +64,12 @@ const GameSearchContainer = () => {
   const handleResetFilter = () => {
     setFilter([]);
     setSearchFilter([]);
-    navigate(`/gamemoa?page=1&word=${encodeURIComponent(keyword)}`);
+    navigate(`/gamemoa?page=1${keyword? "&word="+encodeURIComponent(keyword):""}`);
   };
 
   const handleSearchFilter = () => {
     setSearchFilter([...filter]);
-    navigate(`/gamemoa?page=1&word=${encodeURIComponent(keyword)}`);
+    navigate(`/gamemoa?page=1${keyword? "&word="+encodeURIComponent(keyword):""}`);
   };
 
   const deleteHandler = (category_id, filterItem_id) => {
