@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import FilterCaterories from "../Filter/FilterCaterories";
 import FilterBadge from "../Filter/FilterBadge";
-import { getGamesSearch } from "../../api/Game";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { gameSearchFilter, gamePage, gameSearchWord, gameMaxPage } from "../../recoil/Game";
+import { useRecoilState } from "recoil";
+import { gameSearchFilter, gamePage } from "../../recoil/Game";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-const GameSearchContainer = (props) => {
+const GameSearchContainer = () => {
   const categories = {
     filters: [
       {
@@ -55,24 +55,21 @@ const GameSearchContainer = (props) => {
       },
     ],
   };
-  const setGameList = props.setGameList;
-
-  const [page, setPage] = useRecoilState(gamePage);
-  const searchWord = useRecoilValue(gameSearchWord);
-  const setMaxPage = useSetRecoilState(gameMaxPage);
-  const setSearchFilter = useSetRecoilState(gameSearchFilter);
-  const [filter, setFilter] = useState([]);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get("word") ? decodeURIComponent(searchParams.get("word")) : "";
+  const [searchFilter, setSearchFilter] = useRecoilState(gameSearchFilter);
+  const [filter, setFilter] = useState([...searchFilter]);
 
   const handleResetFilter = () => {
-    setPage(1);
     setFilter([]);
     setSearchFilter([]);
-    getGamesSearch(1, [], searchWord)
-      .then(({ data }) => {
-        setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
-        setMaxPage(parseInt(data.maxPage));
-      })
-      .catch();
+    navigate(`/gamemoa?page=1&word=${encodeURIComponent(keyword)}`);
+  };
+
+  const handleSearchFilter = () => {
+    setSearchFilter([...filter]);
+    navigate(`/gamemoa?page=1&word=${encodeURIComponent(keyword)}`);
   };
 
   const deleteHandler = (category_id, filterItem_id) => {
@@ -83,18 +80,6 @@ const GameSearchContainer = (props) => {
           : false;
       })
     );
-  };
-
-  const handleSearchFilter = () => {
-    setPage(1);
-    setSearchFilter([...filter]);
-    getGamesSearch(1, [...filter], searchWord)
-      .then(({ data }) => {
-        setGameList(data.data.map((item) => ({ ...item, gameReviewScore: 5 })));
-        setMaxPage(parseInt(data.maxPage));
-        console.log(filter);
-      })
-      .catch();
   };
 
   const [ishidden, setIsHidden] = useState(true);
@@ -112,7 +97,7 @@ const GameSearchContainer = (props) => {
         {/* 검색바, 정렬 */}
         <div className="grid grid-cols-5 gap-2">
           {/* 검색바 */}
-          <GameSearchBar setGameList={setGameList} setFilter={setFilter} />
+          <GameSearchBar setFilter={setFilter} />
         </div>
         {/* 아코디언 버튼 */}
         <div className="flex flex-row-reverse items-center" onClick={handleArcodion}>
