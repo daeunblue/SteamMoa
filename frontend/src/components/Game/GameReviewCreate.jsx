@@ -38,7 +38,7 @@ const GameReviewCreate = (props) => {
 
   if (userAuth.isLoggedIn){
     return (
-      <div className="w-full px-[3%] py-2 tablet:py-4 bg-slate-500 rounded">
+      <div className="w-full px-[3%] py-2 tablet:py-4 bg-[#C9D1F1] rounded mt-2 drop-shadow-md">
         <div className='mb-0.5 text-[1em] font-semibold'>리뷰 작성하기</div>
         <div className="flex items-center h-10">
           {/* 별점 label */}
@@ -49,7 +49,7 @@ const GameReviewCreate = (props) => {
               return(
                 <>
                   <input key={index} type="radio" id={`${5-index}-stars-edit`} name="reviewScore" value={5-index} disabled={!userAuth.isLoggedIn} onChange={onChange} />
-                  <label htmlFor={`${5-index}-stars-edit`} className="star text-center drop-shadow-md
+                  <label htmlFor={`${5-index}-stars-edit`} className="star text-center drop-shadow
                   ">&#9733;</label>
                 </> 
               )
@@ -57,7 +57,7 @@ const GameReviewCreate = (props) => {
           </div>
         </div>
         {/* input */}
-        <textarea className='w-full min-h-6 resize-none rounded mb-1 text-[0.8em]' value={reviewData.reviewContent} onChange={onChange} name="reviewContent" placeholder="게임에 대한 의견을 남겨주세요"/>
+        <textarea className='w-full min-h-6 resize-none rounded mb-1 text-[0.8em] bg-gray-50 border border-gray-400 focus:bg-white focus:ring-indigo-200' value={reviewData.reviewContent} onChange={onChange} name="reviewContent" placeholder="게임에 대한 의견을 남겨주세요"/>
         
         <div className='flex justify-end'>
           <button className='disabled:bg-mainBtn-disabled
@@ -74,7 +74,7 @@ const GameReviewCreate = (props) => {
     )
   } else {
     return(
-      <div className="w-full px-[3%] py-2 tablet:py-4 bg-mainBtn-disabled rounded opacity-80">
+      <div className="w-full px-[3%] py-2 tablet:py-4 bg-mainBtn-disabled rounded opacity-80  drop-shadow-md">
         <div className='mb-0.5 text-[1em] font-semibold text-gray-500'>리뷰 작성을 위해 <Link to={'/login'} className="text-[1.1em] text-moa-purple font-bold">로그인</Link>을 진행해주세요</div>
         <div className="flex items-center h-10">
           {/* 별점 label */}

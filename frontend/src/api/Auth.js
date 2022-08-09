@@ -1,4 +1,4 @@
-import { api } from "./api";
+import { api, apiAuth } from "./api";
 
 //회원가입 Post
 export const postSignup = (signUpInfo) => {
@@ -19,13 +19,13 @@ export const getServiceIdDuplicate = (userServiceId) => {
 };
 
 //비밀번호 확인 [헤더필요]
-export const postPWCheck = (pw) => {
+export const postPWCheck = (user) => {
   const url = 'auth/check';
-  return api.post(url, pw);
+  return apiAuth.post(url, user);
 };
 
 //회원 탈퇴 [헤더필요]
 export const deleteUser = (userServiceId) => {
   const url = `auth/${userServiceId}`;
-  return api.delete(url, userServiceId);
+  return apiAuth.delete(url);
 };
