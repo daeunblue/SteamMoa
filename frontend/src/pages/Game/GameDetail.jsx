@@ -57,7 +57,9 @@ const GameDetail = (props) => {
   const tagClass = (gameDetail.genres.length > 2 ? 'tablet:flex my-2.5 tablet:my-3.5 laptop:my-5':'flex my-2.5 tablet:my-3.5 laptop:my-5')
   const tagBtmClass = (gameDetail.genres.length > 2 ?'flex pr-2 mr-2 tablet:border-r-2 tablet:border-dashed tablet:border-white tablet:pr-4 tablet:mr-4 mb-2 tablet:mb-0':`${genresTrue} flex pr-2 mr-2 tablet:pr-4 tablet:mr-4`)
 
-  const onClickParty = () =>{}
+  const onClickParty = () =>{
+    navigate(`/moazone?page=1&word=${gameDetail.name}`)
+  }
   const onClickSteam = () =>{
     window.location.href =`https://store.steampowered.com/app/${gameDetail.steamgameId}`
   }
