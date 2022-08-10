@@ -11,7 +11,7 @@ const MainGameSpread = (props) => {
       subText: '요즘 핫한 모아 게임은?!',
       textStyle: 'gameSpread-neonTextPink',
       list: hots.slice(0,10),
-      bg: 'bg-moa-pink'     
+      bg: 'bg-rose-400'     
     },
     { theme: '모아러 PICK!',
       subText: '모아러가 픽!한 게임',      
