@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { getUserCompletedParty } from '../../api/User'
-import { range } from 'lodash'
+import { getUserParty } from '../../api/User'
+import { range, set } from 'lodash'
 import MiniPagination from '../MiniPagination'
 import MoaCard from '../MoaCard'
 import { Link, useParams } from 'react-router-dom'
 
-const ProfilePastParty = (props) => {
+function ProfileMyParty(props) {
   const params = useParams
   const { profileName, isMyPage } = props
   const [render, setRender] = useState(1)
@@ -22,7 +22,7 @@ const ProfilePastParty = (props) => {
 
   useEffect(
     ()=>{
-      getUserCompletedParty(profileName)
+      getUserParty(profileName)
         .then((res)=>{
           console.log(res)
           setContentList(res.data.parties)
@@ -48,9 +48,9 @@ const ProfilePastParty = (props) => {
   return (
     <div className='my-10 flex flex-col justify-center'>
       {(!contentList.length&&!(render===1) ? 
-        <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
-          <div className="mb-2">종료된 파티가 없습니다.</div>
-          {(isMyPage ? <div>지금 파티 찾으러 <Link to={'/moazone'} className="text-moa-blue font-bold text-lg">출발!</Link></div>: '')}
+        <div className='w-per90 flex flex-col justify-center drop-shadow-lg rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
+          <div className="mb-2">아직 모은 파티가 없습니다.</div>
+          {(isMyPage ? <div>지금 파티를 모으러 <Link to={'/moazone/create'} className="text-moa-pink font-bold text-lg">출발!</Link></div>: '')}
         </div>
         :
         // 컨텐츠
@@ -76,5 +76,4 @@ const ProfilePastParty = (props) => {
   )
 }
 
-
-export default ProfilePastParty
+export default ProfileMyParty

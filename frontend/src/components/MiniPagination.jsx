@@ -4,7 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 const MiniPagination = (props) => {
-  const { viewablePages, setViewablePages, setPage, page, totPage } = props;
+  const { viewablePages, setViewablePages, setPage, page, totPage, color } = props;
+  let selectedColor = 'bg-moa-purple-light'
+  let hoverColor = 'bg-moa-purple-dark'
 
   const onClickItem = (e) => {
     const val = e.target.value;
@@ -31,7 +33,7 @@ const MiniPagination = (props) => {
       <FontAwesomeIcon
         icon={faAngleLeft}
         onClick={onClickPrev}
-        className="w-4 h-4 rounded-full hover:bg-main-100 hover:text-main-500"
+        className={`w-4 h-4 rounded-full hover:${hoverColor} hover:text-white`}
       />
       {viewablePages.map((item, index) => {
         return (
@@ -40,8 +42,8 @@ const MiniPagination = (props) => {
             key={index}
             onClick={onClickItem}
             className={`${
-              page === item ? "bg-moa-purple-light text-white" : ""
-            } w-6 h-6 text-center list-none inline-block rounded-full hover:bg-moa-purple-dark hover:text-main-500 hover:cursor-pointer`}
+              page === item ? selectedColor+" text-white" : ""
+            } w-6 h-6 text-center list-none inline-block rounded-full hover:${hoverColor} hover:text-gray-100 hover:cursor-pointer`}
           >
             {item}
           </li>
@@ -50,7 +52,7 @@ const MiniPagination = (props) => {
       <FontAwesomeIcon
         icon={faAngleRight}
         onClick={onClickNext}
-        className="w-4 h-4 rounded-full hover:bg-main-100 hover:text-main-500"
+        className={`w-4 h-4 rounded-full hover:${hoverColor} hover:text-white`}
       />
     </div>
   );
