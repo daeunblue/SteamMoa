@@ -6,14 +6,26 @@ import { postPWCheck } from '../../api/Auth'
 
 const ProfileUserUpdate = (props) => {
   const navigate = useNavigate()
-  const { profileName, isMyPage } = props
+  const { profileName, isMyPage, userProfile } = props
+  const utags= [ '즐겜러', '빡겜러', '초보', '중수', '고수', '생존겜 러버']
   const userId = useState(profileName)
   const [trialCnt, setTrialCnt] = useState(1)
+  const [tmpPw, setTmpPw] = useState('')
+  const [tmpPwConfirm, setTmpPwConfirm] = useState('')
+  const [passwordMessage, setPasswordMessage] = useState("");
+
+  
   const [updateInfo, setUpdateInfo] = useState({
-    user_name:'', // 닉네임
-    u_tag:[], // 유저 태그
-    password:''
+    user_name:userProfile.userName, // 닉네임
+    u_tag: utags.map((tag, idx)=>{
+      if (userProfile.userTags.includes(tag)) {
+        return (idx + 1)
+      }
+      return
+    }), // 유저 태그
+    password:'-1'  // 변경 사항 없음
   })
+
 
   //비밀번호 확인 swal
   const pwCheckSwal = Swal.mixin({
@@ -55,13 +67,13 @@ const ProfileUserUpdate = (props) => {
   })
 
   useEffect(
-    async() => {
+    () => {
       if (!isMyPage) {
         alert('잘못된 접근입니다.')
         navigate('/')
       }
 
-      await pwCheckSwal.fire().then((res)=>{
+      pwCheckSwal.fire().then((res)=>{
         if(res.isConfirmed){
           const user = {
             "user_service_id": userId[0],
@@ -126,72 +138,116 @@ const ProfileUserUpdate = (props) => {
     }, [trialCnt]
   )
   
-  const [checkedInputs, setCheckedInputs] = useState([]);
 
   const changeHandler = (checked, id) => {
     if (checked) {
-      setCheckedInputs([...checkedInputs, id]);
+      setUpdateInfo({...updateInfo, u_tag: [...updateInfo.u_tag, id+1]})
     } else {
       // 체크 해제
-      setCheckedInputs(checkedInputs.filter((el) => el !== id));
+      setUpdateInfo({...updateInfo, u_tag: updateInfo.u_tag.filter((el) => el !== id+1)});
     }
   };
 
-  const utags = [
-    { 
-      id: 1,
-      tag: '즐겜',
-    },
-    { 
-      id: 2,
-      tag: '빡겜',
-    },
-    { 
-      id: 3,
-      tag: '공략겜',
-    },
-    { 
-      id: 4,
-      tag: '친목겜',
-    },
-    { 
-      id: 5,
-      tag: '무지성겜',
+  const onChangeUserName = (e) => {
+    const val = e.target.value
+    if (val.length <= 30){
+      setUpdateInfo({...updateInfo, user_name:val})
     }
-  ]
+  }
+
+  const onChangePw = (e) => {
+    const val = e.target.value;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    setTmpPw(val);
+    if (!passwordRegex.test(val)) {
+      setPasswordMessage("* 비밀번호가 유효하지 않습니다");
+    } else {
+      setPasswordMessage("");
+    }
+  }
+
+  const onChangePwConfirm = (e) => {
+    const val = e.target.value;
+    setTmpPwConfirm(val);
+  }
 
 
   return (
     <div className='py-8 px-12 w-full h-full'>
       <div className='flex mb-2'>
-        <div className='w-2 bg-moa-green'></div>
-        <div className='ml-3 text-2xl font-bold text-moa-green'>회원정보 수정</div>
+        <div className='w-2 bg-amber-600'></div>
+        <div className='ml-3 text-2xl font-bold text-amber-500'>회원정보 수정</div>
       </div>
       <hr />
 
-      <div className='rounded mt-3 w-full bg-searchbar-gray p-6'>
-        <div>
-          <span>닉네임</span>
-          <input type="text" />
-        </div>
+      <div className='rounded mt-3 w-full  bg-zinc-300 p-6'>
+          <label htmlFor="nickname"
+                 className="block mb-2 text-sm font-semibold text-gray-900">
+            닉네임
+          </label>
+          <input type="text" 
+                 id = "nickname"
+                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2'
+                 value={updateInfo.user_name} 
+                 onChange={onChangeUserName} 
+                 placeholder="자신을 표현할 수 있는 닉네임을 적어주세요 (30자 이하)"/>
 
-        <div>
-          <span>닉네임</span>
-          <div>
-            {utags.map((item,idx) =>{
+        <div className='mt-7'>
+          <span className='block mb-2 text-sm font-semibold text-gray-900'>유저태그</span>
+          <div className='flex flex-wrap'>
+            {utags.map((_,idx) =>{
               return(
-                <label key={idx}>
-                  <input type="checkbox" value={item.id}         
+                <label key={idx} className="mx-1.5">
+                  <input type="checkbox" value={idx+1}         
                   onChange={(e)=>{
-                              changeHandler(e.currentTarget.checked, item.id)
+                              changeHandler(e.currentTarget.checked, idx)
                               }}
-                  checked={checkedInputs.includes(item.id) ? true : false}/>{item.tag}
+                  checked={updateInfo.u_tag.includes(idx+1) ? true : false}
+                  className='mr-1 w-4 h-4 text-teal-600 bg-gray-100 rounded border-gray-300 focus:ring-teal-500 dark:focus:ring-teal-600'/>{utags[idx]}
                 </label>
               )
             })}
           </div>
         </div>
+        
+        {/* 비밀번호 변경 */}
+        <div className="w-full mt-7">
+          <span className='block mb-2 text-sm font-semibold text-gray-900'>비밀번호 변경 <span className='text-[10px] font-semibold text-gray-700'>[변경을 원할 시 입력해주세요]</span></span>
+          <div className='px-3 py-5 rounded bg-mainBtn-disabled'>
+            <label htmlFor="password"
+                  className="block mb-2 text-sm font-semibold text-gray-900">
+              새 비밀번호
+            </label>
+            <input type="password" 
+                  id = "password"
+                  className='mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2'
+                  value={tmpPw} 
+                  onChange={onChangePw} 
+                  placeholder="숫자, 영문 대,소문자 , 특수문자(!@#$%^+=-) 포함 (8~25자)"
+              />
+            {(passwordMessage.length ? 
+                <span className='text-rose-600'>{passwordMessage}</span>
+                :
+                <></>)}
 
+            <label htmlFor="password"
+                  className="block mb-2 text-sm font-semibold text-gray-900">
+              비밀번호 확인
+            </label>
+            <input type="password" 
+                  id = "password"
+                  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2'
+                  value={tmpPwConfirm} 
+                  onChange={onChangePwConfirm} 
+                  placeholder="한번 더 비밀번호를 입력해주세요"
+              />
+            { (tmpPw.length&&tmpPwConfirm.length&&!(tmpPw === tmpPwConfirm) ? 
+                <span className='text-rose-500'>* 비밀번호가 일치하지 않습니다.</span>
+                :
+                <></>)
+            }
+          </div>
+        </div>
       </div>
 
     </div>
