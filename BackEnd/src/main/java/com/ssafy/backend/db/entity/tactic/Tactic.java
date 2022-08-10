@@ -26,7 +26,7 @@ public class Tactic {
     @Column(name="tactic_title", nullable = false)
     private String tacticTitle;
 
-    @Column(name = "tactic_content", nullable = false, columnDefinition="TEXT", length = 50000)
+    @Column(name = "tactic_content",nullable = false, length = 10000)
     private String tacticContent;
 
     @Column(name="local_date_time")
