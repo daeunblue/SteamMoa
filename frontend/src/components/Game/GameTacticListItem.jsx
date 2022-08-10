@@ -14,22 +14,26 @@ function GameTacticListItem(props) {
       <div className="hover:cursor-pointer" onClick={onClickTactic}>
         {/* 공략글 제목 */}
         <div className=" w-fit font-sans font-semibold hover:font-bold mb-1 whitespace-nowrap overflow-hidden text-ellipsis hover:underline">
-          {tacticTitle}
+          {tacticTitle && tacticTitle}
         </div>
         {/* 공략글 내용 */}
         <div className="laptop:max-h-16 tablet:max-h-14 mobile:max-h-12 text-sm break-words text-left whitespace-normal leading-tight overflow-hidden text-ellipsis">
-          {tacticContent}
+          {tacticContent && tacticContent}
         </div>
       </div>
       {/* 유저, 게시글 작성 시간 */}
       <div className="flex flex-row justify-end items-center">
-        <Link
-          to={`/profile/${userServiceId}`}
-          className=" font-semibold text-moa-purple-light hover:cursor-pointer hover:text-moa-purple-dark">
-          {userServiceId}
-        </Link>
+        {userServiceId && (
+          <Link
+            to={`/profile/${userServiceId}`}
+            className=" font-semibold text-moa-purple-light hover:cursor-pointer hover:text-moa-purple-dark">
+            {userServiceId}
+          </Link>
+        )}
         <span className="mx-2">{"."}</span>
-        <span className="text-searchbar-gray algitn-text-center">{formatTime(createTime)}</span>
+        <span className="text-searchbar-gray algitn-text-center">
+          {createTime && formatTime(createTime)}
+        </span>
       </div>
     </div>
   );

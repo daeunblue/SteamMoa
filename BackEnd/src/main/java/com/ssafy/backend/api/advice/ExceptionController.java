@@ -15,15 +15,15 @@ import java.util.Map;
 @Slf4j
 public class ExceptionController {
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(
-            HttpMessageNotReadableException ex) {
-        // 아예 잘못된 형식으로 request 를 요청할 경우 예외 발생
-        Map<String, String> error = new HashMap<>();
-        error.put("code", "ERR 500");
-        error.put("message", "Required request body is missing");
-        return ResponseEntity.badRequest().body(error);
-    }
+//    @ExceptionHandler(HttpMessageNotReadableException.class)
+//    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(
+//            HttpMessageNotReadableException ex) {
+//        // 아예 잘못된 형식으로 request 를 요청할 경우 예외 발생
+//        Map<String, String> error = new HashMap<>();
+//        error.put("code", "ERR 500");
+//        error.put("message", "Required request body is missing");
+//        return ResponseEntity.badRequest().body(error);
+//    }
 
 
     // 400
@@ -52,7 +52,4 @@ public class ExceptionController {
         error.put("message", "Server Error");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
-
-
-
 }

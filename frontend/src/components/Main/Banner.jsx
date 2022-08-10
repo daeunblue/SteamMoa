@@ -6,8 +6,8 @@ import '../../assets/style.css'
 const Banner = () => {
   const navigate = useNavigate();
   const banners =[{img:'../../ImgAssets/Main-banner-1.png', path:'/moazone'},
-                  {img:'../../ImgAssets/Main-banner-2.png', path:'/moazone'},
-                  {img:'../../ImgAssets/Main-banner-3.png', path:'/moazone'},
+                  {img:'../../ImgAssets/Main-banner-2.png', path:'/moazone?page=1&word=Goose Goose Duck'},
+                  {img:'../../ImgAssets/Main-banner-3.png', path:'/gamemoa/detail/22517'},
                   ];
   const delay = 7000;
   // carousel index
