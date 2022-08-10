@@ -48,7 +48,7 @@ public class PartylistDTO {
         for (PartyTag pt: p.getPartyTags()) {
             this.partyTags.add(pt.getPtagStorage().getContent());
         }
-        if(p.getStartTime().isBefore(LocalDateTime.now().plusHours(9).plusDays(1)))
+        if(this.partyStatus.equals("1") && p.getStartTime().isBefore(LocalDateTime.now().plusHours(9).plusDays(1)))
             this.partyIsUrgent = true;
         else
             this.partyIsUrgent = false;

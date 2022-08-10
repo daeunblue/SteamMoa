@@ -116,6 +116,9 @@ public class PartyServiceImpl implements PartyService{
         // 유저 존재하는지 확인 후 실패 응답
         if (!userRepository.findByUserServiceId(partyInfo.getUserId()).isPresent())
             return "fail: 유효한 유저 아이디가 아닙니다.";
+        // 최대인원은 2명 이상
+        if (Integer.parseInt(partyInfo.getMaxPlayer()) < 2)
+            return "fail: 파티 최대인원은 2명 이상이어야 합니다.";
 
         party.setGame(gameRepository.findByGameId(partyInfo.getGameId()));
         party.setTitle(partyInfo.getPartyTitle());
