@@ -151,4 +151,24 @@ public class PartyController {
             return ResponseEntity.status(400).body(result);
         }
     }
+
+    // 파티원 참가
+    @PutMapping("/{partyid}/join/{userId}")
+    @ApiOperation(value = "파티원 참가", notes = "유저가 파티에 참가합니다.")
+    public ResponseEntity<? extends Map<String,Object>> memberJoin(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
+        Map<String,Object> result = new HashMap<>();
+
+        result.put("message",partyService.memberJoin(partyid, userServiceId));
+        return ResponseEntity.status(200).body(result);
+    }
+
+    // 파티원 탈퇴
+    @PutMapping("/{partyid}/leave/{userId}")
+    @ApiOperation(value = "파티원 탈퇴", notes = "유저가 파티를 탈퇴합니다.")
+    public ResponseEntity<? extends Map<String,Object>> memberLeave(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
+        Map<String,Object> result = new HashMap<>();
+
+        result.put("message",partyService.memberLeave(partyid, userServiceId));
+        return ResponseEntity.status(200).body(result);
+    }
 }

@@ -193,61 +193,9 @@ public class PartyServiceImpl implements PartyService{
     public String updateParty(Long partyId, PartyPutReq partyInfo) {
         Party party = partyRepository.findByPartyId(partyId);
 
-
-        // 멤버 수정
-        // 파티장 찾기
-        String leader_serviceId = null;
-        Set<String> member_serviceIds = new HashSet<>();
-
-        for (String service_id:partyInfo.getPartyUsers()) {
-            if(!userRepository.findByUserServiceId(service_id).isPresent())
-                return "fail: 유효하지 않은 사용자 아이디를 추가하려고 하고 있습니다.";
-
-            List<Puser> userpartysearch = puserRepository.findAllByUserAndParty(userRepository.findByUserServiceId(service_id).get(), partyRepository.findByPartyId(partyId));
-
-            if(userpartysearch.size() != 0 && userpartysearch.get(0).isLeader())
-                leader_serviceId = service_id;
-            else
-                member_serviceIds.add(service_id);
-        }
-
-        // 파티장 없으면 오류
-        if(leader_serviceId == null)
-            return "fail: 파티 멤버 배열 안에 파티장이 없습니다.";
-
-        // 파티원 너무 많으면 오류
-        System.out.println(member_serviceIds);
-        if(member_serviceIds.size() + 1 > party.getMaxPlayer())
-            return "fail: 최대 파티 인원을 초과하였습니다.";
-
-        // 파티원 모두 날리기
-        for (Puser u: party.getPusers()) {
-                puserRepository.delete(u);
-        }
-        party.setPusers(new ArrayList<>());
-
-        // 파티장 저장
-        Puser puser = new Puser();
-        puser.setUser(userRepository.findByUserServiceId(leader_serviceId).get());
-        puser.setLeader(true);
-        puserRepository.save(puser);
-        party.addPuser(puser);
-
-        // 파티원 모두 저장
-        for (String service_id: member_serviceIds) {
-            puser = new Puser();
-            puser.setUser(userRepository.findByUserServiceId(service_id).get());
-            puserRepository.save(puser);
-            party.addPuser(puser);
-        }
-
-        party.setCurPlayer(member_serviceIds.size() + 1);
-
-
-
+        // 파티 설명 수정, 파티 디스코드 링크 수정
         party.setDescription(partyInfo.getPartyDescription());
         party.setChatLink(partyInfo.getChatLink());
-
 
         // 태그 수정
         for (PartyTag pt: party.getPartyTags()) {
@@ -262,13 +210,6 @@ public class PartyServiceImpl implements PartyService{
             partyTagRepository.save(partyTag);
             party.addPartyTag(partyTag);
         }
-
-
-        // 파티 상태 수정
-        if(party.getMaxPlayer() <= party.getCurPlayer())
-            party.setStatus("2");
-        else
-            party.setStatus("1");
 
         partyRepository.save(party);
 
@@ -311,6 +252,78 @@ public class PartyServiceImpl implements PartyService{
 //        }
 
         return list;
+    }
+
+    @Override
+    public String memberJoin(Long partyId, String userServiceId) {
+        Party party = partyRepository.findByPartyId(partyId);
+
+        // 오류: 유효하지 않은 사용자 아이디입니다.
+        if(!userRepository.findByUserServiceId(userServiceId).isPresent())
+            return "fail: 유효하지 않은 사용자 아이디입니다.";
+        // 오류: 이미 파티에 있습니다
+        for (Puser puser: party.getPusers()) {
+            if(puser.getUser().getUserServiceId().equals(userServiceId))
+                return "fail: 이 유저가 이미 해당 파티에 참가하고 있습니다.";
+        }
+        // 오류: 파티원 초과
+        if(party.getCurPlayer()+1 > party.getMaxPlayer())
+            return "fail: 최대 파티 인원을 초과하였습니다.";
+
+        Puser puser = new Puser();
+        puser.setUser(userRepository.findByUserServiceId(userServiceId).get());
+        puserRepository.save(puser);
+        party.addPuser(puser);
+
+        party.setCurPlayer(party.getCurPlayer() + 1);
+
+        // 파티 상태 수정
+        if(party.getMaxPlayer() == party.getCurPlayer())
+            party.setStatus("2");
+        else
+            party.setStatus("1");
+
+        partyRepository.save(party);
+
+        return "success";
+    }
+
+    @Override
+    public String memberLeave(Long partyId, String userServiceId) {
+        Party party = partyRepository.findByPartyId(partyId);
+
+        // 오류: 유효하지 않은 사용자 아이디입니다.
+        if(!userRepository.findByUserServiceId(userServiceId).isPresent())
+            return "fail: 유효하지 않은 사용자 아이디입니다.";
+
+        Puser thisuser = null;
+        for (Puser puser: party.getPusers()) {
+            if(puser.getUser().getUserServiceId().equals(userServiceId)) {
+                thisuser = puser;
+            }
+        }
+
+        // 오류: 파티에 없음
+        if(thisuser == null)
+            return "fail: 유저가 해당 파티의 파티원이 아닙니다.";
+        // 오류: 파티장 탈퇴
+        if(thisuser.isLeader())
+            return "fail: 파티장은 파티를 탈퇴할 수 없습니다.";
+
+        party.getPusers().remove(thisuser);
+        puserRepository.delete(thisuser);
+
+        party.setCurPlayer(party.getCurPlayer() - 1);
+
+        // 파티 상태 수정
+        if(party.getMaxPlayer() == party.getCurPlayer())
+            party.setStatus("2");
+        else
+            party.setStatus("1");
+
+        partyRepository.save(party);
+
+        return "success";
     }
 
     @Override
