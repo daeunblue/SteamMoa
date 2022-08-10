@@ -71,6 +71,8 @@ public class ReviewServiceImpl implements ReviewService{
             reviewDto.setReviewScore(review.getReviewScore());
             reviewDto.setUserServiceId(review.getUser().getUserServiceId());
             reviewDto.setCurrentDate(review.getLocalDateTime());
+            reviewDto.setGameId(review.getGame().getGameId());
+            reviewDto.setGameName(review.getGame().getName());
             customResult.add(reviewDto);
         }
         return customResult;
@@ -89,6 +91,8 @@ public class ReviewServiceImpl implements ReviewService{
             reviewDto.setReviewScore(review.getReviewScore());
             reviewDto.setUserServiceId(review.getUser().getUserServiceId());
             reviewDto.setCurrentDate(review.getLocalDateTime());
+            reviewDto.setGameId(review.getGame().getGameId());
+            reviewDto.setGameName(review.getGame().getName());
             customResult.add(reviewDto);
         }
 

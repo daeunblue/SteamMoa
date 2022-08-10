@@ -13,6 +13,8 @@ public class ReviewDto {
     Long reviewId;
     Double reviewScore;
     String reviewContent;
+    Long gameId;
+    String gameName;
     String userServiceId;
     LocalDateTime currentDate;
 }
