@@ -2,7 +2,7 @@ package com.ssafy.backend.api.response;
 
 import com.ssafy.backend.common.model.response.BaseResponseBody;
 
-import com.ssafy.backend.db.entity.UserTag;
+import com.ssafy.backend.db.entity.user.UserTag;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

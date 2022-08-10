@@ -24,3 +24,8 @@ export const getGameReviews = (gameId) => {
   const url = `game/reviews/game/${gameId}`;
   return api.get(url);
 };
+
+export const getUserHasReviews = (userServiceId,gameId) => {
+  const url = `game/reviews/${userServiceId}/${gameId}`;
+  return api.get(url);
+}

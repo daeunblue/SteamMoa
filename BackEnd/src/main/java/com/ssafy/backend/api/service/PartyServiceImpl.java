@@ -2,11 +2,12 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
-import com.ssafy.backend.db.entity.User;
-import com.ssafy.backend.db.entity.game.GameDTO;
-import com.ssafy.backend.db.entity.game.GamelistDTO;
+import com.ssafy.backend.api.response.*;
+import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.review.Review;
+import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.party.*;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import com.ssafy.backend.db.repository.party.PartyRepository;
 import com.ssafy.backend.db.repository.party.PartyTagRepository;
@@ -15,14 +16,12 @@ import com.ssafy.backend.db.repository.party.PuserRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -47,7 +46,7 @@ public class PartyServiceImpl implements PartyService{
     public JSONObject getPartyList(int page) {
         Pageable pageable = PageRequest.of(page, 12);
         List<PartylistDTO> resultlist = new ArrayList<>();
-        System.out.println("쿼리수행결과 개수: "+partyRepository.findAll().size());
+        System.out.println("쿼리수행결과 개수: "+partyRepository.findAllByOrderByWriteTimeDesc().orElse(null).size());
         partyRepository.findAll().forEach(Party->resultlist.add(new PartylistDTO(Party)));
 
         JSONObject jsonObject = new JSONObject();
@@ -117,6 +116,9 @@ public class PartyServiceImpl implements PartyService{
         // 유저 존재하는지 확인 후 실패 응답
         if (!userRepository.findByUserServiceId(partyInfo.getUserId()).isPresent())
             return "fail: 유효한 유저 아이디가 아닙니다.";
+        // 최대인원은 2명 이상
+        if (Integer.parseInt(partyInfo.getMaxPlayer()) < 2)
+            return "fail: 파티 최대인원은 2명 이상이어야 합니다.";
 
         party.setGame(gameRepository.findByGameId(partyInfo.getGameId()));
         party.setTitle(partyInfo.getPartyTitle());
@@ -124,7 +126,7 @@ public class PartyServiceImpl implements PartyService{
         party.setCurPlayer(1);
         party.setDescription(partyInfo.getPartyDescription());
         party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).plusHours(9));
-        party.setWriteTime(LocalDateTime.now().plusHours(9));
+        party.setWriteTime(LocalDateTime.now());
         party.setChatLink(partyInfo.getChatLink());
         party.setStatus("1");
 
@@ -154,10 +156,26 @@ public class PartyServiceImpl implements PartyService{
     // 파티 생성시 게임ID 검색
     @Override
     @Transactional
-    public List<PartyCreateGamelistDTO> searchPartyCreateGamelist(String searchString) {
+    public JSONObject searchPartyCreateGamelist(int page, String searchString) {
+        Pageable pageable = PageRequest.of(page, 10);
         List<PartyCreateGamelistDTO> resultlist = new ArrayList<>();
-        gameRepository.findAllMultiGameByOnlyName(searchString).forEach(Game->resultlist.add(new PartyCreateGamelistDTO(Game)));
-        return resultlist;
+
+        List<Game> games = gameRepository.findAllMultiGameByFilter(searchString, new String[]{} , pageable);
+        for (Game g: games) {
+                resultlist.add(new PartyCreateGamelistDTO(g));
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("maxPage", Integer.toString(gameRepository.findAllMultiGameByFilter(searchString, new String[]{})/10+1));
+
+        JSONArray data = new JSONArray();
+        for (PartyCreateGamelistDTO g : resultlist) {
+            data.add(g);
+        }
+
+        jsonObject.put("data", data);
+
+        return jsonObject;
     }
 
 
@@ -175,56 +193,9 @@ public class PartyServiceImpl implements PartyService{
     public String updateParty(Long partyId, PartyPutReq partyInfo) {
         Party party = partyRepository.findByPartyId(partyId);
 
-
-        // 멤버 수정
-        // 파티장 찾기
-        String leader_serviceId = null;
-        Set<String> member_serviceIds = new HashSet<>();
-
-        for (String service_id:partyInfo.getPartyUsers()) {
-            if(!userRepository.findByUserServiceId(service_id).isPresent())
-                return "fail: 유효하지 않은 사용자 아이디를 추가하려고 하고 있습니다.";
-
-            List<Puser> userpartysearch = puserRepository.findAllByUserAndParty(userRepository.findByUserServiceId(service_id).get(), partyRepository.findByPartyId(partyId));
-
-            if(userpartysearch.size() != 0 && userpartysearch.get(0).isLeader())
-                leader_serviceId = service_id;
-            else
-                member_serviceIds.add(service_id);
-        }
-
-        // 파티장 없으면 오류
-        if(leader_serviceId == null)
-            return "fail: 파티 멤버 배열 안에 파티장이 없습니다.";
-
-        // 파티원 모두 날리기
-        for (Puser u: party.getPusers()) {
-                puserRepository.delete(u);
-        }
-        party.setPusers(new ArrayList<>());
-
-        // 파티장 저장
-        Puser puser = new Puser();
-        puser.setUser(userRepository.findByUserServiceId(leader_serviceId).get());
-        puser.setLeader(true);
-        puserRepository.save(puser);
-        party.addPuser(puser);
-
-        // 파티원 모두 저장
-        for (String service_id: member_serviceIds) {
-            puser = new Puser();
-            puser.setUser(userRepository.findByUserServiceId(service_id).get());
-            puserRepository.save(puser);
-            party.addPuser(puser);
-        }
-
-        party.setCurPlayer(partyInfo.getPartyUsers().length);
-
-
-
+        // 파티 설명 수정, 파티 디스코드 링크 수정
         party.setDescription(partyInfo.getPartyDescription());
         party.setChatLink(partyInfo.getChatLink());
-
 
         // 태그 수정
         for (PartyTag pt: party.getPartyTags()) {
@@ -239,10 +210,6 @@ public class PartyServiceImpl implements PartyService{
             partyTagRepository.save(partyTag);
             party.addPartyTag(partyTag);
         }
-
-
-        // 파티 상태 수정
-        party.setStatus(partyInfo.getPartyStatus());
 
         partyRepository.save(party);
 
@@ -261,5 +228,115 @@ public class PartyServiceImpl implements PartyService{
             System.out.println("Party 삭제 요청 실패");
             return false;
         }
+    }
+
+    @Override
+    public List<PUserEvalDto> getPlayersForEvaluate(Long partyId, String userServiceId) {
+        // 파티원들의 정보 저장
+        List<PUserEvalDto> list = new ArrayList<>();
+
+        List<Puser> pUserList = partyRepository.findByPartyId(partyId).getPusers();
+
+        for (Puser puser: pUserList) {
+            PUserEvalDto pUserEvalDto = new PUserEvalDto();
+            if(puser.getUser().getUserServiceId().equals(userServiceId)) continue; // 본인은 제외하고 평가 리스트 보내기
+            pUserEvalDto.setUserServiceId(puser.getUser().getUserServiceId());
+            pUserEvalDto.setUserId(puser.getPuserId());
+            list.add(pUserEvalDto);
+        }
+
+//        try{
+//
+//        }catch (Exception e){
+//
+//        }
+
+        return list;
+    }
+
+    @Override
+    public String memberJoin(Long partyId, String userServiceId) {
+        Party party = partyRepository.findByPartyId(partyId);
+
+        // 오류: 유효하지 않은 사용자 아이디입니다.
+        if(!userRepository.findByUserServiceId(userServiceId).isPresent())
+            return "fail: 유효하지 않은 사용자 아이디입니다.";
+        // 오류: 이미 파티에 있습니다
+        for (Puser puser: party.getPusers()) {
+            if(puser.getUser().getUserServiceId().equals(userServiceId))
+                return "fail: 이 유저가 이미 해당 파티에 참가하고 있습니다.";
+        }
+        // 오류: 파티원 초과
+        if(party.getCurPlayer()+1 > party.getMaxPlayer())
+            return "fail: 최대 파티 인원을 초과하였습니다.";
+
+        Puser puser = new Puser();
+        puser.setUser(userRepository.findByUserServiceId(userServiceId).get());
+        puserRepository.save(puser);
+        party.addPuser(puser);
+
+        party.setCurPlayer(party.getCurPlayer() + 1);
+
+        // 파티 상태 수정
+        if(party.getMaxPlayer() == party.getCurPlayer())
+            party.setStatus("2");
+        else
+            party.setStatus("1");
+
+        partyRepository.save(party);
+
+        return "success";
+    }
+
+    @Override
+    public String memberLeave(Long partyId, String userServiceId) {
+        Party party = partyRepository.findByPartyId(partyId);
+
+        // 오류: 유효하지 않은 사용자 아이디입니다.
+        if(!userRepository.findByUserServiceId(userServiceId).isPresent())
+            return "fail: 유효하지 않은 사용자 아이디입니다.";
+
+        Puser thisuser = null;
+        for (Puser puser: party.getPusers()) {
+            if(puser.getUser().getUserServiceId().equals(userServiceId)) {
+                thisuser = puser;
+            }
+        }
+
+        // 오류: 파티에 없음
+        if(thisuser == null)
+            return "fail: 유저가 해당 파티의 파티원이 아닙니다.";
+        // 오류: 파티장 탈퇴
+        if(thisuser.isLeader())
+            return "fail: 파티장은 파티를 탈퇴할 수 없습니다.";
+
+        party.getPusers().remove(thisuser);
+        puserRepository.delete(thisuser);
+
+        party.setCurPlayer(party.getCurPlayer() - 1);
+
+        // 파티 상태 수정
+        if(party.getMaxPlayer() == party.getCurPlayer())
+            party.setStatus("2");
+        else
+            party.setStatus("1");
+
+        partyRepository.save(party);
+
+        return "success";
+    }
+
+    @Override
+    public boolean closeParty(Long partyId) {
+        if(partyRepository.findByPartyId(partyId) == null)
+            return false;
+
+        Party party = partyRepository.findByPartyId(partyId);
+        if(party.getStatus().equals("1"))
+            party.setStatus("2");
+        else if(party.getStatus().equals("2"))
+            party.setStatus("1");
+        partyRepository.save(party);
+        return true;
     }
 }

@@ -1,15 +1,11 @@
 package com.ssafy.backend.db.entity.party;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.game.Game;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -42,7 +38,7 @@ public class Party {
     @Column(name = "cur_player")
     private int curPlayer;
 
-    @Column(name = "party_description")
+    @Column(name = "party_description", length = 5000)
     private String description;
 
     @Column(name = "start_time")

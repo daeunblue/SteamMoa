@@ -1,8 +1,7 @@
 package com.ssafy.backend.db.entity.tactic;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.game.Game;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,8 +26,11 @@ public class Tactic {
     @Column(name="tactic_title", nullable = false)
     private String tacticTitle;
 
-    @Column(name = "tactic_content", nullable = false)
+    @Column(name = "tactic_content",nullable = false, length = 10000)
     private String tacticContent;
+
+    @Column(name="local_date_time")
+    private LocalDateTime createTime;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

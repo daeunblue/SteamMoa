@@ -2,16 +2,14 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.ReviewPostReq;
 import com.ssafy.backend.api.response.ReviewDto;
-import com.ssafy.backend.db.entity.User;
 import com.ssafy.backend.db.entity.review.Review;
-import com.ssafy.backend.db.repository.ReviewRepository;
-import com.ssafy.backend.db.repository.UserRepository;
+import com.ssafy.backend.db.repository.review.ReviewRepository;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +71,8 @@ public class ReviewServiceImpl implements ReviewService{
             reviewDto.setReviewScore(review.getReviewScore());
             reviewDto.setUserServiceId(review.getUser().getUserServiceId());
             reviewDto.setCurrentDate(review.getLocalDateTime());
+            reviewDto.setGameId(review.getGame().getGameId());
+            reviewDto.setGameName(review.getGame().getName());
             customResult.add(reviewDto);
         }
         return customResult;
@@ -91,6 +91,8 @@ public class ReviewServiceImpl implements ReviewService{
             reviewDto.setReviewScore(review.getReviewScore());
             reviewDto.setUserServiceId(review.getUser().getUserServiceId());
             reviewDto.setCurrentDate(review.getLocalDateTime());
+            reviewDto.setGameId(review.getGame().getGameId());
+            reviewDto.setGameName(review.getGame().getName());
             customResult.add(reviewDto);
         }
 

@@ -1,9 +1,7 @@
 package com.ssafy.backend.common.auth;
 
-import java.util.Optional;
-
 import com.ssafy.backend.api.service.UserService;
-import com.ssafy.backend.db.entity.User;
+import com.ssafy.backend.db.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

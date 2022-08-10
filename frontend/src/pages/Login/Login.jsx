@@ -4,10 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/Navbar.jsx";
 import jwt_decode from 'jwt-decode';
-import axios from "axios";
 
 import { useRecoilState } from "recoil";
 import { auth } from "../../recoil/Auth";
+import { postLogin } from "../../api/Auth.js";
 
 
 const Login = (props) => {
@@ -27,12 +27,10 @@ const navigate = useNavigate();
   };
 
   const login = () => {
-    axios
-      .post("http://i7a303.p.ssafy.io:8080/api/auth/login", {
-        user_service_id: user.service_id,
-        user_service_pw: user.service_pw,
-      })
-      .then(function (response) {
+    postLogin({
+      user_service_id: user.service_id,
+      user_service_pw: user.service_pw,
+    }).then(function (response) {
           console.log(response);
         //  로그인 후 처리 -> 
         // 1. status 200일때 메인 페이지 or 원래 있던 페이지로 리다이렉트

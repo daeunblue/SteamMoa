@@ -2,13 +2,12 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
-import com.ssafy.backend.api.request.UserRegisterPostReq;
-import com.ssafy.backend.db.entity.party.Party;
-import com.ssafy.backend.db.entity.party.PartyCreateGamelistDTO;
-import com.ssafy.backend.db.entity.party.PartyDTO;
-import com.ssafy.backend.db.entity.party.PartylistDTO;
+import com.ssafy.backend.api.response.PUserEvalDto;
+import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
+import com.ssafy.backend.api.response.PartyDTO;
 import org.json.simple.JSONObject;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 public interface PartyService {
@@ -27,7 +26,7 @@ public interface PartyService {
     String createParty(PartyPostReq PartyInfo);
 
     // 파티 생성시 게임ID 검색
-    List<PartyCreateGamelistDTO> searchPartyCreateGamelist(String searchString);
+    JSONObject searchPartyCreateGamelist(int page, String searchString);
 
     // 파티 상세 조회
     PartyDTO getPartyDetail(Long partyId);
@@ -37,5 +36,17 @@ public interface PartyService {
 
     // 파티 삭제
     boolean deleteParty(Long partyId);
+
+    // 파티 평가를 위한 정보 반환
+    List<PUserEvalDto> getPlayersForEvaluate(Long partyId, String userServiceId);
+
+    // 파티원 참가
+    String memberJoin(Long partyId, String userServiceId);
+
+    // 파티원 탈퇴
+    String memberLeave(Long partyId, String userServiceId);
+
+    // 파티를 임의 모집마감하는 API
+    boolean closeParty(Long partyId);
 
 }

@@ -26,7 +26,7 @@ public class Game {
     @Column(name="steam_game_id", length = 10, nullable = false)
     private String steamgameId;
 
-    @Column(name="game_name", length = 1024, nullable = false)
+    @Column(name="game_name", length = 512, nullable = false)
     private String name;
 
     @Column(name="game_score")
