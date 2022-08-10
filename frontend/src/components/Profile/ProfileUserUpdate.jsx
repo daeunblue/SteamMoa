@@ -6,8 +6,8 @@ import { postPWCheck } from '../../api/Auth'
 
 const ProfileUserUpdate = (props) => {
   const navigate = useNavigate()
-  const { user, isMypage } = props
-  const userId = useState(user)
+  const { profileName, isMyPage } = props
+  const userId = useState(profileName)
   const [trialCnt, setTrialCnt] = useState(1)
   const [updateInfo, setUpdateInfo] = useState({
     user_name:'', // 닉네임
@@ -17,7 +17,7 @@ const ProfileUserUpdate = (props) => {
 
   //비밀번호 확인 swal
   const pwCheckSwal = Swal.mixin({
-    html: `<strong>${user}님</strong> <br><br>정보 수정을 위해 비밀번호를 입력해주세요.`,
+    html: `<strong>${profileName}님</strong> <br><br>정보 수정을 위해 비밀번호를 입력해주세요.`,
     input: 'password',
     showCancelButton: true,
     confirmButtonText: '<strong>입력</strong>',
@@ -56,7 +56,7 @@ const ProfileUserUpdate = (props) => {
 
   useEffect(
     async() => {
-      if (!isMypage) {
+      if (!isMyPage) {
         alert('잘못된 접근입니다.')
         navigate('/')
       }
