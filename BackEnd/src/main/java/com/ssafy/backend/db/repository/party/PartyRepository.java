@@ -14,9 +14,8 @@ import java.util.Optional;
 
 @Repository
 public interface PartyRepository extends JpaRepository<Party, Long>, PartyCustomRepository {
+    Optional<List<Party>> findAllByOrderByWriteTimeDesc();
     Party findByPartyId(Long partyId);
     Party findByPusersContains(Puser puser);
-    Optional<List<Party>> findAllByGame(Game game);
-
-    Optional<List<Party>> findTop8ByGame(Game game);
+    Optional<List<Party>> findTop8ByGameOrderByWriteTimeDesc(Game game);
 }

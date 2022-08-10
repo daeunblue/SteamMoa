@@ -19,10 +19,4 @@ public class PartyPutReq {
 
 	@ApiModelProperty(name="파티 성향 태그(태그 코드)", example="[\"1\", \"2\"]")
 	String[] partyTags;
-
-	@ApiModelProperty(name="파티 유저 목록(서비스 ID)", example="[\"ssafy123\"]")
-	String[] partyUsers;
-
-	@ApiModelProperty(name="파티 진행 상태", example="1")
-	String partyStatus;
 }

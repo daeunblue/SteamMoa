@@ -79,9 +79,9 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
         }
 
         if (sortString.equals("1"))
-            sql += "order by party.write_time";
+            sql += "order by party.write_time desc";
         else if(sortString.equals("2"))
-            sql += "order by party.start_time";
+            sql += "order by party.start_time desc";
         else if(sortString.equals("3"))
             sql += "order by per desc";
 
@@ -141,9 +141,9 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
             }
 
             if (sortString.equals("1"))
-                sql += "order by party.write_time";
+                sql += "order by party.write_time desc";
             else if(sortString.equals("2"))
-                sql += "order by party.start_time";
+                sql += "order by party.start_time desc";
             else if(sortString.equals("3"))
                 sql += "order by per desc";
 
