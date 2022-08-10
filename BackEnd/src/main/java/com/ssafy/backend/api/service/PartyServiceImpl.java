@@ -2,10 +2,9 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
-import com.ssafy.backend.api.response.PUserEvalDto;
-import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
-import com.ssafy.backend.api.response.PartyDTO;
-import com.ssafy.backend.api.response.PartylistDTO;
+import com.ssafy.backend.api.response.*;
+import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.party.*;
 import com.ssafy.backend.db.repository.user.UserRepository;
@@ -47,7 +46,7 @@ public class PartyServiceImpl implements PartyService{
     public JSONObject getPartyList(int page) {
         Pageable pageable = PageRequest.of(page, 12);
         List<PartylistDTO> resultlist = new ArrayList<>();
-        System.out.println("쿼리수행결과 개수: "+partyRepository.findAll().size());
+        System.out.println("쿼리수행결과 개수: "+partyRepository.findAllByOrderByWriteTimeDesc().orElse(null).size());
         partyRepository.findAll().forEach(Party->resultlist.add(new PartylistDTO(Party)));
 
         JSONObject jsonObject = new JSONObject();
@@ -124,7 +123,7 @@ public class PartyServiceImpl implements PartyService{
         party.setCurPlayer(1);
         party.setDescription(partyInfo.getPartyDescription());
         party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).plusHours(9));
-        party.setWriteTime(LocalDateTime.now().plusHours(9));
+        party.setWriteTime(LocalDateTime.now());
         party.setChatLink(partyInfo.getChatLink());
         party.setStatus("1");
 
@@ -154,10 +153,26 @@ public class PartyServiceImpl implements PartyService{
     // 파티 생성시 게임ID 검색
     @Override
     @Transactional
-    public List<PartyCreateGamelistDTO> searchPartyCreateGamelist(String searchString) {
+    public JSONObject searchPartyCreateGamelist(int page, String searchString) {
+        Pageable pageable = PageRequest.of(page, 10);
         List<PartyCreateGamelistDTO> resultlist = new ArrayList<>();
-        gameRepository.findAllMultiGameByOnlyName(searchString).forEach(Game->resultlist.add(new PartyCreateGamelistDTO(Game)));
-        return resultlist;
+
+        List<Game> games = gameRepository.findAllMultiGameByFilter(searchString, new String[]{} , pageable);
+        for (Game g: games) {
+                resultlist.add(new PartyCreateGamelistDTO(g));
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("maxPage", Integer.toString(gameRepository.findAllMultiGameByFilter(searchString, new String[]{})/10+1));
+
+        JSONArray data = new JSONArray();
+        for (PartyCreateGamelistDTO g : resultlist) {
+            data.add(g);
+        }
+
+        jsonObject.put("data", data);
+
+        return jsonObject;
     }
 
 

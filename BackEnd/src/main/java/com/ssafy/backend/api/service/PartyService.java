@@ -7,6 +7,7 @@ import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
 import com.ssafy.backend.api.response.PartyDTO;
 import org.json.simple.JSONObject;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 public interface PartyService {
@@ -25,7 +26,7 @@ public interface PartyService {
     String createParty(PartyPostReq PartyInfo);
 
     // 파티 생성시 게임ID 검색
-    List<PartyCreateGamelistDTO> searchPartyCreateGamelist(String searchString);
+    JSONObject searchPartyCreateGamelist(int page, String searchString);
 
     // 파티 상세 조회
     PartyDTO getPartyDetail(Long partyId);

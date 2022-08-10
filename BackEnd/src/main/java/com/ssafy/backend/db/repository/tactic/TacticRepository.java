@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface TacticRepository extends JpaRepository<Tactic, Long> {
     Optional<List<Tactic>> findByUserUserId(Long userId); // user id 기반으로 공략 리스트 반환
     Optional<List<Tactic>> findByGameGameId(Long gameId); // game id 기반으로 공략 리스트 반환
-    Optional<List<Tactic>> findTop8ByGameGameId(Long gameId); // game id 기반으로 공략 리스트 반환
+    Optional<List<Tactic>> findTop8ByGameGameIdOrderByCreateTimeDesc(Long gameId); // game id 기반으로 공략 리스트 반환
     Optional<Tactic> findByTacticId(Long tacticId);
 }

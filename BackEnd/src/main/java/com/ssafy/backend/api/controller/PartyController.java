@@ -75,8 +75,8 @@ public class PartyController {
     // 파티 생성시 게임ID 검색
     @GetMapping("/games")
     @ApiOperation(value = "파티 생성시 게임ID 검색", notes = "문자열을 포함하면 그 문자열이 게임 이름에 포함된 게임 리스트를 보내준다.")
-    public ResponseEntity<?> getPartyCreateGamelist(@RequestParam(required = false, defaultValue = "") String game_name){
-        List<PartyCreateGamelistDTO> result = partyService.searchPartyCreateGamelist(game_name);
+    public ResponseEntity<?> getPartyCreateGamelist(@RequestParam(required = true, defaultValue = "1") int page,@RequestParam(required = false, defaultValue = "") String game_name){
+        JSONObject result = partyService.searchPartyCreateGamelist(page-1, game_name);
         return ResponseEntity.status(200).body(result);
     }
 

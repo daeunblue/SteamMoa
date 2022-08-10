@@ -20,7 +20,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
     @Override
     public List<Game> findAllMultiGameByOnlyName(String name){
         // 쿼리문 생성
-        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game.game_name like \'%" + name + "%\' order by game.game_score desc";
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and (game.game_price != -1 or game.is_free = 1) and game.game_name like \'%" + name + "%\' order by game.game_score desc";
         Query query = em.createNativeQuery(sql, Game.class);
         List<Game> gamelist = query.getResultList();
         return gamelist;
@@ -55,7 +55,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
         sql +=  ") as gamegenre\n" +
                 "inner join game\n" +
                 "on gamegenre.game_id = game.game_id\n" +
-                "where game.game_name like \'%" + name + "%\' and game.game_price != -1\n" +
+                "where game.game_name like \'%" + name + "%\' and (game.game_price != -1 or game.is_free = 1)\n" +
                 "order by game.game_score desc";
 
         Query query = em.createNativeQuery(sql, Game.class);
@@ -95,7 +95,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
         sql +=  ") as gamegenre\n" +
                 "inner join game\n" +
                 "on gamegenre.game_id = game.game_id\n" +
-                "where game.game_name like \'%" + name + "%\' and game.game_price != -1";
+                "where game.game_name like \'%" + name + "%\' and (game.game_price != -1 or game.is_free = 1)";
 
         Query query = em.createNativeQuery(sql, Game.class);
         List<Game> gamelist = query.getResultList();
@@ -104,7 +104,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
 
     @Override
     public List<Game> findAllMultiGameForBests() {
-        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game_score >= 85;";
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and (game.game_price != -1 or game.is_free = 1) and game_score >= 85;";
         Query query = em.createNativeQuery(sql, Game.class);
         List<Game> gamelist = query.getResultList();
         return gamelist;
@@ -112,7 +112,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
 
     @Override
     public List<Game> findAllMultiGameForFrees() {
-        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game_price <= 3000;";
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and (game.game_price != -1 or game.is_free = 1) and game_price <= 3000;";
         Query query = em.createNativeQuery(sql, Game.class);
         List<Game> gamelist = query.getResultList();
         return gamelist;
@@ -120,7 +120,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
 
     @Override
     public List<Game> findAllMultiGameForToday() {
-        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and game.game_price != -1 and game_score >= 65;";
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where gamecategory.category_id = 1 and (game.game_price != -1 or game.is_free = 1) and game_score >= 65;";
         Query query = em.createNativeQuery(sql, Game.class);
         List<Game> gamelist = query.getResultList();
         return gamelist;
@@ -144,7 +144,7 @@ public class GameCustomRepositoryImpl implements GameCustomRepository {
 
     @Override
     public List<Game> findTop15MultiGameForRandom() {
-        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where category_id = 1 and game_price != -1 order by rand() limit 15;";
+        String sql = "select * from game inner join gamecategory on game.game_id = gamecategory.game_id where category_id = 1 and (game.game_price != -1 or game.is_free = 1) order by rand() limit 15;";
         Query query = em.createNativeQuery(sql, Game.class);
         List<Game> gamelist = query.getResultList();
         return gamelist;

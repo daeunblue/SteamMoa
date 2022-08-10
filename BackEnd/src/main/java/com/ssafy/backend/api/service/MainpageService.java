@@ -6,6 +6,4 @@ import java.util.Map;
 
 public interface MainpageService {
     MainpageDTO getMainpage();
-
-    Map<String,Object> getIntegratedSearch(String type, String keyword);
 }
