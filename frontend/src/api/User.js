@@ -45,11 +45,12 @@ export const getUserProceedingParty = (userServiceId) => {
 // 팔로우
 export const postUserFollow = (followInfo) => {
   const url = `user/follow`;
-  return apiAuth.put(url, followInfo);
+  return apiAuth.post(url, followInfo);
 };
 
 // 팔로우 취소
 export const deleteUserFollow = (followInfo) => {
+  console.log(followInfo)
   const url = `user/unfollow`;
-  return apiAuth.put(url, followInfo);
+  return apiAuth.delete(url, {data:followInfo});
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getUserParty } from '../../api/User'
-import { range, set } from 'lodash'
+import { range } from 'lodash'
 import MiniPagination from '../MiniPagination'
 import MoaCard from '../MoaCard'
 import { Link, useParams } from 'react-router-dom'
@@ -28,9 +28,13 @@ function ProfileMyParty(props) {
           setContentList(res.data.parties)
           setRender(render=>render+1)
         }).catch((err) => {console.log(err)
-        setRerender(rerender+1)})
+        
+        if (rerender <100) {
+          // 에러표시
+          setRerender(rerender+1)
+        }})
 
-    }, [isMyPage, params, rerender]
+    }, [isMyPage, params, rerender, profileName]
   )
 
   useEffect(()=>{

@@ -63,10 +63,6 @@ const GameReviewItem = (props) => {
   
   }
 
-  const onEdit = () => {
-
-  }
-
   return (
     <div className='border rounded p-3 drop-shadow-md my-1.5 bg-white'>
       {/* 작성자+시간 */}
@@ -77,7 +73,7 @@ const GameReviewItem = (props) => {
             <Link to={`/profile/${review.userServiceId}`} className='text-xs text-center font-semibold hover:cursor-pointer'>{review.userServiceId}</Link>
             : 
             // 게임으로 리다이렉트
-            <Link to={`/profile/${review.userServiceId}`} className='text-xs text-center font-semibold hover:cursor-pointer'>게임</Link>
+            <Link to={`/gamemoa/detail/${review.gameId}`} className='text-xs text-center font-semibold hover:cursor-pointer'>{review.gameName}</Link>
             
             )}
           <span className='text-xs text-center'> | </span>

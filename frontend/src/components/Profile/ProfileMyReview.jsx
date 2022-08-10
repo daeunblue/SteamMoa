@@ -27,8 +27,10 @@ const ProfileMyReview = (props) => {
           console.log(res)
           setContentList(res.data.reviews)
           setRender(render=>render+1)
-        }).catch((err) => {console.log(err)
-        setRerender(rerender+1)})
+        }).catch((err) => {
+          if (err.response.status === 400){
+            setContentList([])
+          }})
 
     }, [isMyPage, params, rerender]
   )
@@ -49,8 +51,8 @@ const ProfileMyReview = (props) => {
     <div className='my-10 flex flex-col justify-center'>
       {(!contentList.length&&!(render===1) ? 
         <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
-          <div className="mb-2">참여했던 파티가 없습니다.</div>
-          {(isMyPage ? <div>지금 파티 찾으러 <Link to={'/moazone'} className="text-moa-blue font-bold text-lg">출발!</Link></div>: '')}
+          <div className="mb-2">작성한 리뷰가 없습니다.</div>
+          {(isMyPage ? <div>지금 리뷰 쓰러 <Link to={'/gamemoa'} className="text-moa-pink font-bold text-lg">출발!</Link></div>: '')}
         </div>
         :
         // 컨텐츠
@@ -60,7 +62,7 @@ const ProfileMyReview = (props) => {
           <div className='my-2'>
             {showContents.map((review, index)=>{
               return(
-                <GameReviewItem profile={true} review={review} setRerender={setRerender} rerender={rerender} key={index}/>
+                <GameReviewItem profile={true} review={review} setRerender={setRerender} key={index}/>
               )
             })}
           </div>

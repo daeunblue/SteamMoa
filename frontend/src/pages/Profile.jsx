@@ -10,9 +10,9 @@ import ProfileMyReview from "../components/Profile/ProfileMyReview";
 import ProfileMyWalk from "../components/Profile/ProfileMyWalk";
 
 import { useRecoilState } from "recoil";
+import { auth } from "../recoil/Auth.js";
 
 import { Route, Routes, useLocation, useParams, useNavigate } from "react-router-dom";
-import { auth } from "../recoil/Auth.js";
 import { getUserFollowing, getUserFollowwers, getUserInfo } from "../api/User";
 
 
@@ -32,6 +32,7 @@ const Profile = () => {
   const [followingList, setFollowingList] = useState([])
   const [followerList, setFollowerList] = useState([])
   const [isMyPage, setIsMyPage] = useState(false)
+  const [isFollowing, setIsFollowing] = useState(null)
 
   const navigate = useNavigate();
   const [userAuth, ] = useRecoilState(auth);
@@ -91,10 +92,12 @@ const Profile = () => {
     getUserFollowwers(profileName)
     .then((res)=>{
       setFollowerList(res.data.followers.userServiceIdList)
+      setIsFollowing(res.data.followers.userServiceIdList.includes(userId))
     }).catch((err)=>{console.log(err)})
     }
-    ,[accessId, profileName, midLocation, isLoggedIn, userId, navigate] 
+    ,[isFollowing, accessId, profileName, midLocation, isLoggedIn, userId, navigate] 
   )
+
 
   //매너온도
   const userPoint = userProfile.userPoint
@@ -120,7 +123,7 @@ const Profile = () => {
         <Sidebar setSubPage={setSubPage}isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList} tier={tier}></Sidebar>
         <div className='bg-centerDiv-blue w-full'>
           <Routes>
-            <Route exact="true" path="" element={<ProfileUser tier={tier} profileName={profileName} isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList}/>} />
+            <Route exact="true" path="" element={<ProfileUser isFollowing={isFollowing} setIsFollowing={setIsFollowing} tier={tier} profileName={profileName} isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList}/>} />
             <Route path="userupdate" element={<ProfileUserUpdate profileName={profileName} isMyPage={isMyPage}/>} />
             <Route path="myparty" element={<ProfileMyParty profileName={profileName} isMyPage={isMyPage}/>} />
             <Route path="curparty" element={<ProfileCurParty profileName={profileName} isMyPage={isMyPage}/>} />
