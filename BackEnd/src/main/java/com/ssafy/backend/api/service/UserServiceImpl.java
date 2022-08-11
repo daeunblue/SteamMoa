@@ -125,7 +125,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean checkSteamIdDuplicate(String userSteamId) {
-        boolean result = userRepository.existsByUserSteamId(userSteamId);// 스팀 아이디 중복체크 -> false : 회원가입 불가능
+        boolean result = userRepository.existsByUserSteamId(userSteamId);// 스팀 아이디 중복체크 -> false : 회원가입 가능
+
+        if(result){
+            // 회원 가입시 -> 같은 스팀 아이디를 가졌던 사람중에 이전에 가입했었고 + 탈퇴한 회원인 경우 가입 가능하게
+            if(userRepository.findByUserSteamIdAndIsDeleted(userSteamId,true).isPresent())
+                return false;
+        }
+
+
         return result;
     }
 
@@ -153,6 +161,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findByUserServiceId(userServiceId).get();
             user.setIsDeleted(true);
             userRepository.save(user);
+//            userRepository.delete(user);
             System.out.println("사용자 삭제 요청 성공!");
             return true;
         }catch (Exception e){
@@ -160,6 +169,8 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+
 
     @Override
     @Transactional
