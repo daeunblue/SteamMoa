@@ -43,7 +43,7 @@ public class TacticController {
     }
 
     @GetMapping("/user/{user_service_id}")
-    @ApiOperation(value="게임 공략 정보", notes = "user_id에 해당하는 게임 공략글 정보를 조회한다")
+    @ApiOperation(value="게임 공략 정보", notes = "user_service_id에 해당하는 게임 공략글 정보를 조회한다")
     public ResponseEntity<?> getTacticsByUserId(@PathVariable("user_service_id")String userServiceId){
         User user = (User) userService.getUserInfoByUserId(userServiceId).get("user");
         Long userId = user.getUserId();
