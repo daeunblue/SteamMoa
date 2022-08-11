@@ -4,6 +4,8 @@ import { range } from 'lodash'
 import MiniPagination from '../MiniPagination'
 import { Link, useParams } from 'react-router-dom'
 import GameReviewItem from '../Game/GameReviewItem'
+import '../../assets/loading.css'
+
 
 const ProfileMyReview = (props) => {
   const params = useParams
@@ -14,9 +16,11 @@ const ProfileMyReview = (props) => {
   const [contentCnt, setContentCnt] = useState(0)
   const [totPage, setTotPage] = useState(0)
   const [viewablePages, setViewablePages] = useState([])
-  const reviewsPerPage = 6
+  const reviewsPerPage = 5
   const [showContents, setShowContents] = useState([])
   const [rerender, setRerender] = useState(0) 
+  const [isLoading, setIsLoading] = useState(true)  
+
 
   const titleText = (isMyPage? 'MY':`${profileName}'s`)
 
@@ -27,10 +31,15 @@ const ProfileMyReview = (props) => {
           console.log(res)
           setContentList(res.data.reviews)
           setRender(render=>render+1)
+          setIsLoading(false)
         }).catch((err) => {
           if (err.response.status === 400){
-            setContentList([])
-          }})
+            if (rerender <100) {
+              // 에러표시
+              setContentList([])
+              setIsLoading(false)
+              setRerender(rerender+1)
+            }}})
 
     }, [isMyPage, params, rerender]
   )
@@ -48,6 +57,11 @@ const ProfileMyReview = (props) => {
   },[page, contentList,rerender])
 
   return (
+    (isLoading ? 
+      <div className='my-20 flex flex-col justify-center items-center p-24'>
+        <div className='dots-bars-3'></div>
+      </div>
+        :
     <div className='my-10 flex flex-col justify-center'>
       {(!contentList.length ? 
         <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
@@ -74,7 +88,7 @@ const ProfileMyReview = (props) => {
           : <></> )}
         </>)}    
     </div>
-
+    )
   )
 }
 
