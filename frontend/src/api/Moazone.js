@@ -1,9 +1,9 @@
-import { apiAuth } from "./api"
+import { api, apiAuth } from "./api"
 
 //모아글 전체 조회
 export const moaRead = ()  => {
   const url = 'moazone';
-  return apiAuth.get(url);
+  return api.get(url);
 }
 
 // 모아글 생성
@@ -17,16 +17,15 @@ export const moaUpdate = (moa, partyId) => {
   return apiAuth.put(url, moa)
 }
 // 모아글 생성시 게임ID 검색
-export const moaGameSearch = (gameName) => {
-  let url = `moazone/games?`;
-  url += `game_name=${gameName}`;
-  return apiAuth.get(url);
+export const moaGameSearch = (page, gameName) => {
+  let url = `moazone/games?page=${page}&game_name=${gameName}`;
+  return api.get(url);
 }
 
 // 모아글 상세
 export const moaDetail = (partyId) => {
   const url = `moazone/${partyId}`;
-  return apiAuth.get(url);
+  return api.get(url);
 };
 
 //모아글 삭제
@@ -62,5 +61,5 @@ export const getMoaListSearch = (page, searchSort, searchWord, searchFilter) => 
     url += `&partyTags=${tag.item}`;
   });
 
-  return apiAuth.get(url);
+  return api.get(url);
 };
