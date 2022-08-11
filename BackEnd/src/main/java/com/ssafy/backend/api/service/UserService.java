@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public interface UserService {
 
-    boolean createUser(UserRegisterPostReq userRegisterInfo);
+    int createUser(UserRegisterPostReq userRegisterInfo);
 
     Map<String, Object> getUserInfoByUserId(String userServiceId);
     User getUserByUserId(String userId);

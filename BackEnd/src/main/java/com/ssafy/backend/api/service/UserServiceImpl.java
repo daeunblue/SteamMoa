@@ -56,11 +56,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean createUser(UserRegisterPostReq userRegisterInfo) {
+    public int createUser(UserRegisterPostReq userRegisterInfo) {
         User user = new User();
 
         boolean existUser = userRepository.existsByUserServiceId(userRegisterInfo.getUser_service_id());
-        if(existUser) return false; // 이미 존재하는 사용자명으로 생성 시도
+        if(existUser) return 1; // 이미 존재하는 사용자명으로 생성 시도
 
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장. -> 추후에 SpringSecurity 적용하고 사용해야함
         user.setPassword(passwordEncoder.encode(userRegisterInfo.getUser_service_pw()));
@@ -74,16 +74,15 @@ public class UserServiceImpl implements UserService {
             user.setUserSteamId(userRegisterInfo.getUser_steam_id());
             user.setUserServiceId(userRegisterInfo.getUser_service_id());
             user.setUserPoint(36.5);
-            System.out.println("회원 가입 가능");
         }else{
             System.out.println("아이디 중복!");
-            return false;
+            return 2;
         }
 
         user.setUserName(userRegisterInfo.getUser_name());
         userRepository.save(user);
 
-        return true;
+        return 3;
 
     }
 

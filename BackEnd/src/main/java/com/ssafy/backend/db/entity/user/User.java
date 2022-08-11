@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -26,6 +28,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 public class User {
     // 유저 식별자 PK
     @Id
@@ -72,7 +75,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Review> reviewList = new ArrayList<>();
 
-    @Column(name = "is_deleted", nullable = false, columnDefinition = "")
+    @Column(name = "is_deleted")
+    @ColumnDefault("0")
     private Boolean isDeleted;
 
     @Override

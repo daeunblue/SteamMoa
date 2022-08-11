@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 회원가입 관련 API 요청 처리를 위한 컨트롤러 정의.
  * http://localhost:8080/swagger-ui.html
@@ -41,13 +44,21 @@ public class AuthController {
             @ApiResponse(code = 409, message = "아이디 중복 오류"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> register(
+    public ResponseEntity<? extends Map<String,Object>> register(
             @RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
-
+        Map<String, Object> result = new HashMap<>();
         //임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-        boolean result = userService.createUser(registerInfo);
-        if(!result) return ResponseEntity.status(200).body(BaseResponseBody.of( 409, "Steam 아이디 중복"));
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        int res = userService.createUser(registerInfo);
+
+        if(res == 1){
+            result.put("message", "Fail, 탈퇴한 회원의 아이디로 재 가입 불가능");
+            return ResponseEntity.status(409).body(result);
+        }else if(res == 2){
+            result.put("message", "Fail, 스팀 아이디 중복");
+            return ResponseEntity.status(409).body(result);
+        }
+        result.put("message","Success");
+        return ResponseEntity.status(200).body(result);
     }
 
 
