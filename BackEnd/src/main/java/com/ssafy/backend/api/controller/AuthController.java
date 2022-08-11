@@ -83,10 +83,15 @@ public class AuthController {
         boolean idExist = userService.checkServiceIdDuplicate(userId);
         // 아이디 자체가 유효하지 않은 경우 407에러 return
         if(!idExist){
-            return ResponseEntity.status(401).body(UserLoginPostRes.of(407, "Invalid Id", null));
+            return ResponseEntity.status(407).body(UserLoginPostRes.of(407, "Invalid Id", null));
         }
 
         User result = userService.getUserByUserId(userId);
+
+        if(result.getIsDeleted()){  // 이미 탈퇴한 사용자의 경우
+            return ResponseEntity.status(407).body(UserLoginPostRes.of(407, "탈퇴한 사용자입니다.", null));
+        }
+
         if(passwordEncoder.matches(password, result.getPassword())) {
             // 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
             return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));

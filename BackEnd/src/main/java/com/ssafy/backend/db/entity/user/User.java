@@ -72,6 +72,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Review> reviewList = new ArrayList<>();
 
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "")
+    private Boolean isDeleted;
+
     @Override
     public String toString() {
         return this.userId +", "+this.userServiceId+", "+this.userPoint;

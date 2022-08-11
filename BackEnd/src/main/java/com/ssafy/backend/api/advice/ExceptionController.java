@@ -32,6 +32,7 @@ public class ExceptionController {
         Map<String, String> error = new HashMap<>();
         error.put("code", "ERR 400");
         error.put("message", "Bad Request, check your uri");
+        System.out.println(error);
         return ResponseEntity.badRequest().body(error);
     }
 

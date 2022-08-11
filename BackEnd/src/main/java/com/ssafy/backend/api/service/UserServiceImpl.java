@@ -58,10 +58,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean createUser(UserRegisterPostReq userRegisterInfo) {
         User user = new User();
+
+        boolean existUser = userRepository.existsByUserServiceId(userRegisterInfo.getUser_service_id());
+        if(existUser) return false; // 이미 존재하는 사용자명으로 생성 시도
+
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장. -> 추후에 SpringSecurity 적용하고 사용해야함
         user.setPassword(passwordEncoder.encode(userRegisterInfo.getUser_service_pw()));
-        log.debug(passwordEncoder.encode(userRegisterInfo.getUser_service_pw()));
-        log.debug(user.getPassword());
 
         System.out.println("인코더"+passwordEncoder.encode(userRegisterInfo.getUser_service_pw()));
         System.out.println("user 내부"+user.getPassword());
@@ -96,16 +98,20 @@ public class UserServiceImpl implements UserService {
             result.put("message","Fail");
             return result;
         }else{
-            UserDto userDto = new UserDto();
-            userDto.setUserId(user.getUserId());
-            userDto.setUserServiceId(user.getUserServiceId());
-            userDto.setUserPoint(user.getUserPoint());
-            for (UserTag tag:user.getUTagLists()) {
-                userDto.addUserTags(tag.getUTagStorage().getContent());
+            if(user.getIsDeleted()){
+                result.put("message","이미 탈퇴한 사용자의 정보입니다.");
+            }else{
+                UserDto userDto = new UserDto();
+                userDto.setUserId(user.getUserId());
+                userDto.setUserServiceId(user.getUserServiceId());
+                userDto.setUserPoint(user.getUserPoint());
+                for (UserTag tag:user.getUTagLists()) {
+                    userDto.addUserTags(tag.getUTagStorage().getContent());
+                }
+                userDto.setUserName(user.getUserName());
+                result.put("user",userDto);
+                result.put("message","Success");
             }
-            userDto.setUserName(user.getUserName());
-            result.put("user",userDto);
-            result.put("message","Success");
         }
 
         return result;
@@ -143,9 +149,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean deleteUser(String userServiceId) {  // 예외처리 해야함 나중에 추후에
+    public boolean deleteUser(String userServiceId) {
         try{
-            userRepository.delete(userRepository.findByUserServiceId(userServiceId).orElseThrow(()-> new ChangeSetPersister.NotFoundException()));
+            User user = userRepository.findByUserServiceId(userServiceId).get();
+            user.setIsDeleted(true);
+            userRepository.save(user);
             System.out.println("사용자 삭제 요청 성공!");
             return true;
         }catch (Exception e){
