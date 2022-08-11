@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TacticServiceImpl implements TacticService{
@@ -62,6 +63,21 @@ public class TacticServiceImpl implements TacticService{
         }
 
         return resultList;
+    }
+    @Override
+    public TacticDto getTacticByTacticId(Long tacticId) {
+        Tactic tactic =  tacticRepository.findByTacticId(tacticId).get();
+        TacticDto tacticDto = new TacticDto();
+        tacticDto.setTacticId(tactic.getTacticId());
+        tacticDto.setTacticTitle(tactic.getTacticTitle());
+        tacticDto.setTacticContent(tactic.getTacticContent());
+        tacticDto.setCreateTime(tactic.getCreateTime());
+        tacticDto.setUserId(tactic.getUser().getUserId());
+        tacticDto.setUserServiceId(tactic.getUser().getUserServiceId());
+        tacticDto.setGameId(tactic.getGame().getGameId());
+        tacticDto.setGameImgPath(tactic.getGame().getImgpath());
+        tacticDto.setGameName(tactic.getGame().getName());
+        return tacticDto;
     }
 
     @Override
