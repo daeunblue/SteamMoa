@@ -2,7 +2,7 @@ import { api, apiAuth } from "./api";
 
 export const postTactics = (tactic) => {
   const url = `tactics`;
-  return apiAuth.post(url, tactic);
+  return api.post(url, tactic);
 };
 
 export const putTactics = (tactic) => {

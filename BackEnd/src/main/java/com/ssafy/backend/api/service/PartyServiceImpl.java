@@ -183,8 +183,13 @@ public class PartyServiceImpl implements PartyService{
     @Override
     @Transactional
     public PartyDTO getPartyDetail(Long partyId) {
-        PartyDTO partyDetail = new PartyDTO(partyRepository.findByPartyId(partyId).orElse(null));
-        return partyDetail;
+        Party party = partyRepository.findByPartyId(partyId).orElse(null);
+
+        if(party == null)
+            return null;
+
+        else
+            return new PartyDTO(party);
     }
 
     // 파티 수정
