@@ -92,17 +92,17 @@ const GameReviewItem = (props) => {
       {/* 평점관련 */}
       <div className='flex items-center h-5 overflow-hidden mb-2'>
         {/* 별 */}
-        <div className='mr-2'>
+        <div className='mr-2 h-auto'>
           {(review.reviewScore ? [...Array(Math.floor(review.reviewScore))].map((_, index)=>{
             return (
             <>
-              <span className={`text-lg tablet:text-xl laptop:text-3xl ${starCol} align-text-center py-1`}>&#9733;</span>
+              <span className={`text-[1.2em] ${starCol} py-1`}>★</span>
             </>)
           }) : <></>)}
           {[...Array(5-Math.floor(review.reviewScore))].map((_, index)=>{
             return (
             <>
-              <span className={`text-lg tablet:text-xl laptop:text-3xl text-searchbar-gray algitn-text-center py-1`}>&#9733;</span>
+              <span className={`text-[1.2em] text-searchbar-gray py-1`}>★</span>
             </>)
           })}
         </div>
