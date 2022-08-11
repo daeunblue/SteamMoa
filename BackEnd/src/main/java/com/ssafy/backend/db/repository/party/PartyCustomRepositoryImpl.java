@@ -1,39 +1,38 @@
 package com.ssafy.backend.db.repository.party;
 
-import com.ssafy.backend.db.entity.game.Game;
 import com.ssafy.backend.db.entity.party.Party;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-    /*
-        /api/moazone?name=게임이름&genre=장르1&genre=장르2&status=1&sort=1
+/*
+    /api/moazone?name=게임이름&genre=장르1&genre=장르2&status=1&sort=1
 
-        필터링: 게임 이름, 파티 상태들, 파티 태그들
+    필터링: 게임 이름, 파티 상태들, 파티 태그들
 
-        status
-        모집 중: 1
-        모집 완료: 2
-        플레이 중: 3
-        플레이 완료: 4
-        모집 실패: 5
+    status
+    모집 중: 1
+    모집 완료: 2
+    플레이 중: 3
+    플레이 완료: 4
+    모집 실패: 5
 
-        sort
-        파티 생성 최근순: 1
-        마감 날짜 가까운 순: 2
-        마감 인원 많은 순:3
-     */
+    sort
+    파티 생성 최근순: 1
+    마감 날짜 가까운 순: 2
+    마감 인원 많은 순:3
+ */
 public class PartyCustomRepositoryImpl implements PartyCustomRepository {
 
     @Autowired
     EntityManager em;
 
     @Override
-    public List<Party> findAllPartyByFilter(String searchString, String[] partyTags, String[] partyStatuses, String sortString, Pageable pageable) {
+    public Optional<List<Party>> findAllPartyByFilter(String searchString, String[] partyTags, String[] partyStatuses, String sortString, Pageable pageable) {
         // 쿼리문 생성
         String sql = "select *, party.cur_player/party.max_player as per \n" +
                 "from\n" +
@@ -91,7 +90,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                 .setFirstResult(pageable.getPageSize()*pageable.getPageNumber())
                 .getResultList();
 
-        return partylist;
+        return Optional.ofNullable(partylist);
     }
 
         @Override

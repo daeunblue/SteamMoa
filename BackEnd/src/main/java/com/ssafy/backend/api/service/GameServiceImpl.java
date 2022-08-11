@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -28,7 +29,7 @@ public class GameServiceImpl implements GameService {
     public JSONObject getGameList(int page) {
         Pageable pageable = PageRequest.of(page, 12);
         List<GamelistDTO> resultlist = new ArrayList<>();
-        List<Game> games = gameRepository.findAllMultiGame(pageable);
+        List<Game> games = gameRepository.findAllMultiGame(pageable).orElse(Collections.EMPTY_LIST);
         for (Game g: games) {
             List<Review> reviews = reviewRepository.findAllByGameGameId(g.getGameId()).get();
             System.out.println("리뷰 개수: "+reviews.size());
@@ -63,7 +64,7 @@ public class GameServiceImpl implements GameService {
         Pageable pageable = PageRequest.of(page, 12);
         List<GamelistDTO> resultlist = new ArrayList<>();
 
-        List<Game> games = gameRepository.findAllMultiGameByFilter(searchString, tags, pageable);
+        List<Game> games = gameRepository.findAllMultiGameByFilter(searchString, tags, pageable).orElse(Collections.EMPTY_LIST);
         for (Game g: games) {
             List<Review> reviews = reviewRepository.findAllByGameGameId(g.getGameId()).get();
             System.out.println("리뷰 개수: "+reviews.size());
@@ -95,8 +96,11 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDTO getGameDetail(Long gameId) {
-        Game g = gameRepository.findByGameId(gameId);
+        Game g = gameRepository.findByGameId(gameId).orElse(null);
         GameDTO gameDetail;
+
+        if(g == null)
+            return null;
 
         List<Review> reviews = reviewRepository.findAllByGameGameId(g.getGameId()).get();
         if(reviews.size() == 0)

@@ -15,10 +15,7 @@ import com.ssafy.backend.db.repository.party.PuserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("integratedSearchService")
 public class IntegratedSearchServiceImpl implements IntegratedSearchService{
@@ -66,7 +63,7 @@ public class IntegratedSearchServiceImpl implements IntegratedSearchService{
         }
         else if(type.equals("content")){
             IntegratedSearch_ContentDTO integratedSearchContentDTO = new IntegratedSearch_ContentDTO();
-            List<Game> games = gameRepository.findAllMultiGameByOnlyName(keyword);
+            List<Game> games = gameRepository.findAllMultiGameByOnlyName(keyword).orElse(Collections.EMPTY_LIST);
             for(Game g: games){
                 if(g.getName().equals(keyword)) {
                     games.remove(g);
