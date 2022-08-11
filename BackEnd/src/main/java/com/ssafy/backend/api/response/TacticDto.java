@@ -16,5 +16,7 @@ public class TacticDto {
     Long userId;
     String userServiceId;
     Long gameId;
+    String gameName;
+    String gameImgPath;
     LocalDateTime createTime;
 }

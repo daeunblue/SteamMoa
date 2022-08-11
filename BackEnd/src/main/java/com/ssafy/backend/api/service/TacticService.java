@@ -6,10 +6,13 @@ import com.ssafy.backend.api.response.TacticDto;
 import com.ssafy.backend.db.entity.tactic.Tactic;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TacticService {
     List<TacticDto> getTacticsByGameId(Long gameId);
     List<TacticDto> getTacticsByUserId(Long userId);
+
+    TacticDto getTacticByTacticId(Long tacticId);
     boolean createTactics(TacticPostReq tacticPostReq);
     boolean updateTactic(TacticPutReq tacticPutReq);
 }
