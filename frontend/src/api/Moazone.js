@@ -34,6 +34,17 @@ export const moaDelete = (partyId) => {
   const url = `moazone/${partyId}`
   return apiAuth.delete(url);
 }
+// 모아 파티에 참가
+export const moaJoin = (moa, partyId, userServiceId) => {
+  let url = `moazone/${partyId}/join/${userServiceId}`;
+  return apiAuth.put(url, moa);
+}
+
+// 모아 파티에서 탈퇴
+export const moaLeave = (moa, partyId, userServiceId) => {
+  let url = `moazone/${partyId}/leave/${userServiceId}`;
+  return apiAuth.put(url, moa);
+}
 
 // 모아글 검색
 export const getMoaListSearch = (page, searchSort, searchWord, searchFilter) => {

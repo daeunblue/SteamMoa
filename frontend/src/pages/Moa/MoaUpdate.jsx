@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { moaDelete, moaUpdate } from '../../api/Moazone';
 import MoaUserCard from '../../components/Moa/MoaUserCard';
 import { moaDetail } from '../../api/Moazone';
+import Swal from 'sweetalert2';
 
 const MoaUpdate = (props) => {
     
@@ -82,16 +83,38 @@ const handleCancel = () => {
 // 파티 삭제
 const handleDeleteParty = (e) => {
     e.preventDefault();
+    // deleteAlert();
     moaDelete(partyId)
     .then((res)=> {
         console.log(res);
         if (res.status === 200) {
+            
             alert(res.data);
             //모달창 '파티를 정말 삭제하시겠습니까?'
             navigate('/moazone')
         }
     })
 }
+
+
+// const deleteAlert = Swal.fire({
+//     title: '파티글을 정말 삭제하시겠습니까?',
+//     // text: "파티원을 다시 모집해야 합니다.",
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#3085d6',
+//     cancelButtonColor: '#d33',
+//     confirmButtonText: '삭제하기',
+//     cancelButtonText: '취소',
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       Swal.fire(
+//         '모아글이 성공적으로 삭제되었습니다!',
+//         '모아존에서 새 파티원을 모집해주세요!',
+//         'success'
+//       )
+//     }
+//   })
 
   useEffect((e) => {
     moaDetail(partyId)
@@ -140,7 +163,7 @@ const handleDeleteParty = (e) => {
                   <div className='flex-none'>
                     <span>파티 모집 수정하기</span>
                   </div>
-                  <button className="rounded-lg "onClick={handleDeleteParty}>파티 삭제하기</button>
+                  <button className="rounded-lg" onClick={handleDeleteParty}>파티 삭제하기</button>
                 </div>
                     <input 
                     name="partyTitle"
