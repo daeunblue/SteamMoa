@@ -12,11 +12,14 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 
 /**
  * 인증(authentication) 와 인가(authorization) 처리를 위한 스프링 시큐리티 설정 정의.
@@ -67,4 +70,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	        	    .anyRequest().permitAll()
                 .and().cors();
     }
+
+//    @Override
+//    public void configure(WebSecurity web)throws Exception{
+//        web.httpFirewall(defaultHttpFirewall());
+//    }
+//
+//    @Bean
+//    public HttpFirewall defaultHttpFirewall(){
+//        return new DefaultHttpFirewall();
+//    }
 }

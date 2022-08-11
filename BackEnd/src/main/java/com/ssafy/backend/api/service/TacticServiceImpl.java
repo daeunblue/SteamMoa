@@ -76,7 +76,7 @@ public class TacticServiceImpl implements TacticService{
                 return false;
             }
             tactic.setUser(userRepository.findByUserId(tacticPostReq.getUserId()).get());
-            tactic.setGame(gameRepository.findByGameId(tacticPostReq.getGameId()));
+            tactic.setGame(gameRepository.findByGameId(tacticPostReq.getGameId()).orElse(null));
             tactic.setCreateTime(LocalDateTime.now());
             tacticRepository.save(tactic);
             return true;
@@ -94,7 +94,7 @@ public class TacticServiceImpl implements TacticService{
                 return false;
             }
             tactic.setUser(userRepository.findByUserId(tacticPutReq.getUserId()).get());
-            tactic.setGame(gameRepository.findByGameId(tacticPutReq.getGameId()));
+            tactic.setGame(gameRepository.findByGameId(tacticPutReq.getGameId()).orElse(null));
             tacticRepository.save(tactic);
             return true;
         }catch (Exception e){

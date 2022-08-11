@@ -76,7 +76,7 @@ public class PartyServiceImpl implements PartyService{
     public JSONObject searchPartyList(int page, String searchString, String[] partyTags, String[] partyStatuses, String sortString) {
         Pageable pageable = PageRequest.of(page, 12);
         List<PartylistDTO> resultlist = new ArrayList<>();
-        partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString, pageable).forEach(Party->resultlist.add(new PartylistDTO(Party)));
+        partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString, pageable).orElse(Collections.EMPTY_LIST).forEach(Party->resultlist.add(new PartylistDTO((Party)Party)));
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("maxPage", Integer.toString(partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString)/12+1));
@@ -106,7 +106,7 @@ public class PartyServiceImpl implements PartyService{
         Party party = new Party();
 
         // 멀티게임 맞는지 확인 후 실패 응답
-        if (!gameRepository.findAllMultiGameByOnlyName("").contains(gameRepository.findByGameId(partyInfo.getGameId())))
+        if (!gameRepository.findAllMultiGameByOnlyName("").orElse(Collections.EMPTY_LIST).contains(gameRepository.findByGameId(partyInfo.getGameId())))
             return "fail: 유효한 game id가 아닙니다.";
         // 파티 태그 존재하는지 확인 후 실패 응답
         for (String tag:partyInfo.getPartyTags()) {
@@ -120,12 +120,12 @@ public class PartyServiceImpl implements PartyService{
         if (Integer.parseInt(partyInfo.getMaxPlayer()) < 2)
             return "fail: 파티 최대인원은 2명 이상이어야 합니다.";
 
-        party.setGame(gameRepository.findByGameId(partyInfo.getGameId()));
+        party.setGame(gameRepository.findByGameId(partyInfo.getGameId()).orElse(null));
         party.setTitle(partyInfo.getPartyTitle());
         party.setMaxPlayer(Integer.parseInt(partyInfo.getMaxPlayer()));
         party.setCurPlayer(1);
         party.setDescription(partyInfo.getPartyDescription());
-        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).plusHours(9));
+        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
         party.setWriteTime(LocalDateTime.now());
         party.setChatLink(partyInfo.getChatLink());
         party.setStatus("1");
@@ -160,7 +160,7 @@ public class PartyServiceImpl implements PartyService{
         Pageable pageable = PageRequest.of(page, 10);
         List<PartyCreateGamelistDTO> resultlist = new ArrayList<>();
 
-        List<Game> games = gameRepository.findAllMultiGameByFilter(searchString, new String[]{} , pageable);
+        List<Game> games = gameRepository.findAllMultiGameByFilter(searchString, new String[]{} , pageable).orElse(Collections.EMPTY_LIST);
         for (Game g: games) {
                 resultlist.add(new PartyCreateGamelistDTO(g));
         }
@@ -183,15 +183,20 @@ public class PartyServiceImpl implements PartyService{
     @Override
     @Transactional
     public PartyDTO getPartyDetail(Long partyId) {
-        PartyDTO partyDetail = new PartyDTO(partyRepository.findByPartyId(partyId));
-        return partyDetail;
+        Party party = partyRepository.findByPartyId(partyId).orElse(null);
+
+        if(party == null)
+            return null;
+
+        else
+            return new PartyDTO(party);
     }
 
     // 파티 수정
     @Override
     @Transactional
     public String updateParty(Long partyId, PartyPutReq partyInfo) {
-        Party party = partyRepository.findByPartyId(partyId);
+        Party party = partyRepository.findByPartyId(partyId).orElse(null);
 
         // 파티 설명 수정, 파티 디스코드 링크 수정
         party.setDescription(partyInfo.getPartyDescription());
@@ -221,7 +226,7 @@ public class PartyServiceImpl implements PartyService{
     @Transactional
     public boolean deleteParty(Long partyId) {
         try{
-            partyRepository.delete(partyRepository.findByPartyId(partyId));
+            partyRepository.delete(partyRepository.findByPartyId(partyId).orElse(null));
             System.out.println("Party 삭제 요청 성공");
             return true;
         }catch (Exception e){
@@ -235,7 +240,7 @@ public class PartyServiceImpl implements PartyService{
         // 파티원들의 정보 저장
         List<PUserEvalDto> list = new ArrayList<>();
 
-        List<Puser> pUserList = partyRepository.findByPartyId(partyId).getPusers();
+        List<Puser> pUserList = partyRepository.findByPartyId(partyId).orElse(null).getPusers();
 
         for (Puser puser: pUserList) {
             PUserEvalDto pUserEvalDto = new PUserEvalDto();
@@ -256,7 +261,7 @@ public class PartyServiceImpl implements PartyService{
 
     @Override
     public String memberJoin(Long partyId, String userServiceId) {
-        Party party = partyRepository.findByPartyId(partyId);
+        Party party = partyRepository.findByPartyId(partyId).orElse(null);
 
         // 오류: 유효하지 않은 사용자 아이디입니다.
         if(!userRepository.findByUserServiceId(userServiceId).isPresent())
@@ -290,7 +295,7 @@ public class PartyServiceImpl implements PartyService{
 
     @Override
     public String memberLeave(Long partyId, String userServiceId) {
-        Party party = partyRepository.findByPartyId(partyId);
+        Party party = partyRepository.findByPartyId(partyId).orElse(null);
 
         // 오류: 유효하지 않은 사용자 아이디입니다.
         if(!userRepository.findByUserServiceId(userServiceId).isPresent())
@@ -331,7 +336,7 @@ public class PartyServiceImpl implements PartyService{
         if(partyRepository.findByPartyId(partyId) == null)
             return false;
 
-        Party party = partyRepository.findByPartyId(partyId);
+        Party party = partyRepository.findByPartyId(partyId).orElse(null);
         if(party.getStatus().equals("1"))
             party.setStatus("2");
         else if(party.getStatus().equals("2"))

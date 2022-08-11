@@ -3,8 +3,12 @@ import { getUserInfo } from '../../api/User';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Badge from '../Badge';
+import { useNavigate } from 'react-router-dom';
+import { moaUpdate } from '../../api/Moazone';
 
 function MoaUserCard(props) {
+
+  const navigate = useNavigate();
 
   const [ player, setPlayer ] = useState(props.player);
     //   leader: true
@@ -18,6 +22,14 @@ function MoaUserCard(props) {
     userPoint: 0,
     userTags: [],
   });
+
+  const [ updateMoa, setUpdateMoa ] = useState({
+    chatLink: '',
+    partyDescription: '',
+    partyStatus: 1,
+    partyTags: [],
+    partyUsers: [],
+  })
 
   const tierMin = 33.5;
   const tierMax = 39.5;
@@ -65,14 +77,19 @@ function MoaUserCard(props) {
 
     const onDeleteUser = () => {
       //파티원 삭제
+      moaUpdate(updateMoa, )
 
+    }
+
+    const onProfilePage = () => {
+      navigate(`profile/${user.userServiceId}`)
     }
 
     
   return (
-    <div className='w-per20 h-per15 p-auto text-black' style={neonBox}>
+    <div onClick={onProfilePage} className='w-per20 h-per15 p-auto text-black' style={neonBox}>
       {/* 파티장 여부에 따라 파티원 삭제 버튼 표시 */}
-      {!props.player.leader === true &&
+      {props.player.leader !== true &&
         <div className="float-right mt-1 mr-3">
           <FontAwesomeIcon onClick={onDeleteUser} className="text-black hover:cursor-pointer" icon={ faX } />
         </div>}
@@ -83,14 +100,16 @@ function MoaUserCard(props) {
             src={`../../ImgAssets/Tier${getTier()}.png`}
             alt=""
             className="w-14 h-14 mr-5"
+            
           />
           <span className="font-blackSans text-black text-2xl mr-2">{user.userServiceId}</span>
         </div>
-        <div className="flex flex-row justify-center">
+        {/* 유저 태그 (빡겜러, 초보 ...) */}
+        {/* <div className="flex flex-row justify-center">
           {user.userTags.map((tag) => (
             <Badge key={tag} name={tag} />
           ))}
-        </div>
+        </div> */}
       </div>
         {/* 리더 여부 표시 */}
         { props.player.leader === true && <span className='p-auto rounded flex justify-center items-center w-per25 text-xs font-blackSans text-black mr-2'>파티장</span>}

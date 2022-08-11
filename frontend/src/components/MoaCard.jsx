@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Badge from "./Badge";
+import { formatTimeISO } from "../util/FormatTime"
 
 function MoaCard(props) {
   const navigate = useNavigate();
@@ -17,8 +18,6 @@ function MoaCard(props) {
     partyTags,
   } = props.party;
 
-  console.log(props.party.partyId);
-
   let bgColors = [
     "bg-moa-pink",
     "bg-moa-green",
@@ -28,17 +27,6 @@ function MoaCard(props) {
     "bg-mainBtn-disabled",
   ];
   let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
-
-  const formatTime = () => {
-    const week = ["일", "월", "화", "수", "목", "금", "토"];
-    const dateTime = startTime.split("T");
-    const date = dateTime[0].split("-");
-    const month = date[1].startsWith("0") ? date[1].charAt(1) : date[1];
-    const day = date[2].startsWith("0") ? date[2].charAt(1) : date[2];
-    let dayOfWeek = week[new Date(dateTime[0]).getDay()];
-    const result = `~ ${date[0]}.${month}.${day}.(${dayOfWeek}) ${dateTime[1]}`;
-    return result;
-  };
 
   const onClickCard = (e) => {
     e.stopPropagation();
@@ -67,7 +55,7 @@ function MoaCard(props) {
           [{gameName}]
         </div>
         <div className=" flex justify-between">
-          <span className="text-xs font-sans font-semibold">{formatTime()}</span>
+          <span className="text-xs font-sans font-semibold">{formatTimeISO(startTime)}</span>
           <span className="text-xs font-sans  font-semibold">
             {curPlayer}/{maxPlayer}
           </span>

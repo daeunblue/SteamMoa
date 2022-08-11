@@ -53,6 +53,7 @@ public class TacticController {
 
     @PostMapping()
     @ApiOperation(value="게임 공략글 생성", notes = "공략글 생성")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<? extends Map<String,Object>> createTactics(@RequestBody TacticPostReq tacticPostReq){
         Map<String,Object> resultMap = new HashMap<>();
 
@@ -67,6 +68,7 @@ public class TacticController {
 
     @PutMapping()
     @ApiOperation(value="게임 공략글 수정", notes = "공략글 수정")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<? extends Map<String,Object>> updateTactics(@RequestBody TacticPutReq tacticPutReq){
         Map<String,Object> resultMap = new HashMap<>();
 
