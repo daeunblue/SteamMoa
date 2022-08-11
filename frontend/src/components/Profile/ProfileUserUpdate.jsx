@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { postPWCheck } from '../../api/Auth'
+import { deleteUser, postPWCheck } from '../../api/Auth'
+import { putUserInfo } from '../../api/User'
+import { useRecoilState } from "recoil";
+import { auth } from "../../recoil/Auth";
 
 
 const ProfileUserUpdate = (props) => {
   const navigate = useNavigate()
+  const [userAuth, setAuth] = useRecoilState(auth);
   const { profileName, isMyPage, userProfile } = props
   const utags= [ '즐겜러', '빡겜러', '초보', '중수', '고수', '생존겜 러버']
   const userId = useState(profileName)
   const [trialCnt, setTrialCnt] = useState(1)
   const [tmpPw, setTmpPw] = useState('')
   const [tmpPwConfirm, setTmpPwConfirm] = useState('')
+  const [pwUpdate, setPwUpdate] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState("");
 
   
   const [updateInfo, setUpdateInfo] = useState({
-    user_name:userProfile.userName, // 닉네임
-    u_tag: utags.map((tag, idx)=>{
+    userName:userProfile.userName, // 닉네임
+    userTags: utags.map((tag, idx)=>{
       if (userProfile.userTags.includes(tag)) {
         return (idx + 1)
       }
-      return
-    }), // 유저 태그
-    password:'-1'  // 변경 사항 없음
+      return null
+    }).filter((el)=> el), // 유저 태그
+    userPassword:-1  // 변경 사항 없음
   })
 
 
@@ -47,12 +52,7 @@ const ProfileUserUpdate = (props) => {
   const SuccessToast = Swal.mixin({
     toast: true,
     position: 'center',
-    timer: 1500,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
+    timer: 1000,
   })
 
   const FailureToast = Swal.mixin({
@@ -60,11 +60,8 @@ const ProfileUserUpdate = (props) => {
     toast: true,
     position: 'center',
     showConfirmButton: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
   })
+
 
   useEffect(
     () => {
@@ -137,21 +134,37 @@ const ProfileUserUpdate = (props) => {
       )
     }, [trialCnt]
   )
+
+  useEffect(()=>{
+    if(tmpPw&&!passwordMessage&&(tmpPw===tmpPwConfirm)){
+      setPwUpdate(true)
+    } else {
+      setPwUpdate(false)
+    }
+  }, [tmpPw, tmpPwConfirm])
   
+  useEffect(()=>{
+    if(pwUpdate){
+      setUpdateInfo({...updateInfo, userPassword:tmpPw})
+    }else{
+      setUpdateInfo({...updateInfo, userPassword:-1})
+    }
+  }, [pwUpdate])
+
 
   const changeHandler = (checked, id) => {
     if (checked) {
-      setUpdateInfo({...updateInfo, u_tag: [...updateInfo.u_tag, id+1]})
+      setUpdateInfo({...updateInfo, userTags: [...updateInfo.userTags, id+1]})
     } else {
       // 체크 해제
-      setUpdateInfo({...updateInfo, u_tag: updateInfo.u_tag.filter((el) => el !== id+1)});
+      setUpdateInfo({...updateInfo, userTags: updateInfo.userTags.filter((el) => el !== id+1)});
     }
   };
 
   const onChangeUserName = (e) => {
     const val = e.target.value
     if (val.length <= 30){
-      setUpdateInfo({...updateInfo, user_name:val})
+      setUpdateInfo({...updateInfo, userName:val})
     }
   }
 
@@ -159,7 +172,7 @@ const ProfileUserUpdate = (props) => {
     const val = e.target.value;
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     setTmpPw(val);
-    if (!passwordRegex.test(val)) {
+    if (!passwordRegex.test(val)&&val) {
       setPasswordMessage("* 비밀번호가 유효하지 않습니다");
     } else {
       setPasswordMessage("");
@@ -171,6 +184,53 @@ const ProfileUserUpdate = (props) => {
     setTmpPwConfirm(val);
   }
 
+  const onSubmit = () => {
+    putUserInfo(updateInfo)
+      .then((res)=>{
+        console.log(res)
+        SuccessToast.fire(
+          {
+            showConfirmButton: false,    
+            icon: 'success',
+            title: '변경사항이 저장되었습니다.'
+          }
+        ).then(setTimeout(navigate(`/mypage/${userProfile.userServiceId}`),800))
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+  }
+
+  const onDeleteUser = () => {
+    Swal.fire({
+      title: 'ALERT',
+      text: "정말 탈퇴하시겠습니까?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#A9ACB1',
+      cancelButtonColor: '#C22A66',
+      confirmButtonText: '탈퇴하기',
+      cancelButtonText: '취소하기',
+      focusConfirm:false,
+      focusCancel:true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(userProfile.userServiceId)
+          .then((res)=>{
+            setAuth({
+              isLoggedIn:false, //인증상태
+              token:null, //access token
+              userId: null,
+            });
+            sessionStorage.removeItem('token')
+            alert('탈퇴에 성공했습니다.')
+            navigate('/')
+          })
+      }
+    })
+  }
+
+  console.log(updateInfo)
 
   return (
     <div className='py-8 px-12 w-full h-full'>
@@ -188,7 +248,7 @@ const ProfileUserUpdate = (props) => {
           <input type="text" 
                  id = "nickname"
                  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2'
-                 value={updateInfo.user_name} 
+                 value={updateInfo.userName} 
                  onChange={onChangeUserName} 
                  placeholder="자신을 표현할 수 있는 닉네임을 적어주세요 (30자 이하)"/>
 
@@ -202,7 +262,7 @@ const ProfileUserUpdate = (props) => {
                   onChange={(e)=>{
                               changeHandler(e.currentTarget.checked, idx)
                               }}
-                  checked={updateInfo.u_tag.includes(idx+1) ? true : false}
+                  checked={updateInfo.userTags.includes(idx+1) ? true : false}
                   className='mr-1 w-4 h-4 text-teal-600 bg-gray-100 rounded border-gray-300 focus:ring-teal-500 dark:focus:ring-teal-600'/>{utags[idx]}
                 </label>
               )
@@ -248,8 +308,17 @@ const ProfileUserUpdate = (props) => {
             }
           </div>
         </div>
+        <button 
+          onClick={onSubmit}
+          disabled={!(updateInfo.userName&&((updateInfo.userPassword===-1&&!tmpPw&&!tmpPwConfirm)||(pwUpdate&&updateInfo.userPassword!==-1)))}
+          className='mt-5 w-full 
+                     focus:outline-none text-white 
+                     bg-amber-500 hover:bg-amber-600 disabled:bg-zinc-400
+                     focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5'>
+          수정
+        </button>
       </div>
-
+      <div className='mr-2 mt-2.5 text-gray-400 text-xs flex justify-end hover:cursor-pointer' onClick={onDeleteUser}>회원탈퇴</div>
     </div>
   )
 }

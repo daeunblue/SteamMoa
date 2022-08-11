@@ -49,7 +49,7 @@ const ProfileMyReview = (props) => {
 
   return (
     <div className='my-10 flex flex-col justify-center'>
-      {(!contentList.length&&!(render===1) ? 
+      {(!contentList.length ? 
         <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
           <div className="mb-2">작성한 리뷰가 없습니다.</div>
           {(isMyPage ? <div>지금 리뷰 쓰러 <Link to={'/gamemoa'} className="text-moa-pink font-bold text-lg">출발!</Link></div>: '')}
