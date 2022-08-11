@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface PuserRepository extends JpaRepository<Puser, Long> {
-    List<Puser> findAllByUserAndParty(User user, Party party);
-    List<Puser> findAllByUserOrderByPuserIdDesc(User user);
+    Optional<List<Puser>> findAllByUserAndParty(User user, Party party);
+    Optional<List<Puser>> findAllByUserOrderByPuserIdDesc(User user);
     Optional<List<Puser>> findTop3ByUserOrderByPuserIdDesc(User user);
 }

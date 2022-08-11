@@ -56,12 +56,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean createUser(UserRegisterPostReq userRegisterInfo) {
+    public int createUser(UserRegisterPostReq userRegisterInfo) {
         User user = new User();
+
+        boolean existUser = userRepository.existsByUserServiceId(userRegisterInfo.getUser_service_id());
+        if(existUser) return 1; // 이미 존재하는 사용자명으로 생성 시도
+
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장. -> 추후에 SpringSecurity 적용하고 사용해야함
         user.setPassword(passwordEncoder.encode(userRegisterInfo.getUser_service_pw()));
-        log.debug(passwordEncoder.encode(userRegisterInfo.getUser_service_pw()));
-        log.debug(user.getPassword());
 
         System.out.println("인코더"+passwordEncoder.encode(userRegisterInfo.getUser_service_pw()));
         System.out.println("user 내부"+user.getPassword());
@@ -72,16 +74,15 @@ public class UserServiceImpl implements UserService {
             user.setUserSteamId(userRegisterInfo.getUser_steam_id());
             user.setUserServiceId(userRegisterInfo.getUser_service_id());
             user.setUserPoint(36.5);
-            System.out.println("회원 가입 가능");
         }else{
             System.out.println("아이디 중복!");
-            return false;
+            return 2;
         }
 
         user.setUserName(userRegisterInfo.getUser_name());
         userRepository.save(user);
 
-        return true;
+        return 3;
 
     }
 
@@ -96,16 +97,20 @@ public class UserServiceImpl implements UserService {
             result.put("message","Fail");
             return result;
         }else{
-            UserDto userDto = new UserDto();
-            userDto.setUserId(user.getUserId());
-            userDto.setUserServiceId(user.getUserServiceId());
-            userDto.setUserPoint(user.getUserPoint());
-            for (UserTag tag:user.getUTagLists()) {
-                userDto.addUserTags(tag.getUTagStorage().getContent());
+            if(user.getIsDeleted()){
+                result.put("message","이미 탈퇴한 사용자의 정보입니다.");
+            }else{
+                UserDto userDto = new UserDto();
+                userDto.setUserId(user.getUserId());
+                userDto.setUserServiceId(user.getUserServiceId());
+                userDto.setUserPoint(user.getUserPoint());
+                for (UserTag tag:user.getUTagLists()) {
+                    userDto.addUserTags(tag.getUTagStorage().getContent());
+                }
+                userDto.setUserName(user.getUserName());
+                result.put("user",userDto);
+                result.put("message","Success");
             }
-            userDto.setUserName(user.getUserName());
-            result.put("user",userDto);
-            result.put("message","Success");
         }
 
         return result;
@@ -143,9 +148,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean deleteUser(String userServiceId) {  // 예외처리 해야함 나중에 추후에
+    public boolean deleteUser(String userServiceId) {
         try{
-            userRepository.delete(userRepository.findByUserServiceId(userServiceId).orElseThrow(()-> new ChangeSetPersister.NotFoundException()));
+            User user = userRepository.findByUserServiceId(userServiceId).get();
+            user.setIsDeleted(true);
+            userRepository.save(user);
             System.out.println("사용자 삭제 요청 성공!");
             return true;
         }catch (Exception e){
@@ -177,16 +184,17 @@ public class UserServiceImpl implements UserService {
                 System.out.println(userTag.getUTagStorage().getContent());
                 user.addUTagLists(userTag);
             }
+            // password 수정 (-1 : 변경안함, 나머지값: 변경함)
+            String password = userUpdatePutReq.getUserPassword();
 
-
+            if(!password.equals("-1")){
+                System.out.println("비밀번호도 수정함");
+                user.setPassword(passwordEncoder.encode(userUpdatePutReq.getUserPassword()));
+            }
             userRepository.save(user);
             System.out.println(user.getUserName());
             System.out.println("User 수정 요청 성공");
 
-
-//            User sUser = userRepository.findByUserId(user.getUserId()).get();
-//            sUser.setUserPoint(user.getUserPoint());
-//            sUser.setUserName(user.getUserName());
             return true;
         }catch(Exception e){
             e.printStackTrace();
@@ -307,9 +315,9 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get()).orElse(Collections.EMPTY_LIST);
         for (Puser p: pusers) {
-            Party party_temp = partyRepository.findByPusersContains(p);
+            Party party_temp = partyRepository.findByPusersContains(p).orElse(null);
             String partyStatus_temp = party_temp.getStatus();
             if(partyStatus_temp.equals("1") || partyStatus_temp.equals("2") ||partyStatus_temp.equals("3"))
                 parties.add(new PartylistDTO(party_temp));
@@ -324,9 +332,9 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get()).orElse(Collections.EMPTY_LIST);
         for (Puser p: pusers) {
-            Party party_temp = partyRepository.findByPusersContains(p);
+            Party party_temp = partyRepository.findByPusersContains(p).orElse(null);
             String partyStatus_temp = party_temp.getStatus();
             if(partyStatus_temp.equals("4") ||partyStatus_temp.equals("5"))
                 parties.add(new PartylistDTO(party_temp));
@@ -341,11 +349,11 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get()).orElse(Collections.EMPTY_LIST);
         for (Puser p: pusers) {
             System.out.println(p.getUser().getUserServiceId());
             if(p.isLeader()) {
-                parties.add(new PartylistDTO(partyRepository.findByPusersContains(p)));
+                parties.add(new PartylistDTO(partyRepository.findByPusersContains(p).orElse(null)));
             }
         }
 
