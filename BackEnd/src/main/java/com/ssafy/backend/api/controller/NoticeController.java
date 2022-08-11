@@ -47,6 +47,7 @@ public class NoticeController {
 
     @PutMapping("/{noticeId}")
     @ApiOperation(value = "알림 읽음 처리", notes = "특정 알림에 대해 읽음 처리를 합니다.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> readNotice(@PathVariable("noticeId") Long noticeId){
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("message", noticeService.readNotice(noticeId));
@@ -56,6 +57,7 @@ public class NoticeController {
 
     @DeleteMapping("/{noticeId}")
     @ApiOperation(value = "알림 삭제", notes = "특정 알림을 테이블에서 삭제합니다.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> deleteNotice(@PathVariable("noticeId") Long noticeId){
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("message", noticeService.deleteNotice(noticeId));

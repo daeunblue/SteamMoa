@@ -28,6 +28,7 @@ public class ReviewController {
 
     @PostMapping()
     @ApiOperation(value="게임 리뷰 생성", notes = "리뷰 생성")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<? extends Map<String,Object>> createReview(@RequestBody ReviewPostReq reviewPostReq){
         Map<String,Object> resultMap = new HashMap<>();
 
@@ -42,6 +43,7 @@ public class ReviewController {
 
     @PutMapping()
     @ApiOperation(value="게임 리뷰 수정", notes = "리뷰 수정")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<? extends Map<String,Object>> updateReview(@RequestBody ReviewPostReq reviewPostReq){
         Map<String,Object> resultMap = new HashMap<>();
 
@@ -110,6 +112,7 @@ public class ReviewController {
 
     @DeleteMapping("/{review_id}")
     @ApiOperation(value = "리뷰 삭제", notes = "review_id에 해당하는 리뷰글 삭제")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<? extends Map<String,Object>> deleteReview(@PathVariable("review_id")Long reviewId){
         Map<String, Object> resultMap = new HashMap<>();
 

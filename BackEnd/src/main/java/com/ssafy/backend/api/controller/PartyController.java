@@ -104,6 +104,7 @@ public class PartyController {
     // 파티 수정
     @PutMapping("/{partyid}")
     @ApiOperation(value = "파티 수정", notes = "파티장이 파티 정보를 수정하는 경우, 파티원이 파티를 가입하거나 탈퇴하는 경우 호출.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> updateParty(@PathVariable("partyid") Long partyid, @RequestBody PartyPutReq partyPutReq){
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("message", partyService.updateParty(partyid, partyPutReq));
@@ -117,6 +118,7 @@ public class PartyController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> deleteParty(@PathVariable("partyid") Long partyid){
         boolean result = partyService.deleteParty(partyid);
 
@@ -150,6 +152,7 @@ public class PartyController {
 
     @PostMapping("/eval")
     @ApiOperation(value = "파티원 평가", notes = "파티원에 대한 평가 진행.")
+    // @ApiIgnore Authentication authentication,
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
@@ -169,6 +172,7 @@ public class PartyController {
     // 파티를 임의로 모집마감하는 API
     @PutMapping("/{partyid}/close")
     @ApiOperation(value = "파티 임의 모집마감", notes = "파티 상태를 모집 중에서 모집 완료 상태로 바꾼다.")
+    // @ApiIgnore Authentication authentication,
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
@@ -192,6 +196,7 @@ public class PartyController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> memberJoin(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
         String result = partyService.memberJoin(partyid, userServiceId);
 
@@ -208,6 +213,7 @@ public class PartyController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> memberLeave(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
         String result = partyService.memberLeave(partyid, userServiceId);
 
