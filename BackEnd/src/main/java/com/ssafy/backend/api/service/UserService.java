@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public interface UserService {
 
-    boolean createUser(UserRegisterPostReq userRegisterInfo);
+    int createUser(UserRegisterPostReq userRegisterInfo);
 
     Map<String, Object> getUserInfoByUserId(String userServiceId);
     User getUserByUserId(String userId);
@@ -28,7 +28,6 @@ public interface UserService {
 
     boolean deleteUser(String userServiceId);
 
-    @Transactional
     boolean updateUser(Long userId, UserUpdatePutReq userUpdatePutReq);
 
     // 매너온도 변경
