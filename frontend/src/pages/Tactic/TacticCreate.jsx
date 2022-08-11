@@ -5,7 +5,7 @@ import { auth } from "../../recoil/Auth";
 import { useRecoilValue } from "recoil";
 import { postTactics } from "../../api/Tactic";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const TacticCreate = () => {
   const navigate = useNavigate();
@@ -18,17 +18,17 @@ const TacticCreate = () => {
   const { userId } = user;
 
   useEffect(() => {
-    if (!userId) { 
+    if (!userId) {
       Swal.fire({
         position: "center",
-        icon: "error",
-        title: "잘못된 접근입니다! &#128529",
+        icon: "warning",
+        title: "먼저 로그인을 해 주세요 &#128521",
         showConfirmButton: false,
         timer: 1500,
       });
-      navigate(`/`);
+      navigate(`/login`);
     }
-  },[]);
+  }, []);
 
   const handleChangeTitle = useCallback(
     (e) => {
@@ -155,9 +155,9 @@ const TacticCreate = () => {
               onChange={handleChangeContents}></textarea>
           </div>
           <div className="flex justify-center mt-4">
-            <button className="mr-2 text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            <Link to={`/gamemoa/detail/${game.gameId}/`} className="mr-2 text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               취소
-            </button>
+            </Link>
             <button
               onClick={onClickUpload}
               className={`text-white bg-moa-pink hover:bg-moa-pink-dark font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>

@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Routes, Route, useNavigate, NavLink } from "react-router-dom";
+import { useParams, Routes, Route, useNavigate, NavLink, Link } from "react-router-dom";
 import { getGame } from "../../api/Game";
 import Navbar from "../../components/Navbar";
 import GameReviewList from "../../components/Game/GameReviewList";
 import GameTacticList from "../../components/Game/GameTacticList";
 
 const GameDetail = (props) => {
-  const param = useParams()
-  const isTactic = (Object.values(param).includes('tactic')? true:false)
-  const navigate = useNavigate()
+  const param = useParams();
+  const isTactic = Object.values(param).includes("tactic") ? true : false;
+  const navigate = useNavigate();
   const [gameDetail, setGameDetail] = useState({
-    "gameGenreRepository": '',
-    "gameCategoryRepository": '',
-    "gameId": '',
-    "steamgameId": '',
-    "name": '',
-    "score": '',
-    "imgpath": '',
-    "age": '',
-    "description": '',
-    "languages": '',
-    "developers": '',
-    "price": '',
-    "discount": '',
-    "genres": [],
-    "categories": [],
-    "gcategoryStorageRepository": '',
-    "ggenreStorageRepository": '',
-    "free": '',
-    "window": '',
-    "mac": ''
-  })
-  const params = useParams()
-  const gameId = params.game_id
-  const tabDesign = `inline-flex py-3 px-6 rounded-t-lg border-b-2 border-transparent hover:text-gray-700 hover:border-indigo-400`
+    gameGenreRepository: "",
+    gameCategoryRepository: "",
+    gameId: "",
+    steamgameId: "",
+    name: "",
+    score: "",
+    imgpath: "",
+    age: "",
+    description: "",
+    languages: "",
+    developers: "",
+    price: "",
+    discount: "",
+    genres: [],
+    categories: [],
+    gcategoryStorageRepository: "",
+    ggenreStorageRepository: "",
+    free: "",
+    window: "",
+    mac: "",
+  });
+  const params = useParams();
+  const gameId = params.game_id;
+  const tabDesign = `inline-flex py-3 px-6 rounded-t-lg border-b-2 border-transparent hover:text-gray-700 hover:border-indigo-400`;
 
   useEffect(() => {
     getGame(gameId)
@@ -59,12 +59,12 @@ const GameDetail = (props) => {
       ? "flex pr-2 mr-2 tablet:border-r-2 tablet:border-dashed tablet:border-white tablet:pr-4 tablet:mr-4 mb-2 tablet:mb-0"
       : `${genresTrue} flex pr-2 mr-2 tablet:pr-4 tablet:mr-4`;
 
-  const onClickParty = () =>{
-    navigate(`/moazone?page=1&word=${gameDetail.name}`)
-  }
-  const onClickSteam = () =>{
-    window.location.href =`https://store.steampowered.com/app/${gameDetail.steamgameId}`
-  }
+  const onClickParty = () => {
+    navigate(`/moazone?page=1&word=${gameDetail.name}`);
+  };
+  const onClickSteam = () => {
+    window.location.href = `https://store.steampowered.com/app/${gameDetail.steamgameId}`;
+  };
 
   return (
     <>
@@ -100,6 +100,12 @@ const GameDetail = (props) => {
                 className="hover:cursor-pointer rounded-2xl font-bold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-1 bg-moa-pink hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center">
                 파티 GO!
               </div>
+              {/* 공략글쓰기 */}
+              <Link
+                to={`/tactic/create?game=${gameDetail.gameId}`}
+                className="hover:cursor-pointer rounded-2xl font-bold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-1 bg-moa-green hover:bg-moa-green-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center">
+                공략 GO!
+              </Link>
             </div>
             {/* tags */}
             <div className="flex">
@@ -133,10 +139,26 @@ const GameDetail = (props) => {
           <div className="text-sm font-medium bg-indigo-200 text-center text-gray-500 border-b border-gray-300 rounded-t-lg">
             <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
               <li className="rounded-t-lg">
-                <NavLink to={`/gamemoa/detail/${gameId}`} className={ (!isTactic ? `bg-white border-0 shadow-[0_-4px_0.25em_rgba(0,0,0,0.3)] text-gray-700 ${tabDesign}`: `${tabDesign}`)}>Review</NavLink>
+                <NavLink
+                  to={`/gamemoa/detail/${gameId}`}
+                  className={
+                    !isTactic
+                      ? `bg-white border-0 shadow-[0_-4px_0.25em_rgba(0,0,0,0.3)] text-gray-700 ${tabDesign}`
+                      : `${tabDesign}`
+                  }>
+                  Review
+                </NavLink>
               </li>
               <li className="rounded-t-lg">
-                <NavLink to={`/gamemoa/detail/${gameId}/tactic`} className={({isActive}) => (isActive ?  `bg-white border-0 shadow-[0_-4px_0.25em_rgba(0,0,0,0.3)] text-gray-700 ${tabDesign}`: `${tabDesign}`)}>Tatic</NavLink>
+                <NavLink
+                  to={`/gamemoa/detail/${gameId}/tactic`}
+                  className={({ isActive }) =>
+                    isActive
+                      ? `bg-white border-0 shadow-[0_-4px_0.25em_rgba(0,0,0,0.3)] text-gray-700 ${tabDesign}`
+                      : `${tabDesign}`
+                  }>
+                  Tatic
+                </NavLink>
               </li>
             </ul>
           </div>
