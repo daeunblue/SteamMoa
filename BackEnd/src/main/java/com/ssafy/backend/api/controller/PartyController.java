@@ -155,20 +155,24 @@ public class PartyController {
     // 파티원 참가
     @PutMapping("/{partyid}/join/{userId}")
     @ApiOperation(value = "파티원 참가", notes = "유저가 파티에 참가합니다.")
-    public ResponseEntity<? extends Map<String,Object>> memberJoin(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
-        Map<String,Object> result = new HashMap<>();
+    public ResponseEntity<?> memberJoin(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
+        String result = partyService.memberJoin(partyid, userServiceId);
 
-        result.put("message",partyService.memberJoin(partyid, userServiceId));
-        return ResponseEntity.status(200).body(result);
+        if(result.equals("success"))
+            return ResponseEntity.status(200).body(partyService.getPartyDetail(partyid));
+        else
+            return ResponseEntity.status(200).body(result);
     }
 
     // 파티원 탈퇴
     @PutMapping("/{partyid}/leave/{userId}")
     @ApiOperation(value = "파티원 탈퇴", notes = "유저가 파티를 탈퇴합니다.")
-    public ResponseEntity<? extends Map<String,Object>> memberLeave(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
-        Map<String,Object> result = new HashMap<>();
+    public ResponseEntity<?> memberLeave(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
+        String result = partyService.memberLeave(partyid, userServiceId);
 
-        result.put("message",partyService.memberLeave(partyid, userServiceId));
-        return ResponseEntity.status(200).body(result);
+        if(result.equals("success"))
+            return ResponseEntity.status(200).body(partyService.getPartyDetail(partyid));
+        else
+            return ResponseEntity.status(200).body(result);
     }
 }
