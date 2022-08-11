@@ -125,7 +125,7 @@ const ProfileUserUpdate = (props) => {
                   },
                   icon: 'error',
                   title: `Server Error! 잠시 후 다시 시도해주세요`
-                })
+                }).then(navigate(-1))
             })
         } else if (res.isDismissed){
           navigate(-1)
@@ -233,14 +233,14 @@ const ProfileUserUpdate = (props) => {
   console.log(updateInfo)
 
   return (
-    <div className='py-8 px-12 w-full h-full'>
-      <div className='flex mb-2'>
+    <div className='py-10 px-[7%] w-full h-full'>
+      <div className='flex mb-2 w-full mx-auto max-w-[700px]'>
         <div className='w-2 bg-amber-600'></div>
         <div className='ml-3 text-2xl font-bold text-amber-500'>회원정보 수정</div>
       </div>
-      <hr />
+      <hr className='mx-auto max-w-[700px] w-full' />
 
-      <div className='rounded mt-3 w-full  bg-zinc-300 p-6'>
+      <div className='rounded mt-3 w-full mx-auto bg-zinc-300 p-6 w-full max-w-[700px]'>
           <label htmlFor="nickname"
                  className="block mb-2 text-sm font-semibold text-gray-900">
             닉네임
@@ -318,7 +318,7 @@ const ProfileUserUpdate = (props) => {
           수정
         </button>
       </div>
-      <div className='mr-2 mt-2.5 text-gray-400 text-xs flex justify-end hover:cursor-pointer' onClick={onDeleteUser}>회원탈퇴</div>
+      <div className='mx-auto mt-2.5 text-gray-400 text-xs flex justify-end hover:cursor-pointer w-full max-w-[700px]' onClick={onDeleteUser}>회원탈퇴</div>
     </div>
   )
 }
