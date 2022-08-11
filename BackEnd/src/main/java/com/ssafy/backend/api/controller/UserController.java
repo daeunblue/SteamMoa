@@ -93,7 +93,9 @@ public class UserController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
+//    public ResponseEntity<? extends Map<String, Object>> followUser(@ApiIgnore Authentication authentication, @RequestBody UserFollowPostReq userFollowPostReq){
     public ResponseEntity<? extends Map<String, Object>> followUser(@RequestBody UserFollowPostReq userFollowPostReq){
+
         Map<String, Object> resultMap = new HashMap<>();
 
         String FollowingUserId = userFollowPostReq.getFollowingUserId();
@@ -119,6 +121,8 @@ public class UserController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
+
+//    public ResponseEntity<? extends Map<String, Object>> unFollowUser(@ApiIgnore Authentication authentication, @RequestBody UserFollowPostReq userFollowPostReq){
     public ResponseEntity<? extends Map<String, Object>> unFollowUser(@RequestBody UserFollowPostReq userFollowPostReq){
         Map<String, Object> resultMap = new HashMap<>();
 

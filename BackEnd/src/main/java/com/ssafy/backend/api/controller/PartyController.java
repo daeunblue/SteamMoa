@@ -91,6 +91,7 @@ public class PartyController {
     // 파티 수정
     @PutMapping("/{partyid}")
     @ApiOperation(value = "파티 수정", notes = "파티장이 파티 정보를 수정하는 경우, 파티원이 파티를 가입하거나 탈퇴하는 경우 호출.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> updateParty(@PathVariable("partyid") Long partyid, @RequestBody PartyPutReq partyPutReq){
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("message", partyService.updateParty(partyid, partyPutReq));
@@ -100,6 +101,7 @@ public class PartyController {
     // 파티 삭제
     @DeleteMapping("/{partyid}")
     @ApiOperation(value = "파티 삭제", notes = "파티가 삭제된다.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> deleteParty(@PathVariable("partyid") Long partyid){
         boolean result = partyService.deleteParty(partyid);
         return ResponseEntity.status(200).body(result);
@@ -125,6 +127,7 @@ public class PartyController {
 
     @PostMapping("/eval")
     @ApiOperation(value = "파티원 평가", notes = "파티원에 대한 평가 진행.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<? extends Map<String,Object>> postEvaluation(@RequestBody PartyEvalPostReq partyEvalPostReq){
         Map<String,Object> result = new HashMap<>();
 
@@ -140,6 +143,7 @@ public class PartyController {
     // 파티를 임의로 모집마감하는 API
     @PutMapping("/{partyid}/close")
     @ApiOperation(value = "파티 임의 모집마감", notes = "파티 상태를 모집 중에서 모집 완료 상태로 바꾼다.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<? extends Map<String,Object>> closeParty(@PathVariable("partyid") Long partyid){
         Map<String,Object> result = new HashMap<>();
 
@@ -155,6 +159,7 @@ public class PartyController {
     // 파티원 참가
     @PutMapping("/{partyid}/join/{userId}")
     @ApiOperation(value = "파티원 참가", notes = "유저가 파티에 참가합니다.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> memberJoin(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
         String result = partyService.memberJoin(partyid, userServiceId);
 
@@ -167,6 +172,7 @@ public class PartyController {
     // 파티원 탈퇴
     @PutMapping("/{partyid}/leave/{userId}")
     @ApiOperation(value = "파티원 탈퇴", notes = "유저가 파티를 탈퇴합니다.")
+    // @ApiIgnore Authentication authentication,
     public ResponseEntity<?> memberLeave(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
         String result = partyService.memberLeave(partyid, userServiceId);
 
