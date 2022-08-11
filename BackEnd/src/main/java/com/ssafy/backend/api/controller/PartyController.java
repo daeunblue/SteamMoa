@@ -75,8 +75,8 @@ public class PartyController {
     // 파티 생성시 게임ID 검색
     @GetMapping("/games")
     @ApiOperation(value = "파티 생성시 게임ID 검색", notes = "문자열을 포함하면 그 문자열이 게임 이름에 포함된 게임 리스트를 보내준다.")
-    public ResponseEntity<?> getPartyCreateGamelist(@RequestParam(required = false, defaultValue = "") String game_name){
-        List<PartyCreateGamelistDTO> result = partyService.searchPartyCreateGamelist(game_name);
+    public ResponseEntity<?> getPartyCreateGamelist(@RequestParam(required = true, defaultValue = "1") int page,@RequestParam(required = false, defaultValue = "") String game_name){
+        JSONObject result = partyService.searchPartyCreateGamelist(page-1, game_name);
         return ResponseEntity.status(200).body(result);
     }
 
@@ -150,5 +150,29 @@ public class PartyController {
             result.put("message","Fail");
             return ResponseEntity.status(400).body(result);
         }
+    }
+
+    // 파티원 참가
+    @PutMapping("/{partyid}/join/{userId}")
+    @ApiOperation(value = "파티원 참가", notes = "유저가 파티에 참가합니다.")
+    public ResponseEntity<?> memberJoin(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
+        String result = partyService.memberJoin(partyid, userServiceId);
+
+        if(result.equals("success"))
+            return ResponseEntity.status(200).body(partyService.getPartyDetail(partyid));
+        else
+            return ResponseEntity.status(200).body(result);
+    }
+
+    // 파티원 탈퇴
+    @PutMapping("/{partyid}/leave/{userId}")
+    @ApiOperation(value = "파티원 탈퇴", notes = "유저가 파티를 탈퇴합니다.")
+    public ResponseEntity<?> memberLeave(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
+        String result = partyService.memberLeave(partyid, userServiceId);
+
+        if(result.equals("success"))
+            return ResponseEntity.status(200).body(partyService.getPartyDetail(partyid));
+        else
+            return ResponseEntity.status(200).body(result);
     }
 }

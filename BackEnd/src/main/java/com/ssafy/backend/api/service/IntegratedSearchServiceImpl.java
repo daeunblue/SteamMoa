@@ -2,6 +2,7 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.response.*;
 import com.ssafy.backend.db.entity.game.Game;
+import com.ssafy.backend.db.entity.game.Gamecategory;
 import com.ssafy.backend.db.entity.party.Party;
 import com.ssafy.backend.db.entity.party.Puser;
 import com.ssafy.backend.db.entity.tactic.Tactic;
@@ -65,29 +66,20 @@ public class IntegratedSearchServiceImpl implements IntegratedSearchService{
         }
         else if(type.equals("content")){
             IntegratedSearch_ContentDTO integratedSearchContentDTO = new IntegratedSearch_ContentDTO();
-            Game theGame = gameRepository.findByName(keyword).orElse(null);
-            List<Game> games = gameRepository.findTop8ByNameContains(keyword).orElse(null);
-
-
-            if(theGame != null) {
-                integratedSearchContentDTO.getGames().add(new GamelistDTO(theGame));
-                for(Party party: partyRepository.findTop8ByGame(theGame).orElse(null))
-                    integratedSearchContentDTO.getParties().add(new PartylistDTO(party));
-                for(Tactic tactic: tacticRepository.findTop8ByGameGameId(theGame.getGameId()).orElse(null))
-                    integratedSearchContentDTO.getTactics().add(new IntegratedSearch_TacticDTO(tactic));
-
-                if(games != null)
-                    games.remove(theGame);
+            List<Game> games = gameRepository.findAllMultiGameByOnlyName(keyword);
+            for(Game g: games){
+                if(g.getName().equals(keyword)) {
+                    games.remove(g);
+                    games.add(0, g);
+                }
             }
 
-            if(games != null) {
-                for(Game game: games) {
-                    integratedSearchContentDTO.getGames().add(new GamelistDTO(game));
-                    for(Party party: partyRepository.findTop8ByGame(game).orElse(null))
-                        integratedSearchContentDTO.getParties().add(new PartylistDTO(party));
-                    for(Tactic tactic: tacticRepository.findTop8ByGameGameId(game.getGameId()).orElse(null))
-                        integratedSearchContentDTO.getTactics().add(new IntegratedSearch_TacticDTO(tactic));
-                }
+            for(Game game: games) {
+                integratedSearchContentDTO.getGames().add(new GamelistDTO(game));
+                for(Party party: partyRepository.findTop8ByGameOrderByWriteTimeDesc(game).orElse(null))
+                    integratedSearchContentDTO.getParties().add(new PartylistDTO(party));
+                for(Tactic tactic: tacticRepository.findTop8ByGameGameIdOrderByCreateTimeDesc(game.getGameId()).orElse(null))
+                    integratedSearchContentDTO.getTactics().add(new IntegratedSearch_TacticDTO(tactic));
             }
 
             resultmap.put("contents", integratedSearchContentDTO);

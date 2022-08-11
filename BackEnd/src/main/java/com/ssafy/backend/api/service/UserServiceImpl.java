@@ -315,7 +315,7 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
         for (Puser p: pusers) {
             Party party_temp = partyRepository.findByPusersContains(p);
             String partyStatus_temp = party_temp.getStatus();
@@ -332,7 +332,7 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
         for (Puser p: pusers) {
             Party party_temp = partyRepository.findByPusersContains(p);
             String partyStatus_temp = party_temp.getStatus();
@@ -349,7 +349,7 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUser(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
         for (Puser p: pusers) {
             System.out.println(p.getUser().getUserServiceId());
             if(p.isLeader()) {
