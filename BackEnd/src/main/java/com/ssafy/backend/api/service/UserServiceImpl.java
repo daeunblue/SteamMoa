@@ -184,16 +184,17 @@ public class UserServiceImpl implements UserService {
                 System.out.println(userTag.getUTagStorage().getContent());
                 user.addUTagLists(userTag);
             }
+            // password 수정 (-1 : 변경안함, 나머지값: 변경함)
+            String password = userUpdatePutReq.getUserPassword();
 
-
+            if(!password.equals("-1")){
+                System.out.println("비밀번호도 수정함");
+                user.setPassword(passwordEncoder.encode(userUpdatePutReq.getUserPassword()));
+            }
             userRepository.save(user);
             System.out.println(user.getUserName());
             System.out.println("User 수정 요청 성공");
 
-
-//            User sUser = userRepository.findByUserId(user.getUserId()).get();
-//            sUser.setUserPoint(user.getUserPoint());
-//            sUser.setUserName(user.getUserName());
             return true;
         }catch(Exception e){
             e.printStackTrace();

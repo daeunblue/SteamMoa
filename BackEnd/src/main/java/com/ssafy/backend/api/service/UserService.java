@@ -28,7 +28,6 @@ public interface UserService {
 
     boolean deleteUser(String userServiceId);
 
-    @Transactional
     boolean updateUser(Long userId, UserUpdatePutReq userUpdatePutReq);
 
     // 매너온도 변경
