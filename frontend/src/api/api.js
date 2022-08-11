@@ -8,5 +8,5 @@ export const api = axios.create({
 
 export const apiAuth = axios.create({
   baseURL: defaultURL,
-  headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+  headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` },
 });

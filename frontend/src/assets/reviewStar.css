@@ -17,10 +17,9 @@
 .star-rating {  
   display:flex;
   flex-direction: row-reverse;
-  font-size:min(max(20px, 3vw), 40px);
+  font-size:min(2em, 28px);
   justify-content:space-around;
   text-align:center;
-  width:25%;
 }
 
 .star-rating input {
@@ -44,10 +43,9 @@
 .star-rating-disabled {  
   display:flex;
   flex-direction: row-reverse;
-  font-size:min(max(20px, 3vw), 40px);
+  font-size:min(2em, 28px);
   justify-content:space-around;
   text-align:center;
-  width:25%;
 }
 .star-rating-disabled label {
   color:#ccc;

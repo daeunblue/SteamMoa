@@ -17,6 +17,8 @@ const ProfilePastParty = (props) => {
   const reviewsPerPage = 6
   const [showContents, setShowContents] = useState([])
   const [rerender, setRerender] = useState(0) 
+  const [isLoading, setIsLoading] = useState(true)  
+
 
   const titleText = (isMyPage? 'MY':`${profileName}'s`)
 
@@ -26,9 +28,15 @@ const ProfilePastParty = (props) => {
         .then((res)=>{
           console.log(res)
           setContentList(res.data.parties)
+          setIsLoading(false)
           setRender(render=>render+1)
         }).catch((err) => {console.log(err)
-        setRerender(rerender+1)})
+          if (rerender <100) {
+            // 에러표시
+            setContentList([])
+            setIsLoading(false)
+            setRerender(rerender+1)
+          }})
 
     }, [isMyPage, params, rerender]
   )
@@ -46,6 +54,11 @@ const ProfilePastParty = (props) => {
   },[page, contentList,rerender])
 
   return (
+    (isLoading ? 
+      <div className='my-20 flex flex-col justify-center items-center p-24'>
+        <div className='dots-bars-3'></div>
+      </div>
+        :
     <div className='my-10 flex flex-col justify-center'>
       {(!contentList.length&&!(render===1) ? 
         <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
@@ -72,7 +85,7 @@ const ProfilePastParty = (props) => {
           : <></> )}
         </>)}    
     </div>
-
+    )
   )
 }
 

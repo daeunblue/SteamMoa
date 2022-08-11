@@ -24,7 +24,7 @@ const NavbarLoginOptions = (props) => {
       token:null, //access token
       userId: null,
     });
-    sessionStorage.setItem('token', '')
+    sessionStorage.removeItem('token')
     navigate('/')
     console.log('logout')
   }

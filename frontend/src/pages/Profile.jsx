@@ -10,9 +10,9 @@ import ProfileMyReview from "../components/Profile/ProfileMyReview";
 import ProfileMyWalk from "../components/Profile/ProfileMyWalk";
 
 import { useRecoilState } from "recoil";
+import { auth } from "../recoil/Auth.js";
 
 import { Route, Routes, useLocation, useParams, useNavigate } from "react-router-dom";
-import { auth } from "../recoil/Auth.js";
 import { getUserFollowing, getUserFollowwers, getUserInfo } from "../api/User";
 
 
@@ -32,6 +32,8 @@ const Profile = () => {
   const [followingList, setFollowingList] = useState([])
   const [followerList, setFollowerList] = useState([])
   const [isMyPage, setIsMyPage] = useState(false)
+  const [isFollowing, setIsFollowing] = useState(null)
+  const [tier, setTier] = useState('')
 
   const navigate = useNavigate();
   const [userAuth, ] = useRecoilState(auth);
@@ -39,6 +41,18 @@ const Profile = () => {
   const isLoggedIn = userAuth.isLoggedIn
   const path = location.pathname
   const midLocation = path.slice(1,7)
+
+  const tierNum = [34.5, 35.5, 37.5, 38.5];
+  const tiers = ["Bronze", "Silver", "Gold", "Platinum", "Ruby"];
+
+  const getTier = (userPoint) => {
+    for (let i = 0; i < tierNum.length; i++) {
+      if (userPoint < tierNum[i]) {
+        return tiers[i];
+      }
+    }
+    return tiers[4];
+  };
 
   useEffect(
     ()=>{
@@ -63,14 +77,13 @@ const Profile = () => {
         }
       }
     
-  
-
-
     getUserInfo(accessId)
     .then((res) => {
       console.log(res)
         setUserProfile(res.data.user)
         setProfileName(accessId)
+        const userPoint = res.data.user.userPoint
+        setTier(getTier(userPoint))
       }) 
     .catch((err)=>{
         console.log(err.response.status)
@@ -91,27 +104,12 @@ const Profile = () => {
     getUserFollowwers(profileName)
     .then((res)=>{
       setFollowerList(res.data.followers.userServiceIdList)
+      setIsFollowing(res.data.followers.userServiceIdList.includes(userId))
     }).catch((err)=>{console.log(err)})
     }
-    ,[accessId, profileName, midLocation, isLoggedIn, userId, navigate] 
+    ,[isFollowing, accessId, profileName, midLocation, isLoggedIn, userId, navigate] 
   )
 
-  //매너온도
-  const userPoint = userProfile.userPoint
-  //티어처리
-  const tierNum = [34.5, 35.5, 37.5, 38.5];
-  const tiers = ["Bronze", "Silver", "Gold", "Platinum", "Ruby"];
-
-  const getTier = () => {
-    for (let i = 0; i < tierNum.length; i++) {
-      if (userPoint < tierNum[i]) {
-        return tiers[i];
-      }
-    }
-    return tiers[4];
-  };
-
-  const tier = getTier()
 
   return (
     <>
@@ -120,8 +118,8 @@ const Profile = () => {
         <Sidebar setSubPage={setSubPage}isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList} tier={tier}></Sidebar>
         <div className='bg-centerDiv-blue w-full'>
           <Routes>
-            <Route exact="true" path="" element={<ProfileUser tier={tier} profileName={profileName} isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList}/>} />
-            <Route path="userupdate" element={<ProfileUserUpdate profileName={profileName} isMyPage={isMyPage}/>} />
+            <Route exact="true" path="" element={<ProfileUser isFollowing={isFollowing} setIsFollowing={setIsFollowing} tier={tier} profileName={profileName} isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList}/>} />
+            <Route path="userupdate" element={<ProfileUserUpdate profileName={profileName} isMyPage={isMyPage} userProfile={userProfile}/>} />
             <Route path="myparty" element={<ProfileMyParty profileName={profileName} isMyPage={isMyPage}/>} />
             <Route path="curparty" element={<ProfileCurParty profileName={profileName} isMyPage={isMyPage}/>} />
             <Route path="pastparty" element={<ProfilePastParty profileName={profileName} isMyPage={isMyPage}/>} />
