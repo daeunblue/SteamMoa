@@ -31,7 +31,6 @@ const GameReviewList = () => {
   useEffect(() => {
     getGameReviews(gameId)
       .then((res) => {
-        console.log(res)
         setContentList(res.data.reviews)
         setErrMsg('')
 
@@ -44,7 +43,6 @@ const GameReviewList = () => {
     if (userAuth.isLoggedIn){
       getUserHasReviews(userAuth.userId, gameId)
         .then((res) => {
-          console.log(res)
           setHasReview(res.data.review)
         }).catch((err)=>{
           setHasReview(false)
