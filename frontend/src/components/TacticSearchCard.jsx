@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 const TacticSearchCard = (props) => {
   const navigate = useNavigate();
   const {
+    tacticId,
     tacticTitle,
     tacticContent,
     userServiceId,
-    gameId,
     gameImgPath,
     gameName,
   } = props.tactic;
 
   const onClick = (e) => {
     e.preventDefault();
-    navigate(`/gamemoa/detail/${gameId}/tactic`);
+    navigate(`/tactic/detail/${tacticId}`);
   };
   return (
     <div className="flex flex-col bg-card-lightgray" onClick={onClick}>

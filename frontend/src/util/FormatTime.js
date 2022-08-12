@@ -1,5 +1,5 @@
 export const formatTimeISO = (startTime) => {
-  if (startTime) return false;
+  if (!startTime) return false;
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   const dateTime = startTime.split("T");
   const date = dateTime[0].split("-");
@@ -11,7 +11,7 @@ export const formatTimeISO = (startTime) => {
 };
 
 export const formatTime = (startTime) => {
-  if (startTime) return false;
+  if (!startTime) return false;
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   const dateTime = startTime.split(" ");
   const date = dateTime[0].split("-");

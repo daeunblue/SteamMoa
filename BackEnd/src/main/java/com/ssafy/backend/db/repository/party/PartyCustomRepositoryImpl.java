@@ -45,7 +45,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                 "\t\tinner join game \n" +
                 "\t\ton gamecategory.game_id = game.game_id ";
 
-        sql +=  "where game.game_name like \'%" + searchString + "%\' and game.game_price != -1 ) as game\n"+
+        sql +=  "where game.game_name like \'%" + searchString + "%\' and (game.game_price != -1 or game.is_free = 1) ) as game\n"+
         "inner join \n" +
                 "(\n" +
                 "\tselect party.game_id, party.party_id, party.party_title, party.max_player, party.cur_player, party.start_time, party.write_time, party.party_status, party.chat_link, party.party_description, party.is_closed\n" +
@@ -107,7 +107,7 @@ public class PartyCustomRepositoryImpl implements PartyCustomRepository {
                     "\t\tinner join game \n" +
                     "\t\ton gamecategory.game_id = game.game_id ";
 
-            sql +=  "where game.game_name like \'%" + searchString + "%\' and game.game_price != -1 ) as game\n"+
+            sql +=  "where game.game_name like \'%" + searchString + "%\' and (game.game_price != -1 or game.is_free = 1) ) as game\n"+
                     "inner join \n" +
                     "(\n" +
                     "\tselect party.game_id, party.party_id, party.party_title, party.max_player, party.cur_player, party.start_time, party.write_time, party.party_status, party.chat_link, party.party_description, party.is_closed\n" +
