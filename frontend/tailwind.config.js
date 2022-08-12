@@ -17,6 +17,7 @@ module.exports = {
       fontFamily: {
         sans: ["Noto Sans"],
         blackSans: ["Black Han Sans"],
+        neon: ["neon"],
         //font-sans
       },
       minWidth:{

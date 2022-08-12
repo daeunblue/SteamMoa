@@ -54,7 +54,6 @@ const Profile = (props) => {
     }
     return tiers[4];
   };
-  console.log(props)
   useEffect(
     ()=>{
       // 마이페이지인가 일반 프로필페이지인가

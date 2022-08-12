@@ -100,7 +100,8 @@ const Login = (props) => {
               width:'30%',
               padding: '1em',
               icon: 'error',
-              title: `로그인 실패`
+              title: `로그인 실패 (서버 오류)`,
+              text:'잠시 후 시도해주세요.'
             })
         }
       });
