@@ -58,7 +58,6 @@ function MoaDetail() {
     .then(({data}) => {
       console.log("moaDetail 호출 후", data)
       setDetailMoa(data);
-      console.log("detail 업뎃후" ,detailMoa)
       
       //   const lst=[];
       //   data.partyTags.forEach((tag)=>{
@@ -103,8 +102,6 @@ function MoaDetail() {
     e.preventDefault();
     // chatLinkShare();
   }
-  console.log('객체??', detailMoa)
-  console.log('starttime ??', detailMoa.startTime)
   // const chatLinkShare = Swal.fire({
   //   title: '<strong>HTML <u>example</u></strong>',
   //   icon: 'info',
@@ -191,7 +188,7 @@ function MoaDetail() {
             </div>
           </div>
           <hr />
-          {detailMoa.partyPlayers.length !== 0 &&<div className="text-base font-sans font-semibold" name="startTime">파티시간: {formatTime(detailMoa.startTime)} </div>}
+          {detailMoa.partyPlayers.length !== 0 &&<div className="my-3 text-base font-blackSans font-semibold" name="startTime">파티 시작 시간 : {formatTime(detailMoa.startTime)} </div>}
           <div className="text-base font-blackSans font-semibold my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div className='flex'>
             {detailMoa.partyPlayers.map((player, playerId)=>{
