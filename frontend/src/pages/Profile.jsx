@@ -8,6 +8,7 @@ import ProfileCurParty from "../components/Profile/ProfileCurParty";
 import ProfilePastParty from "../components/Profile/ProfilePastParty";
 import ProfileMyReview from "../components/Profile/ProfileMyReview";
 import ProfileMyWalk from "../components/Profile/ProfileMyWalk";
+import NotFound from "../pages/NotFound"
 
 import { useRecoilState } from "recoil";
 import { auth } from "../recoil/Auth.js";
@@ -16,7 +17,7 @@ import { Route, Routes, useLocation, useParams, useNavigate } from "react-router
 import { getUserFollowing, getUserFollowwers, getUserInfo } from "../api/User";
 
 
-const Profile = () => {
+const Profile = (props) => {
   const [userProfile, setUserProfile] = useState({
     userId: '',
     userPoint: '',
@@ -24,7 +25,7 @@ const Profile = () => {
     userTags: [],
     userName:''
   });
-  let params = useParams()
+  const params = useParams()
   const location = useLocation()
   const accessId = params.user_id
   const [subPage, setSubPage] = useState('')
@@ -53,7 +54,7 @@ const Profile = () => {
     }
     return tiers[4];
   };
-
+  console.log(props)
   useEffect(
     ()=>{
       // 마이페이지인가 일반 프로필페이지인가
@@ -79,35 +80,31 @@ const Profile = () => {
     
     getUserInfo(accessId)
     .then((res) => {
-      console.log(res)
         setUserProfile(res.data.user)
         setProfileName(accessId)
         const userPoint = res.data.user.userPoint
         setTier(getTier(userPoint))
       }) 
     .catch((err)=>{
-        console.log(err.response.status)
         if(err.response.status===403){
-          console.log(accessId,userId)
 
           alert('존재하지 않는 사용자입니다.')
           navigate('/')
         }
       })
     
-    getUserFollowing(profileName)
+    getUserFollowing(accessId)
     .then((res)=>{
-      console.log(res)
       setFollowingList(res.data.followings.userServiceIdList)
     }).catch((err)=>{console.log(err)})
 
-    getUserFollowwers(profileName)
+    getUserFollowwers(accessId)
     .then((res)=>{
       setFollowerList(res.data.followers.userServiceIdList)
       setIsFollowing(res.data.followers.userServiceIdList.includes(userId))
     }).catch((err)=>{console.log(err)})
     }
-    ,[isFollowing, accessId, profileName, midLocation, isLoggedIn, userId, navigate] 
+    ,[isFollowing, accessId, midLocation, isLoggedIn, userId, navigate, ] 
   )
 
 
@@ -125,6 +122,7 @@ const Profile = () => {
             <Route path="pastparty" element={<ProfilePastParty profileName={profileName} isMyPage={isMyPage}/>} />
             <Route path="myreview" element={<ProfileMyReview profileName={profileName} isMyPage={isMyPage}/>} />
             <Route path="mywalkthrough" element={<ProfileMyWalk profileName={profileName} isMyPage={isMyPage}/>} />
+            <Route path="*" element={<NotFound/>} />
 
           </Routes>
         </div>

@@ -95,15 +95,13 @@ const GameReviewItem = (props) => {
         <div className='mr-2 h-auto'>
           {(review.reviewScore ? [...Array(Math.floor(review.reviewScore))].map((_, index)=>{
             return (
-            <>
-              <span className={`text-[1.2em] ${starCol} py-1`}>★</span>
-            </>)
+              <span className={`text-[1.2em] ${starCol} py-1`} key={index}>★</span>
+            )
           }) : <></>)}
           {[...Array(5-Math.floor(review.reviewScore))].map((_, index)=>{
             return (
-            <>
-              <span className={`text-[1.2em] text-searchbar-gray py-1`}>★</span>
-            </>)
+              <span className={`text-[1.2em] text-searchbar-gray py-1`} key={index}>★</span>
+            )
           })}
         </div>
         <div className='text-xs pt-1 font-semibold'>{review.reviewScore}</div>
