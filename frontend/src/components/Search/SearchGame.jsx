@@ -17,9 +17,6 @@ const SearchGame = (props) => {
     getSearchLists("content", keyword)
       .then(({ data }) => {
         const { parties, games, tactics } = data.contents;
-        console.log(parties);
-        console.log(games);
-        console.log(tactics);
         setMoaList([...parties]);
         setGameList([...games]);
         setTacticList([...tactics]);
@@ -32,75 +29,88 @@ const SearchGame = (props) => {
       {/* 파티모아 */}
       <div className="w-full pt-7">
         <div className="w-full flex flex-row justify-between items-end text-white mb-2">
-          <span className="font-blackSans text-3xl text-moa-yellow">
-            파티모아
-          </span>
-          <Link
-            to={`/moazone?page=${encodeURIComponent(
-              "1"
-            )}&word=${encodeURIComponent(keyword)}`}
-          >
-            더보기
-          </Link>
+          <span className="font-blackSans text-3xl text-moa-yellow">파티모아</span>
+          {moaList.length ? (
+            <Link
+              to={`/moazone?page=${encodeURIComponent("1")}&word=${encodeURIComponent(keyword)}`}>
+              더보기
+            </Link>
+          ) : (
+            ""
+          )}
         </div>
-        {moaList.length ? (
-          <div className="w-full grid grid-cols-4 gap-2">
-            {moaList.map((party) => (
-              <MoaCard key={party.partyId} party={party} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-white text-center text-lg p-5">
-            <strong>첫 번째</strong> 파티 개설자가 될 기회입니다!
-          </div>
-        )}
+        <div className="w-full rounded bg-main-400">
+          {moaList.length ? (
+            <div className="w-full grid grid-cols-4 gap-2">
+              {moaList.map((party) => (
+                <MoaCard key={party.partyId} party={party} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-white text-center text-lg p-5">
+              <span>
+                <strong className="text-moa-yellow-dark">첫 번째</strong> 파티 개설자가 될
+                기회입니다 <span>&#128521;</span>
+              </span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 게임모아 */}
       <div className="w-full pt-7">
         <div className="w-full flex flex-row justify-between items-end text-white mb-2">
-          <span className="font-blackSans text-3xl text-moa-pink">
-            게임모아
-          </span>
-          <Link
-            to={`/gamemoa?page=${encodeURIComponent(
-              "1"
-            )}&word=${encodeURIComponent(keyword)}`}
-          >
-            더보기
-          </Link>
+          <span className="font-blackSans text-3xl text-moa-pink">게임모아</span>
+          {gameList.length ? (
+            <Link
+              to={`/gamemoa?page=${encodeURIComponent("1")}&word=${encodeURIComponent(keyword)}`}>
+              더보기
+            </Link>
+          ) : (
+            ""
+          )}
         </div>
-        {gameList.length ? (
-          <div className="w-full grid grid-cols-4 gap-2">
-            {gameList.map((game) => (
-              <GameCard key={game.gameId} game={game} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-white text-center text-lg p-5">
-            해당하는 게임이 없습니다.
-          </div>
-        )}
+        <div className="w-full rounded bg-main-400">
+          {gameList.length ? (
+            <div className="w-full grid grid-cols-4 gap-2">
+              {gameList.map((game) => (
+                <GameCard key={game.gameId} game={game} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-white text-center text-lg p-5">
+              해당하는 <strong className="text-moa-pink-dark">게임</strong>이 없습니다.
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 공략모아 */}
       <div className="w-full py-7">
         <div className="w-full flex flex-row justify-between items-end text-white mb-2">
-          <span className="font-blackSans text-3xl text-moa-green">
-            공략모아
-          </span>
+          <span className="font-blackSans text-3xl text-moa-green">공략모아</span>
         </div>
-        {tacticList.length ? (
-          <div className="w-full grid grid-cols-4 gap-2">
-            {tacticList.map((tactic) => (
-              <TacticSearchCard key={tactic.tacticId} tactic={tactic} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-white text-center text-lg p-5">
-            <strong>첫 번째</strong> 공략러가 될 기회입니다!
-          </div>
-        )}
+        <div className="w-full rounded bg-main-400">
+          {tacticList.length ? (
+            <div className="w-full grid grid-cols-4 gap-2">
+              {tacticList.map((tactic) => (
+                <TacticSearchCard key={tactic.tacticId} tactic={tactic} />
+              ))}
+            </div>
+          ) : (
+            <div className=" flex flex-col justify-center items-center text-white text-lg p-5">
+              <span>
+                <strong className="text-moa-green-dark">첫 번째</strong> 공략러가 될 기회입니다{" "}
+                <span>&#128521;</span>
+              </span>
+              <Link
+                to="/tactic/create"
+                className=" w-fit bg-moa-green hover:bg-moa-green-dark text-white text-sm rounded-md p-2 mt-1">
+                공략글 쓰러 가기
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
