@@ -4,6 +4,8 @@ import { range } from 'lodash'
 import MiniPagination from '../MiniPagination'
 import { Link, useParams } from 'react-router-dom'
 import GameReviewItem from '../Game/GameReviewItem'
+import '../../assets/loading.css'
+
 
 const ProfileMyReview = (props) => {
   const params = useParams
@@ -14,9 +16,11 @@ const ProfileMyReview = (props) => {
   const [contentCnt, setContentCnt] = useState(0)
   const [totPage, setTotPage] = useState(0)
   const [viewablePages, setViewablePages] = useState([])
-  const reviewsPerPage = 6
+  const reviewsPerPage = 5
   const [showContents, setShowContents] = useState([])
   const [rerender, setRerender] = useState(0) 
+  const [isLoading, setIsLoading] = useState(true)  
+
 
   const titleText = (isMyPage? 'MY':`${profileName}'s`)
 
@@ -27,8 +31,15 @@ const ProfileMyReview = (props) => {
           console.log(res)
           setContentList(res.data.reviews)
           setRender(render=>render+1)
-        }).catch((err) => {console.log(err)
-        setRerender(rerender+1)})
+          setIsLoading(false)
+        }).catch((err) => {
+          if (err.response.status === 400){
+            if (rerender <100) {
+              // 에러표시
+              setContentList([])
+              setIsLoading(false)
+              setRerender(rerender+1)
+            }}})
 
     }, [isMyPage, params, rerender]
   )
@@ -46,11 +57,16 @@ const ProfileMyReview = (props) => {
   },[page, contentList,rerender])
 
   return (
+    (isLoading ? 
+      <div className='my-20 flex flex-col justify-center items-center p-24'>
+        <div className='dots-bars-3'></div>
+      </div>
+        :
     <div className='my-10 flex flex-col justify-center'>
-      {(!contentList.length&&!(render===1) ? 
+      {(!contentList.length ? 
         <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
-          <div className="mb-2">참여했던 파티가 없습니다.</div>
-          {(isMyPage ? <div>지금 파티 찾으러 <Link to={'/moazone'} className="text-moa-blue font-bold text-lg">출발!</Link></div>: '')}
+          <div className="mb-2">작성한 리뷰가 없습니다.</div>
+          {(isMyPage ? <div>지금 리뷰 쓰러 <Link to={'/gamemoa'} className="text-moa-pink font-bold text-lg">출발!</Link></div>: '')}
         </div>
         :
         // 컨텐츠
@@ -60,7 +76,7 @@ const ProfileMyReview = (props) => {
           <div className='my-2'>
             {showContents.map((review, index)=>{
               return(
-                <GameReviewItem profile={true} review={review} setRerender={setRerender} rerender={rerender} key={index}/>
+                <GameReviewItem profile={true} review={review} setRerender={setRerender} key={index}/>
               )
             })}
           </div>
@@ -72,7 +88,7 @@ const ProfileMyReview = (props) => {
           : <></> )}
         </>)}    
     </div>
-
+    )
   )
 }
 

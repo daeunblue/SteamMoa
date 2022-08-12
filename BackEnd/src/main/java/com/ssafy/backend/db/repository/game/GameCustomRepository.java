@@ -4,16 +4,17 @@ import com.ssafy.backend.db.entity.game.Game;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GameCustomRepository {
-    List<Game> findAllMultiGameByFilter(String name, String[] tag, Pageable pageable);
-    List<Game> findAllMultiGameByOnlyName(String name);
+    Optional<List<Game>> findAllMultiGameByFilter(String name, String[] tag, Pageable pageable);
+    Optional<List<Game>> findAllMultiGameByOnlyName(String name);
     int findAllMultiGameByFilter(String name, String[] tag);
 
-    List<Game> findAllMultiGameForBests();
-    List<Game> findAllMultiGameForFrees();
-    List<Game> findAllMultiGameForToday();
-    List<Game> findAllMultiGameForHots();
-    List<Game> findAllMultiGameForPicks();
-    List<Game> findTop15MultiGameForRandom();
+    Optional<List<Game>> findAllMultiGameForBests();
+    Optional<List<Game>> findAllMultiGameForFrees();
+    Optional<List<Game>> findAllMultiGameForToday();
+    Optional<List<Game>> findAllMultiGameForHots();
+    Optional<List<Game>> findAllMultiGameForPicks();
+    Optional<List<Game>> findTop15MultiGameForRandom();
 }

@@ -38,7 +38,6 @@ const GameDetail = (props) => {
   useEffect(() => {
     getGame(gameId)
       .then((res) => {
-        console.log(res);
         setGameDetail(res.data);
       })
       .catch((err) => {

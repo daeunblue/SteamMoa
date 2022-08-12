@@ -14,7 +14,7 @@ const SquareGameComponent = (props)=>{
       <div className='overflow-hidden w-full relative pt-[100%] rounded'>
         <img src={game.gameImgpath} alt="" className='drop-shadow-md object-cover h-full absolute top-0 left-0'/>
       </div>
-      <div className='w-full whitespace-nowrap text-ellipsis overflow-hidden text-white text-[1.3vw] mt-[4%]'>{game.gameName}</div>
+      <div className='w-full whitespace-nowrap text-ellipsis overflow-hidden text-white text-[1em] mt-[4%]'>{game.gameName}</div>
     </div>
   )
 }

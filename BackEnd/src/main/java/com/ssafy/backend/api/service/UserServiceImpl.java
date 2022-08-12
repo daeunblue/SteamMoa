@@ -326,9 +326,9 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get()).orElse(Collections.EMPTY_LIST);
         for (Puser p: pusers) {
-            Party party_temp = partyRepository.findByPusersContains(p);
+            Party party_temp = partyRepository.findByPusersContains(p).orElse(null);
             String partyStatus_temp = party_temp.getStatus();
             if(partyStatus_temp.equals("1") || partyStatus_temp.equals("2") ||partyStatus_temp.equals("3"))
                 parties.add(new PartylistDTO(party_temp));
@@ -343,9 +343,9 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get()).orElse(Collections.EMPTY_LIST);
         for (Puser p: pusers) {
-            Party party_temp = partyRepository.findByPusersContains(p);
+            Party party_temp = partyRepository.findByPusersContains(p).orElse(null);
             String partyStatus_temp = party_temp.getStatus();
             if(partyStatus_temp.equals("4") ||partyStatus_temp.equals("5"))
                 parties.add(new PartylistDTO(party_temp));
@@ -360,11 +360,11 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> resultMap = new HashMap<>();
         List<PartylistDTO> parties = new ArrayList<>();
 
-        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get());
+        List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get()).orElse(Collections.EMPTY_LIST);
         for (Puser p: pusers) {
             System.out.println(p.getUser().getUserServiceId());
             if(p.isLeader()) {
-                parties.add(new PartylistDTO(partyRepository.findByPusersContains(p)));
+                parties.add(new PartylistDTO(partyRepository.findByPusersContains(p).orElse(null)));
             }
         }
 

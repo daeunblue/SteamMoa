@@ -4,6 +4,8 @@ import com.ssafy.backend.api.service.GameService;
 import com.ssafy.backend.api.response.GameDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +43,15 @@ public class GameController {
 
     @GetMapping("/{gameid}")
     @ApiOperation(value="게임 상세 정보", notes = "gameid에 해당하는 게임 상세 정보를 조회한다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
+    })
     public ResponseEntity<?> getGameDetail(@PathVariable("gameid") Long gameid){
         GameDTO result = gameService.getGameDetail(gameid);
-        return ResponseEntity.status(200).body(result);
+        if(result != null)
+            return ResponseEntity.status(200).body(result);
+        else
+            return ResponseEntity.status(400).body(result);
     }
 }

@@ -20,7 +20,6 @@ const Main = () => {
     ()=>{
       getMainInfo()
         .then((res)=> {
-          console.log(res,1)
           setParties([...res.data.parties])
           setBestGames([...res.data.bests])
           setFreeGames([...res.data.frees])

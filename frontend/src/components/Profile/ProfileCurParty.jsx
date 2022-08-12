@@ -4,7 +4,7 @@ import { range } from 'lodash'
 import MiniPagination from '../MiniPagination'
 import MoaCard from '../MoaCard'
 import { Link, useParams } from 'react-router-dom'
-
+import '../../assets/loading.css'
 
 const ProfileCurParty = (props) => {
   const params = useParams
@@ -18,8 +18,8 @@ const ProfileCurParty = (props) => {
   const reviewsPerPage = 6
   const [showContents, setShowContents] = useState([])
   const [rerender, setRerender] = useState(0) 
+  const [isLoading, setIsLoading] = useState(true)  
 
-  const titleText = (isMyPage? 'MY':`${profileName}'s`)
 
   useEffect(
     ()=>{
@@ -28,8 +28,14 @@ const ProfileCurParty = (props) => {
           console.log(res)
           setContentList(res.data.parties)
           setRender(render=>render+1)
+          setIsLoading(false)
         }).catch((err) => {console.log(err)
-        setRerender(rerender+1)})
+          if (rerender <100) {
+            // 에러표시
+            setContentList([])
+            setIsLoading(false)
+            setRerender(rerender+1)
+          }})
 
     }, [isMyPage, params, rerender]
   )
@@ -47,11 +53,16 @@ const ProfileCurParty = (props) => {
   },[page, contentList,rerender])
 
   return (
+    (isLoading ? 
+    <div className='my-20 flex flex-col justify-center items-center p-24'>
+      <div className='dots-bars-3'></div>
+    </div>
+      :
     <div className='my-10 flex flex-col justify-center'>
       {(!contentList.length&&!(render===1) ? 
-        <div className='w-per90 flex flex-col justify-center drop-shadow-lg rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
+        <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
           <div className="mb-2">참여 중인 파티가 없습니다.</div>
-          {(isMyPage ? <div>지금 파티 찾으러 <Link to={'/moazone/create'} className="text-moa-blue font-bold text-lg">출발!</Link></div>: '')}
+          {(isMyPage ? <div>지금 파티 찾으러 <Link to={'/moazone/create'} className="text-moa-green font-bold text-lg">출발!</Link></div>: '')}
         </div>
         :
         // 컨텐츠
@@ -73,6 +84,9 @@ const ProfileCurParty = (props) => {
           : <></> )}
         </>)}    
     </div>
+      
+    )
+
 
   )
 }

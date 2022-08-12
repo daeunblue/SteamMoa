@@ -51,6 +51,13 @@ public class TacticController {
         return ResponseEntity.status(200).body(result);
     }
 
+    @GetMapping("/user/tactic/{tacticId}")
+    @ApiOperation(value="게임 공략 정보", notes = "tacticId 해당하는 게임 공략글 정보를 조회한다")
+    public ResponseEntity<?> getTacticsByTacticId(@PathVariable("tacticId")Long tacticId){
+        TacticDto result = tacticService.getTacticByTacticId(tacticId);
+        return ResponseEntity.status(200).body(result);
+    }
+
     @PostMapping()
     @ApiOperation(value="게임 공략글 생성", notes = "공략글 생성")
     // @ApiIgnore Authentication authentication,

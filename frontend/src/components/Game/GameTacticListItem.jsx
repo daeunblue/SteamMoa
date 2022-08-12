@@ -17,7 +17,7 @@ function GameTacticListItem(props) {
           {tacticTitle && tacticTitle}
         </div>
         {/* 공략글 내용 */}
-        <div className="laptop:max-h-16 tablet:max-h-14 mobile:max-h-12 text-sm break-words text-left whitespace-normal leading-tight overflow-hidden text-ellipsis">
+        <div className="laptop:max-h-14 tablet:max-h-12 mobile:max-h-10 text-sm break-words text-left whitespace-normal leading-5 overflow-hidden text-ellipsis">
           {tacticContent && tacticContent}
         </div>
       </div>

@@ -55,8 +55,8 @@ public class NoticeServiceImpl implements NoticeService {
                     n.getNoticeId(),
                     n.getUserServiceId(),
                     n.getPartyId(),
-                    partyRepository.findByPartyId(n.getPartyId()).getTitle(),
-                    partyRepository.findByPartyId(n.getPartyId()).getGame().getName(),
+                    partyRepository.findByPartyId(n.getPartyId()).orElse(null).getTitle(),
+                    partyRepository.findByPartyId(n.getPartyId()).orElse(null).getGame().getName(),
                     n.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")),
                     n.isRead()
             );
