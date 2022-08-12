@@ -105,7 +105,6 @@ const TacticCreate = () => {
       });
       return;
     }
-    console.log(tactic);
     postTactics(tactic)
       .then(({ data }) => {
         const { msg } = data;
