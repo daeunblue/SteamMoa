@@ -125,8 +125,8 @@ public class PartyServiceImpl implements PartyService{
         party.setMaxPlayer(Integer.parseInt(partyInfo.getMaxPlayer()));
         party.setCurPlayer(1);
         party.setDescription(partyInfo.getPartyDescription());
-        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-        party.setWriteTime(LocalDateTime.now());
+        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).plusHours(9));
+        party.setWriteTime(LocalDateTime.now().plusHours(9));
         party.setChatLink(partyInfo.getChatLink());
         party.setStatus("1");
 
