@@ -10,9 +10,10 @@ import java.util.Optional;
 
 public interface TacticService {
     List<TacticDto> getTacticsByGameId(Long gameId);
-    List<TacticDto> getTacticsByUserId(Long userId);
+    List<TacticDto> getTacticsByUserId(String userServiceId);
 
     TacticDto getTacticByTacticId(Long tacticId);
     boolean createTactics(TacticPostReq tacticPostReq);
     boolean updateTactic(TacticPutReq tacticPutReq);
+    boolean deleteTactic(Long tacticId);
 }
