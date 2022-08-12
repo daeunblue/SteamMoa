@@ -12,7 +12,7 @@ import lombok.Data;
 @ApiModel("TacticPostReq")
 public class TacticPostReq {
     @ApiModelProperty(name="유저 서비스 ID", example="user_id")
-    String userId;
+    String userServiceId;
 
     @ApiModelProperty(name="게임 식별자 ID", example="25551")
     Long gameId;
