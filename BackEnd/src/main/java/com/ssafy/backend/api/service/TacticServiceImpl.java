@@ -34,12 +34,14 @@ public class TacticServiceImpl implements TacticService{
         for (Tactic tactic : list) {
             TacticDto tacticDto = new TacticDto();
             tacticDto.setTacticId(tactic.getTacticId());
-            tacticDto.setUserId(tactic.getUser().getUserId());
-            tacticDto.setGameId(tactic.getGame().getGameId());
             tacticDto.setTacticTitle(tactic.getTacticTitle());
             tacticDto.setTacticContent(tactic.getTacticContent());
             tacticDto.setCreateTime(tactic.getCreateTime());
+            tacticDto.setUserId(tactic.getUser().getUserId());
             tacticDto.setUserServiceId(tactic.getUser().getUserServiceId());
+            tacticDto.setGameId(tactic.getGame().getGameId());
+            tacticDto.setGameImgPath(tactic.getGame().getImgpath());
+            tacticDto.setGameName(tactic.getGame().getName());
             resultList.add(tacticDto);
         }
         return resultList;
