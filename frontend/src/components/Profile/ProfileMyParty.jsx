@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { getUserParty } from '../../api/User'
-import { range, set } from 'lodash'
+import { range } from 'lodash'
 import MiniPagination from '../MiniPagination'
 import MoaCard from '../MoaCard'
 import { Link, useParams } from 'react-router-dom'
+import '../../assets/loading.css'
+
 
 function ProfileMyParty(props) {
   const params = useParams
@@ -17,6 +19,8 @@ function ProfileMyParty(props) {
   const reviewsPerPage = 6
   const [showContents, setShowContents] = useState([])
   const [rerender, setRerender] = useState(0) 
+  const [isLoading, setIsLoading] = useState(true)  
+
 
   const titleText = (isMyPage? 'MY':`${profileName}'s`)
 
@@ -27,10 +31,17 @@ function ProfileMyParty(props) {
           console.log(res)
           setContentList(res.data.parties)
           setRender(render=>render+1)
+          setIsLoading(false)
         }).catch((err) => {console.log(err)
-        setRerender(rerender+1)})
+        
+        if (rerender <100) {
+          // 에러표시
+          setContentList([])
+          setIsLoading(false)
+          setRerender(rerender+1)
+        }})
 
-    }, [isMyPage, params, rerender]
+    }, [isMyPage, params, rerender, profileName]
   )
 
   useEffect(()=>{
@@ -46,9 +57,14 @@ function ProfileMyParty(props) {
   },[page, contentList,rerender])
 
   return (
+    (isLoading ? 
+      <div className='my-20 flex flex-col justify-center items-center p-24'>
+        <div className='dots-bars-3'></div>
+      </div>
+        :
     <div className='my-10 flex flex-col justify-center'>
       {(!contentList.length&&!(render===1) ? 
-        <div className='w-per90 flex flex-col justify-center drop-shadow-lg rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
+        <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
           <div className="mb-2">아직 모은 파티가 없습니다.</div>
           {(isMyPage ? <div>지금 파티를 모으러 <Link to={'/moazone/create'} className="text-moa-pink font-bold text-lg">출발!</Link></div>: '')}
         </div>
@@ -73,6 +89,7 @@ function ProfileMyParty(props) {
         </>)}    
     </div>
 
+  )
   )
 }
 

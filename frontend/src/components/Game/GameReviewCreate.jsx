@@ -50,7 +50,7 @@ const GameReviewCreate = (props) => {
                 <>
                   <input key={index} type="radio" id={`${5-index}-stars-edit`} name="reviewScore" value={5-index} disabled={!userAuth.isLoggedIn} onChange={onChange} />
                   <label htmlFor={`${5-index}-stars-edit`} className="star text-center drop-shadow
-                  ">&#9733;</label>
+                  ">★</label>
                 </> 
               )
             })}
@@ -86,7 +86,7 @@ const GameReviewCreate = (props) => {
                 <>
                   <input key={index} type="radio" id={`${5-index}-stars-edit`} name="reviewScore" value={5-index} disabled={!userAuth.isLoggedIn}/>
                   <label htmlFor={`${5-index}-stars-edit`} className="star text-center drop-shadow-md
-                  ">&#9733;</label>
+                  ">★</label>
                 </> 
               )
             })}

@@ -31,7 +31,6 @@ const GameReviewList = () => {
   useEffect(() => {
     getGameReviews(gameId)
       .then((res) => {
-        console.log(res)
         setContentList(res.data.reviews)
         setErrMsg('')
 
@@ -44,7 +43,6 @@ const GameReviewList = () => {
     if (userAuth.isLoggedIn){
       getUserHasReviews(userAuth.userId, gameId)
         .then((res) => {
-          console.log(res)
           setHasReview(res.data.review)
         }).catch((err)=>{
           setHasReview(false)
@@ -79,7 +77,7 @@ const GameReviewList = () => {
         {(!contentList.length ? <div className='flex justify-center p-16 border border-gray-200 rounded'>{errMsg}</div>:<></>)}
         {showContents.map((review, index)=>{
           return(
-            <GameReviewItem review={review} key={index}/>
+            <GameReviewItem setRerender={setRerender} review={review} key={index}/>
           )
         })}
       </div>

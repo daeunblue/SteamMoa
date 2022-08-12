@@ -21,11 +21,11 @@ export const getServiceIdDuplicate = (userServiceId) => {
 //비밀번호 확인 [헤더필요]
 export const postPWCheck = (user) => {
   const url = 'auth/check';
-  return apiAuth.post(url, user);
+  return api.post(url, user);
 };
 
 //회원 탈퇴 [헤더필요]
 export const deleteUser = (userServiceId) => {
   const url = `auth/${userServiceId}`;
-  return apiAuth.delete(url);
+  return api.delete(url);
 };

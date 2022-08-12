@@ -17,6 +17,8 @@ const ProfileMyWalk = (props) => {
   const reviewsPerPage = 6
   const [showContents, setShowContents] = useState([])
   const [rerender, setRerender] = useState(0) 
+  const [isLoading, setIsLoading] = useState(true)  
+
 
   const titleText = (isMyPage? 'MY':`${profileName}'s`)
 
@@ -27,8 +29,10 @@ const ProfileMyWalk = (props) => {
           console.log(res)
           setContentList(res.data.reviews)
           setRender(render=>render+1)
+          setIsLoading(false)
         }).catch((err) => {console.log(err)
         setContentList([])
+        setIsLoading(false)
         setRender(render=>render+1)
       })
 
@@ -48,6 +52,11 @@ const ProfileMyWalk = (props) => {
   },[page, contentList,rerender])
 
   return (
+    (isLoading ? 
+      <div className='my-20 flex flex-col justify-center items-center p-24'>
+        <div className='dots-bars-3'></div>
+      </div>
+        :
     <div className='my-10 flex flex-col justify-center'>
       {(!contentList.length&&!(render===1) ? 
         <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
@@ -74,7 +83,7 @@ const ProfileMyWalk = (props) => {
           : <></> )}
         </>)}    
     </div>
-
+    )
   )
 }
 

@@ -106,7 +106,7 @@ public class PartyServiceImpl implements PartyService{
         Party party = new Party();
 
         // 멀티게임 맞는지 확인 후 실패 응답
-        if (!gameRepository.findAllMultiGameByOnlyName("").orElse(Collections.EMPTY_LIST).contains(gameRepository.findByGameId(partyInfo.getGameId())))
+        if (!gameRepository.findAllMultiGameByOnlyName("").orElse(Collections.EMPTY_LIST).contains(gameRepository.findByGameId(partyInfo.getGameId()).orElse(null)))
             return "fail: 유효한 game id가 아닙니다.";
         // 파티 태그 존재하는지 확인 후 실패 응답
         for (String tag:partyInfo.getPartyTags()) {
@@ -125,8 +125,8 @@ public class PartyServiceImpl implements PartyService{
         party.setMaxPlayer(Integer.parseInt(partyInfo.getMaxPlayer()));
         party.setCurPlayer(1);
         party.setDescription(partyInfo.getPartyDescription());
-        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-        party.setWriteTime(LocalDateTime.now());
+        party.setStartTime(LocalDateTime.parse(partyInfo.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")).plusHours(9));
+        party.setWriteTime(LocalDateTime.now().plusHours(9));
         party.setChatLink(partyInfo.getChatLink());
         party.setStatus("1");
 

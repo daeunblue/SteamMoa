@@ -2,7 +2,7 @@ import { api, apiAuth } from "./api";
 
 export const postReviews = (review) => {
   const url = `game/reviews`;
-  return apiAuth.post(url, review);
+  return api.post(url, review);
 };
 
 export const putReviews = (review) => {
@@ -12,7 +12,7 @@ export const putReviews = (review) => {
 
 export const deleteReviews = (reviewId) => {
   const url = `game/reviews/${reviewId}`;
-  return apiAuth.delete(url);
+  return api.delete(url);
 };
 
 export const getUserReviews = (userServiceId) => {
