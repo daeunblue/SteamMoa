@@ -73,11 +73,28 @@ public class IntegratedSearchServiceImpl implements IntegratedSearchService{
 
             for(Game game: games) {
                 integratedSearchContentDTO.getGames().add(new GamelistDTO(game));
-                for(Party party: partyRepository.findTop8ByGameOrderByWriteTimeDesc(game).orElse(null))
-                    integratedSearchContentDTO.getParties().add(new PartylistDTO(party));
-                for(Tactic tactic: tacticRepository.findTop8ByGameGameIdOrderByCreateTimeDesc(game.getGameId()).orElse(null))
-                    integratedSearchContentDTO.getTactics().add(new IntegratedSearch_TacticDTO(tactic));
+                if(integratedSearchContentDTO.getGames().size() >= 8)
+                    break;
             }
+            for(Game game: games) {
+                for (Party party : (List<Party>) partyRepository.findTop8ByGameOrderByWriteTimeDesc(game).orElse(Collections.EMPTY_LIST)) {
+                    integratedSearchContentDTO.getParties().add(new PartylistDTO(party));
+                    if(integratedSearchContentDTO.getParties().size() >= 8)
+                        break;
+                }
+                if(integratedSearchContentDTO.getParties().size() >= 8)
+                    break;
+            }
+            for(Game game: games) {
+                for(Tactic tactic: (List<Tactic>) tacticRepository.findTop8ByGameGameIdOrderByCreateTimeDesc(game.getGameId()).orElse(Collections.EMPTY_LIST)) {
+                    if(integratedSearchContentDTO.getTactics().size() >= 8)
+                        break;
+                    integratedSearchContentDTO.getTactics().add(new IntegratedSearch_TacticDTO(tactic));
+                }
+                if(integratedSearchContentDTO.getTactics().size() >= 8)
+                    break;
+            }
+
 
             resultmap.put("contents", integratedSearchContentDTO);
         }
