@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getATactic } from "../../api/Tactic";
+import { deleteTactic, getATactic } from "../../api/Tactic";
 import Swal from "sweetalert2";
 import Navbar from "../../components/Navbar";
 import { formatTime } from "../../util/FormatTime";
@@ -38,6 +38,49 @@ const TacticDetail = () => {
 
   const onClickList = () => {
     tactic.gameId && navigate(`/gamemoa/detail/${tactic.gameId}/tactic`);
+  };
+
+  const onClickUpdate = () => {
+    tactic_id && navigate(`/tactic/update/${tactic_id}`);
+  };
+
+  const onClickDelete = () => {
+    Swal.fire({
+      title: "정말로 삭제하시겠어요?",
+      text: "공략글을 삭제하면 복구할 수 없습니다!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "삭제할래요",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        tactic_id &&
+          deleteTactic(tactic_id)
+            .then(({ data }) => {
+              if (data.msg == "Success") {
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "삭제 성공! &#128521",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                tactic.gameId && navigate(`/gamemoa/detail/${tactic.gameId}/tactic`);
+              }
+            })
+            .catch(() => {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "삭제 실패... &#128521",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            });
+      }
+    });
   };
 
   return (
@@ -78,19 +121,29 @@ const TacticDetail = () => {
           </div>
         </div>
         {/* 공략글 내용 */}
-        <div className="w-full max-h-[32rem] overflow-scroll flex flex-col mt-2 p-2 rounded bg-main-400">
+        <div className="w-full h-[30rem] overflow-auto flex flex-col mt-2 p-2 rounded bg-main-400">
           {tactic.tacticContent ? tactic.tacticContent : "내용이 없습니다."}
         </div>
-        <div className="flex justify-center mt-2">
+        <div className="flex justify-center mt-2 pb-5">
           {user_id && tactic.userServiceId && user_id === tactic.userServiceId ? (
             <>
-              <button className="bg-moa-pink hover:cursor-pointer hover:bg-moa-pink-dark text-white rounded p-1 px-5" onClick={onClickList}>수정하기</button>
-              <button className="bg-red-600 hover:cursor-pointer hover:bg-red-800 text-white rounded p-1 px-5" onClick={onClickList}>삭제하기</button>
+              <button
+                className="bg-moa-pink hover:cursor-pointer hover:bg-moa-pink-dark text-white rounded p-1 px-5 mr-2"
+                onClick={onClickUpdate}>
+                수정하기
+              </button>
+              <button
+                className="bg-red-600 hover:cursor-pointer hover:bg-red-800 text-white rounded p-1 px-5 mr-2"
+                onClick={onClickDelete}>
+                삭제하기
+              </button>
             </>
           ) : (
             ""
           )}
-          <button className="bg-moa-green hover:cursor-pointer hover:bg-moa-green-dark text-white rounded p-1 px-5" onClick={onClickList}>
+          <button
+            className="bg-moa-green hover:cursor-pointer hover:bg-moa-green-dark text-white rounded p-1 px-5"
+            onClick={onClickList}>
             목록보기
           </button>
         </div>

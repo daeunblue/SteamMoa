@@ -57,7 +57,7 @@ const SearchUser = (props) => {
             ))}
           </div>
         ) : (
-          <div>해당 유저가 없습니다.</div>
+          <div className="text-center bg-main-400 p-2 rounded text-white">해당 유저가 없습니다.</div>
         )}
 
         <div className="flex flex-row justify-center text-white mt-3">

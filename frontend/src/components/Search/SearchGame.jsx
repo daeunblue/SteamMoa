@@ -32,8 +32,9 @@ const SearchGame = (props) => {
           <span className="font-blackSans text-3xl text-moa-yellow">파티모아</span>
           {moaList.length ? (
             <Link
+              className="text-white text-[10px] tablet:text-xs font-semibold hover:cursor-pointer hover:font-bold"
               to={`/moazone?page=${encodeURIComponent("1")}&word=${encodeURIComponent(keyword)}`}>
-              더보기
+              More+
             </Link>
           ) : (
             ""
@@ -47,11 +48,16 @@ const SearchGame = (props) => {
               ))}
             </div>
           ) : (
-            <div className="text-white text-center text-lg p-5">
+            <div className=" flex flex-col justify-center items-center text-white text-lg p-5">
               <span>
-                <strong className="text-moa-yellow-dark">첫 번째</strong> 파티 개설자가 될
-                기회입니다 <span>&#128521;</span>
+                <strong className="text-moa-yellow-dark">첫 번째</strong> 파티 개설자가 될 기회입니다{" "}
+                <span>&#127881;</span>
               </span>
+              <Link
+                to="/moazone/create"
+                className=" w-fit bg-moa-yellow hover:bg-moa-yellow-dark text-white text-sm rounded-md p-2 mt-1">
+                파티 만들기
+              </Link>
             </div>
           )}
         </div>
@@ -63,8 +69,9 @@ const SearchGame = (props) => {
           <span className="font-blackSans text-3xl text-moa-pink">게임모아</span>
           {gameList.length ? (
             <Link
+              className="text-white text-[10px] tablet:text-xs font-semibold hover:cursor-pointer hover:font-bold"
               to={`/gamemoa?page=${encodeURIComponent("1")}&word=${encodeURIComponent(keyword)}`}>
-              더보기
+              More+
             </Link>
           ) : (
             ""
@@ -101,7 +108,7 @@ const SearchGame = (props) => {
             <div className=" flex flex-col justify-center items-center text-white text-lg p-5">
               <span>
                 <strong className="text-moa-green-dark">첫 번째</strong> 공략러가 될 기회입니다{" "}
-                <span>&#128521;</span>
+                <span>&#127881;</span>
               </span>
               <Link
                 to="/tactic/create"
