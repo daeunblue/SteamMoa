@@ -5,8 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRecoilState } from "recoil";
 import { auth } from "../recoil/Auth";
 
-import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import Swal from 'sweetalert2'
 
+const SuccessToast = Swal.mixin({
+  toast: true,
+  position: 'center',
+  timer: 1000,
+})
 
 const NavbarLoginOptions = (props) => {
 
@@ -25,19 +31,24 @@ const NavbarLoginOptions = (props) => {
       userId: null,
     });
     sessionStorage.removeItem('token')
-    navigate('/')
-    console.log('logout')
+    SuccessToast.fire(
+      {
+        showConfirmButton: false,    
+        icon: 'success',
+        title: '로그아웃 완료!',
+        padding: '2em',
+      }).then(navigate(`/`))
   }
 
   if (!userAuth.isLoggedIn)
     return (
       <>
-        <Link to="/signup" className="text-white text-xs font-sans mr-3 font-bold">
+        <Link to="/signup" className="text-white text-[10px] tablet:text-xs font-sans mr-1.5 tablet:mr-3 font-bold">
           회원가입
         </Link>
         <Link
           to="/login"
-          className="text-white text-xs font-sans ml-3 font-bold"
+          className="text-white text-[10px] tablet:text-xs font-sans ml-1.5 tablet:ml-3 font-bold"
         >
           로그인
         </Link>
@@ -53,7 +64,7 @@ const NavbarLoginOptions = (props) => {
           로그아웃
         </div>
         {/* 알림 */}
-        <Link to="/" className="text-white w-4 h-5 mx-2"><FontAwesomeIcon icon={faBell} /></Link> 
+        {/* <Link to="/" className="text-white w-4 h-5 mx-2"><FontAwesomeIcon icon={faBell} /></Link>  */}
         {/* 마이페이지 */}
         <Link to={`/mypage/${userAuth.userId}`} className="text-white w-4 h-5 ml-2 mr-1"><FontAwesomeIcon icon={faUser} /></Link>
       </>

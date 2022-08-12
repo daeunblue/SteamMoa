@@ -41,14 +41,14 @@ const Signup = (props) => {
   return (
     <div className="w-full h-screen">
       <Navbar />
-      <div className="bg-slate-700 w-4/5 h-screen m-auto flex flex-col align-center justify-center items-center">
+      <div className="bg-slate-700 w-per90 tablet:w-per75 h-per95 mx-auto  flex flex-col align-center justify-center items-center">
         {/* 로고 */}
         <img
           src="../ImgAssets/TypoIconLogo.png"
           alt="TypoIconLogo"
-          className="login-Logo my-10"
+          className="login-Logo my-8 w-per30 min-w-[180px]"
         />
-        <div className="description text-white text-sm font-sans mt-10 mb-2 text-justify">
+        <div className="description text-white text-xs tablet:text-sm font-sans mt-10 mb-2 text-justify w-per80 tablet:w-per55 laptop:w-per50">
           스팀모아는 더 나은 서비스를 제공하기 위해 회원가입 단계에서 유저의
           스팀 계정 인증을 거치고 있습니다. 아래의 버튼을 눌러 Steam을 통한
           회원가입을 진행하게 되면 스팀 모아는 귀하의 Steam ID 정보를
@@ -56,7 +56,7 @@ const Signup = (props) => {
           공개 정보(프로필 이름, 아바타 및 게임 목록 등)를 가져올 수 있습니다.
           회원가입을 진행하시면 위 정보 제공에 동의한 것으로 간주됩니다.
         </div>
-        <div className="description text-white text-sm font-sans mt-2 mb-10 text-justify">
+        <div className="description text-white text-sm font-sans mt-2 mb-7 text-justify w-per80  tablet:w-per55 laptop:w-per50">
           스팀모아는 Valve Corporation 및 Steam과 관련이 없으며, 언제든지 계정을
           삭제할 수 있습니다.
         </div>
@@ -65,7 +65,7 @@ const Signup = (props) => {
           src="../ImgAssets/steam_signin.png"
           alt=""
           onClick={handleSteamAuth}
-          className="login-Logo my-10"
+          className="login-Logo my-8 w-per30 drop-shadow-lg hover:scale-[101%] hover:cursor-pointer min-w-[180px]"
         />
       </div>
     </div>

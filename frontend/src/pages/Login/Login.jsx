@@ -8,6 +8,7 @@ import jwt_decode from 'jwt-decode';
 import { useRecoilState } from "recoil";
 import { auth } from "../../recoil/Auth";
 import { postLogin } from "../../api/Auth.js";
+import Swal from 'sweetalert2'
 
 
 const Login = (props) => {
@@ -16,7 +17,19 @@ const Login = (props) => {
     service_id: "",
     service_pw: "",
   });
-const navigate = useNavigate();
+  const navigate = useNavigate();
+  const SuccessToast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    timer: 1000,
+  })
+
+  const FailureToast = Swal.mixin({
+    buttonsStyling: false,
+    toast: true,
+    position: 'center',
+    showConfirmButton: true,
+  })
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -25,6 +38,12 @@ const navigate = useNavigate();
       [name]: value,
     });
   };
+
+  const handleEnter = (e) => {
+    if(e.key === 'Enter') {
+      login()
+    }
+  }
 
   const login = () => {
     postLogin({
@@ -48,25 +67,53 @@ const navigate = useNavigate();
             userId: userId
           }
           setAuth(payload)
-          navigate('/');
+          SuccessToast.fire(
+            {
+              showConfirmButton: false,    
+              icon: 'success',
+              title: '로그인 성공!',
+              padding: '1em',
+            }).then(navigate(-1, { replace: true }))
         // 2. 나머지는 오류 메시지 보여주기 (toast로)
         } else {
           alert(response.data.message);
         }
-      })
-        .catch(() => {
+      }).catch((err) => { console.log(err)
+        if (err.response.status === 401) {
+          FailureToast.fire(
+            {
+              customClass: {
+                confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
+              },
+              width:'30%',
+              padding: '1em',
+              icon: 'error',
+              title: `로그인 정보가 올바르지 않습니다.`,
+              text: '로그인 정보를 확인해주세요.',
+            })
+        } else{
+          FailureToast.fire(
+            {
+              customClass: {
+                confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
+              },
+              width:'30%',
+              padding: '1em',
+              icon: 'error',
+              title: `로그인 실패`
+            })
+        }
       });
   };
 
   return (
-    <>
+    <div className="w-full h-screen">
       <Navbar></Navbar>
-      <div className="bg-slate-700 w-4/5 h-screen m-auto mb-6 flex flex-col align-center justify-center">
-        <div className="m-auto w-96">
-            <div className="login-logo">
-            <img src="../ImgAssets/TypoIconLogo.png" alt="TypoIconLogo" className="login-Logo m-auto my-10"/>
+      <div className="bg-slate-700 w-per90 tablet:w-per75 h-[93%] mx-auto flex flex-col items-center justify-center">
+            <div className="login-logo w-full">
+            <img src="../ImgAssets/TypoIconLogo.png" alt="TypoIconLogo" className="login-Logo m-auto my-10 w-per75 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]"/>
             </div>
-            <div className="login-form">
+            <div className="login-form  w-per75 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]">
               <input
                 className="bg-gray-50 mb-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 id="input_id"
@@ -75,6 +122,7 @@ const navigate = useNavigate();
                 type="text"
                 value={user.service_id}
                 placeholder="아이디를 입력하세요"
+                onKeyUp={handleEnter}
               />
               <input
                 className="bg-gray-50 mb-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -84,25 +132,28 @@ const navigate = useNavigate();
                 type="password"
                 value={user.service_pw}
                 placeholder="비밀번호를 입력하세요"
+                onKeyUp={handleEnter}
               />
               <div className="login-find-account flex justify-end texts-end text-white text-xs mb-4">
                 <div className="mr-2">
-                <Link to="/" >회원가입</Link>
+                <Link to="/singup" >회원가입</Link>
                 </div>
-                <div className="items-end mb-4">
+                {/* <div className="items-end mb-4">
                 <Link to="/">아이디|비밀번호 찾기</Link>
-                </div>
+                </div> */}
               </div>
             </div>
-            <div>
-              <button className="login-button text-white bg-black hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg w-full h-16 px-5 py-2.5 text-center" onClick={login}>
-                로그인
-              </button>
-            </div>
+
+            <button className="login-button text-white bg-black  w-per75 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]
+                                hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg
+                                px-5 py-4 text-center" onClick={login}>
+              로그인
+            </button>
+
         </div>
-      </div>
+
       
-    </>
+    </div>
   );
 };
 

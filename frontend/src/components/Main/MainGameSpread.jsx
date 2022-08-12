@@ -27,12 +27,12 @@ const MainGameSpread = (props) => {
     },]
 
   return (
-    <div className='mt-10 tablet:mt-14'>
+    <div className='mt-9 tablet:mt-10 laptop:mt-14'>
       {parts.map((part, index)=>{
         return(
-          <div className='my-5 tablet:my-8 flex flex-col justify-center items-center' key={index} >
+          <div className='my-5 tablet:my-8 laptop:my-9 flex flex-col justify-center items-center' key={index} >
             <span className={`font-blackSans text-white ${part.textStyle} text-lg tablet:text-xl laptop:text-2xl my-0.5 `}>{part.theme}</span>
-            <div className={`text-center ${part.textStyle} mb-1.5`}>[{part.subText}]</div>
+            <div className={`text-center ${part.textStyle} mb-1.5 laptop:text-base tablet:text-sm text-xs`}>[{part.subText}]</div>
             <div className={`grid grid-cols-2 w-full p-3 tablet:p-5 drop-shadow-md shadow-inner laptop:p-6 ${part.bg} bg-opacity-[15%] tablet:grid-cols-5 gap-x-2.5 gap-y-4 tablet:gap-y-5 rounded mt-0.5`}>
               {part.list.map((game,index) => {
                 return <SquareGameComponent game={game} key={index}/>
