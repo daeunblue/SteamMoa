@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import FilterCaterories from "../Filter/FilterCaterories";
 import FilterBadge from "../Filter/FilterBadge";
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { moaSearchFilter, moaMaxPage } from "../../recoil/Moazone";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -68,11 +68,11 @@ const MoazoneSearchContainer = (props) => {
       },
       {
         id: 2,
-        name: "마감임박(날짜)",
+        name: "마감 나중 순",
       },
       {
         id: 3,
-        name: "마감임박(인원)",
+        name: "많이 모인 순",
       },
     ],
   };

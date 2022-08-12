@@ -9,6 +9,8 @@ import { getMoaListSearch } from "../../api/Moazone";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { moaMaxPage, moaSearchFilter } from "../../recoil/Moazone";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { auth } from "../../recoil/Auth";
+import Swal from "sweetalert2";
 
 function MoaZone() {
   const navigate = useNavigate();
@@ -20,6 +22,9 @@ function MoaZone() {
   const setMaxPage = useSetRecoilState(moaMaxPage);
   const searchFilter = useRecoilValue(moaSearchFilter);
 
+  const user = useRecoilValue(auth);
+  const user_id = user.userId;
+
   useEffect(() => {
     getMoaListSearch(page, sort, keyword, searchFilter)
       .then(({ data }) => {
@@ -30,7 +35,18 @@ function MoaZone() {
   }, [page, sort, keyword, searchFilter]);
 
   const handleNavigate = () => {
-    navigate(`/moazone/create`);
+    if (user_id) {
+      navigate(`/moazone/create`);
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "로그인이 필요한 서비스입니다 &#128521;",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/login");
+    }
   };
 
   return (
