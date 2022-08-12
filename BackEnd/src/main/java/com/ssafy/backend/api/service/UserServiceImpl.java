@@ -295,30 +295,44 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<Follow> getFollower(String userServiceId) { // 현재 유저를 구독하고 있는 사람들의 목록
+    public List<String> getFollower(String userServiceId) { // 현재 유저를 구독하고 있는 사람들의 목록
         List<Follow> result = new ArrayList<>();
+        List<String> realResult = new ArrayList<>();
 
         result = followRepository.findAllByFollowingUserId(userServiceId).get();
-//        try{
-//
-//        }catch(NoSuchElementException e){
-//
-//        }
-        return result;
+
+        for (Follow follow: result) {
+            Optional<User> user = userRepository.findByUserServiceId(follow.getFollowerUserId());
+            if(user.isPresent()){
+                if(!user.get().getIsDeleted()){    // 탈퇴한 회원의 정보는 다 넘겨주지 않는다
+                    System.out.println("진입");
+                    System.out.println(follow.getFollowerUserId());
+                    realResult.add(follow.getFollowerUserId());
+                }
+            }
+        }
+        return realResult;
     }
 
     @Override
     @Transactional
-    public List<Follow> getFollowing(String userServiceId) {     // 현재 유저가 구독하고 있는 사람들의 목록
+    public List<String> getFollowing(String userServiceId) {     // 현재 유저가 구독하고 있는 사람들의 목록
         List<Follow> result = new ArrayList<>();
+        List<String> realResult = new ArrayList<>();
 
         result = followRepository.findAllByFollowerUserId(userServiceId).get();
-//        try{
-//
-//        }catch(NoSuchElementException e){
-//
-//        }
-        return result;
+
+        for (Follow follow: result) {
+            Optional<User> user = userRepository.findByUserServiceId(follow.getFollowingUserId());
+            if(user.isPresent()){
+                if(!user.get().getIsDeleted()){    // 탈퇴한 회원의 정보는 다 넘겨주지 않는다
+                    System.out.println("진입");
+                    System.out.println(follow.getFollowerUserId());
+                    realResult.add(follow.getFollowingUserId());
+                }
+            }
+        }
+        return realResult;
     }
 
     @Override
