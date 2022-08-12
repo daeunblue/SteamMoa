@@ -128,7 +128,7 @@ function MoaDetail() {
       <div className="p-[2.5%] mb-4">
         <div>
           <div className='flex '>
-            <div className="flex justify-content-around">
+            <div className="flex justify-between">
               {/* 파티 모집 상태 */}
               <div
                 className={`p-auto rounded flex justify-center items-center w-per35 font-blackSans text-white

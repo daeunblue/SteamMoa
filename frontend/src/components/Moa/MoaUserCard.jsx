@@ -3,7 +3,7 @@ import { getUserInfo } from '../../api/User';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Badge from '../Badge';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { auth } from '../../recoil/Auth';
 import Swal from 'sweetalert2';
@@ -113,23 +113,18 @@ function MoaUserCard(props) {
 
     }
 
-    const onProfilePage = (e) => {
-      navigate(`profile/${user.userServiceId}`)
-      // 이전 주소까지 바꾸는 거 해야함
-    }
-
   return (
     <>
-    <div onClick={onProfilePage} className='w-per20 h-per15 p-auto text-black' style={cardColor}>
+    <div className='w-per20 h-per15 p-auto text-black overflow-hidden' style={cardColor}>
       {/* 파티장이 접속했을 때만 x 아이콘 표시 */}
       {/* { currentUserServiceId === leaderId && */}
         <div className="float-right mt-1 mr-3">
           {/* 파티장 아닌 멤버만 x 표기 */}
-          {/* { user.userServiceId !== leaderId && */}
+          { user.userServiceId !== leaderId && 
           <FontAwesomeIcon onClick={onDeleteUser} className="text-black hover:cursor-pointer" icon={ faX } />
-          {/* } */}
+          }
         </div>
-        {/* } */}.
+        {/* } */}
         {/* 매너 온도에 따른 티어 이미지 */}
         <div className="w-full flex laptop:flex-row justify-between items-center text-white mb-3 tablet:flex-col mobile:flex-col">
         <div className="flex flex-row items-center">
@@ -138,7 +133,11 @@ function MoaUserCard(props) {
             alt=""
             className="w-14 h-14 mr-5"
           />
-          <span className="font-blackSans text-black text-2xl mr-2">{user.userServiceId}</span>
+          <Link
+          to={`user/profile/${user.userServiceId}`}
+          className="font-blackSans text-black text-2xl mr-2">
+            {user.userServiceId}
+          </Link>
         </div>
       </div>
         {/* 유저 매너 온도 */}

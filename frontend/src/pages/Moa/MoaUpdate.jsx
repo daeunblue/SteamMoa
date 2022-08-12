@@ -7,6 +7,8 @@ import { moaDetail } from "../../api/Moazone";
 import Swal from "sweetalert2";
 
 const MoaUpdate = (props) => {
+
+  const navigate = useNavigate();
   const params = useParams();
   const partyId = params.party_id;
   const [moa, setMoa] = useState({});
@@ -45,7 +47,7 @@ const MoaUpdate = (props) => {
     setCheckedList(checkedList.filter((el) => el !== item));
   };
 
-  const navigate = useNavigate();
+  
 
   const onChange = (event) => {
     let { name, value } = event.target;
@@ -148,11 +150,11 @@ const MoaUpdate = (props) => {
         <form>
           <div className="m-auto mb-2 bg-main-400">
             <div className="createContainer p-4">
-              <div className="mb-3 flex justify-content-between">
-                <div className="flex-none">
+              <div className="mb-3 grid grid-cols-6 gap-4">
+                <div className="col-start-1 col-end-3">
                   <span>파티 모집 수정하기</span>
                 </div>
-                <button className="rounded-lg" onClick={handleDeleteParty}>
+                <button className="col-end-7 col-span-2 bg-moa-purple rounded-sm" onClick={handleDeleteParty}>
                   파티 삭제하기
                 </button>
               </div>
