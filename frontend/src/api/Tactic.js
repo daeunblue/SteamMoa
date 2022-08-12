@@ -19,3 +19,9 @@ export const getTacticUser = (userId) => {
   const url = `tactics/user/${userId}`;
   return api.get(url);
 };
+
+export const getATactic = (tacticId) => {
+  const url = `tactics/user/tactic/${tacticId}`;
+  return api.get(url);
+};
+
