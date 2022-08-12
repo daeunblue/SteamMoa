@@ -4,11 +4,16 @@ import { getATactic } from "../../api/Tactic";
 import Swal from "sweetalert2";
 import Navbar from "../../components/Navbar";
 import { formatTime } from "../../util/FormatTime";
+import { auth } from "../../recoil/Auth";
+import { useRecoilValue } from "recoil";
 
 const TacticDetail = () => {
   const { tactic_id } = useParams();
   const navigate = useNavigate();
   const [tactic, setTactic] = useState({});
+
+  const user = useRecoilValue(auth);
+  const user_id = user.userId;
 
   useEffect(() => {
     getATactic(tactic_id)
@@ -77,7 +82,15 @@ const TacticDetail = () => {
           {tactic.tacticContent ? tactic.tacticContent : "내용이 없습니다."}
         </div>
         <div className="flex justify-center mt-2">
-          <button className="bg-moa-green text-white rounded p-1 px-5" onClick={onClickList}>
+          {user_id && tactic.userServiceId && user_id === tactic.userServiceId ? (
+            <>
+              <button className="bg-moa-pink hover:cursor-pointer hover:bg-moa-pink-dark text-white rounded p-1 px-5" onClick={onClickList}>수정하기</button>
+              <button className="bg-red-600 hover:cursor-pointer hover:bg-red-800 text-white rounded p-1 px-5" onClick={onClickList}>삭제하기</button>
+            </>
+          ) : (
+            ""
+          )}
+          <button className="bg-moa-green hover:cursor-pointer hover:bg-moa-green-dark text-white rounded p-1 px-5" onClick={onClickList}>
             목록보기
           </button>
         </div>
