@@ -11,18 +11,27 @@ import { useSearchParams } from "react-router-dom";
 const GameMoa = () => {
   const [gameList, setGameList] = useState([]);
   const [searchParams] = useSearchParams();
-  const page = searchParams.get("page") ? parseInt(decodeURIComponent(searchParams.get("page"))) : 1;
+  const page = searchParams.get("page")
+    ? parseInt(decodeURIComponent(searchParams.get("page")))
+    : 1;
   const keyword = searchParams.get("word") ? decodeURIComponent(searchParams.get("word")) : "";
   const searchFilter = useRecoilValue(gameSearchFilter);
   const setMaxPage = useSetRecoilState(gameMaxPage);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    getGamesSearch(page, searchFilter, keyword)
-      .then(({ data }) => {
-        setGameList([...data.data]);
-        setMaxPage(parseInt(data.maxPage));
-      })
-      .catch();
+  useEffect(async () => {
+    try {
+      setLoading(true);
+      await getGamesSearch(page, searchFilter, keyword)
+        .then(({ data }) => {
+          setGameList([...data.data]);
+          setMaxPage(parseInt(data.maxPage));
+          setLoading(false);
+        })
+        .catch();
+    } catch {
+      setLoading(false);
+    }
   }, [page, keyword, searchFilter]);
 
   return (
@@ -35,10 +44,10 @@ const GameMoa = () => {
       {/* 검색 컨테이너 */}
       <GameSearchContainer />
       {/* 게임 리스트 */}
-      <GameList gameList={gameList} />
+      <GameList gameList={gameList} isLoading={loading} />
       {/* 페이지네이션 */}
       <div className="w-per75 m-auto flex justify-center py-5">
-        <GamePagination  />
+        <GamePagination />
       </div>
     </div>
   );

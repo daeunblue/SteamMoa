@@ -2,11 +2,17 @@ import React from "react";
 import GameCard from "./GameCard";
 
 const GameList = (props) => {
-  const { gameList } = props;
+  const { gameList, isLoading } = props;
   return (
     <div className="w-per75 m-auto">
       <div className="grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 laptop:gap-4 tablet:gap-2 mobile:gap-2'">
-        {gameList.length ? (
+        {isLoading ? (
+          [...Array(12)].map((v) => (
+            <div key={v} className="h-per30 flex flex-col bg-card-lightgray animate-pulse" >
+              {/* 스켈레톤 */}
+            </div>
+          ))
+        ) : gameList.length ? (
           gameList.map((game) => {
             return <GameCard key={game.gameId} game={game} />;
           })
