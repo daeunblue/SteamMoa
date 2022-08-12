@@ -136,7 +136,7 @@ const MoaUpdate = (props) => {
   return (
     <>
       <Navbar />
-      <div className="w-per75 h-screen m-auto text-white font-sans">
+      <div className="w-per75 min-h-full m-auto text-white font-sans pb-5">
         <div className="m-auto">
           <img
             className="w-full"
@@ -144,18 +144,16 @@ const MoaUpdate = (props) => {
             alt="모아존 글수정 배너 이미지"
           />
         </div>
-        <div className="box-content w-full bg-main-300 mb-2 text-main-300">
+        <div className="w-full my-2 bg-main-300 text-main-300">
           공간채우기 용도 글씨
         </div>
         <form>
-          <div className="m-auto mb-2 bg-main-400">
+          <div className="m-auto h-full mb-2 bg-main-400">
             <div className="createContainer p-4">
-              <div className="mb-3 grid grid-cols-6 gap-4">
-                <div className="col-start-1 col-end-3">
-                  <span>파티 모집 수정하기</span>
-                </div>
-                <button className="col-end-7 col-span-2 bg-moa-purple rounded-sm" onClick={handleDeleteParty}>
-                  파티 삭제하기
+              <div className="mb-3 flex justify-between">
+                <div className="font-blackSans text-xl ">모아글 수정</div>
+                <button className="bg-moa-purple hover:bg-moa-purple-dark rounded py-2 px-4 text-center" onClick={handleDeleteParty}>
+                  모아글 삭제
                 </button>
               </div>
               <input
@@ -252,16 +250,9 @@ const MoaUpdate = (props) => {
                       </div>
                     ))}
                   </div>
-                  {/* <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
-                    {checkedList.map((item) => (
-                      <span key={item} onClick={() => onRemove(item)}>
-                        {items[item - 1]}
-                      </span>
-                    ))}
-                  </div> */}
                 </div>
               </div>
-              <div>참가 파티원</div>
+              <div className="mt-4">참가 파티원</div>
               <div
                 className="w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black"
                 name="partyUsers"
@@ -274,22 +265,22 @@ const MoaUpdate = (props) => {
                   })}
               </div>
             </div>
-          </div>
-          <div className="flex mt-5">
-            <div className="m-auto">
+          <div className="flex my-5">
+            <div className="m-auto my-5">
               <button
                 onClick={handleCancel}
-                className="w-32 h-14 mx-3 bg-mainBtn-disabled rounded-sm"
+                className="w-32 h-14 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm"
               >
                 취소
               </button>
               <button
                 onClick={handleSubmit}
-                className="w-32 h-14 mx-3 bg-moa-purple rounded-sm"
+                className="w-32 h-14 mx-3 bg-moa-purple hover:bg-moa-purple-dark rounded-lg text-sm"
               >
                 수정 완료
               </button>
             </div>
+          </div>
           </div>
         </form>
       </div>

@@ -180,7 +180,7 @@ function MoaDetail() {
           <div className='text-base font-blackSans font-semibold my-3'>파티 모집 내용</div>
           <div className="w-full h-48 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light w-full text-black"> {detailMoa.partyDescription}</div>
           <div className='grid place-items-center mt-4'>
-            <button onClick={handlePrevPage} className="w-32 h-12 mx-3 bg-mainBtn-disabled rounded-sm text-black text-sm">파티 목록 보기</button>
+            <button onClick={handlePrevPage} className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">파티 목록 보기</button>
           </div>
         </div>
       </div>

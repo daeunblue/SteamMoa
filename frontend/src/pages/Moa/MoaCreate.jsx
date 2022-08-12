@@ -16,12 +16,12 @@ function MoaCreate() {
   const [isFiexedGame, setIsFixedGame] = useState(false);
 
   const [moa, setMoa] = useState({
-    chatLink: "채팅링크",
+    chatLink: "",
     gameId: 0,
     maxPlayer: 0,
-    partyDescription: "파티 설명",
+    partyDescription: "",
     partyTags: [],
-    partyTitle: "파티글 모집 제목",
+    partyTitle: "",
     startTime: "",
     userId: userId,
   });
@@ -138,7 +138,7 @@ function MoaCreate() {
   return (
     <>
       <Navbar />
-      <div className="w-per75 h-full m-auto text-white font-sans pb-5">
+      <div className="w-per75 min-h-full m-auto text-white font-sans pb-5">
         <div className="m-auto">
           <img
             className="w-full"
@@ -146,21 +146,19 @@ function MoaCreate() {
             alt="모아존 글쓰기 배너 이미지"
           />
         </div>
-        <div className="box-content w-full bg-main-300 mb-2 text-main-300">
+        <div className="w-full my-2 bg-main-300 text-main-300">
           공간채우기 용도 글씨
         </div>
-        <div className="m-auto mb-2 bg-main-400">
+        <div className="m-auto h-full mb-2 bg-main-400">
           <div className="createContainer p-4">
-            <div className="mb-3">
-              <span className="text-lg">파티 모집 글쓰기</span>
-            </div>
+            <div className="font-blackSans text-xl mb-3 ">모아글 작성</div>
             <input
               name="partyTitle"
               value={moa.partyTitle}
               onChange={onChange}
-              className="w-full text-main-500 bg-createInput-gray rounded-lg mb-3"
+              className="w-full text-main-500 bg-createInput-gray rounded mb-3"
               type="text"
-              placeholder="파티 모집 제목"
+              placeholder="파티 모집 제목을 입력해주세요."
             />
             {/* 게임 아이디 찾기 */}
             <div className="mb-3 grid grid-cols-7 gap-2">
@@ -207,7 +205,7 @@ function MoaCreate() {
                   value={moa.maxPlayer}
                   onChange={onChange}
                   type="number"
-                  className="col-span-4 w-full text-main-500 bg-createInput-gray rounded-lg"
+                  className="col-span-4 w-full text-main-500 bg-createInput-gray rounded"
                 />
               </div>
               <div className="grid grid-flow-col col-span-2">
@@ -217,7 +215,7 @@ function MoaCreate() {
                     name="startTime"
                     value={moa.startTime}
                     onChange={onChange}
-                    className="w-full text-main-500 bg-createInput-gray rounded-lg"
+                    className="w-full text-main-500 bg-createInput-gray rounded"
                     type="datetime-local"
                   />
                 </div>
@@ -228,11 +226,11 @@ function MoaCreate() {
                 name="partyDescription"
                 value={moa.partyDescription}
                 onChange={onChange}
-                className="w-full text-main-500 bg-createInput-gray rounded-lg"
+                className="w-full text-main-500 bg-createInput-gray rounded"
                 id=""
                 cols=""
                 rows="10"
-                placeholder="모집 내용 쓰는 곳"></textarea>
+                placeholder="모집 내용을 입력해주세요."></textarea>
             </div>
             <div className="grid grid-flow-col mb-8">
               <span className="col-span-1">음성 채팅 링크</span>
@@ -240,9 +238,9 @@ function MoaCreate() {
                 name="chatLink"
                 value={moa.chatLink}
                 onChange={onChange}
-                className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg"
+                className="col-span-11 text-main-500 bg-createInput-gray w-full rounded"
                 type="text"
-                id=""
+                placeholder="파티원에게 공유할 채팅 링크를 입력해주세요."
               />
             </div>
             {/* 파티 태그 하드 코딩 */}
@@ -272,30 +270,23 @@ function MoaCreate() {
                     //  checkedList.includes(item.id)
                   }
                 </div>
-                {/* <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
-                  {checkedList.map((item) => (
-                    <span key={item} onClick={() => onRemove(item)}>
-                      {items[item - 1]}
-                    </span>
-                  ))}
-                </div> */}
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex mt-5">
-          <div className="m-auto">
+        <div className="flex my-5">
+          <div className="m-auto my-5">
             <button
               onClick={handleCancel}
-              className="w-32 h-14 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-sm">
+              className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">
               취소
             </button>
             <button
               onClick={handleSubmit}
-              className="bg-moa-pink hover:bg-moa-pink-dark w-32 h-14 mx-3 rounded-sm">
+              className="w-32 h-12 mx-3 bg-moa-pink hover:bg-moa-pink-dark rounded-lg text-sm">
               파티 만들기
             </button>
           </div>
+        </div>
         </div>
       </div>
     </>
@@ -303,3 +294,4 @@ function MoaCreate() {
 }
 
 export default MoaCreate;
+
