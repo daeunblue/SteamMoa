@@ -10,21 +10,21 @@ import Swal from 'sweetalert2';
 import { moaLeave } from '../../api/Moazone';
 
 function MoaUserCard(props) {
-  console.log("프롭받은거", props)
+
   const navigate = useNavigate();
   const currentUser = useRecoilState(auth);
   const currentUserServiceId = currentUser[0].userId;
-  console.log("지금 이순간 접속하고 있는 사람의 아이디는", currentUserServiceId)
+  console.log('현재 여기에 접속한 사용자', currentUserServiceId)
 
   const [ player, setPlayer ] = useState(props.player);
     // leader: true
     // playerId: 5
     // playerName: "수정이름"
     // userId: "dd"
-    setPlayer({
-      ...player, 
+    // setPlayer({
+    //   ...player, 
 
-    })
+    // })
     console.log('현재 플레이어 리스트는?', player)
     console.log('프롭받은거', props);
 
@@ -115,6 +115,7 @@ function MoaUserCard(props) {
 
     const onProfilePage = (e) => {
       navigate(`profile/${user.userServiceId}`)
+      // 이전 주소까지 바꾸는 거 해야함
     }
 
   return (
@@ -128,7 +129,7 @@ function MoaUserCard(props) {
           <FontAwesomeIcon onClick={onDeleteUser} className="text-black hover:cursor-pointer" icon={ faX } />
           {/* } */}
         </div>
-        {/* } */}
+        {/* } */}.
         {/* 매너 온도에 따른 티어 이미지 */}
         <div className="w-full flex laptop:flex-row justify-between items-center text-white mb-3 tablet:flex-col mobile:flex-col">
         <div className="flex flex-row items-center">
