@@ -192,7 +192,7 @@ function MoaDetail() {
           <div className="text-base font-blackSans font-semibold my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div className='flex'>
             {detailMoa.partyPlayers.map((player, playerId)=>{
-              return <MoaUserCard key={playerId} player={player}/>
+              return <MoaUserCard key={playerId} player={player} handlePartyLeave={handlePartyLeave}/>
             })}
           </div>
           <hr />
