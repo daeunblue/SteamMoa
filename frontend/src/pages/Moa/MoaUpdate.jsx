@@ -252,13 +252,13 @@ const MoaUpdate = (props) => {
                       </div>
                     ))}
                   </div>
-                  <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
+                  {/* <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
                     {checkedList.map((item) => (
                       <span key={item} onClick={() => onRemove(item)}>
                         {items[item - 1]}
                       </span>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div>참가 파티원</div>

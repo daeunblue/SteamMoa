@@ -5,7 +5,7 @@ import { moaDetail, moaJoin, moaLeave } from '../../api/Moazone';
 import MoaUserCard from '../../components/Moa/MoaUserCard';
 import Navbar from '../../components/Navbar';
 import { auth } from '../../recoil/Auth';
-import { formatTime } from '../../util/FormatTime';
+import { formatTimeISO } from '../../util/FormatTime';
 import Swal from 'sweetalert2';
 
 function MoaDetail() {
@@ -169,7 +169,7 @@ function MoaDetail() {
             </div>
           </div>
           <hr />
-          {detailMoa.partyPlayers.length !== 0 &&<div className="my-3 text-base font-blackSans font-semibold" name="startTime">파티 시작 시간 : {formatTime(detailMoa.startTime)} </div>}
+          {detailMoa.partyPlayers.length !== 0 &&<div className="my-3 text-base font-blackSans font-semibold" name="startTime">파티 시작 시간 : {formatTimeISO(detailMoa.startTime)} </div>}
           <div className="text-base font-blackSans font-semibold my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div className='flex'>
             {detailMoa.partyPlayers.map((player, playerId)=>{

@@ -134,7 +134,7 @@ function MoaUserCard(props) {
             className="w-14 h-14 mr-5"
           />
           <Link
-          to={`user/profile/${user.userServiceId}`}
+          to={`/profile/${user.userServiceId}`}
           className="font-blackSans text-black text-2xl mr-2">
             {user.userServiceId}
           </Link>

@@ -272,13 +272,13 @@ function MoaCreate() {
                     //  checkedList.includes(item.id)
                   }
                 </div>
-                <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
+                {/* <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
                   {checkedList.map((item) => (
                     <span key={item} onClick={() => onRemove(item)}>
                       {items[item - 1]}
                     </span>
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
