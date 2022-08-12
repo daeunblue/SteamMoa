@@ -35,7 +35,7 @@ function MoaDetail() {
     partyIsUrgent: false,
   });
 
-  const items= [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
+  const items = [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
 
   let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
 
@@ -48,30 +48,24 @@ function MoaDetail() {
     "bg-mainBtn-disabled",
   ];
 
-  // 1. useEffect => detail 정보를 불러오기
-  // 2. 참여하기 버튼 누르면 참여 API 호출
-  // 3. 응답 받은 객체로 setDetailMoa 해서 값 없데이트 (그러면 참여자 정보가 업데이트 됨)
-  // 4. 화면 파티원 목록에 유저 카드가 렌더링
-
   useEffect(() => {
     moaDetail(partyId)
     .then(({data}) => {
       console.log("moaDetail 호출 후", data)
       setDetailMoa(data);
       
-      //   const lst=[];
-      //   data.partyTags.forEach((tag)=>{
-      //   const idx= items.findIndex((item)=>item===tag);
-      //   lst.push(`${idx+1}`);
-      // })
-      //   const users=[];
-      //   data.partyPlayers.forEach((player)=>{
-      //   users.push(player.userId)
-      // })
+        const lst=[];
+        data.partyTags.forEach((tag)=>{
+        const idx= items.findIndex((item)=>item===tag);
+        lst.push(`${idx+1}`);
+      })
+        const users=[];
+        data.partyPlayers.forEach((player)=>{
+        users.push(player.userId)
+      })
         })
     },[]);
 
-  // 파티 참여 api 호출
   const handlePartyJoin = (e) => {
     e.preventDefault();
     moaJoin(detailMoa, partyId, userId)
@@ -81,44 +75,31 @@ function MoaDetail() {
     })
   }
 
-  // 파티 수정
   const handlePartyUpdate = (e) => {
     e.preventDefault();
     navigate(`/moazone/update/${partyId}`);
   }
 
-  // 파티 탈퇴
   const handlePartyLeave = (e) => {
     e.preventDefault();
     moaLeave(detailMoa, partyId, userId)
-    .then((res) => {
-      console.log("파티 탈퇴 버튼 누른 후:", res)
-      setDetailMoa(res.data);
-    })
+        .then((res) => {
+          setDetailMoa(res.data)
+        })
   }
 
-  // 파티 공유
   const handlePartyShare = (e) => {
     e.preventDefault();
-    // chatLinkShare();
+    Swal.fire({
+      title: `${detailMoa.chatLink}`,
+      icon: 'success',
+      position: 'center',
+      showCloseButton: true,
+    })
+    .then((res) => {
+
+    })
   }
-  // const chatLinkShare = Swal.fire({
-  //   title: '<strong>HTML <u>example</u></strong>',
-  //   icon: 'info',
-  //   html:
-  //     'You can use <b>bold text</b>, ' +
-  //     '<a href="//sweetalert2.github.io">links</a> ' +
-  //     'and other HTML tags',
-  //   showCloseButton: true,
-  //   showCancelButton: true,
-  //   focusConfirm: false,
-  //   confirmButtonText:
-  //     '<i class="fa fa-thumbs-up"></i> Great!',
-  //   confirmButtonAriaLabel: 'Thumbs up, great!',
-  //   cancelButtonText:
-  //     '<i class="fa fa-thumbs-down"></i>',
-  //   cancelButtonAriaLabel: 'Thumbs down'
-  // })
 
   const handlePrevPage = (e) => {
     e.preventDefault();
@@ -192,7 +173,7 @@ function MoaDetail() {
           <div className="text-base font-blackSans font-semibold my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div className='flex'>
             {detailMoa.partyPlayers.map((player, playerId)=>{
-              return <MoaUserCard key={playerId} player={player} handlePartyLeave={handlePartyLeave}/>
+              return <MoaUserCard key={playerId} player={player} />
             })}
           </div>
           <hr />
