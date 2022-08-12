@@ -45,9 +45,7 @@ public class TacticController {
     @GetMapping("/user/{user_service_id}")
     @ApiOperation(value="게임 공략 정보", notes = "user_id에 해당하는 게임 공략글 정보를 조회한다")
     public ResponseEntity<?> getTacticsByUserId(@PathVariable("user_service_id")String userServiceId){
-        User user = (User) userService.getUserInfoByUserId(userServiceId).get("user");
-        Long userId = user.getUserId();
-        List<TacticDto> result = tacticService.getTacticsByUserId(userId);
+        List<TacticDto> result = tacticService.getTacticsByUserId(userServiceId);
         return ResponseEntity.status(200).body(result);
     }
 
@@ -87,6 +85,25 @@ public class TacticController {
             return ResponseEntity.status(400).body(resultMap);
         }
     }
+
+    // 삭제
+    @DeleteMapping("/{tacticId}")
+    @ApiOperation(value="게임 공략글 삭제", notes = "공략글 삭제")
+    // @ApiIgnore Authentication authentication,
+    public ResponseEntity<? extends Map<String,Object>> deleteTactics(@PathVariable("tacticId") Long tacticId){
+        Map<String,Object> resultMap = new HashMap<>();
+
+        if(tacticService.deleteTactic(tacticId)){
+            resultMap.put("msg","Success");
+            return ResponseEntity.status(200).body(resultMap);
+        }else{
+            resultMap.put("msg","Fail");
+            return ResponseEntity.status(400).body(resultMap);
+        }
+    }
+
+
+
 
     // 특정 게시글 상세 정보 조회 -> tactic_id기반 검색 결과 반환 (Dto 하나)
 
