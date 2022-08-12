@@ -25,3 +25,8 @@ export const getATactic = (tacticId) => {
   return api.get(url);
 };
 
+export const deleteTactic = (tacticId) => {
+  const url = `tactics/${tacticId}`;
+  return apiAuth.delete(url);
+}
+

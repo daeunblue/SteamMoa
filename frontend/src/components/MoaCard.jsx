@@ -19,10 +19,10 @@ function MoaCard(props) {
   } = props.party;
 
   let bgColors = [
+    "bg-red-400",
     "bg-moa-pink",
     "bg-moa-green",
-    "bg-mainBtn-disabled",
-    "moa-yellow",
+    "bg-moa-yellow",
     "bg-moa-purple",
     "bg-mainBtn-disabled",
   ];

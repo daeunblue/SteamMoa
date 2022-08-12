@@ -1,16 +1,8 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { getMoaListSearch } from "../../api/Moazone";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  moaSearchWord,
-  moaPage,
-  moaMaxPage,
-  moaSearchFilter,
-  moaSearchSort,
-} from "../../recoil/Moazone";
-import { debounce } from "lodash";
+import { useSetRecoilState } from "recoil";
+import { moaSearchFilter } from "../../recoil/Moazone";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const SearchBar = (props) => {
