@@ -5,30 +5,57 @@ import { auth } from "../../recoil/Auth";
 import { useRecoilValue } from "recoil";
 import { postTactics } from "../../api/Tactic";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { getGame } from "../../api/Game";
 
 const TacticCreate = () => {
   const navigate = useNavigate();
+  const user = useRecoilValue(auth);
+  const user_id = user.userId;
+  const [searchParams] = useSearchParams();
+  const game_id = searchParams.get("game") ? searchParams.get("game") : null;
   const [tacticTitle, setTacticTitle] = useState("");
   const [tacticContent, setTacticContent] = useState("");
   const [game, setGame] = useState({});
   const [modalHidden, setModalHidden] = useState(true);
-
-  const user = useRecoilValue(auth);
-  const { userId } = user;
+  const [isFiexedGame, setIsFixedGame] = useState(false);
 
   useEffect(() => {
-    if (!userId) { 
+    if (!user_id) {
       Swal.fire({
         position: "center",
-        icon: "error",
-        title: "잘못된 접근입니다! &#128529",
+        icon: "warning",
+        title: "먼저 로그인을 해 주세요 &#128521",
         showConfirmButton: false,
         timer: 1500,
       });
-      navigate(`/`);
+      navigate(`/login`);
     }
-  },[]);
+    if (game_id) {
+      getGame(game_id)
+        .then(({ data }) => {
+          if (!data) return;
+          const { name, imgpath } = data;
+          setGame({
+            userServiceId: user_id,
+            gameId: game_id,
+            gameName: name,
+            gameImgPath: imgpath,
+          });
+          setIsFixedGame(true);
+        })
+        .catch(() => {
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "해당 게임을 불러올 수 없습니다. &#128521",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate(-1);
+        });
+    }
+  }, []);
 
   const handleChangeTitle = useCallback(
     (e) => {
@@ -46,7 +73,7 @@ const TacticCreate = () => {
   };
 
   const check = () => {
-    if (tacticTitle || tacticContent || game.gameId || userId) return true;
+    if (tacticTitle || tacticContent || game.gameId || user_id) return true;
     return false;
   };
 
@@ -55,7 +82,7 @@ const TacticCreate = () => {
       gameId: game.gameId,
       tacticContent: tacticContent,
       tacticTitle: tacticTitle,
-      userServiceId: userId,
+      userServiceId: user_id,
     };
 
     if (!tactic.gameId || !tactic.tacticTitle || !tactic.tacticContent) {
@@ -71,14 +98,14 @@ const TacticCreate = () => {
     if (!tactic.userServiceId) {
       Swal.fire({
         position: "center",
-        icon: "error",
+        icon: "warning",
         title: "잘못된 접근입니다! &#128529",
         showConfirmButton: false,
         timer: 1500,
       });
       return;
     }
-
+    console.log(tactic);
     postTactics(tactic)
       .then(({ data }) => {
         const { msg } = data;
@@ -90,7 +117,7 @@ const TacticCreate = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          navigate(`/gamemoa/detail/${tactic.gameId}`);
+          navigate(`/gamemoa/detail/${tactic.gameId}/tactic`);
         } else {
           Swal.fire({
             position: "center",
@@ -137,12 +164,21 @@ const TacticCreate = () => {
               )}
             </div>
             <button
-              className="laptop:col-span-1 tablet:col-span-2 mobile:col-span-3 text-white bg-moa-pink hover:bg-moa-pink-dark font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              disabled={isFiexedGame}
+              className={`${
+                isFiexedGame
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-moa-pink hover:bg-moa-pink-dark"
+              } laptop:col-span-1 tablet:col-span-2 mobile:col-span-3 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center`}
               onClick={onToggleModal}>
               게임 검색
             </button>
             {/* 모달 */}
-            <GameSearchModal hidden={modalHidden} setHidden={onToggleModal} setGame={setGame} />
+            {isFiexedGame ? (
+              ""
+            ) : (
+              <GameSearchModal hidden={modalHidden} setHidden={onToggleModal} setGame={setGame} />
+            )}
           </div>
           <div className="flex flex-col justify-start items-start mt-2">
             <label htmlFor="tacticContent" className="text-white text-lg font-semibold">
@@ -155,9 +191,11 @@ const TacticCreate = () => {
               onChange={handleChangeContents}></textarea>
           </div>
           <div className="flex justify-center mt-4">
-            <button className="mr-2 text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            <Link
+              to={`/gamemoa/detail/${game.gameId}/`}
+              className="mr-2 text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               취소
-            </button>
+            </Link>
             <button
               onClick={onClickUpload}
               className={`text-white bg-moa-pink hover:bg-moa-pink-dark font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>

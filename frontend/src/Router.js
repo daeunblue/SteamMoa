@@ -37,7 +37,7 @@ function Router() {
       {/* 공략글 */}
       <Route path="/tactic/detail/:tactic_id" element={<TacticDetail/>} />
       <Route path="/tactic/create" element={<TacticCreate/>} />
-      <Route path="/tactic/update" element={<TacticUpdate/>} />
+      <Route path="/tactic/update/:tactic_id" element={<TacticUpdate/>} />
       {/* 프로필 */}
       <Route path="/profile/:user_id/*" element={<Profile />} />
       <Route path="/mypage/:user_id/*" element={<Profile />} />

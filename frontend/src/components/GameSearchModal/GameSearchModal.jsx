@@ -42,14 +42,14 @@ const GameSearchModal = ({ hidden, setHidden, setGame }) => {
   };
 
   const handleSearchButton = (e) => {
-    if (!searchWord.trim()) {
+    if (searchWord.trim().length < 2) {
       FailureToast.fire({
         customClass: {
           confirmButton:
             "mx-2 rounded py-1 px-5 bg-moa-pink hover:bg-moa-pink-dark text-white w-full",
         },
         icon: "error",
-        title: `게임 이름을 입력해주세요.`,
+        title: `2글자 이상 입력해주세요.`,
       });
       return;
     }
