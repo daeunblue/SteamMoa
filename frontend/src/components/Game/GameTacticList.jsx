@@ -38,33 +38,36 @@ const GameTacticList = (props) => {
 
   return (
     <div className="p-4">
-      {contentList.length ? (
-        <div className="grid grid-cols-1 gap-2">
-          {showContents.map((tactic) => (
-            <GameTacticListItem key={tactic.tacticId} tactic={tactic} />
-          ))}
+      {contentList && contentList.length ? (
+        <div className="flex flex-col">
+          <div className="grid grid-cols-1 gap-2">
+            {showContents.map((tactic) => (
+              <GameTacticListItem key={tactic.tacticId} tactic={tactic} />
+            ))}
+          </div>
+          <div className="flex justify-center mt-2">
+            <MiniPagination
+              totPage={totPage}
+              page={page}
+              viewablePages={viewablePages}
+              setPage={setPage}
+              setViewablePages={setViewablePages}
+            />
+          </div>
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center text-lg p-5">
           <span>
-            <strong className="text-moa-purple">첫 번째</strong> 공략러가 될 기회입니다:)
+            <strong className="text-moa-purple">첫 번째</strong> 공략러가 될 기회입니다{" "}
+            <span>&#128521;</span>
           </span>
           <Link
-            to="/"
+            to={`/tactic/create?game=${gameId}`}
             className="bg-moa-purple hover:bg-moa-purple-dark text-white text-sm rounded-md p-2">
             공략글 작성
           </Link>
         </div>
       )}
-      <div className="flex justify-center mt-2">
-        <MiniPagination
-          totPage={totPage}
-          page={page}
-          viewablePages={viewablePages}
-          setPage={setPage}
-          setViewablePages={setViewablePages}
-        />
-      </div>
     </div>
   );
 };

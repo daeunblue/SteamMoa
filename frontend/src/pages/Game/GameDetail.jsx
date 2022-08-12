@@ -97,7 +97,7 @@ const GameDetail = (props) => {
               {/* 파티보러가기 */}
               <div
                 onClick={onClickParty}
-                className="hover:cursor-pointer rounded-2xl font-bold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-1 bg-moa-pink hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center">
+                className="hover:cursor-pointer rounded-2xl font-bold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-1 bg-moa-pink hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2">
                 파티 GO!
               </div>
               {/* 공략글쓰기 */}
@@ -113,7 +113,7 @@ const GameDetail = (props) => {
                 return (
                   <div
                     key={index}
-                    className="rounded-2xl font-semibold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-2.5 py-1 bg-moa-green-dark hover:bg-moa-green drop-shadow-lg text-center flex items-center mr-2">
+                    className="rounded-2xl font-semibold text-gray-800 text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-2.5 py-1 bg-moa-yellow-dark drop-shadow-lg text-center flex items-center mr-2">
                     {item}
                   </div>
                 );
