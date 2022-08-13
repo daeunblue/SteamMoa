@@ -25,7 +25,6 @@ const ProfileCurParty = (props) => {
     ()=>{
       getUserProceedingParty(profileName)
         .then((res)=>{
-          console.log(res)
           setContentList(res.data.parties)
           setRender(render=>render+1)
           setIsLoading(false)

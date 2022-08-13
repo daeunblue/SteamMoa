@@ -187,7 +187,6 @@ const ProfileUserUpdate = (props) => {
   const onSubmit = () => {
     putUserInfo(updateInfo)
       .then((res)=>{
-        console.log(res)
         SuccessToast.fire(
           {
             showConfirmButton: false,    
@@ -230,7 +229,6 @@ const ProfileUserUpdate = (props) => {
     })
   }
 
-  console.log(updateInfo)
 
   return (
     <div className='py-10 px-[7%] w-full h-full'>
