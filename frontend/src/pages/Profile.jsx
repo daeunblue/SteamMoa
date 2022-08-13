@@ -96,13 +96,13 @@ const Profile = (props) => {
     getUserFollowing(accessId)
     .then((res)=>{
       
-      setFollowingList(res.data.followings.userServiceIdList)
+      setFollowingList(res.data.followings)
     }).catch((err)=>{console.log(err)})
 
     getUserFollowwers(accessId)
     .then((res)=>{
-      setFollowerList(res.data.followers.userServiceIdList)
-      setIsFollowing(res.data.followers.userServiceIdList.includes(userId))
+      setFollowerList(res.data.followers)
+      setIsFollowing(res.data.followers.includes(userId))
     }).catch((err)=>{console.log(err)})
     }
     ,[isFollowing, accessId, midLocation, isLoggedIn, userId, navigate, ] 

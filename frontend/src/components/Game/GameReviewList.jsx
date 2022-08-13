@@ -31,12 +31,16 @@ const GameReviewList = () => {
   useEffect(() => {
     getGameReviews(gameId)
       .then((res) => {
-        setContentList(res.data.reviews)
-        setErrMsg('')
-
+        if(res.data.reviews){
+          setContentList(res.data.reviews)
+          setErrMsg('')
+        } else if(res.data.status===406){
+          setErrMsg('리뷰가 존재하지 않습니다. 첫번째 리뷰를 작성해주세요 :)')
+          setContentList([])
+        }
       })
       .catch((err)=>{
-        setErrMsg('리뷰가 존재하지 않습니다. 첫번째 리뷰를 작성해주세요 :)')
+        setErrMsg('서버 에러! :( 잠시 후 시도해주세요')
         setContentList([])
 
       })
