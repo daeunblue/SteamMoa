@@ -13,7 +13,7 @@ public class TacticPutReq {
     @ApiModelProperty(name="유저 서비스 ID", example="user_id")
     String userServiceId;
 
-    @ApiModelProperty(name="게임 식별자 ID", example="1")
+    @ApiModelProperty(name="게임 식별자 ID", example="25551")
     Long gameId;
 
     @ApiModelProperty(name="공략글 식별자 ID", example="1")

@@ -37,31 +37,37 @@ public class TacticServiceImpl implements TacticService{
         for (Tactic tactic : list) {
             TacticDto tacticDto = new TacticDto();
             tacticDto.setTacticId(tactic.getTacticId());
-            tacticDto.setUserId(tactic.getUser().getUserId());
-            tacticDto.setGameId(tactic.getGame().getGameId());
             tacticDto.setTacticTitle(tactic.getTacticTitle());
             tacticDto.setTacticContent(tactic.getTacticContent());
             tacticDto.setCreateTime(tactic.getCreateTime());
+            tacticDto.setUserId(tactic.getUser().getUserId());
             tacticDto.setUserServiceId(tactic.getUser().getUserServiceId());
+            tacticDto.setGameId(tactic.getGame().getGameId());
+            tacticDto.setGameImgPath(tactic.getGame().getImgpath());
+            tacticDto.setGameName(tactic.getGame().getName());
             resultList.add(tacticDto);
         }
         return resultList;
     }
 
     @Override
-    public List<TacticDto> getTacticsByUserId(Long userId) {
-
-        List<Tactic> list = tacticRepository.findByUserUserId(userId).get();
+    public List<TacticDto> getTacticsByUserId(String userId) {
+        long userlongid = userRepository.findByUserServiceId(userId).get().getUserId();
+        List<Tactic> list = tacticRepository.findByUserUserId(userlongid).get();
+        System.out.println(list.get(1).getTacticTitle());
         List<TacticDto> resultList = new ArrayList<>();
 
         for (Tactic tactic : list) {
             TacticDto tacticDto = new TacticDto();
             tacticDto.setTacticId(tactic.getTacticId());
-            tacticDto.setUserId(tactic.getUser().getUserId());
-            tacticDto.setGameId(tactic.getGame().getGameId());
             tacticDto.setTacticTitle(tactic.getTacticTitle());
             tacticDto.setTacticContent(tactic.getTacticContent());
             tacticDto.setCreateTime(tactic.getCreateTime());
+            tacticDto.setUserId(tactic.getUser().getUserId());
+            tacticDto.setUserServiceId(tactic.getUser().getUserServiceId());
+            tacticDto.setGameId(tactic.getGame().getGameId());
+            tacticDto.setGameImgPath(tactic.getGame().getImgpath());
+            tacticDto.setGameName(tactic.getGame().getName());
             resultList.add(tacticDto);
         }
 
@@ -116,6 +122,25 @@ public class TacticServiceImpl implements TacticService{
             tactic.setUser(userRepository.findByUserServiceId(tacticPutReq.getUserServiceId()).get());
             tactic.setGame(gameRepository.findByGameId(tacticPutReq.getGameId()).orElse(null));
             tacticRepository.save(tactic);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteTactic(Long tacticId){
+        Tactic tactic = tacticRepository.findByTacticId(tacticId).get();
+        try{
+            // 유저 쪽에서 삭제
+            tactic.getUser().getTacticList().remove(tactic);
+
+            // 게임 쪽에서 삭제
+            tactic.getGame().getTactics().remove(tactic);
+
+            // tactic 자체 삭제
+            tacticRepository.deleteById(tacticId);
+
             return true;
         }catch (Exception e){
             return false;

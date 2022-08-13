@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { getServiceIdDuplicate, postSignup } from "../../api/Auth";
+import Swal from 'sweetalert2'
 
 const SignupForm = (props) => {
   const location = useLocation();
@@ -25,6 +26,19 @@ const SignupForm = (props) => {
   const [isCheckedId, setIsCheckedId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+
+  const SuccessToast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    timer: 1000,
+  })
+
+  const FailureToast = Swal.mixin({
+    buttonsStyling: false,
+    toast: true,
+    position: 'center',
+    showConfirmButton: true,
+  })
 
   const onChangeId = (event) => {
     const { name, value } = event.target;
@@ -111,7 +125,7 @@ const SignupForm = (props) => {
     }
     if (!steamId) {
       alert("유효하지 않은 접근입니다.");
-      navigate("/signup");
+      navigate("/signup", { replace: true });
       return;
     }
     
@@ -121,25 +135,57 @@ const SignupForm = (props) => {
       user_service_pw: user.service_pw,
       user_steam_id: steamId,
     }).then(({ status, data }) => {
+        console.log(status, data)
         alert(data.message);
         if (status === 200) {
-          navigate("/login");
+          SuccessToast.fire(
+            {
+              padding: '3em',
+              showConfirmButton: false,    
+              icon: 'success',
+              title: '회원 가입 성공!'
+            }
+          ).then(navigate("/login", { replace: true }))
         } else {
-          navigate("/signup");
+          // navigate("/signup");
         }
       })
-      .catch(() => {});
+      .catch(({response}) => {
+        if(response.status === 409) {
+          FailureToast.fire(
+            {
+              customClass: {
+                confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
+              },
+              padding: '1em',
+              icon: 'error',
+              title: `이미 가입된 스팀 아이디입니다.`,
+              text: '로그인을 진행해주세요.',
+            }).then(() =>{navigate('/login', { replace: true })})
+        } else{
+          FailureToast.fire(
+            {
+              customClass: {
+                confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
+              },
+              padding: '1em',
+              icon: 'error',
+              title: `유효하지 않은 접근입니다.`,
+              text: '다시 시도해주세요.',
+            }).then(()=>{navigate('/signup', { replace: true })})
+        }
+        });
   };
 
   return (
     <div className="w-full h-screen">
       <Navbar />
-      <div className="bg-slate-700 w-4/5 h-screen m-auto flex flex-col align-center justify-center items-center">
-        <span className="text-white font-blackSans text-4xl">회원가입</span>
-        <div className="w-3/6">
+      <div className="bg-slate-700 pt-24 w-per90 tablet:w-per75 h-per95 mx-auto flex flex-col align-center  items-center">
+        <span className="text-white font-blackSans text-[2em] mb-2">회원가입</span>
+        <div className="w-per85 tablet:w-per70 laptop:w-per50 max-w-[450px]">
           {/* ID */}
-          <div className="w-full mb-2.5">
-            <label htmlFor="user_service_id" className="text-white text-sm">
+          <div className="w-full mb-2">
+            <label htmlFor="user_service_id" className="text-white text-[0.8em]">
               아이디
             </label>
             <div className="w-full flex flex-row justify-between">
@@ -148,10 +194,10 @@ const SignupForm = (props) => {
                 type="text"
                 name="service_id"
                 onChange={onChangeId}
-                className="w-5/6 rounded-md"
+                className="w-per70 tablet:w-per75 laptop:w-per80 rounded-md"
               />
               <button
-                className="w-1/6 text-white text-center rounded-lg text-sm sm:w-auto bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none px-3 py-2.5"
+                className="w-per30 tablet:w-per25 laptop:w-per20 ml-2 text-white text-[0.8em] text-center rounded-lg sm:w-auto bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none laptop:px-3 tablet:px-1 py-2.5"
                 onClick={handleIdCheck}>
                 중복검사
               </button>
@@ -162,8 +208,8 @@ const SignupForm = (props) => {
             </span>
           </div>
           {/* NAME */}
-          <div className="w-full mb-2.5">
-            <label htmlFor="user_name" className="text-white text-sm">
+          <div className="w-full mb-2">
+            <label htmlFor="user_name" className="text-white text-[0.8em]">
               닉네임
             </label>
             <input
@@ -175,8 +221,8 @@ const SignupForm = (props) => {
             />
           </div>
           {/* PASSWORD */}
-          <div className="w-full mb-2.5">
-            <label htmlFor="user_service_pw" className="text-white text-sm">
+          <div className="w-full mb-2">
+            <label htmlFor="user_service_pw" className="text-white text-[0.8em]">
               비밀번호
             </label>
             <input
@@ -184,14 +230,14 @@ const SignupForm = (props) => {
               type="password"
               name="service_pw"
               onChange={onChangePassword}
-              className="w-full rounded-md"
-              placeholder="숫자, 영문 대,소문자 , 특수문자(!@#$%^+=-)를 포함한 8~25자리로 입력해주세요"
+              className="w-full rounded-md text-sm"
+              placeholder="숫자, 영문 대,소문자 , 특수문자(!@#$%^+=-) 포함 (8~25자)"
             />
             <span className="text-red-500 font-semibold">{passwordMessage}</span>
           </div>
           {/* PASSWORD CONFIRM */}
           <div className="w-full mb-2.5">
-            <label htmlFor="user_service_pw_confirm" className="text-white text-sm">
+            <label htmlFor="user_service_pw_confirm" className="text-white text-[0.8em]">
               비밀번호 확인
             </label>
             <input
@@ -206,7 +252,11 @@ const SignupForm = (props) => {
           </div>
         </div>
         <button
-          className="w-3/6 mt-3 text-white text-center font-blackSans text-3xl bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-3.5 disabled:opacity-75 disabled:bg-gray-500"
+          className="w-per85 tablet:w-per70 laptop:w-per50 max-w-[450px] 
+                     mt-5 text-white text-center font-blackSans text-[1.2em] 
+                     bg-black hover:bg-main-300 focus:ring-4 focus:outline-none focus:ring-blue-300 
+                     rounded-lg px-5 laptop:py-3.5 tablet:py-3 py-2 
+                     disabled:opacity-75 disabled:bg-gray-500"
           onClick={signup}
           disabled={!(isCheckedId && isPassword && isPasswordConfirm)}>
           가입하기

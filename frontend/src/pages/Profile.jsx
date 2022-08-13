@@ -54,7 +54,6 @@ const Profile = (props) => {
     }
     return tiers[4];
   };
-  console.log(props)
   useEffect(
     ()=>{
       // 마이페이지인가 일반 프로필페이지인가
@@ -86,7 +85,8 @@ const Profile = (props) => {
         setTier(getTier(userPoint))
       }) 
     .catch((err)=>{
-        if(err.response.status===403){
+      console.log(err)
+        if(err.response.status===(400)||err.response.status===(403)){
 
           alert('존재하지 않는 사용자입니다.')
           navigate('/')
@@ -95,6 +95,7 @@ const Profile = (props) => {
     
     getUserFollowing(accessId)
     .then((res)=>{
+      
       setFollowingList(res.data.followings.userServiceIdList)
     }).catch((err)=>{console.log(err)})
 

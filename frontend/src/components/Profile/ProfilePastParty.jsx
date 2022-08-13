@@ -26,7 +26,6 @@ const ProfilePastParty = (props) => {
     ()=>{
       getUserCompletedParty(profileName)
         .then((res)=>{
-          console.log(res)
           setContentList(res.data.parties)
           setIsLoading(false)
           setRender(render=>render+1)

@@ -52,7 +52,7 @@ public class ScheduledTasks {
 
             else if(party.getStatus().equals("1")) {
                 // 1 모집 중에서 2 모집 완료로 : maxplayer = curplayer
-                if(party.getMaxPlayer() == party.getCurPlayer())
+                if(party.getMaxPlayer() <= party.getCurPlayer())
                     party.setStatus("2");
 
                 // 1 모집 중에서 5 모집 실패로 : 지금 시간이 플레이 시간을 지남 && maxplayer > curplayer
