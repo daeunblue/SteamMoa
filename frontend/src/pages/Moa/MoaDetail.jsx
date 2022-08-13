@@ -16,9 +16,26 @@ function MoaDetail() {
   const partyId = params.party_id;
   const navigate = useNavigate();
 
-  // cosnt [isLeader,setIsLeader]=useState();
-  const [leader,setLeader]=useState();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640 ? true:false)
+  const [index, setIndex] = useState(0);
 
+   //choose the screen size 
+   const handleResize = () => {
+    if (window.innerWidth < 640) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+
+  useEffect(()=>{
+    window.addEventListener("resize", handleResize)
+  }  , 
+  [index, isMobile]
+  )
+  
+
+  const [leader,setLeader]=useState();
   
   const [ detailMoa, setDetailMoa ] = useState({
     gameId: 1,
@@ -38,16 +55,8 @@ function MoaDetail() {
     writerId: '',
     partyIsUrgent: false,
   });
-  
-  console.log('detailMoa? ',detailMoa);
-   // leader: true
-    // playerId: 5
-    // playerName: "수정이름"
-    // userId: "dd"
-
+ 
   const items = [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
-
-  
 
   useEffect(() => {
     moaDetail(partyId)
@@ -151,6 +160,34 @@ function MoaDetail() {
     "bg-moa-purple",
     "bg-mainBtn-disabled",
   ];
+
+  // const moaUserCardCarousel = (detailMoa) => {
+  //   if(detailMoa.partyPlayers.length>=3){
+  //     return(
+  //       [...Array(3)].map((player, playerId) => {
+  //         if (isMobile) {
+  //             return(
+  //                 <MoaUserCard key={playerId} player={player} leader={leader} deleteUser={onDeleteUser}></MoaUserCard>
+  //             )
+  //           } 
+          //   else if(detailMoa.partyPlayers.length>=6){
+              
+          //     return(
+          //     <div className='w-full grid grid-cols-3 gap-1' key={playerId}>
+          //       {[...Array(3)].map((_, idx)=>{
+          //         return(
+          //         <MoaUserCard player={parties[3*index+idx]} key={3*index+idx}></MoaUserCard>)
+          //       })}
+          //     </div>
+          //     )
+          // }
+  //       })
+  //     )
+  //   }
+  //   else{
+  //     return ''
+  //   }
+  // }
   
   return (
     <>
@@ -163,27 +200,27 @@ function MoaDetail() {
         <img className="w-screen absolute top-[-50%] left-0 hover:scale-[55%] hover:translate-y-[5%] hover:object-contain transition-transform delay-150 ease-in-out duration-700" src={detailMoa.gameImgPath} alt="게임 이미지" />
       </div>
       {/* 게임 이름 */}
-      <div className="w-full h-4 tablet:h-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to font-blackSans text-xs my-1 whitespace-nowrap overflow-hidden text-ellipsis ">{detailMoa.gameName}</div>
+      <div className="w-full laptop:h-8 tablet:h-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to font-blackSans text-xl my-2 whitespace-nowrap text-ellipsis">{detailMoa.gameName}</div>
       {/* 본문 */}
       <div className="p-[2.5%] mb-4">
         <div>
-          <div className='flex '>
+          <div className='flex justify-between'>
             <div className="flex justify-between">
               {/* 파티 모집 상태 */}
               <div
-                className={`p-auto rounded flex justify-center items-center w-per35 font-blackSans text-white
+                className={`px-4 rounded justify-center items-center w-per35 font-blackSans text-white flex
                 ${detailMoa.partyIsUrgent ? bgColors[0] : bgColors[detailMoa.partyStatus]}`}>
                 <span>{detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}</span>
               </div>
               {/* 파티 제목 */}
               <div 
-                className="font-blackSans text-xl tablet:text-2xl laptop:text-[32px] text-whitetext-base whitespace-nowrap overflow-hidden text-ellipsis" 
+                className="mx-4 font-blackSans text-xl tablet:text-2xl laptop:text-[32px] text-whitetext-base whitespace-nowrap text-ellipsis" 
                 name="partyTitle" 
                 value={detailMoa.partyTitle}>
                   {detailMoa.partyTitle}
               </div>
             </div>
-            <div className=''>
+            <div className='flex'>
               <div>
                 {
                   detailMoa.writerId === userId ? <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2 text-black" onClick={handlePartyUpdate}>파티 수정하기</button> : 
@@ -194,7 +231,7 @@ function MoaDetail() {
             </div>
           </div>
 
-          <div className="flex my-5">
+          <div className="flex justify-between my-5">
             <div className="flex">
             {detailMoa.partyTags.map((item, idx) => {
               return (
@@ -204,21 +241,20 @@ function MoaDetail() {
                 )
               })}
             </div>
-            <div className='flex justify-content-end'>
-              <button className="hover:cursor-pointer hover:text-white rounded-2xl font-bold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center text-black" onClick={handlePartyShare}>파티 공유하기</button>
+            <div className='flex'>
+              <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center text-black" onClick={handlePartyShare}>파티 공유하기</button>
             </div>
           </div>
           <hr />
-          {detailMoa.partyPlayers.length !== 0 &&<div className="my-3 text-base font-blackSans font-semibold" name="startTime">파티 시작 시간 : {formatTimeISO(detailMoa.startTime)} </div>}
-          <div className="text-base font-blackSans font-semibold my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
+          {detailMoa.partyPlayers.length !== 0 &&<div className="my-3 text-xl font-blackSans" name="startTime">파티 시작 시간 : {formatTimeISO(detailMoa.startTime)} </div>}
+          <div className="text-xl font-blackSans my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div className='flex'>
-
             {detailMoa.partyPlayers.map((player, playerId)=>{
               return <MoaUserCard key={playerId} player={player} leader={leader} deleteUser={onDeleteUser} />
             })}
           </div>
           <hr />
-          <div className='text-base font-blackSans font-semibold my-3'>파티 모집 내용</div>
+          <div className='font-blackSans text-xl my-3'>파티 모집 내용</div>
           <div className="w-full h-48 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light w-full text-black"> {detailMoa.partyDescription}</div>
           <div className='grid place-items-center mt-4'>
             <button onClick={handlePrevPage} className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">파티 목록 보기</button>

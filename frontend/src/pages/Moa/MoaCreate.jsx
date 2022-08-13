@@ -22,7 +22,8 @@ function MoaCreate() {
     partyDescription: "",
     partyTags: [],
     partyTitle: "",
-    startTime: new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, ''),
+    startTime: "",
+    // "new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')",
     userId: userId,
   });
 
@@ -220,7 +221,7 @@ function MoaCreate() {
                     onChange={onChange}
                     className="w-full text-main-500 bg-createInput-gray rounded"
                     type="datetime-local"
-                    min={new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')}
+                    // min={new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')}
                   />
                 </div>
               </div>
