@@ -16,25 +16,6 @@ function MoaDetail() {
   const partyId = params.party_id;
   const navigate = useNavigate();
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640 ? true:false)
-  const [index, setIndex] = useState(0);
-
-   //choose the screen size 
-   const handleResize = () => {
-    if (window.innerWidth < 640) {
-      setIsMobile(true)
-    } else {
-      setIsMobile(false)
-    }
-  }
-
-  useEffect(()=>{
-    window.addEventListener("resize", handleResize)
-  }  , 
-  [index, isMobile]
-  )
-  
-
   const [leader,setLeader]=useState();
   
   const [ detailMoa, setDetailMoa ] = useState({
@@ -61,14 +42,15 @@ function MoaDetail() {
   useEffect(() => {
     moaDetail(partyId)
     .then(({data}) => {
-      console.log("moaDetail 호출 후", data)
+      console.log("moaDetail 호출 후", data);
       setDetailMoa(data);
+      
         const lst=[];
         data.partyTags.forEach((tag)=>{
         const idx= items.findIndex((item)=>item===tag);
         lst.push(`${idx+1}`);
       })
-        // const users=[];
+        const users=[];
         data.partyPlayers.forEach((player)=>{
         // users.push(player.userId)
         if (player.leader === true){
@@ -122,7 +104,6 @@ function MoaDetail() {
    detailMoa.partyPlayers.forEach((player) => {
     playerList.push(player.userId);
   })
-  console.log("현재까지 플레이어 리스트 :", playerList)
 
   const onDeleteUser = (deleteUserId) => {
     console.log(partyId);
@@ -161,33 +142,6 @@ function MoaDetail() {
     "bg-mainBtn-disabled",
   ];
 
-  // const moaUserCardCarousel = (detailMoa) => {
-  //   if(detailMoa.partyPlayers.length>=3){
-  //     return(
-  //       [...Array(3)].map((player, playerId) => {
-  //         if (isMobile) {
-  //             return(
-  //                 <MoaUserCard key={playerId} player={player} leader={leader} deleteUser={onDeleteUser}></MoaUserCard>
-  //             )
-  //           } 
-          //   else if(detailMoa.partyPlayers.length>=6){
-              
-          //     return(
-          //     <div className='w-full grid grid-cols-3 gap-1' key={playerId}>
-          //       {[...Array(3)].map((_, idx)=>{
-          //         return(
-          //         <MoaUserCard player={parties[3*index+idx]} key={3*index+idx}></MoaUserCard>)
-          //       })}
-          //     </div>
-          //     )
-          // }
-  //       })
-  //     )
-  //   }
-  //   else{
-  //     return ''
-  //   }
-  // }
   
   return (
     <>
