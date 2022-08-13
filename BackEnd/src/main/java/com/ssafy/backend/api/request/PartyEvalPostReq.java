@@ -10,8 +10,8 @@ import lombok.Data;
 @Data
 @ApiModel("PartyEvalPostReqest")
 public class PartyEvalPostReq {
-    @ApiModelProperty(name="평가하는 사람의 ID", example = "1")
-    Long voterId;
+    @ApiModelProperty(name="평가하는 사람의 ID", example = "user_id")
+    String voterId;
 
     @ApiModelProperty(name="평가받는 사람의 ID", example = "2")
     Long userId;

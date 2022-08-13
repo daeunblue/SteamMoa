@@ -161,7 +161,7 @@ public class PartyController {
         }
     }
 
-    @PostMapping("/eval/{party_id}/{user_service_id}")
+    @PostMapping("/eval")
     @ApiOperation(value = "파티원 평가", notes = "파티원에 대한 평가 진행.")
     // @ApiIgnore Authentication authentication,
     @ApiResponses({
@@ -174,7 +174,7 @@ public class PartyController {
         if(userService.updateUserScore(partyEvalPostReq.getUserId(),partyEvalPostReq.getScore())){
             result.put("message","Success");
             // 파티원 평가여부 테이블에 데이터 추가
-            pvoteRepository.save(new Pvote(null, partyEvalPostReq.getPartyId(), partyEvalPostReq.getVoterId(), userRepository.findByUserId(partyEvalPostReq.getUserId()).orElse(null).getUserServiceId()));
+            pvoteRepository.save(new Pvote(null, partyEvalPostReq.getPartyId(), userRepository.findByUserServiceId(partyEvalPostReq.getVoterId()).orElse(null).getUserId(), userRepository.findByUserId(partyEvalPostReq.getUserId()).orElse(null).getUserServiceId()));
             return ResponseEntity.status(200).body(result);
         }else{
             result.put("message","Fail");

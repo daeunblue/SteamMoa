@@ -276,19 +276,25 @@ public class PartyServiceImpl implements PartyService{
     public EvaluatePartyDTO getPartyDetailForEvaluation(Long partyId) {
         EvaluatePartyDTO evaluatePartyDTO = new EvaluatePartyDTO(partyRepository.findByPartyId(partyId).orElse(null));
 
-        List<String> evaluatedMembers = new ArrayList<>();
-        List<Long> votingMembers = new ArrayList<>();
+        Set<String> evaluatedMembers = new HashSet<>();
+        Set<Long> votingMembers = new HashSet<>();
         for(Pvote pvote: (List<Pvote>) pvoteRepository.findAllByPartyId(partyId).orElse(Collections.EMPTY_LIST)){
             evaluatedMembers.add(pvote.getUserServiceId());
             votingMembers.add(pvote.getVoterId());
         }
 
-        for(EvaluatePartyPlayerDTO e: evaluatePartyDTO.getPartyPlayers()){
-            if(evaluatedMembers.contains(e.getUserId()))
-                e.setVoted(true);
-            if(votingMembers.contains(e.getPlayerId()))
-                e.setEvalCompleted(true);
+        if(votingMembers.size() == evaluatePartyDTO.getCurPlayer())
+            evaluatePartyDTO.setEvalCompleted(true);
+
+        for(EvaluatePartyPlayerDTO pp: evaluatePartyDTO.getPartyPlayers()){
+            if(evaluatedMembers.contains(pp.getUserId())) {
+                pp.setVoted(true);
+            }
+            if(votingMembers.contains(pp.getPlayerId())) {
+                pp.setEvalCompleted(true);
+            }
         }
+
 
         return evaluatePartyDTO;
     }

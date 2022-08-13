@@ -36,6 +36,7 @@ public class EvaluatePartyDTO {
     private String partyDescription;
     private String chatLink;
     private boolean partyIsUrgent;
+    private boolean evalCompleted;
 
     public EvaluatePartyDTO(Party p){
         this.gameId = p.getGame().getGameId();
