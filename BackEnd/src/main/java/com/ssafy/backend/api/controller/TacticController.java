@@ -39,13 +39,30 @@ public class TacticController {
     @ApiOperation(value="게임 공략 정보", notes = "game_id에 해당하는 게임 공략글 정보를 조회한다")
     public ResponseEntity<?> getTacticsByGameId(@PathVariable("gameId")Long gameId){
         List<TacticDto> result = tacticService.getTacticsByGameId(gameId);
+        Map<String,Object> resultMap = new HashMap<>();
+
+        if(result.size() == 0){
+            resultMap.put("message","Fail, 조회 결과 없음");
+            resultMap.put("status",406);
+            return ResponseEntity.status(200).body(resultMap);
+        }
+
         return ResponseEntity.status(200).body(result);
     }
 
     @GetMapping("/user/{user_service_id}")
-    @ApiOperation(value="게임 공략 정보", notes = "user_id에 해당하는 게임 공략글 정보를 조회한다")
+    @ApiOperation(value="게임 공략 정보", notes = "user_service_id에 해당하는 게임 공략글 정보를 조회한다")
     public ResponseEntity<?> getTacticsByUserId(@PathVariable("user_service_id")String userServiceId){
         List<TacticDto> result = tacticService.getTacticsByUserId(userServiceId);
+        Map<String,Object> resultMap = new HashMap<>();
+
+        if(result.size() == 0){
+            resultMap.put("message","Fail, 조회 결과 없음");
+            resultMap.put("status",406);
+            return ResponseEntity.status(200).body(resultMap);
+        }
+
+
         return ResponseEntity.status(200).body(result);
     }
 
@@ -53,7 +70,14 @@ public class TacticController {
     @ApiOperation(value="게임 공략 정보", notes = "tacticId 해당하는 게임 공략글 정보를 조회한다")
     public ResponseEntity<?> getTacticsByTacticId(@PathVariable("tacticId")Long tacticId){
         TacticDto result = tacticService.getTacticByTacticId(tacticId);
-        return ResponseEntity.status(200).body(result);
+
+        if(result == null){
+            result.setStatus(406);
+            System.out.println("조회결과 없음");
+            return ResponseEntity.status(200).body(result);
+        }else{
+            return ResponseEntity.status(200).body(result);
+        }
     }
 
     @PostMapping()

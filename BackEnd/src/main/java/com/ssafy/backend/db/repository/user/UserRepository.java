@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<List<User>> findAllByUserServiceIdContains(String userServiceId);
     Optional<List<Object>> findAllByUserId(Long userId);
 
+    Optional<User> findByUserSteamIdAndIsDeleted(String userSteamId, boolean isBoolean);
 //    Optional<List<Follow>> findUserUserIdBy(Long userId);
     boolean existsByUserSteamId(String userSteamId);
     boolean existsByUserServiceId(String userServiceId);

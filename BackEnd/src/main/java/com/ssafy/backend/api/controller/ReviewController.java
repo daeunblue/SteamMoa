@@ -64,8 +64,9 @@ public class ReviewController {
         List<ReviewDto> result = reviewService.findReviewByUserServiceId(userServiceId);
 
         if(result.size() == 0){
-            resultMap.put("message","조회 결과가 없습니다");
-            return ResponseEntity.status(400).body(resultMap);
+            resultMap.put("message","Fail, 조회 결과 없음");
+            resultMap.put("status",406);
+            return ResponseEntity.status(200).body(resultMap);
         }else{
             resultMap.put("message","조회 성공");
             resultMap.put("reviews", result);
@@ -83,7 +84,8 @@ public class ReviewController {
 
         if(result.size() == 0){
             resultMap.put("message","Fail, 조회 결과 없음");
-            return ResponseEntity.status(400).body(resultMap);
+            resultMap.put("status",406);
+            return ResponseEntity.status(200).body(resultMap);
         }else{
             resultMap.put("message","Success");
             resultMap.put("reviews", result);
@@ -101,7 +103,8 @@ public class ReviewController {
 
         if(reviewDto.getReviewId() == null){
             resultMap.put("message","Fail");
-            return ResponseEntity.status(400).body(resultMap);
+            resultMap.put("status",406);
+            return ResponseEntity.status(200).body(resultMap);
         }else{
             resultMap.put("message","조회 성공");
             resultMap.put("review", reviewDto);
@@ -122,7 +125,7 @@ public class ReviewController {
             return ResponseEntity.status(200).body(resultMap);
         }else{
             resultMap.put("message","Fail, 존재하지 않는 리뷰입니다.");
-            return ResponseEntity.status(404).body(resultMap);
+            return ResponseEntity.status(400).body(resultMap);
         }
 
     }

@@ -125,7 +125,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean checkSteamIdDuplicate(String userSteamId) {
-        boolean result = userRepository.existsByUserSteamId(userSteamId);// 스팀 아이디 중복체크 -> false : 회원가입 불가능
+        boolean result = userRepository.existsByUserSteamId(userSteamId);// 스팀 아이디 중복체크 -> false : 회원가입 가능
+
+        if(result){
+            // 회원 가입시 -> 같은 스팀 아이디를 가졌던 사람중에 이전에 가입했었고 + 탈퇴한 회원인 경우 가입 가능하게
+            if(userRepository.findByUserSteamIdAndIsDeleted(userSteamId,true).isPresent())
+                return false;
+        }
+
+
         return result;
     }
 
@@ -153,6 +161,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findByUserServiceId(userServiceId).get();
             user.setIsDeleted(true);
             userRepository.save(user);
+//            userRepository.delete(user);
             System.out.println("사용자 삭제 요청 성공!");
             return true;
         }catch (Exception e){
@@ -160,6 +169,8 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+
 
     @Override
     @Transactional
@@ -284,30 +295,44 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<Follow> getFollower(String userServiceId) { // 현재 유저를 구독하고 있는 사람들의 목록
+    public List<String> getFollower(String userServiceId) { // 현재 유저를 구독하고 있는 사람들의 목록
         List<Follow> result = new ArrayList<>();
+        List<String> realResult = new ArrayList<>();
 
         result = followRepository.findAllByFollowingUserId(userServiceId).get();
-//        try{
-//
-//        }catch(NoSuchElementException e){
-//
-//        }
-        return result;
+
+        for (Follow follow: result) {
+            Optional<User> user = userRepository.findByUserServiceId(follow.getFollowerUserId());
+            if(user.isPresent()){
+                if(!user.get().getIsDeleted()){    // 탈퇴한 회원의 정보는 다 넘겨주지 않는다
+                    System.out.println("진입");
+                    System.out.println(follow.getFollowerUserId());
+                    realResult.add(follow.getFollowerUserId());
+                }
+            }
+        }
+        return realResult;
     }
 
     @Override
     @Transactional
-    public List<Follow> getFollowing(String userServiceId) {     // 현재 유저가 구독하고 있는 사람들의 목록
+    public List<String> getFollowing(String userServiceId) {     // 현재 유저가 구독하고 있는 사람들의 목록
         List<Follow> result = new ArrayList<>();
+        List<String> realResult = new ArrayList<>();
 
         result = followRepository.findAllByFollowerUserId(userServiceId).get();
-//        try{
-//
-//        }catch(NoSuchElementException e){
-//
-//        }
-        return result;
+
+        for (Follow follow: result) {
+            Optional<User> user = userRepository.findByUserServiceId(follow.getFollowingUserId());
+            if(user.isPresent()){
+                if(!user.get().getIsDeleted()){    // 탈퇴한 회원의 정보는 다 넘겨주지 않는다
+                    System.out.println("진입");
+                    System.out.println(follow.getFollowerUserId());
+                    realResult.add(follow.getFollowingUserId());
+                }
+            }
+        }
+        return realResult;
     }
 
     @Override

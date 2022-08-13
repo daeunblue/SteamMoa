@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 public class TacticServiceImpl implements TacticService{
@@ -28,22 +31,26 @@ public class TacticServiceImpl implements TacticService{
 
     @Override
     public List<TacticDto> getTacticsByGameId(Long gameId) {
-        List<Tactic> list = tacticRepository.findByGameGameId(gameId).get();
+        List<Tactic> list = new ArrayList<>();
         List<TacticDto> resultList = new ArrayList<>();
+        Optional<List<Tactic>> optionalTactics = tacticRepository.findByGameGameId(gameId);
 
-        for (Tactic tactic : list) {
-            TacticDto tacticDto = new TacticDto();
-            tacticDto.setTacticId(tactic.getTacticId());
-            tacticDto.setTacticTitle(tactic.getTacticTitle());
-            tacticDto.setTacticContent(tactic.getTacticContent());
-            tacticDto.setCreateTime(tactic.getCreateTime());
-            tacticDto.setUserId(tactic.getUser().getUserId());
-            tacticDto.setUserServiceId(tactic.getUser().getUserServiceId());
-            tacticDto.setGameId(tactic.getGame().getGameId());
-            tacticDto.setGameImgPath(tactic.getGame().getImgpath());
-            tacticDto.setGameName(tactic.getGame().getName());
-            resultList.add(tacticDto);
+        if(optionalTactics.isPresent()) {
+            for (Tactic tactic : list) {
+                TacticDto tacticDto = new TacticDto();
+                tacticDto.setTacticId(tactic.getTacticId());
+                tacticDto.setTacticTitle(tactic.getTacticTitle());
+                tacticDto.setTacticContent(tactic.getTacticContent());
+                tacticDto.setCreateTime(tactic.getCreateTime());
+                tacticDto.setUserId(tactic.getUser().getUserId());
+                tacticDto.setUserServiceId(tactic.getUser().getUserServiceId());
+                tacticDto.setGameId(tactic.getGame().getGameId());
+                tacticDto.setGameImgPath(tactic.getGame().getImgpath());
+                tacticDto.setGameName(tactic.getGame().getName());
+                resultList.add(tacticDto);
+            }
         }
+
         return resultList;
     }
 
@@ -51,7 +58,6 @@ public class TacticServiceImpl implements TacticService{
     public List<TacticDto> getTacticsByUserId(String userId) {
         long userlongid = userRepository.findByUserServiceId(userId).get().getUserId();
         List<Tactic> list = tacticRepository.findByUserUserId(userlongid).get();
-        System.out.println(list.get(1).getTacticTitle());
         List<TacticDto> resultList = new ArrayList<>();
 
         for (Tactic tactic : list) {
@@ -88,6 +94,7 @@ public class TacticServiceImpl implements TacticService{
 
     @Override
     public boolean createTactics(TacticPostReq tacticPostReq) {
+
         Tactic tactic = new Tactic();
         try{
             tactic.setTacticTitle(tacticPostReq.getTacticTitle());

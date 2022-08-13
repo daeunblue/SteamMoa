@@ -19,4 +19,5 @@ public class TacticDto {
     String gameName;
     String gameImgPath;
     LocalDateTime createTime;
+    Integer status;
 }
