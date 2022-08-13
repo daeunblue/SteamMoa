@@ -88,8 +88,20 @@ const Login = (props) => {
               width:'30%',
               padding: '1em',
               icon: 'error',
-              title: `로그인 정보가 올바르지 않습니다.`,
+              title: `비밀번호가 올바르지 않습니다.`,
               text: '로그인 정보를 확인해주세요.',
+            })
+        } else if (err.message==='Network Error') {
+          FailureToast.fire(
+            {
+              customClass: {
+                confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
+              },
+              width:'30%',
+              padding: '1em',
+              icon: 'error',
+              title: `존재하지 않는 아이디입니다.`,
+              text:'로그인 정보를 확인해주세요.'
             })
         } else{
           FailureToast.fire(

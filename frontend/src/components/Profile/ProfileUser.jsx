@@ -8,25 +8,13 @@ import { auth } from "../../recoil/Auth.js";
 import { deleteUserFollow, postUserFollow } from '../../api/User.js';
 
 const ProfileUser = (props) => {  
-  const {isFollowing, setIsFollowing, profileName, isMyPage, userProfile, followerList, followingList, tier} = props
+  const {isFollowing, setIsFollowing, profileName, isMyPage, userProfile, followerList, followingList, tier, tierColor} = props
   const midLocation = (isMyPage ? "mypage":"profile")
   const userProfileInfo = props.userProfile
   const tierMin = 33.5;
   const tierMax = 39.5;
   const progressStyle = { width: ((userProfile.userPoint - tierMin) / (tierMax - tierMin)) * 100 + "%" };
 
-  let tierColor;
-  if (tier === 'Bronze'){
-    tierColor = 'yellow'
-  } else if (tier === 'Silver') {
-    tierColor = 'zinc'
-  } else if (tier === 'Gold') {
-    tierColor = 'amber'
-  } else if (tier === 'Platinum') {
-    tierColor = 'emerald'
-  } else {
-    tierColor = 'fuchsia'
-  }
 
   //로그인된 사람 (프로필 주인 말고 행동하고 있는 사람)
   const [userAuth, ] = useRecoilState(auth);
@@ -116,9 +104,9 @@ const ProfileUser = (props) => {
         </div>
         {/* 매너온도,  */}
         <div className="px-[10%]">
-          <div className="w-per95 mx-auto bg-gray-200 rounded-full dark:bg-gray-700 mb-6">
+          <div className="w-per95 mx-auto bg-gray-200 rounded-full mb-6">
             <div
-              className={`bg-${tierColor}-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full`}
+              className={`${tierColor.tierManner} text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full`}
               style={progressStyle}>
               {`${userProfileInfo.userPoint}°C`}
             </div>
@@ -126,7 +114,7 @@ const ProfileUser = (props) => {
           <div className='flex flex-wrap w-per95 mx-auto'>
             {userProfile.userTags.map((tag, idx)=>{
               return(
-                <div className={`rounded bg-${tierColor}-100 border border-${tierColor}-300 text-${tierColor}-900 font-semibold px-2 py-0.5 text-sm mr-1.5 my-1`} key={idx}>#{tag}</div>
+                <div className={`rounded ${tierColor.tierbg} ${tierColor.tierborder} ${tierColor.tiertext} font-semibold px-2 py-0.5 text-sm mr-1.5 my-1`} key={idx}>#{tag}</div>
               )
             })}
           </div>

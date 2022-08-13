@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines, faChampagneGlasses } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = (props) => {
-  const {setSubPage, isMyPage, userProfile, followerList, followingList, tier} = props
+  const {setSubPage, isMyPage, userProfile, followerList, followingList, tier, tierColor} = props
   const profileName = userProfile.userServiceId
   const param = useParams()
   const subParam = Object.values(param)
@@ -13,19 +13,6 @@ const Sidebar = (props) => {
   const midLocation = (isMyPage ? "mypage":"profile")
   const titleName = (isMyPage ? "나의": `${profileName}님의`)
 
-  let tierColor;
-  if (tier === 'Bronze'){
-    tierColor = 'yellow'
-  } else if (tier === 'Silver') {
-    tierColor = 'zinc'
-  } else if (tier === 'Gold') {
-    tierColor = 'amber'
-  } else if (tier === 'Platinum') {
-    tierColor = 'emerald'
-  } else {
-    tierColor = 'fuchsia'
-  }
-  
   const menus = [
     {title:`Party`,
       submenus: [
@@ -55,7 +42,7 @@ const Sidebar = (props) => {
       {/* 프로필 */}
       <NavLink
         to={`/${midLocation}/${profileName}`}
-        className={ (isMain ?`block py-5 px-[10%] bg-${tierColor}-500 hover:cursor-pointer shadow-inner`:'block py-5 px-[10%] bg-sidebar-dark hover:cursor-pointer')}
+        className={ (isMain ?`block py-5 px-[10%] bg-${tierColor.tierColor}-500 hover:cursor-pointer shadow-inner`:'block py-5 px-[10%] bg-sidebar-dark hover:cursor-pointer')}
       >
         <div className='flex justify-around items-center'>
           <img src={`../../ImgAssets/Tier${tier}.png`} alt="" className='w-per20 min-w-[35px] drop-shadow-md'/>
@@ -83,7 +70,7 @@ const Sidebar = (props) => {
                 return (
                   <div key={idx} className="py-1">    
                     <NavLink 
-                      className={({isActive}) => (isActive ? `text-white flex justify-end px-2 font-bold bg-${tierColor}-400 rounded py-0.5`: "text-gray-400 py-0.5")}
+                      className={({isActive}) => (isActive ? `text-white flex justify-end px-2 font-bold ${tierColor.tierColorLight} rounded py-0.5`: "text-gray-400 py-0.5")}
                       to={submenu.path}>
                         {submenu.name}
                     </NavLink>

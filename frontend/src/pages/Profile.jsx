@@ -35,6 +35,13 @@ const Profile = (props) => {
   const [isMyPage, setIsMyPage] = useState(false)
   const [isFollowing, setIsFollowing] = useState(null)
   const [tier, setTier] = useState('')
+  const [tierColor, setTierColor] = useState({
+    tierColor:'',
+    tierColorLight:'',
+    tierbg:'',
+    tierborder:'',
+    tiertext:'',
+  })
 
   const navigate = useNavigate();
   const [userAuth, ] = useRecoilState(auth);
@@ -108,16 +115,82 @@ const Profile = (props) => {
     ,[isFollowing, accessId, midLocation, isLoggedIn, userId, navigate, ] 
   )
 
+  useEffect(
+    () => {
+      const tierCol = {
+        tierColor:'',
+        tierColorLight:'',
+        tierbg:'',
+        tierborder:'',
+        tierManner:'',
+        tierSide:'',
+        tiertext:''
+      }
+      if (tier === 'Bronze'){
+        tierCol.tierColor = 'yellow'
+        tierCol.tierColorLight= 'bg-yellow-400'
+        tierCol.tierbg = 'bg-orange-100'
+        tierCol.tierborder = 'border-yellow-300'
+        tierCol.tierManner = 'bg-yellow-600'
+        tierCol.tierSide = 'bg-yellow-500'
+        tierCol.tiertext = 'text-yellow-900'
+        tierCol.tiertextLight = 'text-yellow-500'
+    
+      } else if (tier === 'Silver') {
+        tierCol.tierColor = 'zinc'
+        tierCol.tierColorLight= 'bg-zinc-400'
+        tierCol.tierbg = 'bg-zinc-100'
+        tierCol.tierborder = 'border-zinc-300'
+        tierCol.tierManner = 'bg-zinc-600'
+        tierCol.tierSide = 'bg-zinc-500'
+        tierCol.tiertext = 'text-zinc-900'
+        tierCol.tiertextLight = 'text-zinc-500'
+        
+      } else if (tier === 'Gold') {
+        tierCol.tierColor = 'amber'
+        tierCol.tierbg = 'bg-amber-100'
+        tierCol.tierColorLight= 'bg-amber-400'
+        tierCol.tierborder = 'border-amber-300'
+        tierCol.tierManner = 'bg-amber-600'
+        tierCol.tierSide = 'bg-amber-500'
+        tierCol.tiertext = 'text-amber-900'
+        tierCol.tiertextLight = 'text-amber-500'
+    
+      } else if (tier === 'Platinum') {
+        tierCol.tierColor = 'emerald'
+        tierCol.tierbg = 'bg-emerald-100'
+        tierCol.tierColorLight= 'bg-emerald-400'
+        tierCol.tierborder = 'border-emerald-300'
+        tierCol.tierManner = 'bg-emerald-600'
+        tierCol.tierSide = 'bg-emerald-500'
+        tierCol.tiertext = 'text-emerald-900'
+        tierCol.tiertextLight = 'text-emerald-500'
+    
+      } else {
+        tierCol.tierColor = 'fuchsia'
+        tierCol.tierbg = 'bg-fuchsia-100'
+        tierCol.tierColorLight= 'bg-fuchsia-400'
+        tierCol.tierborder = 'border-fuchsia-300'
+        tierCol.tierManner = 'bg-fuchsia-600'
+        tierCol.tierSide = 'bg-fuchsia-500'
+        tierCol.tiertext = 'text-fuchsia-900'
+        tierCol.tiertextLight = 'text-fuchsia-500'
+    
+      }
+      setTierColor(tierCol)
+    }, [tier]
+  )
+
 
   return (
     <>
       <Navbar/>
       <div className='w-per75 m-auto flex'>
-        <Sidebar setSubPage={setSubPage}isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList} tier={tier}></Sidebar>
+        <Sidebar setSubPage={setSubPage}isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList} tier={tier} tierColor={tierColor}></Sidebar>
         <div className='bg-centerDiv-blue w-full'>
           <Routes>
-            <Route exact="true" path="" element={<ProfileUser isFollowing={isFollowing} setIsFollowing={setIsFollowing} tier={tier} profileName={profileName} isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList}/>} />
-            <Route path="userupdate" element={<ProfileUserUpdate profileName={profileName} isMyPage={isMyPage} userProfile={userProfile}/>} />
+            <Route exact="true" path="" element={<ProfileUser tierColor={tierColor} isFollowing={isFollowing} setIsFollowing={setIsFollowing} tier={tier} profileName={profileName} isMyPage={isMyPage} userProfile={userProfile} followerList={followerList} followingList={followingList}/>} />
+            <Route path="userupdate" element={<ProfileUserUpdate tierColor={tierColor} profileName={profileName} isMyPage={isMyPage} userProfile={userProfile}/>} />
             <Route path="myparty" element={<ProfileMyParty profileName={profileName} isMyPage={isMyPage}/>} />
             <Route path="curparty" element={<ProfileCurParty profileName={profileName} isMyPage={isMyPage}/>} />
             <Route path="pastparty" element={<ProfilePastParty profileName={profileName} isMyPage={isMyPage}/>} />
