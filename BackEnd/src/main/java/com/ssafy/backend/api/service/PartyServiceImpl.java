@@ -226,8 +226,21 @@ public class PartyServiceImpl implements PartyService{
     @Transactional
     public boolean deleteParty(Long partyId) {
         try{
-            partyRepository.delete(partyRepository.findByPartyId(partyId).orElse(null));
-            System.out.println("Party 삭제 요청 성공");
+            Party curParty = partyRepository.findByPartyId(partyId).orElse(null);
+            if(curParty == null)
+                return false;
+
+            // 파티 태그 삭제
+            for (PartyTag pt: curParty.getPartyTags()) {
+                partyTagRepository.delete(pt);
+            }
+            // 파티 사용자 삭제
+            for (Puser pu: curParty.getPusers()) {
+                pu.getUser().getPusers().remove(pu);
+                puserRepository.delete(pu);
+            }
+
+            partyRepository.delete(curParty);
             return true;
         }catch (Exception e){
             System.out.println("Party 삭제 요청 실패");

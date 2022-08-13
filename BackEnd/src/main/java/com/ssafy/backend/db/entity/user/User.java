@@ -36,7 +36,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "user_steam_id", nullable = false, unique = true)
+    @Column(name = "user_steam_id", nullable = false)
     private String userSteamId;
 
     @Column(name = "user_service_id", nullable = false, unique = true)

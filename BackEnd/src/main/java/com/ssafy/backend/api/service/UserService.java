@@ -36,8 +36,8 @@ public interface UserService {
     // 팔로우 기능
     boolean followUser(String followingUserId, String followerUserId);
     boolean unFollowUser(String followingUserId, String followerUserId);
-    List<Follow> getFollower(String userServiceId);
-    List<Follow> getFollowing(String userServiceId);
+    List<String> getFollower(String userServiceId);
+    List<String> getFollowing(String userServiceId);
 
     Map<String, Object> getMyPartiesProceeding(String userServiceId);
     Map<String, Object> getMyPartiesCompleted(String userServiceId);

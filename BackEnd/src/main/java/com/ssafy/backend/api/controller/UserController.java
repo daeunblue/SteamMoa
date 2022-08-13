@@ -149,13 +149,8 @@ public class UserController {
     public ResponseEntity<? extends Map<String, Object>> getUserFollowingList(@PathVariable("user_service_id")String userServiceId){
         Map<String, Object> resultMap = new HashMap<>();
 
-
-        FollowDto followDto = new FollowDto();
-        List<Follow> followList = userService.getFollowing(userServiceId);
-        for(Follow follow:followList){
-            followDto.addUserServiceId(follow.getFollowingUserId());
-        }
-        resultMap.put("followings",followDto);
+        List<String> followList = userService.getFollowing(userServiceId);
+        resultMap.put("followings",followList);
         resultMap.put("message","Success");
 
         return ResponseEntity.status(200).body(resultMap);
@@ -171,13 +166,8 @@ public class UserController {
     public ResponseEntity<? extends Map<String, Object>> getUserFollowerLIst(@PathVariable("user_service_id")String userServiceId){
         Map<String, Object> resultMap = new HashMap<>();
 
-
-        FollowDto followDto = new FollowDto();
-        List<Follow> followList = userService.getFollower(userServiceId);
-        for(Follow follow:followList){
-            followDto.addUserServiceId(follow.getFollowerUserId());
-        }
-        resultMap.put("followers",followDto);
+        List<String> followList = userService.getFollower(userServiceId);
+        resultMap.put("followers",followList);
         resultMap.put("message","Success");
 
         return ResponseEntity.status(200).body(resultMap);
