@@ -4,15 +4,11 @@ import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
 import com.ssafy.backend.api.response.*;
 import com.ssafy.backend.db.entity.game.Game;
-import com.ssafy.backend.db.entity.review.Review;
 import com.ssafy.backend.db.entity.user.User;
 import com.ssafy.backend.db.entity.party.*;
+import com.ssafy.backend.db.repository.party.*;
 import com.ssafy.backend.db.repository.user.UserRepository;
 import com.ssafy.backend.db.repository.game.GameRepository;
-import com.ssafy.backend.db.repository.party.PartyRepository;
-import com.ssafy.backend.db.repository.party.PartyTagRepository;
-import com.ssafy.backend.db.repository.party.PtagStorageRepository;
-import com.ssafy.backend.db.repository.party.PuserRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +35,8 @@ public class PartyServiceImpl implements PartyService{
     private PuserRepository puserRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PvoteRepository pvoteRepository;
 
     // 파티 전체 목록
     @Override
@@ -271,6 +269,36 @@ public class PartyServiceImpl implements PartyService{
 
         return list;
     }
+
+    // 평가 페이지용 파티 상세 조회
+    @Override
+    @Transactional
+    public EvaluatePartyDTO getPartyDetailForEvaluation(Long partyId) {
+        EvaluatePartyDTO evaluatePartyDTO = new EvaluatePartyDTO(partyRepository.findByPartyId(partyId).orElse(null));
+
+        Set<String> evaluatedMembers = new HashSet<>();
+        Set<Long> votingMembers = new HashSet<>();
+        for(Pvote pvote: (List<Pvote>) pvoteRepository.findAllByPartyId(partyId).orElse(Collections.EMPTY_LIST)){
+            evaluatedMembers.add(pvote.getUserServiceId());
+            votingMembers.add(pvote.getVoterId());
+        }
+
+        if(votingMembers.size() == evaluatePartyDTO.getCurPlayer())
+            evaluatePartyDTO.setEvalCompleted(true);
+
+        for(EvaluatePartyPlayerDTO pp: evaluatePartyDTO.getPartyPlayers()){
+            if(evaluatedMembers.contains(pp.getUserId())) {
+                pp.setVoted(true);
+            }
+            if(votingMembers.contains(pp.getPlayerId())) {
+                pp.setEvalCompleted(true);
+            }
+        }
+
+
+        return evaluatePartyDTO;
+    }
+
 
     @Override
     public String memberJoin(Long partyId, String userServiceId) {

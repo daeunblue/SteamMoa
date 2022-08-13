@@ -3,12 +3,17 @@ package com.ssafy.backend.api.controller;
 import com.ssafy.backend.api.request.PartyEvalPostReq;
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
+import com.ssafy.backend.api.request.UserRegisterPostReq;
+import com.ssafy.backend.api.response.EvaluatePartyDTO;
 import com.ssafy.backend.api.response.PUserEvalDto;
 import com.ssafy.backend.api.service.PartyService;
 import com.ssafy.backend.api.service.UserService;
 import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
 import com.ssafy.backend.api.response.PartyDTO;
+import com.ssafy.backend.db.entity.party.Pvote;
 import com.ssafy.backend.db.repository.party.PartyRepository;
+import com.ssafy.backend.db.repository.party.PvoteRepository;
+import com.ssafy.backend.db.repository.user.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -37,7 +42,13 @@ public class PartyController {
     PartyRepository partyRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     UserService userService;
+
+    @Autowired
+    PvoteRepository pvoteRepository;
 
     // 파티 전체 목록
     @GetMapping("")
@@ -136,13 +147,13 @@ public class PartyController {
     })
     public ResponseEntity<? extends Map<String,Object>> getEvaluationPartyInfo(@PathVariable("party_id")Long partyId, @PathVariable("user_service_id")String userServiceId){
         Map<String, Object> result = new HashMap<>();
-        PartyDTO partyDTO = partyService.getPartyDetail(partyId);
+        EvaluatePartyDTO evaluatePartyDTO = partyService.getPartyDetailForEvaluation(partyId);
 
-        if(partyDTO == null){
+        if(evaluatePartyDTO == null){
             result.put("message","Fail");
             return ResponseEntity.status(400).body(result);
         }else{
-            result.put("party",partyDTO);
+            result.put("party",evaluatePartyDTO);
             List<PUserEvalDto> pUserEvalDto = partyService.getPlayersForEvaluate(partyId, userServiceId);
             result.put("users",pUserEvalDto);
             result.put("message","Success");
@@ -162,6 +173,8 @@ public class PartyController {
 
         if(userService.updateUserScore(partyEvalPostReq.getUserId(),partyEvalPostReq.getScore())){
             result.put("message","Success");
+            // 파티원 평가여부 테이블에 데이터 추가
+            pvoteRepository.save(new Pvote(null, partyEvalPostReq.getPartyId(), userRepository.findByUserServiceId(partyEvalPostReq.getVoterId()).orElse(null).getUserId(), userRepository.findByUserId(partyEvalPostReq.getUserId()).orElse(null).getUserServiceId()));
             return ResponseEntity.status(200).body(result);
         }else{
             result.put("message","Fail");
