@@ -10,7 +10,7 @@ import { auth } from "../../recoil/Auth";
 const ProfileUserUpdate = (props) => {
   const navigate = useNavigate()
   const [userAuth, setAuth] = useRecoilState(auth);
-  const { profileName, isMyPage, userProfile } = props
+  const { profileName, isMyPage, userProfile, tierColor } = props
   const utags= [ '즐겜러', '빡겜러', '초보', '중수', '고수', '생존겜 러버']
   const userId = useState(profileName)
   const [trialCnt, setTrialCnt] = useState(1)
@@ -233,8 +233,8 @@ const ProfileUserUpdate = (props) => {
   return (
     <div className='py-10 px-[7%] w-full h-full'>
       <div className='flex mb-2 w-full mx-auto max-w-[700px]'>
-        <div className='w-2 bg-amber-600'></div>
-        <div className='ml-3 text-2xl font-bold text-amber-500'>회원정보 수정</div>
+        <div className={`w-2 ${tierColor.tierManner}`}></div>
+        <div className={`ml-3 text-2xl font-bold ${tierColor.tiertextLight}`}>회원정보 수정</div>
       </div>
       <hr className='mx-auto max-w-[700px] w-full' />
 
@@ -309,10 +309,10 @@ const ProfileUserUpdate = (props) => {
         <button 
           onClick={onSubmit}
           disabled={!(updateInfo.userName&&((updateInfo.userPassword===-1&&!tmpPw&&!tmpPwConfirm)||(pwUpdate&&updateInfo.userPassword!==-1)))}
-          className='mt-5 w-full 
+          className={`mt-5 w-full 
                      focus:outline-none text-white 
-                     bg-amber-500 hover:bg-amber-600 disabled:bg-zinc-400
-                     focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5'>
+                     ${tierColor.tierSide} hover:${tierColor.tierManner} disabled:bg-zinc-400
+                     focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5`}>
           수정
         </button>
       </div>
