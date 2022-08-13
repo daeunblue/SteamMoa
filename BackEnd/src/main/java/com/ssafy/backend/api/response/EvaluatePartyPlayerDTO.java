@@ -10,15 +10,16 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PartyPlayerDTO {
+public class EvaluatePartyPlayerDTO {
 
     private Long playerId;
     private String playerName;
     private String userId;
     private boolean isLeader;
     private boolean isVoted;
+    private boolean evalCompleted;
 
-    public PartyPlayerDTO(Puser pu) {
+    public EvaluatePartyPlayerDTO(Puser pu) {
         this.playerId = pu.getUser().getUserId();
         this.playerName = pu.getUser().getUserName();
         this.userId = pu.getUser().getUserServiceId();
