@@ -24,17 +24,19 @@ function MoaUserCard(props) {
     // setPlayer({
     //   ...player, 
 
-    // })
-    console.log('현재 플레이어 리스트는?', player)
-    console.log('프롭받은거', props);
+    // // })
+    // console.log('현재 플레이어 리스트는?', player)
+    // console.log('프롭받은거', props);
+    // console.log('현재 접속중 아이디', currentUserServiceId)
+    // console.log('지금 리더는?',partyLeader);
 
-  // const [ partyLeader, setPartyLeader ] = useState();
+  // useEffect(() => {
 
-  let leaderId = '';
-  if (props.player.leader === true){
-    leaderId = props.player.userId;
-  }
-  console.log('지금 리더는?', leaderId);
+  //   if (props.player.leader === true){
+  //     setPartyLeader(props.player.userId)
+  //   }
+
+  // },[])
 
   const [ user, setUser ] = useState({
     userId: 0,
@@ -99,32 +101,22 @@ function MoaUserCard(props) {
       cardColor = pinkNeonBox
     }
 
-    const onDeleteUser = () => {
-      //파티원 삭제 모달창
-      Swal.fire({
-        position: "center",
-        icon: "warning",
-        title: "파티원을 정말 강퇴시키겠습니까?",
+   
+    // const leaderId=props.leader
 
-      })
-      // detail axios 요청 보내기
-      moaLeave()
-      props.handlePartyLeave();
-
-    }
-
+    // console.log('리더 아이디',leaderId);
   return (
     <>
     <div className='w-per20 h-per15 p-auto text-black overflow-hidden' style={cardColor}>
       {/* 파티장이 접속했을 때만 x 아이콘 표시 */}
-      {/* { currentUserServiceId === leaderId && */}
+      { currentUserServiceId===props.leader  &&
         <div className="float-right mt-1 mr-3">
           {/* 파티장 아닌 멤버만 x 표기 */}
-          { user.userServiceId !== leaderId && 
-          <FontAwesomeIcon onClick={onDeleteUser} className="text-black hover:cursor-pointer" icon={ faX } />
+          { user.userServiceId!==props.leader  && 
+          <FontAwesomeIcon onClick={()=>props.deleteUser(user.userServiceId)} className="text-black hover:cursor-pointer" icon={ faX } />
           }
         </div>
-        {/* } */}
+       }
         {/* 매너 온도에 따른 티어 이미지 */}
         <div className="w-full flex laptop:flex-row justify-between items-center text-white mb-3 tablet:flex-col mobile:flex-col">
         <div className="flex flex-row items-center">

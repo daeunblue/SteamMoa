@@ -95,6 +95,7 @@ const MoaUpdate = (props) => {
         .then((res) => {
           if (res.status === 200) {
             console.log("삭제됨", moa.partyId);
+            
             navigate(`/moazone`);
           }
         });

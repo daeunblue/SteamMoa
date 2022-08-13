@@ -15,6 +15,10 @@ function MoaDetail() {
   const params = useParams();
   const partyId = params.party_id;
   const navigate = useNavigate();
+
+  // cosnt [isLeader,setIsLeader]=useState();
+  const [leader,setLeader]=useState();
+
   
   const [ detailMoa, setDetailMoa ] = useState({
     gameId: 1,
@@ -34,36 +38,35 @@ function MoaDetail() {
     writerId: '',
     partyIsUrgent: false,
   });
+  
+  console.log('detailMoa? ',detailMoa);
+   // leader: true
+    // playerId: 5
+    // playerName: "수정이름"
+    // userId: "dd"
 
   const items = [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
 
-  let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
-
-  let bgColors = [
-    "bg-moa-pink",
-    "bg-moa-green",
-    "bg-mainBtn-disabled",
-    "moa-yellow",
-    "bg-moa-purple",
-    "bg-mainBtn-disabled",
-  ];
+  
 
   useEffect(() => {
     moaDetail(partyId)
     .then(({data}) => {
       console.log("moaDetail 호출 후", data)
       setDetailMoa(data);
-      
         const lst=[];
         data.partyTags.forEach((tag)=>{
         const idx= items.findIndex((item)=>item===tag);
         lst.push(`${idx+1}`);
       })
-        const users=[];
+        // const users=[];
         data.partyPlayers.forEach((player)=>{
-        users.push(player.userId)
+        // users.push(player.userId)
+        if (player.leader === true){
+          setLeader(player.userId)
+        }
       })
-        })
+      })
     },[]);
 
   const handlePartyJoin = (e) => {
@@ -112,6 +115,43 @@ function MoaDetail() {
   })
   console.log("현재까지 플레이어 리스트 :", playerList)
 
+  const onDeleteUser = (deleteUserId) => {
+    console.log(partyId);
+    console.log(deleteUserId);
+    //파티원 삭제 모달창
+    Swal.fire({
+      title: "파티원을 정말 강퇴시키겠습니까?",
+      icon: "warning",
+      position: "center",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네. 퇴장시킬래요",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        moaLeave(detailMoa, partyId, deleteUserId);
+        setDetailMoa((detailMoa)=>{
+         const newPlayerList= detailMoa.partyPlayers.filter((player)=>player.userId!==deleteUserId);
+
+         return {...detailMoa, partyPlayers:newPlayerList}
+
+        })
+      }
+    })
+  }
+
+  let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
+
+  let bgColors = [
+    "bg-red-400",
+    "bg-moa-pink",
+    "bg-moa-green",
+    "bg-moa-yellow",
+    "bg-moa-purple",
+    "bg-mainBtn-disabled",
+  ];
+  
   return (
     <>
     <Navbar />
@@ -172,8 +212,9 @@ function MoaDetail() {
           {detailMoa.partyPlayers.length !== 0 &&<div className="my-3 text-base font-blackSans font-semibold" name="startTime">파티 시작 시간 : {formatTimeISO(detailMoa.startTime)} </div>}
           <div className="text-base font-blackSans font-semibold my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div className='flex'>
+
             {detailMoa.partyPlayers.map((player, playerId)=>{
-              return <MoaUserCard key={playerId} player={player} />
+              return <MoaUserCard key={playerId} player={player} leader={leader} deleteUser={onDeleteUser} />
             })}
           </div>
           <hr />

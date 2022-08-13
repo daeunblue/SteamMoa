@@ -22,9 +22,11 @@ function MoaCreate() {
     partyDescription: "",
     partyTags: [],
     partyTitle: "",
-    startTime: "",
+    startTime: new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, ''),
     userId: userId,
   });
+
+  console.log(moa);
   // 파티 태그 요소 하드 코딩
   const [searchParams] = useSearchParams();
   const game_id = searchParams.get("game") ? searchParams.get("game") : null;
@@ -135,6 +137,7 @@ function MoaCreate() {
     setModalHidden(!modalHidden);
   };
 
+
   return (
     <>
       <Navbar />
@@ -217,6 +220,7 @@ function MoaCreate() {
                     onChange={onChange}
                     className="w-full text-main-500 bg-createInput-gray rounded"
                     type="datetime-local"
+                    min={new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')}
                   />
                 </div>
               </div>
