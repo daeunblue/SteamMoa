@@ -16,6 +16,7 @@ public class PartyPlayerDTO {
     private String playerName;
     private String userId;
     private boolean isLeader;
+    private boolean isVoted;
 
     public PartyPlayerDTO(Puser pu) {
         this.playerId = pu.getUser().getUserId();
