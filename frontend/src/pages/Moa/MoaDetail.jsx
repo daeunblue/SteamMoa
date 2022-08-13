@@ -5,7 +5,7 @@ import { moaDetail, moaJoin, moaLeave } from '../../api/Moazone';
 import MoaUserCard from '../../components/Moa/MoaUserCard';
 import Navbar from '../../components/Navbar';
 import { auth } from '../../recoil/Auth';
-import { formatTime } from '../../util/FormatTime';
+import { formatTimeISO } from '../../util/FormatTime';
 import Swal from 'sweetalert2';
 
 function MoaDetail() {
@@ -15,6 +15,8 @@ function MoaDetail() {
   const params = useParams();
   const partyId = params.party_id;
   const navigate = useNavigate();
+
+  const [leader,setLeader]=useState();
   
   const [ detailMoa, setDetailMoa ] = useState({
     gameId: 1,
@@ -34,45 +36,30 @@ function MoaDetail() {
     writerId: '',
     partyIsUrgent: false,
   });
-
-  const items= [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
-
-  let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
-
-  let bgColors = [
-    "bg-moa-pink",
-    "bg-moa-green",
-    "bg-mainBtn-disabled",
-    "moa-yellow",
-    "bg-moa-purple",
-    "bg-mainBtn-disabled",
-  ];
-
-  // 1. useEffect => detail 정보를 불러오기
-  // 2. 참여하기 버튼 누르면 참여 API 호출
-  // 3. 응답 받은 객체로 setDetailMoa 해서 값 없데이트 (그러면 참여자 정보가 업데이트 됨)
-  // 4. 화면 파티원 목록에 유저 카드가 렌더링
+ 
+  const items = [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
 
   useEffect(() => {
     moaDetail(partyId)
     .then(({data}) => {
-      console.log("moaDetail 호출 후", data)
+      console.log("moaDetail 호출 후", data);
       setDetailMoa(data);
-      console.log("detail 업뎃후" ,detailMoa)
       
-      //   const lst=[];
-      //   data.partyTags.forEach((tag)=>{
-      //   const idx= items.findIndex((item)=>item===tag);
-      //   lst.push(`${idx+1}`);
-      // })
-      //   const users=[];
-      //   data.partyPlayers.forEach((player)=>{
-      //   users.push(player.userId)
-      // })
-        })
+        const lst=[];
+        data.partyTags.forEach((tag)=>{
+        const idx= items.findIndex((item)=>item===tag);
+        lst.push(`${idx+1}`);
+      })
+        const users=[];
+        data.partyPlayers.forEach((player)=>{
+        // users.push(player.userId)
+        if (player.leader === true){
+          setLeader(player.userId)
+        }
+      })
+      })
     },[]);
 
-  // 파티 참여 api 호출
   const handlePartyJoin = (e) => {
     e.preventDefault();
     moaJoin(detailMoa, partyId, userId)
@@ -82,46 +69,31 @@ function MoaDetail() {
     })
   }
 
-  // 파티 수정
   const handlePartyUpdate = (e) => {
     e.preventDefault();
     navigate(`/moazone/update/${partyId}`);
   }
 
-  // 파티 탈퇴
   const handlePartyLeave = (e) => {
     e.preventDefault();
     moaLeave(detailMoa, partyId, userId)
-    .then((res) => {
-      console.log("파티 탈퇴 버튼 누른 후:", res)
-      setDetailMoa(res.data);
-    })
+        .then((res) => {
+          setDetailMoa(res.data)
+        })
   }
 
-  // 파티 공유
   const handlePartyShare = (e) => {
     e.preventDefault();
-    // chatLinkShare();
+    Swal.fire({
+      title: `${detailMoa.chatLink}`,
+      icon: 'success',
+      position: 'center',
+      showCloseButton: true,
+    })
+    .then((res) => {
+
+    })
   }
-  console.log('객체??', detailMoa)
-  console.log('starttime ??', detailMoa.startTime)
-  // const chatLinkShare = Swal.fire({
-  //   title: '<strong>HTML <u>example</u></strong>',
-  //   icon: 'info',
-  //   html:
-  //     'You can use <b>bold text</b>, ' +
-  //     '<a href="//sweetalert2.github.io">links</a> ' +
-  //     'and other HTML tags',
-  //   showCloseButton: true,
-  //   showCancelButton: true,
-  //   focusConfirm: false,
-  //   confirmButtonText:
-  //     '<i class="fa fa-thumbs-up"></i> Great!',
-  //   confirmButtonAriaLabel: 'Thumbs up, great!',
-  //   cancelButtonText:
-  //     '<i class="fa fa-thumbs-down"></i>',
-  //   cancelButtonAriaLabel: 'Thumbs down'
-  // })
 
   const handlePrevPage = (e) => {
     e.preventDefault();
@@ -132,8 +104,45 @@ function MoaDetail() {
    detailMoa.partyPlayers.forEach((player) => {
     playerList.push(player.userId);
   })
-  console.log("현재까지 플레이어 리스트 :", playerList)
 
+  const onDeleteUser = (deleteUserId) => {
+    console.log(partyId);
+    console.log(deleteUserId);
+    //파티원 삭제 모달창
+    Swal.fire({
+      title: "파티원을 정말 강퇴시키겠습니까?",
+      icon: "warning",
+      position: "center",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네. 퇴장시킬래요",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        moaLeave(detailMoa, partyId, deleteUserId);
+        setDetailMoa((detailMoa)=>{
+         const newPlayerList= detailMoa.partyPlayers.filter((player)=>player.userId!==deleteUserId);
+
+         return {...detailMoa, partyPlayers:newPlayerList}
+
+        })
+      }
+    })
+  }
+
+  let statusMsg = ["마감임박", "모집중", "모집완료", "게임중", "게임완료", "모집실패"];
+
+  let bgColors = [
+    "bg-red-400",
+    "bg-moa-pink",
+    "bg-moa-green",
+    "bg-moa-yellow",
+    "bg-moa-purple",
+    "bg-mainBtn-disabled",
+  ];
+
+  
   return (
     <>
     <Navbar />
@@ -145,27 +154,27 @@ function MoaDetail() {
         <img className="w-screen absolute top-[-50%] left-0 hover:scale-[55%] hover:translate-y-[5%] hover:object-contain transition-transform delay-150 ease-in-out duration-700" src={detailMoa.gameImgPath} alt="게임 이미지" />
       </div>
       {/* 게임 이름 */}
-      <div className="w-full h-4 tablet:h-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to font-blackSans text-xs my-1 whitespace-nowrap overflow-hidden text-ellipsis ">{detailMoa.gameName}</div>
+      <div className="w-full laptop:h-8 tablet:h-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to font-blackSans text-xl my-2 whitespace-nowrap text-ellipsis">{detailMoa.gameName}</div>
       {/* 본문 */}
       <div className="p-[2.5%] mb-4">
         <div>
-          <div className='flex '>
-            <div className="flex justify-content-around">
+          <div className='flex justify-between'>
+            <div className="flex justify-between">
               {/* 파티 모집 상태 */}
               <div
-                className={`p-auto rounded flex justify-center items-center w-per35 font-blackSans text-white
+                className={`px-4 rounded justify-center items-center w-per35 font-blackSans text-white flex
                 ${detailMoa.partyIsUrgent ? bgColors[0] : bgColors[detailMoa.partyStatus]}`}>
                 <span>{detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}</span>
               </div>
               {/* 파티 제목 */}
               <div 
-                className="font-blackSans text-xl tablet:text-2xl laptop:text-[32px] text-whitetext-base whitespace-nowrap overflow-hidden text-ellipsis" 
+                className="mx-4 font-blackSans text-xl tablet:text-2xl laptop:text-[32px] text-whitetext-base whitespace-nowrap text-ellipsis" 
                 name="partyTitle" 
                 value={detailMoa.partyTitle}>
                   {detailMoa.partyTitle}
               </div>
             </div>
-            <div className=''>
+            <div className='flex'>
               <div>
                 {
                   detailMoa.writerId === userId ? <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2 text-black" onClick={handlePartyUpdate}>파티 수정하기</button> : 
@@ -176,7 +185,7 @@ function MoaDetail() {
             </div>
           </div>
 
-          <div className="flex my-5">
+          <div className="flex justify-between my-5">
             <div className="flex">
             {detailMoa.partyTags.map((item, idx) => {
               return (
@@ -186,23 +195,23 @@ function MoaDetail() {
                 )
               })}
             </div>
-            <div className='flex justify-content-end'>
-              <button className="hover:cursor-pointer hover:text-white rounded-2xl font-bold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center text-black" onClick={handlePartyShare}>파티 공유하기</button>
+            <div className='flex'>
+              <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center text-black" onClick={handlePartyShare}>파티 공유하기</button>
             </div>
           </div>
           <hr />
-          {detailMoa.partyPlayers.length !== 0 &&<div className="text-base font-sans font-semibold" name="startTime">파티시간: {formatTime(detailMoa.startTime)} </div>}
-          <div className="text-base font-blackSans font-semibold my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
+          {detailMoa.partyPlayers.length !== 0 &&<div className="my-3 text-xl font-blackSans" name="startTime">파티 시작 시간 : {formatTimeISO(detailMoa.startTime)} </div>}
+          <div className="text-xl font-blackSans my-3">참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})</div>
           <div className='flex'>
             {detailMoa.partyPlayers.map((player, playerId)=>{
-              return <MoaUserCard key={playerId} player={player}/>
+              return <MoaUserCard key={playerId} player={player} leader={leader} deleteUser={onDeleteUser} />
             })}
           </div>
           <hr />
-          <div className='text-base font-blackSans font-semibold my-3'>파티 모집 내용</div>
+          <div className='font-blackSans text-xl my-3'>파티 모집 내용</div>
           <div className="w-full h-48 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light w-full text-black"> {detailMoa.partyDescription}</div>
           <div className='grid place-items-center mt-4'>
-            <button onClick={handlePrevPage} className="w-32 h-12 mx-3 bg-mainBtn-disabled rounded-sm text-black text-sm">파티 목록 보기</button>
+            <button onClick={handlePrevPage} className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">파티 목록 보기</button>
           </div>
         </div>
       </div>
