@@ -26,8 +26,7 @@ const ProfileMyWalk = (props) => {
     ()=>{
       getTacticUser(profileName)
         .then((res)=>{
-          console.log(res)
-          setContentList(res.data.reviews)
+          setContentList(res.data)
           setRender(render=>render+1)
           setIsLoading(false)
         }).catch((err) => {console.log(err)
