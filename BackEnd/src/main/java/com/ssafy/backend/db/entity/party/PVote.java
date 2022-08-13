@@ -22,9 +22,11 @@ public class PVote {
     @Column(name="pvote_id")
     private Long pvoteId;
 
+    // 어떤 파티에대한
     @Column(name = "party_id")
     private Long partyId;
 
+    // 어떤 유저가 평가했는지
     @Column(name = "user_service_id")
     private String userServiceId;
 
