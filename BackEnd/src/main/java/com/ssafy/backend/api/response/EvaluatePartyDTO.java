@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class PartyDTO {
+public class EvaluatePartyDTO {
 
     private Long gameId;
     private String gameImgPath;
@@ -32,12 +32,12 @@ public class PartyDTO {
     private String writeTime;
     private String writerId;
     private String partyStatus;
-    private List<PartyPlayerDTO> partyPlayers = new ArrayList<>();
+    private List<EvaluatePartyPlayerDTO> partyPlayers = new ArrayList<>();
     private String partyDescription;
     private String chatLink;
     private boolean partyIsUrgent;
 
-    public PartyDTO(Party p){
+    public EvaluatePartyDTO(Party p){
         this.gameId = p.getGame().getGameId();
         this.gameImgPath = p.getGame().getImgpath();
         this.gameName = p.getGame().getName();
@@ -52,7 +52,7 @@ public class PartyDTO {
         this.writeTime = p.getWriteTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         this.partyStatus = p.getStatus();
         for (Puser puser: p.getPusers()) {
-            this.partyPlayers.add(new PartyPlayerDTO(puser));
+            this.partyPlayers.add(new EvaluatePartyPlayerDTO(puser));
             if(puser.isLeader())
                 this.writerId = puser.getUser().getUserServiceId();
         }

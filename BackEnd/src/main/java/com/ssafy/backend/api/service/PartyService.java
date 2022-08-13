@@ -2,10 +2,12 @@ package com.ssafy.backend.api.service;
 
 import com.ssafy.backend.api.request.PartyPostReq;
 import com.ssafy.backend.api.request.PartyPutReq;
+import com.ssafy.backend.api.response.EvaluatePartyDTO;
 import com.ssafy.backend.api.response.PUserEvalDto;
 import com.ssafy.backend.api.response.PartyCreateGamelistDTO;
 import com.ssafy.backend.api.response.PartyDTO;
 import org.json.simple.JSONObject;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -39,6 +41,10 @@ public interface PartyService {
 
     // 파티 평가를 위한 정보 반환
     List<PUserEvalDto> getPlayersForEvaluate(Long partyId, String userServiceId);
+
+    // 평가 페이지용 파티 상세 조회
+    @Transactional
+    EvaluatePartyDTO getPartyDetailForEvaluation(Long partyId);
 
     // 파티원 참가
     String memberJoin(Long partyId, String userServiceId);
