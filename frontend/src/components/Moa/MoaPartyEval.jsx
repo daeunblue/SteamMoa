@@ -43,7 +43,6 @@ const MoaPartyEval = (props) => {
   })
 
   const onHandleScore = (e) => {
-    console.log(e.target)
     const idx = parseInt(e.target.name)
     const val = e.target.value
     setEvalInfo(
@@ -83,7 +82,7 @@ const MoaPartyEval = (props) => {
       }
     })
   }
-
+  
   const onCloseEvalModal = () => {
     setShowEvalModal(false)
   }
@@ -140,20 +139,20 @@ const MoaPartyEval = (props) => {
                     {evaluation.playerId}
                   </div>
                   <div className="star-rating-user mb-2 max-h-10 max-w-144 flex items-center">
-                    <input type="radio" id={`5-stars-edit`} name={idx} value={5} onChange={onHandleScore}/>
-                    <label htmlFor={`5-stars-edit`} className="star text-center drop-shadow-md
+                    <input type="radio" id={`${idx}-5-star`} name={idx} value={5} onChange={onHandleScore}/>
+                    <label htmlFor={`${idx}-5-star`} className="star text-center drop-shadow-md
                     ">★</label>            
-                    <input type="radio" id={`4-stars-edit`} name={idx} value={4} onChange={onHandleScore}/>
-                    <label htmlFor={`4-stars-edit`} className="star text-center drop-shadow-md
+                    <input type="radio" id={`${idx}-4-star`} name={idx} value={4} onChange={onHandleScore}/>
+                    <label htmlFor={`${idx}-4-star`} className="star text-center drop-shadow-md
                     ">★</label>
-                    <input type="radio" id={`3-stars-edit`} name={idx} value={3} onChange={onHandleScore}/>
-                    <label htmlFor={`3-stars-edit`} className="star text-center drop-shadow-md
+                    <input type="radio" id={`${idx}-3-star`} name={idx} value={3} onChange={onHandleScore}/>
+                    <label htmlFor={`${idx}-3-star`} className="star text-center drop-shadow-md
                     ">★</label>
-                    <input type="radio" id={`2-stars-edit`} name={idx} value={2} onChange={onHandleScore}/>
-                    <label htmlFor={`2-stars-edit`} className="star text-center drop-shadow-md
+                    <input type="radio" id={`${idx}-2-star`} name={idx} value={2} onChange={onHandleScore}/>
+                    <label htmlFor={`${idx}-2-star`} className="star text-center drop-shadow-md
                     ">★</label>
-                    <input type="radio" id={`1-stars-edit`} name={idx} value={1} onChange={onHandleScore}/>
-                    <label htmlFor={`1-stars-edit`} className="star text-center drop-shadow-md
+                    <input type="radio" id={`${idx}-1-star`} name={idx} value={1} onChange={onHandleScore}/>
+                    <label htmlFor={`${idx}-1-star`} className="star text-center drop-shadow-md
                     ">★</label>
                   </div>
                 </div>
