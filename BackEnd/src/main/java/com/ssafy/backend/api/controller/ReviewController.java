@@ -10,7 +10,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +31,7 @@ public class ReviewController {
     @PostMapping()
     @ApiOperation(value="게임 리뷰 생성", notes = "리뷰 생성")
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<? extends Map<String,Object>> createReview(@RequestBody ReviewPostReq reviewPostReq){
+    public ResponseEntity<? extends Map<String,Object>> createReview(@ApiIgnore Authentication authentication, @RequestBody ReviewPostReq reviewPostReq){
         Map<String,Object> resultMap = new HashMap<>();
 
         if(reviewService.createOrUpdateReview(reviewPostReq)){
@@ -44,7 +46,7 @@ public class ReviewController {
     @PutMapping()
     @ApiOperation(value="게임 리뷰 수정", notes = "리뷰 수정")
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<? extends Map<String,Object>> updateReview(@RequestBody ReviewPostReq reviewPostReq){
+    public ResponseEntity<? extends Map<String,Object>> updateReview(@ApiIgnore Authentication authentication, @RequestBody ReviewPostReq reviewPostReq){
         Map<String,Object> resultMap = new HashMap<>();
 
         if(reviewService.createOrUpdateReview(reviewPostReq)){
@@ -116,7 +118,7 @@ public class ReviewController {
     @DeleteMapping("/{review_id}")
     @ApiOperation(value = "리뷰 삭제", notes = "review_id에 해당하는 리뷰글 삭제")
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<? extends Map<String,Object>> deleteReview(@PathVariable("review_id")Long reviewId){
+    public ResponseEntity<? extends Map<String,Object>> deleteReview(@ApiIgnore Authentication authentication, @PathVariable("review_id")Long reviewId){
         Map<String, Object> resultMap = new HashMap<>();
 
         if(reviewService.existReview(reviewId)){    // 해당 리뷰글이 존재하는지 확인

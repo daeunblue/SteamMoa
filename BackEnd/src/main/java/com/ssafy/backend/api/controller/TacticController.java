@@ -11,7 +11,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +85,7 @@ public class TacticController {
     @PostMapping()
     @ApiOperation(value="게임 공략글 생성", notes = "공략글 생성")
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<? extends Map<String,Object>> createTactics(@RequestBody TacticPostReq tacticPostReq){
+    public ResponseEntity<? extends Map<String,Object>> createTactics(@ApiIgnore Authentication authentication, @RequestBody TacticPostReq tacticPostReq){
         Map<String,Object> resultMap = new HashMap<>();
 
         if(tacticService.createTactics(tacticPostReq)){
@@ -98,7 +100,7 @@ public class TacticController {
     @PutMapping()
     @ApiOperation(value="게임 공략글 수정", notes = "공략글 수정")
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<? extends Map<String,Object>> updateTactics(@RequestBody TacticPutReq tacticPutReq){
+    public ResponseEntity<? extends Map<String,Object>> updateTactics(@ApiIgnore Authentication authentication, @RequestBody TacticPutReq tacticPutReq){
         Map<String,Object> resultMap = new HashMap<>();
 
         if(tacticService.updateTactic(tacticPutReq)){
@@ -114,7 +116,7 @@ public class TacticController {
     @DeleteMapping("/{tacticId}")
     @ApiOperation(value="게임 공략글 삭제", notes = "공략글 삭제")
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<? extends Map<String,Object>> deleteTactics(@PathVariable("tacticId") Long tacticId){
+    public ResponseEntity<? extends Map<String,Object>> deleteTactics(@ApiIgnore Authentication authentication, @PathVariable("tacticId") Long tacticId){
         Map<String,Object> resultMap = new HashMap<>();
 
         if(tacticService.deleteTactic(tacticId)){
