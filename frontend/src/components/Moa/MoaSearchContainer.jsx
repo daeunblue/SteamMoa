@@ -6,7 +6,7 @@ import { faAngleDown, faAngleUp, faRotateRight } from "@fortawesome/free-solid-s
 import FilterCaterories from "../Filter/FilterCaterories";
 import FilterBadge from "../Filter/FilterBadge";
 import { useRecoilState } from "recoil";
-import { moaSearchFilter, moaMaxPage } from "../../recoil/Moazone";
+import { moaSearchFilter } from "../../recoil/Moazone";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const MoazoneSearchContainer = (props) => {
