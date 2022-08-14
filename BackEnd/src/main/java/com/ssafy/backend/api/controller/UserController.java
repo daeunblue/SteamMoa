@@ -94,7 +94,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
 //    public ResponseEntity<? extends Map<String, Object>> followUser(@ApiIgnore Authentication authentication, @RequestBody UserFollowPostReq userFollowPostReq){
-    public ResponseEntity<? extends Map<String, Object>> followUser(@RequestBody UserFollowPostReq userFollowPostReq){
+    public ResponseEntity<? extends Map<String, Object>> followUser(@ApiIgnore Authentication authentication, @RequestBody UserFollowPostReq userFollowPostReq){
 
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -123,7 +123,7 @@ public class UserController {
     })
 
 //    public ResponseEntity<? extends Map<String, Object>> unFollowUser(@ApiIgnore Authentication authentication, @RequestBody UserFollowPostReq userFollowPostReq){
-    public ResponseEntity<? extends Map<String, Object>> unFollowUser(@RequestBody UserFollowPostReq userFollowPostReq){
+    public ResponseEntity<? extends Map<String, Object>> unFollowUser(@ApiIgnore Authentication authentication, @RequestBody UserFollowPostReq userFollowPostReq){
         Map<String, Object> resultMap = new HashMap<>();
 
         String FollowingUserId = userFollowPostReq.getFollowingUserId();
@@ -180,7 +180,7 @@ public class UserController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends Map<String, Object>> getMyPartiesProceeding(@PathVariable("user_service_id")String userServiceId){
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesProceeding(@ApiIgnore Authentication authentication, @PathVariable("user_service_id")String userServiceId){
         Map<String, Object> resultMap = userService.getMyPartiesProceeding(userServiceId);
 
         return ResponseEntity.status(200).body(resultMap);
@@ -193,7 +193,7 @@ public class UserController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends Map<String, Object>> getMyPartiesCompleted(@PathVariable("user_service_id")String userServiceId){
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesCompleted(@ApiIgnore Authentication authentication, @PathVariable("user_service_id")String userServiceId){
         Map<String, Object> resultMap = userService.getMyPartiesCompleted(userServiceId);
 
         return ResponseEntity.status(200).body(resultMap);
@@ -207,7 +207,7 @@ public class UserController {
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends Map<String, Object>> getMyPartiesCreated(@PathVariable("user_service_id")String userServiceId){
+    public ResponseEntity<? extends Map<String, Object>> getMyPartiesCreated(@ApiIgnore Authentication authentication, @PathVariable("user_service_id")String userServiceId){
         Map<String, Object> resultMap = userService.getMyPartiesCreated(userServiceId);
 
         return ResponseEntity.status(200).body(resultMap);

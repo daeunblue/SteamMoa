@@ -51,6 +51,8 @@ public class ExceptionController {
         Map<String, String> error = new HashMap<>();
         error.put("code", "ERR 500");
         error.put("message", "Server Error");
+        System.out.println(ex.getMessage());
+        System.out.println(ex.getStackTrace());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }
