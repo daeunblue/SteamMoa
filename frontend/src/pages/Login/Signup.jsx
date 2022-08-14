@@ -1,10 +1,43 @@
-import React from "react";
+import React, {useEffect} from "react";
+import { useNavigate } from "react-router-dom";
+
 import Navbar from "../../components/Navbar";
 import '../../assets/style.css'
+import { useRecoilState } from "recoil";
+import { auth } from "../../recoil/Auth";
+import Swal from 'sweetalert2'
+
 
 // import axios from "axios";
 
 const Signup = (props) => {
+  const [userAuth, ] = useRecoilState(auth);
+  const navigate = useNavigate();
+
+
+  const FailureToast = Swal.mixin({
+    buttonsStyling: false,
+    toast: true,
+    position: 'center',
+    showConfirmButton: true,
+  })
+
+  useEffect(()=>{
+    if(userAuth.isLoggedIn){
+      FailureToast.fire({
+        customClass: {
+          confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
+        },
+        width:'35%',
+        padding: '1em',
+        icon: 'error',
+        title: `이미 로그인 되어있습니다.`,
+        text: '로그인 상태에서는 회원가입할 수 없습니다.'
+      })
+      navigate('/')
+    }
+  })
+  
   const handleSteamAuth = () => {
     // genUrl 중간함수
     const http_build_query = (obj) => {
