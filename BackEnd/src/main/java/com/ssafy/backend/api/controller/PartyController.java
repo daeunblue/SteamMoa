@@ -21,7 +21,9 @@ import io.swagger.annotations.ApiResponses;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +81,7 @@ public class PartyController {
     // 파티 생성
     @PostMapping("")
     @ApiOperation(value = "새로운 파티 생성", notes = "파티장이 새로운 파티를 생성한다.")
-    public ResponseEntity<?> createParty(@RequestBody PartyPostReq partyPostReq){
+    public ResponseEntity<?> createParty(@ApiIgnore Authentication authentication, @RequestBody PartyPostReq partyPostReq){
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("message", partyService.createParty(partyPostReq));
         if(resultMap.get("message").equals("success"))
@@ -116,7 +118,7 @@ public class PartyController {
     @PutMapping("/{partyid}")
     @ApiOperation(value = "파티 수정", notes = "파티장이 파티 정보를 수정하는 경우, 파티원이 파티를 가입하거나 탈퇴하는 경우 호출.")
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<?> updateParty(@PathVariable("partyid") Long partyid, @RequestBody PartyPutReq partyPutReq){
+    public ResponseEntity<?> updateParty(@ApiIgnore Authentication authentication, @PathVariable("partyid") Long partyid, @RequestBody PartyPutReq partyPutReq){
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("message", partyService.updateParty(partyid, partyPutReq));
         return ResponseEntity.status(200).body(resultMap);
@@ -130,7 +132,7 @@ public class PartyController {
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<?> deleteParty(@PathVariable("partyid") Long partyid){
+    public ResponseEntity<?> deleteParty(@ApiIgnore Authentication authentication, @PathVariable("partyid") Long partyid){
         boolean result = partyService.deleteParty(partyid);
 
         if(result)
@@ -145,7 +147,7 @@ public class PartyController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
-    public ResponseEntity<? extends Map<String,Object>> getEvaluationPartyInfo(@PathVariable("party_id")Long partyId, @PathVariable("user_service_id")String userServiceId){
+    public ResponseEntity<? extends Map<String,Object>> getEvaluationPartyInfo(@ApiIgnore Authentication authentication, @PathVariable("party_id")Long partyId, @PathVariable("user_service_id")String userServiceId){
         Map<String, Object> result = new HashMap<>();
         EvaluatePartyDTO evaluatePartyDTO = partyService.getPartyDetailForEvaluation(partyId, userServiceId);
 
@@ -168,10 +170,10 @@ public class PartyController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
-    public ResponseEntity<? extends Map<String,Object>> postEvaluation(@RequestBody PartyEvalPostReq partyEvalPostReq){
+    public ResponseEntity<? extends Map<String,Object>> postEvaluation(@ApiIgnore Authentication authentication, @RequestBody PartyEvalPostReq partyEvalPostReq){
         Map<String,Object> result = new HashMap<>();
 
-        if(userService.updateUserScore(partyEvalPostReq.getUserId(),partyEvalPostReq.getScore())){
+        if(userService.updateUserScore(partyEvalPostReq.getPartyId(), partyEvalPostReq.getVoterId(), partyEvalPostReq.getUserId(),partyEvalPostReq.getScore())){
             result.put("message","Success");
             // 파티원 평가여부 테이블에 데이터 추가
             pvoteRepository.save(new Pvote(null, partyEvalPostReq.getPartyId(), userRepository.findByUserServiceId(partyEvalPostReq.getVoterId()).orElse(null).getUserId(), userRepository.findByUserId(partyEvalPostReq.getUserId()).orElse(null).getUserServiceId()));
@@ -190,7 +192,7 @@ public class PartyController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
-    public ResponseEntity<? extends Map<String,Object>> closeParty(@PathVariable("partyid") Long partyid){
+    public ResponseEntity<? extends Map<String,Object>> closeParty(@ApiIgnore Authentication authentication, @PathVariable("partyid") Long partyid){
         Map<String,Object> result = new HashMap<>();
 
         if(partyService.closeParty(partyid)){
@@ -210,7 +212,7 @@ public class PartyController {
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<?> memberJoin(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
+    public ResponseEntity<?> memberJoin(@ApiIgnore Authentication authentication, @PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
         String result = partyService.memberJoin(partyid, userServiceId);
 
         if(result.equals("success"))
@@ -227,7 +229,7 @@ public class PartyController {
             @ApiResponse(code = 400, message = "유효하지 않은 개체 id")
     })
     // @ApiIgnore Authentication authentication,
-    public ResponseEntity<?> memberLeave(@PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
+    public ResponseEntity<?> memberLeave(@ApiIgnore Authentication authentication, @PathVariable("partyid") Long partyid, @PathVariable("userId") String userServiceId){
         String result = partyService.memberLeave(partyid, userServiceId);
 
         if(result.equals("success"))

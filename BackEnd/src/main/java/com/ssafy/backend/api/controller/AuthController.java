@@ -13,8 +13,10 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,7 +88,8 @@ public class AuthController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     @ResponseBody
-    public ResponseEntity<? extends UserLoginPostRes>login(@RequestBody UserLoginPostReq userLoginPostReq){
+    public ResponseEntity<?>login(@RequestBody UserLoginPostReq userLoginPostReq){
+        Map<String, Object> resultMap = new HashMap<>();
 
         String userId = userLoginPostReq.getUser_service_id();
         String password = userLoginPostReq.getUser_service_pw();
@@ -94,10 +97,19 @@ public class AuthController {
         boolean idExist = userService.checkServiceIdDuplicate(userId);
         // 아이디 자체가 유효하지 않은 경우 407에러 return
         if(!idExist){
-            return ResponseEntity.status(407).body(UserLoginPostRes.of(407, "Invalid Id", null));
+            System.out.println("유효하지않은 로그인");
+            resultMap.put("status",407);
+            resultMap.put("message","Invalid Id");
+            resultMap.put("accessToken",null);
+            System.out.println(resultMap.get("status"));
+//            return ResponseEntity.status(407).body(UserLoginPostRes.of(407, "Invalid Id", null));
+            return ResponseEntity.status(407).body(UserLoginPostRes.of(407, "탈퇴한 사용자입니다.", null));
+//            return ResponseEntity.status(407).body(resultMap);
         }
 
+
         User result = userService.getUserByUserId(userId);
+
 
         if(result.getIsDeleted()){  // 이미 탈퇴한 사용자의 경우
             return ResponseEntity.status(407).body(UserLoginPostRes.of(407, "탈퇴한 사용자입니다.", null));
@@ -142,7 +154,7 @@ public class AuthController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody>deleteUser(@PathVariable("user_service_id") String userServiceId){
+    public ResponseEntity<? extends BaseResponseBody>deleteUser(@ApiIgnore Authentication authentication, @PathVariable("user_service_id") String userServiceId){
         boolean success = userService.deleteUser(userServiceId);
         if(success){
             return ResponseEntity.ok(BaseResponseBody.of(200,"Success"));
@@ -150,6 +162,8 @@ public class AuthController {
             return ResponseEntity.ok(BaseResponseBody.of(400,"Fail"));
         }
     }
+
+
 
 
 
