@@ -222,12 +222,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean updateUserScore(Long userId, Integer score) {
+    public boolean updateUserScore(Long partyId, String voterId, Long userId, Integer score) {
 //        try{
 //
 //        }catch (Exception e){
 //
 //        }
+
+        // 예외처리
+        for(Pvote pv : (List<Pvote>) pvoteRepository.findAllByPartyId(partyId).orElse(Collections.EMPTY_LIST)) {
+            if (pv.getVoterId() == userRepository.findByUserServiceId(voterId).get().getUserId() && pv.getUserServiceId().equals(userRepository.findByUserId(userId).get().getUserServiceId())) {
+                return false;
+            }
+        }
+
         Optional<User> oUser = userRepository.findByUserId(userId);
         if(oUser.isPresent()){
             User user = userRepository.findByUserId(userId).get();
