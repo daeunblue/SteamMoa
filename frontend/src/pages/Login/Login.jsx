@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -18,6 +18,7 @@ const Login = (props) => {
     service_pw: "",
   });
   const navigate = useNavigate();
+  
   const SuccessToast = Swal.mixin({
     toast: true,
     position: 'center',
@@ -30,6 +31,23 @@ const Login = (props) => {
     position: 'center',
     showConfirmButton: true,
   })
+
+  useEffect(()=>{
+    if(userAuth.isLoggedIn){
+      FailureToast.fire({
+        customClass: {
+          confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
+        },
+        width:'35%',
+        padding: '1em',
+        icon: 'error',
+        title: `이미 로그인 되어있습니다.`,
+        text: '재로그인을 원할 시 로그아웃하세요.',
+      })
+      navigate('/')
+    }
+  })
+  
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -45,7 +63,7 @@ const Login = (props) => {
     }
   }
 
-  const login = () => {
+  const login = () => {    
     postLogin({
       user_service_id: user.service_id,
       user_service_pw: user.service_pw,

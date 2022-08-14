@@ -83,7 +83,6 @@ function MoaDetail() {
 
   useEffect(()=>{
     if(isParticipant && detailMoa.partyStatus===`4`){
-      console.log(1)
       getPartyEvalInfo(partyId, userId)
         .then((res)=>{
           console.log(res)
