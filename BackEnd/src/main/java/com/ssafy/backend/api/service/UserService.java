@@ -31,7 +31,7 @@ public interface UserService {
     boolean updateUser(Long userId, UserUpdatePutReq userUpdatePutReq);
 
     // 매너온도 변경
-    boolean updateUserScore(Long userId, Integer score);
+    boolean updateUserScore(Long partyId, String voterId, Long userId, Integer score);
 
     // 팔로우 기능
     boolean followUser(String followingUserId, String followerUserId);

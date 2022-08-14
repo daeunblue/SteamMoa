@@ -39,7 +39,7 @@ public class UserRes extends BaseResponseBody{
         res.setUserServiceId(userServiceId);
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setUserPoint(userPoint);
+        res.setUserPoint(Math.round(userPoint*10)/10.0);
         for (UserTag tag:userTags) {
             res.userTags.add(tag.getUTagStorage().getContent());
         }

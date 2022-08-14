@@ -35,7 +35,7 @@ public class UserDto {
     public UserDto(long userId, String userServiceId, double userPoint, List<String> userTags, String userName) {
         this.userId = userId;
         this.userServiceId = userServiceId;
-        this.userPoint = userPoint;
+        this.userPoint = Math.round(userPoint*10)/10.0;
         this.userName = userName;
         for (String tag:userTags) {
             this.userTags.add(tag);
