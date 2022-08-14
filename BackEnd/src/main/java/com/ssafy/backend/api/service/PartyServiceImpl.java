@@ -48,7 +48,7 @@ public class PartyServiceImpl implements PartyService{
         partyRepository.findAll().forEach(Party->resultlist.add(new PartylistDTO(Party)));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxPage", Integer.toString(partyRepository.findAll().size()/12+1));
+        jsonObject.put("maxPage", Integer.toString((partyRepository.findAll().size()-1)/12+1));
 
         System.out.println("resultlist 개수: "+resultlist.size());
         System.out.println("resultlist: "+resultlist.get(0).getPartyTitle());
@@ -77,7 +77,7 @@ public class PartyServiceImpl implements PartyService{
         partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString, pageable).orElse(Collections.EMPTY_LIST).forEach(Party->resultlist.add(new PartylistDTO((Party)Party)));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxPage", Integer.toString(partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString)/12+1));
+        jsonObject.put("maxPage", Integer.toString((partyRepository.findAllPartyByFilter(searchString, partyTags, partyStatuses, sortString)-1)/12+1));
 
         JSONArray data = new JSONArray();
         for (PartylistDTO p : resultlist) {
@@ -164,7 +164,7 @@ public class PartyServiceImpl implements PartyService{
         }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maxPage", Integer.toString(gameRepository.findAllMultiGameByFilter(searchString, new String[]{})/10+1));
+        jsonObject.put("maxPage", Integer.toString((gameRepository.findAllMultiGameByFilter(searchString, new String[]{})-1)/10+1));
 
         JSONArray data = new JSONArray();
         for (PartyCreateGamelistDTO g : resultlist) {
