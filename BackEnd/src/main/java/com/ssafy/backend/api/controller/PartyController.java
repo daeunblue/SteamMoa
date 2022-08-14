@@ -147,7 +147,7 @@ public class PartyController {
     })
     public ResponseEntity<? extends Map<String,Object>> getEvaluationPartyInfo(@PathVariable("party_id")Long partyId, @PathVariable("user_service_id")String userServiceId){
         Map<String, Object> result = new HashMap<>();
-        EvaluatePartyDTO evaluatePartyDTO = partyService.getPartyDetailForEvaluation(partyId);
+        EvaluatePartyDTO evaluatePartyDTO = partyService.getPartyDetailForEvaluation(partyId, userServiceId);
 
         if(evaluatePartyDTO == null){
             result.put("message","Fail");

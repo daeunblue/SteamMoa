@@ -44,7 +44,7 @@ public interface PartyService {
 
     // 평가 페이지용 파티 상세 조회
     @Transactional
-    EvaluatePartyDTO getPartyDetailForEvaluation(Long partyId);
+    EvaluatePartyDTO getPartyDetailForEvaluation(Long partyId, String userServiceId);
 
     // 파티원 참가
     String memberJoin(Long partyId, String userServiceId);

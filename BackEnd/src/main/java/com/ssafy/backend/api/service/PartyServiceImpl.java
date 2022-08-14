@@ -273,7 +273,7 @@ public class PartyServiceImpl implements PartyService{
     // 평가 페이지용 파티 상세 조회
     @Override
     @Transactional
-    public EvaluatePartyDTO getPartyDetailForEvaluation(Long partyId) {
+    public EvaluatePartyDTO getPartyDetailForEvaluation(Long partyId, String userServiceId) {
         EvaluatePartyDTO evaluatePartyDTO = new EvaluatePartyDTO(partyRepository.findByPartyId(partyId).orElse(null));
 
         Set<String> evaluatedMembers = new HashSet<>();
@@ -295,6 +295,12 @@ public class PartyServiceImpl implements PartyService{
             }
         }
 
+        EvaluatePartyPlayerDTO epp_fordelete = null;
+        for (EvaluatePartyPlayerDTO epp: evaluatePartyDTO.getPartyPlayers()) {
+            if(epp.getUserId().equals(userServiceId))
+                epp_fordelete = epp;
+        }
+        evaluatePartyDTO.getPartyPlayers().remove(epp_fordelete);
 
         return evaluatePartyDTO;
     }
