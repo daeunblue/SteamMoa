@@ -200,13 +200,13 @@ function MoaDetail() {
             <div className="flex justify-between">
               {/* 파티 모집 상태 */}
               <div
-                className={`px-4 rounded justify-center items-center w-per35 font-blackSans text-white flex
+                className={`px-4 rounded flex items-center justify-center w-per55 font-blackSans text-white
                 ${detailMoa.partyIsUrgent ? bgColors[0] : bgColors[detailMoa.partyStatus]}`}>
                 <span>{detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}</span>
               </div>
               {/* 파티 제목 */}
               <div 
-                className="mx-4 font-blackSans text-xl tablet:text-2xl laptop:text-[32px] text-whitetext-base whitespace-nowrap text-ellipsis" 
+                className="mx-4 mt-2 font-blackSans items-center text-xl tablet:text-2xl laptop:text-[32px] text-whitetext-base whitespace-nowrap text-ellipsis" 
                 name="partyTitle" 
                 value={detailMoa.partyTitle}>
                   {detailMoa.partyTitle}
@@ -215,9 +215,9 @@ function MoaDetail() {
             <div className='flex'>
               <div>
                 {
-                  detailMoa.writerId === userId ? <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2 text-black" onClick={handlePartyUpdate}>파티 수정하기</button> : 
-                  (playerList.includes(userId) ? <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2 text-black" onClick={handlePartyLeave}> 파티 나가기 </button> : 
-                  <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center mr-2 text-black" onClick={handlePartyJoin}>파티 참여하기</button>)
+                  detailMoa.writerId === userId ? <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center text-black" onClick={handlePartyUpdate}>파티 수정하기</button> : 
+                  (playerList.includes(userId) ? <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center text-black" onClick={handlePartyLeave}> 파티 나가기 </button> : 
+                  <button className="hover:cursor-pointer hover:text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-searchbar-gray hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center text-black" onClick={handlePartyJoin}>파티 참여하기</button>)
                 }
               </div>
             </div>
@@ -247,7 +247,7 @@ function MoaDetail() {
           </div>
           <hr />
           <div className='font-blackSans text-xl my-3'>파티 모집 내용</div>
-          <div className="w-full h-48 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light w-full text-black"> {detailMoa.partyDescription}</div>
+          <div className="w-full h-48 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light text-black overflow-ellipse overflow-scroll"> {detailMoa.partyDescription}</div>
           <div className='grid place-items-center mt-4'>
             <button onClick={handlePrevPage} className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">파티 목록 보기</button>
           </div>

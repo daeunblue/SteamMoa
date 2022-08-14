@@ -94,8 +94,13 @@ const MoaUpdate = (props) => {
         moaDelete(partyId)
         .then((res) => {
           if (res.status === 200) {
-            console.log("삭제됨", moa.partyId);
-            
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "모아글이 삭제되었습니다!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
             navigate(`/moazone`);
           }
         });
@@ -253,7 +258,7 @@ const MoaUpdate = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="mt-4">참가 파티원</div>
+              {/* <div className="mt-4">참가 파티원</div>
               <div
                 className="w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black"
                 name="partyUsers"
@@ -264,7 +269,7 @@ const MoaUpdate = (props) => {
                   moa.partyPlayers.map((player, playerId) => {
                     return <MoaUserCard key={playerId} player={player} />;
                   })}
-              </div>
+              </div> */}
             </div>
           <div className="flex my-5">
             <div className="m-auto my-5">
