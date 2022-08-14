@@ -3,6 +3,7 @@ package com.ssafy.backend.api.response;
 import com.ssafy.backend.db.entity.party.Party;
 import com.ssafy.backend.db.entity.party.PartyTag;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class PartylistDTO {
 
     private Long partyId;
