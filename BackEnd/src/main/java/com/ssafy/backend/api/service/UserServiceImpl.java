@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
                 UserDto userDto = new UserDto();
                 userDto.setUserId(user.getUserId());
                 userDto.setUserServiceId(user.getUserServiceId());
-                userDto.setUserPoint(user.getUserPoint());
+                userDto.setUserPoint(Math.round(user.getUserPoint()*10)/10.0);
                 for (UserTag tag:user.getUTagLists()) {
                     userDto.addUserTags(tag.getUTagStorage().getContent());
                 }

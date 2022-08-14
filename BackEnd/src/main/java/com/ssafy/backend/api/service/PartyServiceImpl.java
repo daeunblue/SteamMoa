@@ -283,7 +283,7 @@ public class PartyServiceImpl implements PartyService{
             votingMembers.add(pvote.getVoterId());
         }
 
-        if(votingMembers.size() == evaluatePartyDTO.getCurPlayer())
+        if(votingMembers.contains(userRepository.findByUserServiceId(userServiceId).get().getUserId()))
             evaluatePartyDTO.setEvalCompleted(true);
 
         for(EvaluatePartyPlayerDTO pp: evaluatePartyDTO.getPartyPlayers()){
