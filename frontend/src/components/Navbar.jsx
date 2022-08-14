@@ -28,7 +28,7 @@ const Navbar = (props) => {
   const activeClass =
     "text-white border-b-2 border-main-100 text-xs laptop:text-base tablet:text-sm mobile:text-sm font-blackSans mx-4 block min-w-10 text-center";
   const inactiveClass =
-    "text-gray-300 text-xs laptop:text-base tablet:text-sm mobile:text-xs font-blackSans mx-4 block min-w-10 text-center";
+    "text-gray-300 text-xs laptop:text-base tablet:text-sm mobile:text-sm font-blackSans mx-4 block min-w-10 text-center";
   const [search, setSearch] = useState("");
 
   const onChangeSearch = (e) => {

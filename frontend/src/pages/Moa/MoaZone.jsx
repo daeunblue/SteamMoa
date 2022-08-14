@@ -53,11 +53,11 @@ function MoaZone() {
     <div>
       <Navbar />
       {/* 모아존 배너 */}
-      <img src="../../ImgAssets/MoaZone_Main.gif" alt="MoaZon Main" className="w-per75 m-auto" />
+      <img src="../../ImgAssets/MoaZone_Main.gif" alt="MoaZon Main" className="w-per90 tablet:w-per75 m-auto" />
       {/* 검색 컨테이너 */}
       <MoaSearchContainer />
       {/* 모아 만들기 버튼 */}
-      <div className="w-per75 mx-auto my-3 flex justify-end">
+      <div className="w-per90 tablet:w-per75 m-auto tablet:my-3 my-1.5 flex justify-end">
         <button
           className=" bg-moa-pink hover:bg-moa-pink-dark text-white rounded-lg px-2 py-1 text-xs"
           onClick={handleNavigate}>
@@ -66,7 +66,7 @@ function MoaZone() {
         </button>
       </div>
       {/* 모아 리스트 */}
-      <div className="w-per75 m-auto">
+      <div className="w-per90 tablet:w-per75 m-auto">
         <MoaCardList moaList={moaList}></MoaCardList>
       </div>
       {/* 페이지네이션 */}

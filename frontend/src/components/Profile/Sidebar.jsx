@@ -38,7 +38,7 @@ const Sidebar = (props) => {
     ]
 
   return (
-    <div className={`h-screen bg-sidebar-light w-per25 min-w-[90px]`} >
+    <div className="h-[110vh] bg-sidebar-light w-per25 min-w-[90px] max-w-[225px]" >
       {/* 프로필 */}
       <NavLink
         to={`/${midLocation}/${profileName}`}

@@ -80,7 +80,7 @@ const Profile = (props) => {
         }
       } else {
         if(accessId === userId){
-          navigate(`/mypage/${userId}`)
+          navigate(`/mypage/${userId}`, {replace:true})
         }
       }
     
