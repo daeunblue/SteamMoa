@@ -20,7 +20,7 @@ export default class OpenViduVideoComponent extends Component {
     }
 
     render() {
-        return <video className="rounded" autoPlay={true} ref={this.videoRef} />;
+        return <video className={`${this.props.micOn ? "" : "opacity-50 bg-gray-500"} rounded`} autoPlay={true} ref={this.videoRef} />;
     }
 
 }

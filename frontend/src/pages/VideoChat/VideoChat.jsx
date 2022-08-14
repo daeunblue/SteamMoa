@@ -110,8 +110,10 @@ class VideoChat extends Component {
           mySession
             .connect(token, { clientData: this.props.userId })
             .then(async () => {
-              var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter((device) => device.kind === "videoinput");
+              let videoDevices = await this.OV.getUserMedia({
+                audioSource: true,
+                videoSource: undefined,
+              });
 
               // --- 5) Get your own camera stream ---
 
@@ -119,7 +121,7 @@ class VideoChat extends Component {
               // element: we will manage it on our own) and with the desired properties
               let publisher = this.OV.initPublisher(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
-                videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
+                videoSource: videoDevices[0], // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                 resolution: "640x480", // The resolution of your video
@@ -384,17 +386,12 @@ class VideoChat extends Component {
             <div id="video-container" className="p-5 grid grid-cols-5 gap-3 overflow-auto">
               {this.state.mainStreamManager !== undefined ? (
                 <div id="main-video" className="">
-                  <UserVideoComponent streamManager={this.state.mainStreamManager} isMine={true} />
-                </div>
-              ) : null}
-              {this.state.publisher !== undefined ? (
-                <div className="" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <UserVideoComponent streamManager={this.state.mainStreamManager} isMine={true} micOn={ this.state.micOn } />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
                 <div key={i} className="" onClick={() => this.handleMainVideoStream(sub)}>
-                  <UserVideoComponent streamManager={sub} />
+                  <UserVideoComponent streamManager={sub} micOn={ this.state.micOn }/>
                 </div>
               ))}
             </div>

@@ -46,7 +46,7 @@ function Router() {
       <Route path="/search/*" element={<Search />} />
       <Route path="*" element={<NotFound />} />
       {/* openvidu */}
-      <Route path="/chat" element={ <VideoChatWrapper/> } />
+      <Route path="/chat/:chat_id" element={ <VideoChatWrapper/> } />
     </Routes>
   );
 }
