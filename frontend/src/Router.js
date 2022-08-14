@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import TacticDetail from "./pages/Tactic/TacticDetail";
 import TacticCreate from "./pages/Tactic/TacticCreate";
 import TacticUpdate from "./pages/Tactic/TacticUpdate";
+import VideoChatWrapper from "./pages/VideoChat/VideoChatWrapper";
 
 function Router() {
   return (
@@ -44,6 +45,8 @@ function Router() {
       {/* 통합검색 */}
       <Route path="/search/*" element={<Search />} />
       <Route path="*" element={<NotFound />} />
+      {/* openvidu */}
+      <Route path="/chat" element={ <VideoChatWrapper/> } />
     </Routes>
   );
 }

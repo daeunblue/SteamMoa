@@ -26,6 +26,7 @@ const ProfileMyWalk = (props) => {
     ()=>{
       getTacticUser(profileName)
         .then((res)=>{
+          console.log()
           if (res.data.status===406){
             setContentList([])
             setIsLoading(false)
@@ -62,7 +63,7 @@ const ProfileMyWalk = (props) => {
       </div>
         :
     <div className='my-10 flex flex-col justify-center'>
-      {(!contentList.length&&!(render===1) ? 
+      {(!contentList.length ? 
         <div className='w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold'>
           <div className="mb-2">작성한 공략이 없습니다.</div>
           {(isMyPage ? <div>지금 공략 작성하러 <Link to={'/gamemoa'} className="text-moa-yellow font-bold text-lg">출발!</Link></div>: '')}

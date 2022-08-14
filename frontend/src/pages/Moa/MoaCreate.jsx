@@ -16,15 +16,19 @@ function MoaCreate() {
   const [isFiexedGame, setIsFixedGame] = useState(false);
 
   const [moa, setMoa] = useState({
-    chatLink: "채팅링크",
-    gameId: 0,
-    maxPlayer: 0,
-    partyDescription: "파티 설명",
+    chatLink: "",
+    gameId: "",
+    maxPlayer: "",
+    partyDescription: "",
     partyTags: [],
-    partyTitle: "파티글 모집 제목",
-    startTime: "",
+    partyTitle: "",
+    startTime: (new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')).substring(0, 16),
     userId: userId,
   });
+
+  const date = new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')
+  const realDate = date.substring(0, 16)
+
   // 파티 태그 요소 하드 코딩
   const [searchParams] = useSearchParams();
   const game_id = searchParams.get("game") ? searchParams.get("game") : null;
@@ -51,6 +55,7 @@ function MoaCreate() {
     setCheckedList(checkedList.filter((el) => el !== item));
   };
 
+  console.log("시간은", moa.startTime)
   useEffect(() => {
     if (!userId) {
       Swal.fire({
@@ -105,26 +110,44 @@ function MoaCreate() {
     });
   };
 
-  const onGameChange = (gameId) => {
-    setMoa({
-      ...moa,
-      gameId: gameId,
-    });
-  };
-
   // 데이터 보내기
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if ( !moa.chatLink || moa.gameId || !moa.maxPlayer || !moa.partyDescription || !moa.partyTags || !moa.partyTitle || !moa.startTime || !moa.userId ){
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "모든 칸을 입력해주세요!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
     moaCreate({
       ...moa,
       gameId: game.gameId,
     }).then((data) => {
       if (data.status === 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "모아글 업로드 성공!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate("/moazone");
       } else {
-        alert(data.message);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "모아글 업로드 실패... &#129394",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
-    });
+    })
+    .catch();
   };
 
   const handleCancel = () => {
@@ -138,7 +161,7 @@ function MoaCreate() {
   return (
     <>
       <Navbar />
-      <div className="w-per75 h-full m-auto text-white font-sans pb-5">
+      <div className="w-per75 min-h-full m-auto text-white font-sans pb-5">
         <div className="m-auto">
           <img
             className="w-full"
@@ -146,21 +169,19 @@ function MoaCreate() {
             alt="모아존 글쓰기 배너 이미지"
           />
         </div>
-        <div className="box-content w-full bg-main-300 mb-2 text-main-300">
+        <div className="w-full my-2 bg-main-300 text-main-300">
           공간채우기 용도 글씨
         </div>
-        <div className="m-auto mb-2 bg-main-400">
+        <div className="m-auto h-full mb-2 bg-main-400">
           <div className="createContainer p-4">
-            <div className="mb-3">
-              <span className="text-lg">파티 모집 글쓰기</span>
-            </div>
+            <div className="font-blackSans text-xl mb-3 ">모아글 작성</div>
             <input
               name="partyTitle"
               value={moa.partyTitle}
               onChange={onChange}
-              className="w-full text-main-500 bg-createInput-gray rounded-lg mb-3"
+              className="w-full text-main-500 bg-createInput-gray rounded mb-3"
               type="text"
-              placeholder="파티 모집 제목"
+              placeholder="파티 모집 제목을 입력해주세요."
             />
             {/* 게임 아이디 찾기 */}
             <div className="mb-3 grid grid-cols-7 gap-2">
@@ -172,7 +193,8 @@ function MoaCreate() {
                       alt="게임 이미지"
                       className="laptop:w-per10 tablet:w-per30 mobile:w-per50 rounded"
                     />
-                    <span className="laptop:w-per90 tablet:w-per70 mobile:w-per50 whitespace-nowrap p-1.5 text-gray-900 align-center pt-1 overflow-hidden text-ellipsis">
+                    <span className="laptop:w-per90 tablet:w-per70 mobile:w-per50 whitespace-nowrap p-1.5 text-gray-900 align-center pt-1 overflow-hidden text-ellipsis"
+                    >
                       {game.gameName}
                     </span>
                   </div>
@@ -200,14 +222,17 @@ function MoaCreate() {
               )}
             </div>
             <div className="grid grid-flow-col mb-3">
-              <div className="grid grid-flow-col col-span-1 mx-2">
+              <div className="grid grid-flow-col col-span-2 mx-2">
                 <span className="col-span-1 flex items-center">플레이 인원</span>
                 <input
                   name="maxPlayer"
                   value={moa.maxPlayer}
                   onChange={onChange}
                   type="number"
-                  className="col-span-4 w-full text-main-500 bg-createInput-gray rounded-lg"
+                  className="col-span-4 w-full text-main-500 bg-createInput-gray rounded"
+                  min="2"
+                  max="12"
+                  placeholder="최대 플레이 인원은 12명입니다."
                 />
               </div>
               <div className="grid grid-flow-col col-span-2">
@@ -217,8 +242,9 @@ function MoaCreate() {
                     name="startTime"
                     value={moa.startTime}
                     onChange={onChange}
-                    className="w-full text-main-500 bg-createInput-gray rounded-lg"
+                    className="w-full text-main-500 bg-createInput-gray rounded"
                     type="datetime-local"
+                    min={realDate}
                   />
                 </div>
               </div>
@@ -228,11 +254,11 @@ function MoaCreate() {
                 name="partyDescription"
                 value={moa.partyDescription}
                 onChange={onChange}
-                className="w-full text-main-500 bg-createInput-gray rounded-lg"
+                className="w-full text-main-500 bg-createInput-gray rounded "
                 id=""
                 cols=""
                 rows="10"
-                placeholder="모집 내용 쓰는 곳"></textarea>
+                placeholder="모집 내용을 입력해주세요."></textarea>
             </div>
             <div className="grid grid-flow-col mb-8">
               <span className="col-span-1">음성 채팅 링크</span>
@@ -240,9 +266,9 @@ function MoaCreate() {
                 name="chatLink"
                 value={moa.chatLink}
                 onChange={onChange}
-                className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg"
+                className="col-span-11 text-main-500 bg-createInput-gray w-full rounded"
                 type="text"
-                id=""
+                placeholder="파티원에게 공유할 채팅 링크를 입력해주세요."
               />
             </div>
             {/* 파티 태그 하드 코딩 */}
@@ -269,33 +295,25 @@ function MoaCreate() {
                         </label>
                       </div>
                     ))
-                    //  checkedList.includes(item.id)
                   }
-                </div>
-                <div className="w-full rounded-lg ml-2 font-medium grid-flow-col">
-                  {checkedList.map((item) => (
-                    <span key={item} onClick={() => onRemove(item)}>
-                      {items[item - 1]}
-                    </span>
-                  ))}
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex mt-5">
-          <div className="m-auto">
+        <div className="flex my-5">
+          <div className="m-auto my-5">
             <button
               onClick={handleCancel}
-              className="w-32 h-14 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-sm">
+              className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">
               취소
             </button>
             <button
               onClick={handleSubmit}
-              className="bg-moa-pink hover:bg-moa-pink-dark w-32 h-14 mx-3 rounded-sm">
+              className="w-32 h-12 mx-3 bg-moa-pink hover:bg-moa-pink-dark rounded-lg text-sm">
               파티 만들기
             </button>
           </div>
+        </div>
         </div>
       </div>
     </>
@@ -303,3 +321,4 @@ function MoaCreate() {
 }
 
 export default MoaCreate;
+

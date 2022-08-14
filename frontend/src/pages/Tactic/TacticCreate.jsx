@@ -72,11 +72,6 @@ const TacticCreate = () => {
     setModalHidden(!modalHidden);
   };
 
-  const check = () => {
-    if (tacticTitle || tacticContent || game.gameId || user_id) return true;
-    return false;
-  };
-
   const onClickUpload = () => {
     const tactic = {
       gameId: game.gameId,
@@ -85,7 +80,7 @@ const TacticCreate = () => {
       userServiceId: user_id,
     };
 
-    if (!tactic.gameId || !tactic.tacticTitle || !tactic.tacticContent) {
+    if (!tactic.gameId || !tactic.tacticTitle.trim() || !tactic.tacticContent.trim()) {
       Swal.fire({
         position: "center",
         icon: "error",
@@ -128,6 +123,23 @@ const TacticCreate = () => {
         }
       })
       .catch();
+  };
+
+  const onClickCancel = () => {
+    Swal.fire({
+      title: "정말로 나가시겠어요?",
+      text: "지금까지 작성한 내용은 저장되지 않습니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "나갈래요",
+      cancelButtonText: "취소",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        navigate(`/gamemoa/detail/${game.gameId}/`);
+      }
+    });
   };
 
   return (
@@ -190,11 +202,11 @@ const TacticCreate = () => {
               onChange={handleChangeContents}></textarea>
           </div>
           <div className="flex justify-center mt-4">
-            <Link
-              to={`/gamemoa/detail/${game.gameId}/`}
+            <button
+              onClick={onClickCancel}
               className="mr-2 text-white bg-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               취소
-            </Link>
+            </button>
             <button
               onClick={onClickUpload}
               className={`text-white bg-moa-pink hover:bg-moa-pink-dark font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>

@@ -27,12 +27,17 @@ const ProfileMyReview = (props) => {
   useEffect(
     ()=>{
       getUserReviews(profileName)
-        .then((res)=>{
-          console.log(res)
+      .then((res)=>{
+        if (res.data.status===406){
+          setContentList([])
+          setIsLoading(false)
+        } else{
           setContentList(res.data.reviews)
           setRender(render=>render+1)
           setIsLoading(false)
+        }
         }).catch((err) => {
+          console.log(err)
           if (err.response.status === 400){
             if (rerender <100) {
               // 에러표시

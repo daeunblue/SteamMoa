@@ -36,7 +36,7 @@ public class TacticServiceImpl implements TacticService{
         Optional<List<Tactic>> optionalTactics = tacticRepository.findByGameGameId(gameId);
 
         if(optionalTactics.isPresent()) {
-            for (Tactic tactic : list) {
+            for (Tactic tactic : optionalTactics.get()) {
                 TacticDto tacticDto = new TacticDto();
                 tacticDto.setTacticId(tactic.getTacticId());
                 tacticDto.setTacticTitle(tactic.getTacticTitle());
