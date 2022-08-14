@@ -17,17 +17,18 @@ function MoaCreate() {
 
   const [moa, setMoa] = useState({
     chatLink: "",
-    gameId: 0,
-    maxPlayer: 0,
+    gameId: "",
+    maxPlayer: "",
     partyDescription: "",
     partyTags: [],
     partyTitle: "",
-    startTime: "",
-    // "new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')",
+    startTime: (new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')).substring(0, 16),
     userId: userId,
   });
 
-  console.log(moa);
+  const date = new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')
+  const realDate = date.substring(0, 16)
+
   // 파티 태그 요소 하드 코딩
   const [searchParams] = useSearchParams();
   const game_id = searchParams.get("game") ? searchParams.get("game") : null;
@@ -54,6 +55,7 @@ function MoaCreate() {
     setCheckedList(checkedList.filter((el) => el !== item));
   };
 
+  console.log("시간은", moa.startTime)
   useEffect(() => {
     if (!userId) {
       Swal.fire({
@@ -108,26 +110,44 @@ function MoaCreate() {
     });
   };
 
-  const onGameChange = (gameId) => {
-    setMoa({
-      ...moa,
-      gameId: gameId,
-    });
-  };
-
   // 데이터 보내기
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if ( !moa.chatLink || moa.gameId || !moa.maxPlayer || !moa.partyDescription || !moa.partyTags || !moa.partyTitle || !moa.startTime || !moa.userId ){
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "모든 칸을 입력해주세요!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
     moaCreate({
       ...moa,
       gameId: game.gameId,
     }).then((data) => {
       if (data.status === 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "모아글 업로드 성공!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate("/moazone");
       } else {
-        alert(data.message);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "모아글 업로드 실패... &#129394",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
-    });
+    })
+    .catch();
   };
 
   const handleCancel = () => {
@@ -137,7 +157,6 @@ function MoaCreate() {
   const onToggleModal = () => {
     setModalHidden(!modalHidden);
   };
-
 
   return (
     <>
@@ -174,7 +193,8 @@ function MoaCreate() {
                       alt="게임 이미지"
                       className="laptop:w-per10 tablet:w-per30 mobile:w-per50 rounded"
                     />
-                    <span className="laptop:w-per90 tablet:w-per70 mobile:w-per50 whitespace-nowrap p-1.5 text-gray-900 align-center pt-1 overflow-hidden text-ellipsis">
+                    <span className="laptop:w-per90 tablet:w-per70 mobile:w-per50 whitespace-nowrap p-1.5 text-gray-900 align-center pt-1 overflow-hidden text-ellipsis"
+                    >
                       {game.gameName}
                     </span>
                   </div>
@@ -202,7 +222,7 @@ function MoaCreate() {
               )}
             </div>
             <div className="grid grid-flow-col mb-3">
-              <div className="grid grid-flow-col col-span-1 mx-2">
+              <div className="grid grid-flow-col col-span-2 mx-2">
                 <span className="col-span-1 flex items-center">플레이 인원</span>
                 <input
                   name="maxPlayer"
@@ -210,6 +230,9 @@ function MoaCreate() {
                   onChange={onChange}
                   type="number"
                   className="col-span-4 w-full text-main-500 bg-createInput-gray rounded"
+                  min="2"
+                  max="12"
+                  placeholder="최대 플레이 인원은 12명입니다."
                 />
               </div>
               <div className="grid grid-flow-col col-span-2">
@@ -221,7 +244,7 @@ function MoaCreate() {
                     onChange={onChange}
                     className="w-full text-main-500 bg-createInput-gray rounded"
                     type="datetime-local"
-                    // min={new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')}
+                    min={realDate}
                   />
                 </div>
               </div>
@@ -231,7 +254,7 @@ function MoaCreate() {
                 name="partyDescription"
                 value={moa.partyDescription}
                 onChange={onChange}
-                className="w-full text-main-500 bg-createInput-gray rounded"
+                className="w-full text-main-500 bg-createInput-gray rounded "
                 id=""
                 cols=""
                 rows="10"
@@ -272,7 +295,6 @@ function MoaCreate() {
                         </label>
                       </div>
                     ))
-                    //  checkedList.includes(item.id)
                   }
                 </div>
               </div>
