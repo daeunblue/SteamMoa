@@ -171,7 +171,7 @@ public class PartyController {
     public ResponseEntity<? extends Map<String,Object>> postEvaluation(@RequestBody PartyEvalPostReq partyEvalPostReq){
         Map<String,Object> result = new HashMap<>();
 
-        if(userService.updateUserScore(partyEvalPostReq.getUserId(),partyEvalPostReq.getScore())){
+        if(userService.updateUserScore(partyEvalPostReq.getPartyId(), partyEvalPostReq.getVoterId(), partyEvalPostReq.getUserId(),partyEvalPostReq.getScore())){
             result.put("message","Success");
             // 파티원 평가여부 테이블에 데이터 추가
             pvoteRepository.save(new Pvote(null, partyEvalPostReq.getPartyId(), userRepository.findByUserServiceId(partyEvalPostReq.getVoterId()).orElse(null).getUserId(), userRepository.findByUserId(partyEvalPostReq.getUserId()).orElse(null).getUserServiceId()));

@@ -45,19 +45,19 @@ const GameReviewCreate = (props) => {
           <div className='text-center mb-1 mr-2 text-[0.85em] font-bold'>만족도</div>
           {/* 별점 5점척도 */}
           <div className="star-rating mb-2 max-h-10 max-w-144">
-            <input type="radio" id={`5-stars-edit`} name="reviewScore" value={5} disabled={!userAuth.isLoggedIn}/>
+            <input type="radio" id={`5-stars-edit`} name="reviewScore" value={5} disabled={!userAuth.isLoggedIn} onChange={onChange}/>
             <label htmlFor={`5-stars-edit`} className="star text-center drop-shadow-md
             ">★</label>            
-            <input type="radio" id={`4-stars-edit`} name="reviewScore" value={4} disabled={!userAuth.isLoggedIn}/>
+            <input type="radio" id={`4-stars-edit`} name="reviewScore" value={4} disabled={!userAuth.isLoggedIn} onChange={onChange}/>
             <label htmlFor={`4-stars-edit`} className="star text-center drop-shadow-md
             ">★</label>
-            <input type="radio" id={`3-stars-edit`} name="reviewScore" value={3} disabled={!userAuth.isLoggedIn}/>
+            <input type="radio" id={`3-stars-edit`} name="reviewScore" value={3} disabled={!userAuth.isLoggedIn} onChange={onChange}/>
             <label htmlFor={`3-stars-edit`} className="star text-center drop-shadow-md
             ">★</label>
-            <input type="radio" id={`2-stars-edit`} name="reviewScore" value={2} disabled={!userAuth.isLoggedIn}/>
+            <input type="radio" id={`2-stars-edit`} name="reviewScore" value={2} disabled={!userAuth.isLoggedIn} onChange={onChange}/>
             <label htmlFor={`2-stars-edit`} className="star text-center drop-shadow-md
             ">★</label>
-            <input type="radio" id={`1-stars-edit`} name="reviewScore" value={1} disabled={!userAuth.isLoggedIn}/>
+            <input type="radio" id={`1-stars-edit`} name="reviewScore" value={1} disabled={!userAuth.isLoggedIn} onChange={onChange}/>
             <label htmlFor={`1-stars-edit`} className="star text-center drop-shadow-md
             ">★</label>
           </div>

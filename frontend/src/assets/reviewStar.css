@@ -54,3 +54,30 @@
 .star-rating-disabled input {
   display:none;
 }
+
+
+.star-rating-user {  
+  display:flex;
+  flex-direction: row-reverse;
+  font-size:min(3em, 36px);
+  justify-content:space-around;
+  text-align:center;
+}
+
+.star-rating-user input {
+  display:none;
+}
+
+.star-rating-user label {
+  color:rgb(218, 218, 218);
+  cursor:pointer;
+}
+
+.star-rating-user :checked ~ label {
+  color:#A366D2;
+}
+
+.star-rating-user label:hover,
+.star-rating-user label:hover ~ label {
+  color:#FA448C !important;
+}
