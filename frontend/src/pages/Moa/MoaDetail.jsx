@@ -3,10 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil';
 import { moaDetail, moaJoin, moaLeave } from '../../api/Moazone';
 import MoaUserCard from '../../components/Moa/MoaUserCard';
+import MoaPartyEval from '../../components/Moa/MoaPartyEval';
 import Navbar from '../../components/Navbar';
 import { auth } from '../../recoil/Auth';
 import { formatTimeISO } from '../../util/FormatTime';
 import Swal from 'sweetalert2';
+import { getPartyEvalInfo } from '../../api/MoaPartyEval';
 
 function MoaDetail() {
 
@@ -17,6 +19,8 @@ function MoaDetail() {
   const navigate = useNavigate();
 
   const [leader,setLeader]=useState();
+  const [isParticipant, setIsParticipant] = useState(false)
+  const [showEvalModal, setShowEvalModal] = useState(true)
   
   const [ detailMoa, setDetailMoa ] = useState({
     gameId: 1,
@@ -36,6 +40,15 @@ function MoaDetail() {
     writerId: '',
     partyIsUrgent: false,
   });
+
+  const [partyEvalInfo, setPartyEvalInfo] = useState({
+    gameName:'',
+    partyId:'',
+    partyTitle:'',
+    curPlayer:'',
+    partyPlayers:[],
+    evalCompleted:'',
+  })
  
   const items = [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
 
@@ -59,6 +72,31 @@ function MoaDetail() {
       })
       })
     },[]);
+
+  // 평가 관련 
+  useEffect(()=>{
+    detailMoa.partyPlayers.map((player) =>{
+      if (player.userId === userId){
+        setIsParticipant(true)
+      }
+    })
+  },[detailMoa])
+
+  useEffect(()=>{
+    getPartyEvalInfo(partyId, userId)
+      .then((res)=>{
+        const newEvalInfo = {
+          gameName: res.data.party.gameName,
+          partyId: res.data.party.partyId,
+          partyTitle: res.data.party.partyTitle,
+          curPlayer: res.data.party.curPlayer,
+          partyPlayers: res.data.party.partyPlayers,
+          evalCompleted: res.data.party.evalCompleted,
+        }
+        setPartyEvalInfo(newEvalInfo)
+      })
+  }, [isParticipant])
+
 
   const handlePartyJoin = (e) => {
     e.preventDefault();
@@ -215,8 +253,9 @@ function MoaDetail() {
           </div>
         </div>
       </div>
-
     </div>
+
+    <MoaPartyEval showEvalModal={showEvalModal} setShowEvalModal={setShowEvalModal} partyEvalInfo={partyEvalInfo}></MoaPartyEval>
     </>
   )
 }

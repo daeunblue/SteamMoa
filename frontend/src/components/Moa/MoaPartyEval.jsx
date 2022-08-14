@@ -1,22 +1,31 @@
 import React from 'react'
 
 const MoaPartyEval = (props) => {
-  const {setShowEvalModal, showEvalModal, } = props
+  const {setShowEvalModal, showEvalModal } = props
+
+  const onCloseEvalModal = () => {
+    setShowEvalModal(false)
+  }
+
   return (
     // modal
-  <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalLg" tabindex="-1" aria-labelledby="exampleModalLgLabel" aria-modal="true" role="dialog">
-    <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
-      <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
-        <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-          <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLgLabel">
-            Large modal
-          </h5>
-          <button type="button"
-            class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-            data-bs-dismiss="modal" aria-label="Close"></button>
+    <div id="following-modal" className={`${(showEvalModal ? "bg-black bg-opacity-40":"hidden")} overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full`}>
+    <div className="relative p-4 top-[120px] w-full max-w-md h-full  md:h-[400px] mx-auto">
+      {/* <!-- Modal content --> */}
+      <div className="relative bg-white rounded-lg shadow w-full">
+        {/* <!-- Modal header --> */}
+        <div className="flex justify-between items-center p-5 rounded-t border-b">
+            <h3 className="text-base font-medium text-gray-800">
+              님의 Followings
+            </h3>
+            <button  onClick={onCloseEvalModal} className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
+                <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+            </button>
         </div>
-        <div class="modal-body relative p-4">
-          ...
+        {/* <!-- Modal body --> */}
+        <div className="p-6 space-y-6  h-[400px]">
+            {/* 팔로잉 리스트 */}
+            dddd
         </div>
       </div>
     </div>
