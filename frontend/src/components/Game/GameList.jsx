@@ -7,8 +7,8 @@ const GameList = (props) => {
     <div className="w-per75 m-auto">
       <div className="grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 laptop:gap-4 tablet:gap-2 mobile:gap-2'">
         {isLoading ? (
-          [...Array(12)].map((v) => (
-            <div key={v} className="h-per30 flex flex-col bg-card-lightgray animate-pulse" >
+          [...Array(12)].map((v,index) => (
+            <div key={index} className="h-per30 flex flex-col bg-card-lightgray animate-pulse" >
               {/* 스켈레톤 */}
             </div>
           ))

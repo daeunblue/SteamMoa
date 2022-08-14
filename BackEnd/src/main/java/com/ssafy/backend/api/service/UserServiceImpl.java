@@ -3,11 +3,14 @@ package com.ssafy.backend.api.service;
 import com.ssafy.backend.api.request.UserRegisterPostReq;
 import com.ssafy.backend.api.request.UserUpdatePutReq;
 import com.ssafy.backend.api.response.UserDto;
+import com.ssafy.backend.api.response.UserpageCompletedPartylistDTO;
+import com.ssafy.backend.db.entity.party.Pvote;
 import com.ssafy.backend.db.entity.user.UserTag;
 import com.ssafy.backend.db.entity.follow.Follow;
 import com.ssafy.backend.db.entity.party.Party;
 import com.ssafy.backend.api.response.PartylistDTO;
 import com.ssafy.backend.db.entity.party.Puser;
+import com.ssafy.backend.db.repository.party.PvoteRepository;
 import com.ssafy.backend.db.repository.user.UTagStorageRepository;
 import com.ssafy.backend.db.repository.user.UserTagRepository;
 import com.ssafy.backend.db.repository.follow.FollowRepository;
@@ -53,6 +56,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PartyRepository partyRepository;
+
+    @Autowired
+    PvoteRepository pvoteRepository;
 
     @Override
     @Transactional
@@ -355,14 +361,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String, Object> getMyPartiesCompleted(String userServiceId) {
         Map<String, Object> resultMap = new HashMap<>();
-        List<PartylistDTO> parties = new ArrayList<>();
+        List<UserpageCompletedPartylistDTO> parties = new ArrayList<>();
 
         List<Puser> pusers = puserRepository.findAllByUserOrderByPuserIdDesc(userRepository.findByUserServiceId(userServiceId).get()).orElse(Collections.EMPTY_LIST);
         for (Puser p: pusers) {
             Party party_temp = partyRepository.findByPusersContains(p).orElse(null);
             String partyStatus_temp = party_temp.getStatus();
-            if(partyStatus_temp.equals("4") ||partyStatus_temp.equals("5"))
-                parties.add(new PartylistDTO(party_temp));
+            if(partyStatus_temp.equals("4") ||partyStatus_temp.equals("5")) {
+
+                Set<Long> votingMembers = new HashSet<>();
+                for(Pvote pvote: (List<Pvote>) pvoteRepository.findAllByPartyId(p.getParty().getPartyId()).orElse(Collections.EMPTY_LIST)){
+                    votingMembers.add(pvote.getVoterId());
+                }
+                if(votingMembers.contains(p.getUser().getUserId()))
+                    parties.add(new UserpageCompletedPartylistDTO(party_temp, true));
+                else
+                    parties.add(new UserpageCompletedPartylistDTO(party_temp, false));
+            }
         }
 
         resultMap.put("parties", parties);
