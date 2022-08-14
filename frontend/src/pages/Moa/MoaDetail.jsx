@@ -20,7 +20,7 @@ function MoaDetail() {
 
   const [leader,setLeader]=useState();
   const [isParticipant, setIsParticipant] = useState(false)
-  const [showEvalModal, setShowEvalModal] = useState(true)
+  const [showEvalModal, setShowEvalModal] = useState(false)
   
   const [ detailMoa, setDetailMoa ] = useState({
     gameId: 1,
@@ -45,9 +45,8 @@ function MoaDetail() {
     gameName:'',
     partyId:'',
     partyTitle:'',
-    curPlayer:'',
     partyPlayers:[],
-    evalCompleted:'',
+    evalCompleted:true,
   })
  
   const items = [ '즐겜', '빡겜', '공략겜', '무지성겜', '친목겜', ]
@@ -83,19 +82,28 @@ function MoaDetail() {
   },[detailMoa])
 
   useEffect(()=>{
-    getPartyEvalInfo(partyId, userId)
-      .then((res)=>{
-        const newEvalInfo = {
-          gameName: res.data.party.gameName,
-          partyId: res.data.party.partyId,
-          partyTitle: res.data.party.partyTitle,
-          curPlayer: res.data.party.curPlayer,
-          partyPlayers: res.data.party.partyPlayers,
-          evalCompleted: res.data.party.evalCompleted,
-        }
-        setPartyEvalInfo(newEvalInfo)
-      })
+    if(isParticipant && detailMoa.partyStatus===`4`){
+      console.log(1)
+      getPartyEvalInfo(partyId, userId)
+        .then((res)=>{
+          console.log(res)
+          const newEvalInfo = {
+            gameName: res.data.party.gameName,
+            partyId: res.data.party.partyId,
+            partyTitle: res.data.party.partyTitle,
+            partyPlayers: res.data.party.partyPlayers,
+            evalCompleted: res.data.party.evalCompleted,
+          }
+          setPartyEvalInfo(newEvalInfo)
+        }).catch((err)=> console.log(err))
+    }
   }, [isParticipant])
+
+  useEffect(()=>{
+    if (!partyEvalInfo.evalCompleted){
+      setShowEvalModal(true)
+    }
+  }, [partyEvalInfo])
 
 
   const handlePartyJoin = (e) => {
@@ -255,7 +263,7 @@ function MoaDetail() {
       </div>
     </div>
 
-    <MoaPartyEval showEvalModal={showEvalModal} setShowEvalModal={setShowEvalModal} partyEvalInfo={partyEvalInfo}></MoaPartyEval>
+    <MoaPartyEval showEvalModal={showEvalModal} setShowEvalModal={setShowEvalModal} partyEvalInfo={partyEvalInfo} userId={userId}></MoaPartyEval>
     </>
   )
 }

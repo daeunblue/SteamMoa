@@ -7,5 +7,5 @@ export const getPartyEvalInfo = (partyId, userServiceId) => {
 
 export const postPartyEval = (evalInfo) => {
   const url = `moazone/eval`;
-  return apiAuth.post(url, evalInfo)
+  return api.post(url, evalInfo)
 }
