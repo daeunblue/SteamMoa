@@ -14,7 +14,7 @@ export default class UserVideoComponent extends Component {
             <div>
                 {this.props.streamManager !== undefined ? (
                     <div className="w-full h-auto">
-                        <OpenViduVideoComponent streamManager={this.props.streamManager} />
+                        <OpenViduVideoComponent streamManager={this.props.streamManager} micOn={ this.props.micOn} />
                         <div className={`${this.props.isMine ? "bg-sky-400 " :"bg-gray-100 "}absolute text-semibold px-3 rounded`}><p>{this.getNicknameTag()}</p></div>
                     </div>
                 ) : null}
