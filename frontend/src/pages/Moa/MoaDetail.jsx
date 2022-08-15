@@ -106,10 +106,22 @@ function MoaDetail() {
 
   const handlePartyJoin = (e) => {
     e.preventDefault();
-    moaJoin(detailMoa, partyId, userId).then((res) => {
-      console.log("참여하기 누른 뒤", res);
-      setDetailMoa(res.data);
-    });
+    if (!userId) {
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "먼저 로그인을 해 주세요!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate(`/login`);
+    } else {
+
+      moaJoin(detailMoa, partyId, userId).then((res) => {
+        console.log("참여하기 누른 뒤", res);
+        setDetailMoa(res.data);
+      });
+    }
   };
 
   const handlePartyUpdate = (e) => {
@@ -148,8 +160,6 @@ function MoaDetail() {
   });
 
   const onDeleteUser = (deleteUserId) => {
-    console.log(partyId);
-    console.log(deleteUserId);
     //파티원 삭제 모달창
     Swal.fire({
       title: "파티원을 정말 강퇴시키겠습니까?",
