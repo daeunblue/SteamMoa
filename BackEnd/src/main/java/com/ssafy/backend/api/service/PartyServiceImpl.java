@@ -321,6 +321,9 @@ public class PartyServiceImpl implements PartyService{
         // 오류: 파티원 초과
         if(party.getCurPlayer()+1 > party.getMaxPlayer())
             return "fail: 최대 파티 인원을 초과하였습니다.";
+        // 오류: 파티 상태
+        if(!party.getStatus().equals("1"))
+            return "fail: 모집 중이 아닙니다.";
 
         Puser puser = new Puser();
         puser.setUser(userRepository.findByUserServiceId(userServiceId).get());
@@ -347,6 +350,9 @@ public class PartyServiceImpl implements PartyService{
         // 오류: 유효하지 않은 사용자 아이디입니다.
         if(!userRepository.findByUserServiceId(userServiceId).isPresent())
             return "fail: 유효하지 않은 사용자 아이디입니다.";
+        // 오류: 파티 상태
+        if(party.getStatus().equals("3") || party.getStatus().equals("4")|| party.getStatus().equals("5"))
+            return "fail: 파티를 탈퇴할 수 없습니다.";
 
         Puser thisuser = null;
         for (Puser puser: party.getPusers()) {
