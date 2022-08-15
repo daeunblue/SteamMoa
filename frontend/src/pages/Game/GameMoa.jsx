@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import GameSearchContainer from "../../components/Game/GameSearchContainer";
 import GameList from "../../components/Game/GameList";
 import GamePagination from "../../components/Game/GamePagination";
@@ -49,6 +50,7 @@ const GameMoa = () => {
       <div className="w-per95 tablet:w-per75 m-auto flex justify-center py-5">
         <GamePagination />
       </div>
+      <Footer></Footer>
     </div>
   );
 };
