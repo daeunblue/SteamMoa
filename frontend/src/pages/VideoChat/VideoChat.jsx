@@ -335,63 +335,68 @@ class VideoChat extends Component {
     return (
       <div>
         {this.state.session !== undefined ? (
-          <div id="session">
-            <div id="session-header">
-              <div className="flex flex-row justify-between items-center w-full h-16 bg-main-400 p-2">
-                <div className="flex flex-row items-center">
-                  <div className="w-fit font-blackSans text-2xl p-2 rounded text-white bg-moa-yellow-dark mr-2">
-                    플레이중
-                  </div>
-                  <div className="w-fit font-blackSans text-2xl text-gray-100">[{myPartyName}]</div>
+          <div className="h-screen session flex flex-col">
+            <div className="flex flex-row justify-between items-center w-full h-per10 bg-main-400 p-2">
+              <div className="flex flex-row items-center">
+                <div className="w-fit font-blackSans text-2xl p-2 rounded text-white bg-moa-yellow-dark mr-2">
+                  플레이중
                 </div>
-                <div className="text-white">[{myGameName}]</div>
+                <div className="w-fit font-blackSans text-2xl text-gray-100">[{myPartyName}]</div>
               </div>
-              <div className="flex flex-row justify-center items-center mt-5">
-                <button
-                  className="w-10 h-10 border border-white rounded-full mr-4"
-                  onClick={this.switchCamera}>
-                  <FontAwesomeIcon className="text-white text-lg" icon={faCameraRotate} />
-                </button>
-                <button
-                  className={`${
-                    myMicOn ? "border-white text-white" : " border-red-600 text-red-600"
-                  } w-10 h-10 border text-sm rounded-full mr-4`}
-                  onClick={this.toggleMute}>
-                  {myMicOn ? (
-                    <FontAwesomeIcon icon={faMicrophone} />
-                  ) : (
-                    <FontAwesomeIcon icon={faMicrophoneSlash} />
-                  )}
-                </button>
-                <button
-                  className={`${
-                    myVideoOn ? "border-white text-white" : " border-red-600 text-red-600"
-                  } w-10 h-10 border text-sm rounded-full mr-4`}
-                  onClick={this.toggleVideo}>
-                  {myVideoOn ? (
-                    <FontAwesomeIcon icon={faVideo} />
-                  ) : (
-                    <FontAwesomeIcon icon={faVideoSlash} />
-                  )}
-                </button>
-                <button
-                  className="bg-red-500 w-10 h-10 text-white rounded-full"
-                  id="buttonLeaveSession"
-                  onClick={this.leaveSession}>
-                  <FontAwesomeIcon className="text-white text-lg" icon={faClose} />
-                </button>
-              </div>
+              <div className="text-white">[{myGameName}]</div>
+            </div>
+            <div className="w-full h-per10 flex flex-row justify-center items-center my-auto">
+              <button
+                className="w-10 h-10 border border-white rounded-full mr-4"
+                onClick={this.switchCamera}>
+                <FontAwesomeIcon className="text-white text-lg" icon={faCameraRotate} />
+              </button>
+              <button
+                className={`${
+                  myMicOn ? "border-white text-white" : " border-red-600 text-red-600"
+                } w-10 h-10 border text-sm rounded-full mr-4`}
+                onClick={this.toggleMute}>
+                {myMicOn ? (
+                  <FontAwesomeIcon icon={faMicrophone} />
+                ) : (
+                  <FontAwesomeIcon icon={faMicrophoneSlash} />
+                )}
+              </button>
+              <button
+                className={`${
+                  myVideoOn ? "border-white text-white" : " border-red-600 text-red-600"
+                } w-10 h-10 border text-sm rounded-full mr-4`}
+                onClick={this.toggleVideo}>
+                {myVideoOn ? (
+                  <FontAwesomeIcon icon={faVideo} />
+                ) : (
+                  <FontAwesomeIcon icon={faVideoSlash} />
+                )}
+              </button>
+              <button
+                className="bg-red-500 w-10 h-10 text-white rounded-full"
+                id="buttonLeaveSession"
+                onClick={this.leaveSession}>
+                <FontAwesomeIcon className="text-white text-lg" icon={faClose} />
+              </button>
             </div>
             {/* 사용자 */}
-            <div id="video-container" className="p-5 grid grid-cols-5 gap-3 overflow-auto">
+            <div
+              id="video-container"
+              className="w-full h-per80 mt-2 p-3 flex flex-wrap justify-center items-center overflow-auto">
               {this.state.mainStreamManager !== undefined ? (
-                <div id="main-video" className="">
-                  <UserVideoComponent streamManager={this.state.mainStreamManager} isMine={true} micOn={ this.state.micOn } />
+                <div id="main-video">
+                  <UserVideoComponent
+                    streamManager={this.state.mainStreamManager}
+                    isMine={true}
+                    isMute={myMicOn}
+                    isActiveVideo={myVideoOn}
+                  />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
                 <div key={i} className="" onClick={() => this.handleMainVideoStream(sub)}>
-                  <UserVideoComponent streamManager={sub} micOn={ this.state.micOn }/>
+                  <UserVideoComponent streamManager={sub} isMute={sub.session.stream.audioActive} isActiveVideo={sub.session.stream.videoActive}/>
                 </div>
               ))}
             </div>

@@ -5,6 +5,7 @@ import NavbarLoginOptions from "./NavbarLoginOptions";
 import "../assets/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 
 const Navbar = (props) => {
   const navigate = useNavigate();
@@ -45,9 +46,29 @@ const Navbar = (props) => {
 
   const onSearch = () => {
     if (search.startsWith("@")) {
-      navigate(`/search/user?word=${encodeURIComponent(search)}`);
+      if (search.length-1 < 3) {
+        Swal.fire({
+          position: 'center',
+          icon: 'info',
+          title: '아이디를 3글자 이상 입력해주세요 &#128521',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      } else {
+        navigate(`/search/user?word=${encodeURIComponent(search)}`);
+      }
     } else {
-      navigate(`/search/game?word=${encodeURIComponent(search)}`);
+      if (search.length < 2) {
+        Swal.fire({
+          position: 'center',
+          icon: 'info',
+          title: '게임명을 2글자 이상 입력해주세요 &#128521',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      } else {
+        navigate(`/search/game?word=${encodeURIComponent(search)}`);
+      }
     }
   };
 
