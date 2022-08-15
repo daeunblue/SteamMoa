@@ -10,7 +10,7 @@ export default class UserVideoComponent extends Component {
 
   render() {
     return (
-      <div className="max-w-[320px] max-h-[240px]">
+      <div className="max-w-[360px] max-h-[270px]">
         {this.props.streamManager !== undefined ? (
           this.props.isActiveVideo ? (
             <div className="w-full h-auto">
