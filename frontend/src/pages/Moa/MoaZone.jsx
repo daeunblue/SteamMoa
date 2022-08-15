@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import MoaSearchContainer from "../../components/Moa/MoaSearchContainer";
 import MoaCardList from "../../components/MoaCardList";
 import MoaPagination from "../../components/Moa/MoaPagination";
@@ -73,6 +74,7 @@ function MoaZone() {
       <div className="w-per75 m-auto flex justify-center py-5">
         <MoaPagination />
       </div>
+      <Footer></Footer>
     </div>
   );
 }

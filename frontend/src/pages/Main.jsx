@@ -5,6 +5,7 @@ import Banner from '../components/Main/Banner'
 import MiniMoa from '../components/Main/MiniMoa'
 import MiniGameMoa from '../components/Main/MiniGameMoa'
 import MainGameSpread from '../components/Main/MainGameSpread'
+import Footer from '../components/Footer'
 import { getMainInfo } from '../api/Main'
 
 
@@ -45,8 +46,7 @@ const Main = () => {
 
         <MainGameSpread bests={bestGames} frees={freeGames} today={todayGames} hots={hotGames} picks={pickGames}/>
       </div>
-
-      <div className='h-20'></div>
+      <Footer></Footer>
     </>
     )
 }
