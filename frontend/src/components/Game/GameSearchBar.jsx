@@ -37,7 +37,7 @@ const SearchBar = (props) => {
       <input
         type="text"
         id="search"
-        className="w-per95 mx-2 text-[0.85em] text-gray-900 bg-transparent border-none focus:outline-hidden focus:border-none "
+        className="w-per95 mx-2 text-[0.85em] text-gray-900 bg-transparent border-none focus:outline-hidden focus:border-none tablet:py-2 py-1"
         placeholder="게임 이름으로 검색하세요"
         value={word}
         onChange={onChange}
