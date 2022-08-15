@@ -36,7 +36,7 @@ const Signup = (props) => {
       })
       navigate('/')
     }
-  })
+  }, [])
   
   const handleSteamAuth = () => {
     // genUrl 중간함수
@@ -56,8 +56,8 @@ const Signup = (props) => {
       const params = {
         "openid.ns": "http://specs.openid.net/auth/2.0",
         "openid.mode": "checkid_setup",
-        "openid.return_to": "http://localhost:3000/signupform",
-        "openid.realm": "http://localhost:3000",
+        "openid.return_to": "https://i7a303.p.ssafy.io/signupform",
+        "openid.realm": "https://i7a303.p.ssafy.io/",
         "openid.identity": "http://specs.openid.net/auth/2.0/identifier_select",
         "openid.claimed_id":
           "http://specs.openid.net/auth/2.0/identifier_select",
