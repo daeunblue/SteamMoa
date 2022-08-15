@@ -46,7 +46,7 @@ const Login = (props) => {
       })
       navigate('/')
     }
-  })
+  }, [])
   
 
   const onChange = (event) => {
@@ -68,7 +68,6 @@ const Login = (props) => {
       user_service_id: user.service_id,
       user_service_pw: user.service_pw,
     }).then(function (response) {
-          console.log(response);
         //  로그인 후 처리 -> 
         // 1. status 200일때 메인 페이지 or 원래 있던 페이지로 리다이렉트
         // res.data.status / res.status => int
