@@ -55,7 +55,6 @@ function MoaCreate() {
     setCheckedList(checkedList.filter((el) => el !== item));
   };
 
-  console.log("시간은", moa.startTime)
   useEffect(() => {
     if (!userId) {
       Swal.fire({
@@ -114,7 +113,7 @@ function MoaCreate() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if ( !moa.chatLink || moa.gameId || !moa.maxPlayer || !moa.partyDescription || !moa.partyTags || !moa.partyTitle || !moa.startTime || !moa.userId ){
+    if ( moa.gameId || !moa.maxPlayer || !moa.partyDescription || !moa.partyTags || !moa.partyTitle || !moa.startTime || !moa.userId ){
       Swal.fire({
         position: "center",
         icon: "error",
@@ -151,12 +150,26 @@ function MoaCreate() {
   };
 
   const handleCancel = () => {
-    navigate("/moazone");
-  };
+    Swal.fire({
+      title: "정말로 나가시겠어요?",
+      text: "지금까지 작성한 내용은 저장되지 않습니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "나갈래요",
+      cancelButtonText: "취소",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        navigate(`/moazone`);
+      }
+    });
+  }
 
   const onToggleModal = () => {
     setModalHidden(!modalHidden);
   };
+
 
   return (
     <>
@@ -175,17 +188,19 @@ function MoaCreate() {
         <div className="m-auto h-full mb-2 bg-main-400">
           <div className="createContainer p-4">
             <div className="font-blackSans text-xl mb-3 ">모아글 작성</div>
-            <input
-              name="partyTitle"
-              value={moa.partyTitle}
-              onChange={onChange}
-              className="w-full text-main-500 bg-createInput-gray rounded mb-3"
-              type="text"
-              placeholder="파티 모집 제목을 입력해주세요."
-            />
+            <div className="flex">
+              <input
+                name="partyTitle"
+                value={moa.partyTitle}
+                onChange={onChange}
+                className="w-full text-main-500 bg-createInput-gray rounded mb-3"
+                type="text"
+                placeholder="파티 모집 제목을 입력해주세요."
+              />
+            </div>
             {/* 게임 아이디 찾기 */}
             <div className="mb-3 grid grid-cols-7 gap-2">
-              <div className="laptop:col-span-6 tablet:col-span-5 mobile:col-span-4">
+              <div className="flex laptop:col-span-6 tablet:col-span-5 mobile:col-span-4">
                 {game.gameId ? (
                   <div className="w-full max-h-10 border-solid border-stone-700 bg-createInput-gray rounded flex p-1">
                     <img
@@ -249,7 +264,7 @@ function MoaCreate() {
                 </div>
               </div>
             </div>
-            <div className="mb-3">
+            <div className="mb-3 flex">
               <textarea
                 name="partyDescription"
                 value={moa.partyDescription}
@@ -268,7 +283,7 @@ function MoaCreate() {
                 onChange={onChange}
                 className="col-span-11 text-main-500 bg-createInput-gray w-full rounded"
                 type="text"
-                placeholder="파티원에게 공유할 채팅 링크를 입력해주세요."
+                placeholder="파티원에게 공유할 채팅 링크를 입력해주세요. (선택)"
               />
             </div>
             {/* 파티 태그 하드 코딩 */}
