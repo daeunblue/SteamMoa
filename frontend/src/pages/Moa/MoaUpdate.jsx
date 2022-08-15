@@ -21,16 +21,11 @@ const MoaUpdate = (props) => {
     partyUsers: [],
   });
 
-  console.log("moa: ", moa);
-  console.log("updateMoa는: ", updateMoa);
-
   const items = ["즐겜", "빡겜", "공략겜", "무지성겜", "친목겜"];
   const [checkedList, setCheckedList] = useState([]);
-  console.log("updateMoa는: ", updateMoa);
-  console.log("checkedList: ", checkedList);
 
   const onCheckedElement = (event) => {
-    const { checked, value } = event.target;
+  const { checked, value } = event.target;
 
     if (checked) {
       let newChk = [...checkedList];
@@ -39,19 +34,16 @@ const MoaUpdate = (props) => {
     } else if (!checked) {
       setCheckedList(checkedList.filter((el) => el !== value));
     }
-    // setMoa({...moa,partyTags: checkedList });
   };
 
-  const onRemove = (item) => {
-    console.log(item);
-    setCheckedList(checkedList.filter((el) => el !== item));
-  };
+  // const onRemove = (item) => {
+  //   setCheckedList(checkedList.filter((el) => el !== item));
+  // };
 
   const onChange = (event) => {
     let { name, value } = event.target;
     if (name === "partyTags") {
       value = [...updateMoa.partyTags, value];
-      console.log(value);
     }
     setUpdateMoa({
       ...updateMoa,
@@ -61,7 +53,6 @@ const MoaUpdate = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("수정 완료 버튼 클릭시 : ", updateMoa);
     moaUpdate(updateMoa, partyId).then((res) => {
       if (res.status === 200) {
         Swal.fire({
@@ -78,14 +69,29 @@ const MoaUpdate = (props) => {
     });
   };
 
-  const handleCancel = () => {
-    navigate(`/`);
+  const handleCancel = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "정말로 나가시겠어요?",
+      text: "지금까지 작성한 내용은 저장되지 않습니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "나갈래요",
+      cancelButtonText: "취소",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        navigate(`/moazone/detail/${partyId}`);
+      }
+    });
   };
 
   const handleDeleteParty = (e) => {
     e.preventDefault();
     Swal.fire({
-      title: "모아글을 정말 삭제하시겠습니까?",
+      title: "정말로 삭제하시겠어요?",
+      text: "파티원을 다시 모집하셔야 합니다.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -114,8 +120,6 @@ const MoaUpdate = (props) => {
   useEffect((e) => {
     moaDetail(partyId).then(({ data }) => {
       setMoa(data);
-      console.log(data.partyPlayers);
-      console.log(data.partyPlayers[0].userId);
       setUpdateMoa({
         ...updateMoa,
         partyDescription: data.partyDescription,
