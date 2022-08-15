@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-
+import Swal from "sweetalert2";
 import { Routes, Route, useSearchParams, useNavigate } from "react-router-dom";
 import SearchUser from "../components/Search/SearchUser";
 import SearchGame from "../components/Search/SearchGame";
@@ -23,20 +23,40 @@ const Search = (props) => {
   };
 
   const onKeyPress = (e) => {
-    if (e.key === "Enter" && e.target.value.trim()) {
+    if (e.key === "Enter" && e.target.value.trim() ) {
       onSearch();
     }
   };
 
   const onSearch = () => {
     if (searchWord.startsWith("@")) {
-      navigate(
-        `/search/user?word=${encodeURIComponent(
-          searchWord.slice(1, searchWord.length)
-        )}`
-      );
+      if (searchWord.length-1 < 3) {
+        Swal.fire({
+          position: 'center',
+          icon: 'info',
+          title: '아이디를 3글자 이상 입력해주세요 &#128521',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      } else {
+        navigate(
+          `/search/user?word=${encodeURIComponent(
+            searchWord.slice(1, searchWord.length)
+          )}`
+        );
+      }
     } else {
-      navigate(`/search/game?word=${encodeURIComponent(searchWord)}`);
+      if (searchWord.length < 2) {
+        Swal.fire({
+          position: 'center',
+          icon: 'info',
+          title: '게임명을 2글자 이상 입력해주세요 &#128521',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      } else {
+        navigate(`/search/game?word=${encodeURIComponent(searchWord)}`);
+      }
     }
   };
 
@@ -48,14 +68,15 @@ const Search = (props) => {
     <div className="w-full h-full">
       <Navbar />
       {/* 검색 입력 부분 */}
-      <div className="w-full h-per20 py-20 nav-grad flex flex-col justify-center items-center text-white">
+      <div className="w-full h-per20 pt-14 pb-20 nav-grad flex flex-col justify-center items-center text-white">
         {/* 안내문구 */}
-        <span className="font-blackSans text-3xl mb-5">
-          <span className="text-moa-yellow">파티</span>와{" "}
-          <span className="text-moa-pink">게임</span>
-          {", "}
-          <span className="text-moa-purple">@사용자</span>를 검색해보세요
+        <span className="font-blackSans text-3xl">
+          <span className="text-moa-yellow">파티</span>{", "}
+          <span className="text-moa-pink">게임</span>{", "}
+          <span className="text-moa-green">공략글</span>
+          {"과"}
         </span>
+        <span className="font-blackSans text-3xl mb-5"><span className="text-moa-purple">@사용자</span>를 검색해보세요</span>
         {/* 검색어 입력 */}
         <div
           id="search-bar"
