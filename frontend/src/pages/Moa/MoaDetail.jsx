@@ -215,7 +215,7 @@ function MoaDetail() {
   };
 
   const checkCanUpdate = () => {
-    return parseInt(detailMoa.partyStatus) < 2 ? true : false;
+    return parseInt(detailMoa.partyStatus) < 3 ? true : false;
   };
 
   return (
