@@ -58,7 +58,7 @@ function MoaZone() {
       {/* 검색 컨테이너 */}
       <MoaSearchContainer />
       {/* 모아 만들기 버튼 */}
-      <div className="w-per95 tablet:w-per75 m-auto tablet:my-3 my-1.5 flex justify-end">
+      <div className="w-per95 tablet:w-per75 mx-auto tablet:my-3 my-1.5 flex justify-end">
         <button
           className=" bg-moa-pink hover:bg-moa-pink-dark text-white rounded-lg px-2 py-1 text-xs"
           onClick={handleNavigate}>

@@ -33,7 +33,7 @@ const GameDetail = (props) => {
   });
   const params = useParams();
   const gameId = params.game_id;
-  const tabDesign = `inline-flex py-3 px-6 rounded-t-lg border-b-2 border-transparent hover:text-gray-700 hover:border-indigo-400`;
+  const tabDesign = `inline-flex py-[0.8em] px-[1.6em] rounded-t-lg border-b-2 border-transparent hover:text-gray-700 hover:border-indigo-400`;
 
   useEffect(() => {
     getGame(gameId)
@@ -68,7 +68,7 @@ const GameDetail = (props) => {
   return (
     <>
       <Navbar></Navbar>
-      <div className="w-per75 m-auto">
+      <div className="w-per95 tablet:w-per75 mx-auto">
         {/* 게임 이미지 */}
         <div className="overflow-hidden w-full relative pb-[25%] bg-gray-900 object opacity-[95%] hover:opacity-100 transition-transform ease-in-out duration-7000">
           <img
@@ -78,7 +78,7 @@ const GameDetail = (props) => {
           />
         </div>
         {/* 그라데이션 구분선 */}
-        <div className="w-full h-4 tablet:h-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to "></div>
+        <div className="w-full h-[1.5em] tablet:h-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to "></div>
         {/* 본문 */}
         <div className="p-[2.5%] mb-4">
           {/* 제목 */}
@@ -136,7 +136,7 @@ const GameDetail = (props) => {
         <div className="w-full px-[2.5%]">
           {/* tab */}
           <div className="text-sm font-medium bg-indigo-200 text-center text-gray-500 border-b border-gray-300 rounded-t-lg">
-            <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
+            <ul className="flex flex-wrap -mb-px text-[1em] font-medium text-center text-gray-500">
               <li className="rounded-t-lg">
                 <NavLink
                   to={`/gamemoa/detail/${gameId}`}

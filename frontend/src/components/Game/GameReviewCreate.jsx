@@ -39,7 +39,7 @@ const GameReviewCreate = (props) => {
   if (userAuth.isLoggedIn){
     return (
       <div className="w-full px-[3%] py-2 tablet:py-4 bg-[#C9D1F1] rounded mt-2 drop-shadow-md">
-        <div className='mb-0.5 text-[1em] font-semibold'>리뷰 작성하기</div>
+        <div className='mb-0.5 text-[0.9em] font-semibold'>리뷰 작성하기</div>
         <div className="flex items-center h-10">
           {/* 별점 label */}
           <div className='text-center mb-1 mr-2 text-[0.85em] font-bold'>만족도</div>
@@ -81,7 +81,7 @@ const GameReviewCreate = (props) => {
   } else {
     return(
       <div className="w-full px-[3%] py-2 tablet:py-4 bg-mainBtn-disabled rounded opacity-80  drop-shadow-md">
-        <div className='mb-0.5 text-[1em] font-semibold text-gray-500'>리뷰 작성을 위해 <Link to={'/login'} className="text-[1.1em] text-moa-purple font-bold">로그인</Link>을 진행해주세요</div>
+        <div className='mb-0.5 text-[0.9em] font-semibold text-gray-500'>리뷰 작성을 위해 <Link to={'/login'} className="text-[1.1em] text-moa-purple font-bold">로그인</Link>을 진행해주세요</div>
         <div className="flex items-center h-10">
           {/* 별점 label */}
           <div className='text-center mb-1 mr-2 text-[0.85em] font-bold text-gray-500'>만족도</div>
