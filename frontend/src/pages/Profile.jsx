@@ -166,7 +166,7 @@ const Profile = (props) => {
         tierCol.tiertext = 'text-emerald-900'
         tierCol.tiertextLight = 'text-emerald-500'
     
-      } else {
+      } else if (tier) {
         tierCol.tierColor = 'fuchsia'
         tierCol.tierbg = 'bg-fuchsia-100'
         tierCol.tierColorLight= 'bg-fuchsia-400'
