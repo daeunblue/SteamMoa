@@ -47,8 +47,6 @@ const MoaUpdate = (props) => {
     setCheckedList(checkedList.filter((el) => el !== item));
   };
 
-  
-
   const onChange = (event) => {
     let { name, value } = event.target;
     if (name === "partyTags") {
@@ -61,12 +59,18 @@ const MoaUpdate = (props) => {
     });
   };
 
-  // 수정된 데이터 보내서 저장
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("수정 완료 버튼 클릭시 : ", updateMoa);
     moaUpdate(updateMoa, partyId).then((res) => {
       if (res.status === 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "모아글 수정 완료!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate(`/moazone/detail/${moa.partyId}`);
       } else {
         alert(res.data.message);
@@ -78,7 +82,6 @@ const MoaUpdate = (props) => {
     navigate(`/`);
   };
 
-  // 파티 삭제
   const handleDeleteParty = (e) => {
     e.preventDefault();
     Swal.fire({
@@ -87,7 +90,7 @@ const MoaUpdate = (props) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "네. 삭제할래요",
+      confirmButtonText: "삭제할래요",
       cancelButtonText: "취소",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -97,7 +100,7 @@ const MoaUpdate = (props) => {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "모아글이 삭제되었습니다!",
+              title: "모아글 삭제 완료!",
               showConfirmButton: false,
               timer: 1500,
             });
@@ -258,18 +261,6 @@ const MoaUpdate = (props) => {
                   </div>
                 </div>
               </div>
-              {/* <div className="mt-4">참가 파티원</div>
-              <div
-                className="w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black"
-                name="partyUsers"
-                value={moa.partyUsers}
-                onChange={onChange}
-              >
-                {moa.partyPlayers &&
-                  moa.partyPlayers.map((player, playerId) => {
-                    return <MoaUserCard key={playerId} player={player} />;
-                  })}
-              </div> */}
             </div>
           <div className="flex my-5">
             <div className="m-auto my-5">

@@ -31,7 +31,7 @@ export const moaDetail = (partyId) => {
 //모아글 삭제
 export const moaDelete = (partyId) => {
   const url = `moazone/${partyId}`
-  return api.delete(url);
+  return apiAuth.delete(url);
 }
 // 모아 파티에 참가
 export const moaJoin = (moa, partyId, userServiceId) => {
