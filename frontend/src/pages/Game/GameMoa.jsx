@@ -38,7 +38,7 @@ const GameMoa = () => {
     <div className="w-full h-screen">
       <Navbar />
       {/* 게임모아 배너 이미지 */}
-      <div className="w-per90 tablet:w-per75 m-auto">
+      <div className="w-per95 tablet:w-per75 m-auto">
         <img src="../ImgAssets/GameMoa_Main.gif" alt="게임모아 메인 배너" />
       </div>
       {/* 검색 컨테이너 */}
@@ -46,7 +46,7 @@ const GameMoa = () => {
       {/* 게임 리스트 */}
       <GameList gameList={gameList} isLoading={loading} />
       {/* 페이지네이션 */}
-      <div className="w-per90 tablet:w-per75 m-auto flex justify-center py-5">
+      <div className="w-per95 tablet:w-per75 m-auto flex justify-center py-5">
         <GamePagination />
       </div>
     </div>
