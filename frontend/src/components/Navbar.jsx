@@ -91,7 +91,7 @@ const Navbar = (props) => {
   return (
     <div className="nav-container w-full nav-grad">
       {/* 내부 2칸 */}
-      <div className="w-per95 tablet:w-per75 m-auto">
+      <div className="w-per95 tablet:w-per75 mx-auto">
         <div className="h-9 flex justify-between items-center">
           {/* 로고 */}
           <Link to="/" className="w-per15 min-w-90 max-w-144">

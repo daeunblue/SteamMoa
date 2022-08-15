@@ -174,41 +174,39 @@ function MoaCreate() {
   return (
     <>
       <Navbar />
-      <div className="w-per75 min-h-full m-auto text-white font-sans pb-5">
-        <div className="m-auto">
+      <div className="w-per95 tablet:w-per75 mx-auto min-h-full text-white font-sans">
+        <div className="mx-auto">
           <img
             className="w-full"
             src="../../ImgAssets/MoaZone_CreateVer.gif"
             alt="모아존 글쓰기 배너 이미지"
           />
         </div>
-        <div className="w-full my-2 bg-main-300 text-main-300">
-          공간채우기 용도 글씨
-        </div>
+        <div className="w-full h-[1.5em] mb-2 bg-main-300 text-main-300 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to "></div>
         <div className="m-auto h-full mb-2 bg-main-400">
           <div className="createContainer p-4">
-            <div className="font-blackSans text-xl mb-3 ">모아글 작성</div>
+            <div className="font-blackSans text-[1.2em] mb-[0.6em] ">모아글 작성</div>
             <div className="flex">
               <input
                 name="partyTitle"
                 value={moa.partyTitle}
                 onChange={onChange}
-                className="w-full text-main-500 bg-createInput-gray rounded mb-3"
+                className="w-full text-main-500 text-[0.9em] bg-createInput-gray rounded mb-[0.6em]"
                 type="text"
                 placeholder="파티 모집 제목을 입력해주세요."
               />
             </div>
             {/* 게임 아이디 찾기 */}
-            <div className="mb-3 grid grid-cols-7 gap-2">
-              <div className="flex laptop:col-span-6 tablet:col-span-5 mobile:col-span-4">
+            <div className="mb-[0.6em] grid grid-cols-7 gap-2">
+              <div className="flex laptop:col-span-6 tablet:col-span-5 col-span-5">
                 {game.gameId ? (
                   <div className="w-full max-h-10 border-solid border-stone-700 bg-createInput-gray rounded flex p-1">
                     <img
                       src={game.gameImgPath}
                       alt="게임 이미지"
-                      className="laptop:w-per10 tablet:w-per30 mobile:w-per50 rounded"
+                      className="laptop:w-per10 tablet:w-per30 w-per50 rounded"
                     />
-                    <span className="laptop:w-per90 tablet:w-per70 mobile:w-per50 whitespace-nowrap p-1.5 text-gray-900 align-center pt-1 overflow-hidden text-ellipsis"
+                    <span className="laptop:w-per90 tablet:w-per70 w-per50 whitespace-nowrap p-1.5 text-gray-900 align-center pt-1 overflow-hidden text-ellipsis"
                     >
                       {game.gameName}
                     </span>
@@ -225,7 +223,7 @@ function MoaCreate() {
                   isFiexedGame
                     ? "bg-gray-500 cursor-not-allowed"
                     : "bg-moa-pink hover:bg-moa-pink-dark"
-                } laptop:col-span-1 tablet:col-span-2 mobile:col-span-3 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center`}
+                } laptop:col-span-1 tablet:col-span-2 col-span-2 text-white font-medium rounded-lg text-[0.8em] px-[0.5em] py-2.5 text-center`}
                 onClick={onToggleModal}>
                 게임 검색
               </button>
@@ -236,28 +234,28 @@ function MoaCreate() {
                 <GameSearchModal hidden={modalHidden} setHidden={onToggleModal} setGame={setGame} />
               )}
             </div>
-            <div className="grid grid-flow-col mb-3">
-              <div className="grid grid-flow-col col-span-2 mx-2">
-                <span className="col-span-1 flex items-center">플레이 인원</span>
+            <div className="grid tablet:grid-flow-col grid-flow-row mb-3">
+              <div className="grid grid-flow-col col-span-2 tablet:mx-2 mr-1 tablet:mb-0 mb-[0.6em]">
+                <span className="tablet:col-span-1 flex items-center text-[0.9em]">플레이 인원</span>
                 <input
                   name="maxPlayer"
                   value={moa.maxPlayer}
                   onChange={onChange}
                   type="number"
-                  className="col-span-4 w-full text-main-500 bg-createInput-gray rounded"
+                  className="tablet:col-span-4 col-span-5 w-full text-main-500 bg-createInput-gray rounded text-[0.9em]"
                   min="2"
                   max="12"
                   placeholder="최대 플레이 인원은 12명입니다."
                 />
               </div>
               <div className="grid grid-flow-col col-span-2">
-                <span className="col-span-1 flex justify-center items-center mr-2">시작시간</span>
-                <div className="col-span-7">
+                <span className="col-span-1 flex tablet:justify-center items-center tablet:mr-2 text-[0.9em]">시작시간</span>
+                <div className="tablet:col-span-7 col-span-3">
                   <input
                     name="startTime"
                     value={moa.startTime}
                     onChange={onChange}
-                    className="w-full text-main-500 bg-createInput-gray rounded"
+                    className="w-full text-main-500 bg-createInput-gray rounded text-[0.9em]"
                     type="datetime-local"
                     min={realDate}
                   />
@@ -269,14 +267,14 @@ function MoaCreate() {
                 name="partyDescription"
                 value={moa.partyDescription}
                 onChange={onChange}
-                className="w-full text-main-500 bg-createInput-gray rounded "
+                className="w-full text-main-500 bg-createInput-gray rounded min-h-[10em] tablet:min-h-[13em]"
                 id=""
                 cols=""
                 rows="10"
                 placeholder="모집 내용을 입력해주세요."></textarea>
             </div>
-            <div className="grid grid-flow-col mb-8">
-              <span className="col-span-1">음성 채팅 링크</span>
+            <div className="grid grid-flow-col mb-[1.2em]">
+              <span className="col-span-1 flex items-center text-[0.9em]">음성 채팅 링크</span>
               <input
                 name="chatLink"
                 value={moa.chatLink}
@@ -287,10 +285,10 @@ function MoaCreate() {
               />
             </div>
             {/* 파티 태그 하드 코딩 */}
-            <div className="grid grid-flow-col">
-              <div className="col-span-1">파티 태그</div>
+            <div className="grid tablet:grid-flow-col grid-flow-row">
+              <div className="col-span-1 tablet:text-[1em] text-[0.9em] mb-[0.5em]">파티 태그</div>
               <div>
-                <div className="grid grid-flow-col">
+                <div className="grid grid-flow-col tablet:col-span-5">
                   {
                     items.map((item, index) => (
                       <div key={index}>
@@ -301,11 +299,11 @@ function MoaCreate() {
                           id={item}
                           name={item}
                           type="checkbox"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
+                          className="w-[0.9em] h-[0.9em] tablet:w-4 tablet:h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
                         />
                         <label
                           htmlFor={item}
-                          className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300">
+                          className="ml-[0.2em] tablet:ml-2 tablet:text-[0.95em] text-[0.8em] font-medium text-main-100">
                           {item}
                         </label>
                       </div>
@@ -316,7 +314,7 @@ function MoaCreate() {
             </div>
           </div>
         <div className="flex my-5">
-          <div className="m-auto my-5">
+          <div className="m-auto mt-[0.5em] mb-[3em]">
             <button
               onClick={handleCancel}
               className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">
