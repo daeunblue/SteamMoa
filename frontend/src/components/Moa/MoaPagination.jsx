@@ -48,11 +48,11 @@ const Pagination = () => {
   };
 
   return (
-    <div className="flex text-white">
+    <div className="flex text-white items-center">
       <FontAwesomeIcon
         icon={faAngleLeft}
         onClick={onClickPrev}
-        className="w-7 h-7 rounded-full hover:bg-main-100 hover:text-main-500"
+        className="text-[1.2em] rounded-full hover:bg-main-100 hover:text-main-500"
       />
       <ul className="p-0 mx-2">
         {getPaginationList(page, PAGE_COUNT).map((item) => (
@@ -67,7 +67,7 @@ const Pagination = () => {
       <FontAwesomeIcon
         icon={faAngleRight}
         onClick={onClickNext}
-        className="w-7 h-7 rounded-full hover:bg-main-100 hover:text-main-500"
+        className="text-[1.2em] rounded-full hover:bg-main-100 hover:text-main-500"
       />
     </div>
   );
