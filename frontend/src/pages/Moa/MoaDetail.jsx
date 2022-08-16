@@ -12,6 +12,8 @@ import { getPartyEvalInfo } from "../../api/MoaPartyEval";
 
 function MoaDetail() {
   const PARTY_ISPLAYING = "3";
+  const PARTY_ISOPENED = "1";
+  const PARTY_READY = "2";
   const user = useRecoilState(auth);
   const userId = user[0].userId;
   const params = useParams();
@@ -200,6 +202,11 @@ function MoaDetail() {
     return found ? true : false;
   };
 
+  const checkChatLink = () => {
+    if (detailMoa.chatLink && detailMoa.partyStatus === PARTY_ISOPENED || detailMoa.partyStatus === PARTY_READY) return true;
+    return false;
+  };
+
   const neon = {
     border: "#fff",
     boxShadow:
@@ -339,6 +346,14 @@ function MoaDetail() {
             {" "}
             <pre>{detailMoa.partyDescription}</pre>
           </div>
+          { checkChatLink() && isPlayer() ? 
+          <div>
+            <div className="font-blackSans text-xl my-3">음성 채팅 링크</div>
+            <div className="w-full h-12 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light text-black overflow-ellipse overflow-y-scroll">
+              {" "}
+              {detailMoa.chatLink}
+            </div> 
+          </div> : null }
           <div className="grid place-items-center mt-4">
             <button
               onClick={handlePrevPage}
