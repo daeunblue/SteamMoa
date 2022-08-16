@@ -30,7 +30,9 @@ const ProfileSearchUser = (props) => {
   };
 
   return (
-    <div className="w-full flex flex-col bg-miniMoa-dark rounded-lg p-5 overflow-hidden" onClick={onClickUser}>
+    <div
+      className="w-full flex flex-col bg-miniMoa-dark rounded-lg p-5 overflow-hidden"
+      onClick={onClickUser}>
       {/* 유저 정보 */}
       <div className="w-full flex laptop:flex-row justify-between items-center text-white mb-3 tablet:flex-col mobile:flex-col">
         <div className="flex flex-row items-center">
@@ -48,7 +50,7 @@ const ProfileSearchUser = (props) => {
       <div className="w-full mb-3">
         <div className="w-full flex flex-row justify-between mb-1">
           <div className="text-lg whitespace-nowrap text-white">파티 온도</div>
-          <span className="w-per5 whitespace-nowrap text-white">{`${roundedPoint}°C`}</span>
+          <span className="whitespace-nowrap text-white">{`${roundedPoint}°C`}</span>
         </div>
         <div className="w-per80 m-auto bg-gray-200 rounded-full dark:bg-gray-700">
           <div
@@ -61,10 +63,16 @@ const ProfileSearchUser = (props) => {
 
       {/* 파티 정보 */}
       <div className="text-white text-lg mb-1">참여한 파티</div>
-      <div className="grid grid-cols-3 gap-1">
-        {userParties.map((party) => (
-          <MoaCard key={party.partyId} party={party} />
-        ))}
+      <div className="grid tablet:grid-cols-3 mobile:grid-cols-1 gap-1 text-white text-lg">
+        {userParties.length ? (
+          props.isMobile ? (
+            <MoaCard party={userParties[0]} />
+          ) : (
+            userParties.map((party) => <MoaCard key={party.partyId} party={party} />)
+          )
+        ) : (
+          "참여한 파티가 없습니다."
+        )}
       </div>
     </div>
   );

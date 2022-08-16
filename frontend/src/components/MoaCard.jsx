@@ -41,7 +41,7 @@ function MoaCard(props) {
       <div className="flex flex-col justify-between m-2">
         <div className="flex">
           <div
-            className={`p-auto rounded flex justify-center items-center w-per25 text-xs font-blackSans text-white mr-2 ${
+            className={`p-1 rounded flex justify-center items-center w-per25 text-xs font-blackSans text-white mr-2 ${
               partyIsUrgent ? bgColors[0] : bgColors[partyStatus]
             }`}>
             <span>{partyIsUrgent ? statusMsg[0] : statusMsg[partyStatus]}</span>
