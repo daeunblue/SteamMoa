@@ -9,7 +9,6 @@ import { auth } from "../../recoil/Auth";
 import { formatTimeISO } from "../../util/FormatTime";
 import Swal from "sweetalert2";
 import { getPartyEvalInfo } from "../../api/MoaPartyEval";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 function MoaDetail() {
   const PARTY_ISPLAYING = "3";
@@ -54,7 +53,6 @@ function MoaDetail() {
 
   useEffect(() => {
     moaDetail(partyId).then(({ data }) => {
-      console.log("moaDetail 호출 후", data);
       setDetailMoa(data);
 
       const lst = [];
@@ -85,7 +83,6 @@ function MoaDetail() {
     if (isParticipant && detailMoa.partyStatus === `4`) {
       getPartyEvalInfo(partyId, userId)
         .then((res) => {
-          console.log(res);
           const newEvalInfo = {
             gameName: res.data.party.gameName,
             partyId: res.data.party.partyId,
@@ -95,7 +92,7 @@ function MoaDetail() {
           };
           setPartyEvalInfo(newEvalInfo);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {});
     }
   }, [isParticipant]);
 
@@ -111,14 +108,13 @@ function MoaDetail() {
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "먼저 로그인을 해 주세요!",
+        title: "로그인이 필요한 서비스입니다.",
         showConfirmButton: false,
         timer: 1500,
       });
       navigate(`/login`);
     } else {
       moaJoin(detailMoa, partyId, userId).then((res) => {
-        console.log("참여하기 누른 뒤", res);
         setDetailMoa(res.data);
       });
     }
@@ -162,7 +158,7 @@ function MoaDetail() {
   const onDeleteUser = (deleteUserId) => {
     //파티원 삭제 모달창
     Swal.fire({
-      title: "파티원을 정말 강퇴시키겠습니까?",
+      title: "파티원을 정말 강퇴시킬까요?",
       icon: "warning",
       position: "center",
       showCancelButton: true,
@@ -325,18 +321,18 @@ function MoaDetail() {
           <div className="text-xl font-blackSans my-3">
             참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})
           </div>
-            <div className="flex flex-wrap justify-start items-center overflow-auto p-5">
-              {detailMoa.partyPlayers.map((player, playerId) => {
-                return (
-                  <MoaUserCard
-                    key={playerId}
-                    player={player}
-                    leader={leader}
-                    deleteUser={onDeleteUser}
-                  />
-                );
-              })}
-            </div>
+          <div className="flex flex-wrap justify-start items-center overflow-auto p-5">
+            {detailMoa.partyPlayers.map((player, playerId) => {
+              return (
+                <MoaUserCard
+                  key={playerId}
+                  player={player}
+                  leader={leader}
+                  deleteUser={onDeleteUser}
+                />
+              );
+            })}
+          </div>
           <hr />
           <div className="font-blackSans text-xl my-3">파티 모집 내용</div>
           <div className="w-full h-80 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light text-black overflow-ellipse overflow-y-scroll">

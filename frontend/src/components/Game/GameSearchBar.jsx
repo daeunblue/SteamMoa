@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useSetRecoilState } from "recoil";
@@ -12,7 +12,6 @@ const SearchBar = (props) => {
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("word") ? decodeURIComponent(searchParams.get("word")) : "";
   const [word, setWord] = useState(keyword);
-  
 
   const onChange = (e) => {
     e.preventDefault();
@@ -23,7 +22,7 @@ const SearchBar = (props) => {
     if (e.key === "Enter") {
       setFilter([]);
       setSearchFilter([]);
-      navigate(`/gamemoa?page=1${word ? "&word="+encodeURIComponent(word) : ""}`);
+      navigate(`/gamemoa?page=1${word ? "&word=" + encodeURIComponent(word) : ""}`);
     }
   };
 

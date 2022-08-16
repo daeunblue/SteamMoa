@@ -41,7 +41,7 @@ const ProfileUserUpdate = (props) => {
     cancelButtonText: '<strong>취소</strong>',
     confirmButtonColor: '#43B5A0',
     cancelButtonColor: '#A9ACB1',
-    inputPlaceholder: '비밀번호를 입력하세요',
+    inputPlaceholder: '비밀번호를 입력하세요.',
     inputAttributes: {
       maxlength: 30,
       autocapitalize: 'off',
@@ -66,7 +66,13 @@ const ProfileUserUpdate = (props) => {
   useEffect(
     () => {
       if (!isMyPage) {
-        alert('잘못된 접근입니다.')
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "잘못된 접근입니다.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate('/')
       }
 
@@ -83,7 +89,7 @@ const ProfileUserUpdate = (props) => {
                   {
                     showConfirmButton: false,    
                     icon: 'success',
-                    title: '회원 인증 성공'
+                    title: '회원 인증 성공!'
                   }
                 )
               } else if (response.data.statusCode === 401){
@@ -94,7 +100,7 @@ const ProfileUserUpdate = (props) => {
                         confirmButton: 'mx-2 rounded py-1 px-5 bg-moa-pink text-white w-full',
                       },
                       icon: 'error',
-                      title: `회원 인증 ${trialCnt}회 실패! <br> 비밀번호를 확인하세요.`
+                      title: `회원 인증 ${trialCnt}회 실패... <br> 비밀번호를 확인하세요.`
                     })
                     .then(()=>{
                       setTrialCnt(trialCnt+1)
@@ -124,7 +130,7 @@ const ProfileUserUpdate = (props) => {
                     confirmButton: 'mx-2 rounded py-1 px-5 bg-moa-pink-dark text-white w-full',
                   },
                   icon: 'error',
-                  title: `Server Error! 잠시 후 다시 시도해주세요`
+                  title: `Server Error! 잠시 후 다시 시도해주세요.`
                 }).then(navigate(-1))
             })
         } else if (res.isDismissed){
@@ -173,7 +179,7 @@ const ProfileUserUpdate = (props) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     setTmpPw(val);
     if (!passwordRegex.test(val)&&val) {
-      setPasswordMessage("* 비밀번호가 유효하지 않습니다");
+      setPasswordMessage("* 비밀번호가 유효하지 않습니다.");
     } else {
       setPasswordMessage("");
     }
@@ -191,7 +197,7 @@ const ProfileUserUpdate = (props) => {
           {
             showConfirmButton: false,    
             icon: 'success',
-            title: '변경사항이 저장되었습니다.'
+            title: '변경사항 저장 완료!'
           }
         ).then(setTimeout(navigate(`/mypage/${userProfile.userServiceId}`),800))
       })
@@ -202,8 +208,7 @@ const ProfileUserUpdate = (props) => {
 
   const onDeleteUser = () => {
     Swal.fire({
-      title: 'ALERT',
-      text: "정말 탈퇴하시겠습니까?",
+      title: "정말 탈퇴하시겠어요? &#129394",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#A9ACB1',
@@ -222,7 +227,13 @@ const ProfileUserUpdate = (props) => {
               userId: null,
             });
             sessionStorage.removeItem('token')
-            alert('탈퇴에 성공했습니다.')
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "탈퇴 성공... &#129394",
+              showConfirmButton: false,
+              timer: 1500,
+            });
             navigate('/')
           })
       }

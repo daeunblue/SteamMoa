@@ -5,7 +5,7 @@ import { faAngleDown, faAngleUp, faRotateRight } from "@fortawesome/free-solid-s
 import FilterCaterories from "../Filter/FilterCaterories";
 import FilterBadge from "../Filter/FilterBadge";
 import { useRecoilState } from "recoil";
-import { gameSearchFilter, gamePage } from "../../recoil/Game";
+import { gameSearchFilter } from "../../recoil/Game";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const GameSearchContainer = () => {

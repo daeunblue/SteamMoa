@@ -107,7 +107,9 @@ function MoaUserCard(props) {
       <div className="w-full flex laptop:flex-row justify-between items-center text-white mb-3 tablet:flex-col mobile:flex-col">
         <div className="flex flex-row items-center">
           <img src={`../../ImgAssets/Tier${getTier()}.png`} alt="" className="w-8 h-8 mr-1" />
-          <div className="font-blackSans text-black text-sm mr-2 overflow-hidden text-ellipsis">{user.userServiceId}</div>
+          <div className="font-blackSans text-black text-sm mr-2 overflow-hidden text-ellipsis">
+            {user.userServiceId}
+          </div>
         </div>
       </div>
       {/* 유저 매너 온도 */}

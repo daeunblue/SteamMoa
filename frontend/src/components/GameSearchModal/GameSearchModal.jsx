@@ -49,7 +49,7 @@ const GameSearchModal = ({ hidden, setHidden, setGame }) => {
             "mx-2 rounded py-1 px-5 bg-moa-pink hover:bg-moa-pink-dark text-white w-full",
         },
         icon: "error",
-        title: `2글자 이상 입력해주세요.`,
+        title: `2글자 이상 입력해주세요. &#128521`,
       });
       return;
     }
@@ -72,7 +72,7 @@ const GameSearchModal = ({ hidden, setHidden, setGame }) => {
             "mx-2 rounded py-1 px-5 bg-moa-pink hover:bg-moa-pink-dark text-white w-full",
         },
         icon: "error",
-        title: `게임을 선택해주세요.`,
+        title: `게임을 선택해주세요. &#128521`,
       });
     }
   };

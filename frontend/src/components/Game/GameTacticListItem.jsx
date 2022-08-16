@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { formatTime } from "../../util/FormatTime";
 
 function GameTacticListItem(props) {
-  const { tacticId, tacticTitle, tacticContent, userId, gameId, userServiceId, createTime } =
+  const { tacticId, tacticTitle, tacticContent, userServiceId, createTime } =
     props.tactic;
 
   const navigate = useNavigate();

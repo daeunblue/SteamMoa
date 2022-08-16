@@ -54,7 +54,7 @@ const Navbar = (props) => {
         Swal.fire({
           position: 'center',
           icon: 'info',
-          title: '아이디를 3글자 이상 입력해주세요 &#128521',
+          title: '아이디는 3글자 이상 입력해주세요. &#128521',
           showConfirmButton: false,
           timer: 1500
         })
@@ -66,7 +66,7 @@ const Navbar = (props) => {
         Swal.fire({
           position: 'center',
           icon: 'info',
-          title: '게임명을 2글자 이상 입력해주세요 &#128521',
+          title: '게임명은 2글자 이상 입력해주세요. &#128521',
           showConfirmButton: false,
           timer: 1500
         })

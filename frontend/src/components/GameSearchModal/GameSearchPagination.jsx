@@ -45,14 +45,14 @@ const GameSearchPagination = ({ page, setPage, maxPage }) => {
       />
       <ul className="p-0 mx-2">
         {getPaginationList(page, PAGE_COUNT).map((item) => {
-          return(
+          return (
             <PaginationItem
               key={item}
               value={item}
               handlePageMove={handlePageMove}
               active={page === item}
             />
-          )
+          );
         })}
       </ul>
       <FontAwesomeIcon

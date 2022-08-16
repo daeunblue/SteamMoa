@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Badge from "../Badge";
 
 const GameCard = (props) => {
-  const { gameId, gameName, gameImgpath, gameTags, gameReviewScore } =
-    props.game;
+  const { gameId, gameName, gameImgpath, gameTags, gameReviewScore } = props.game;
 
   const navigate = useNavigate();
 
@@ -16,12 +15,7 @@ const GameCard = (props) => {
     let list = [];
     for (let i = 0; i < gameReviewScore; i++) {
       list.push(
-        <img
-          key={i}
-          className="w-4 h-4"
-          src="../ImgAssets/star.png"
-          alt="게임 리뷰 별"
-        ></img>
+        <img key={i} className="w-4 h-4" src="../ImgAssets/star.png" alt="게임 리뷰 별"></img>
       );
     }
     return list;
@@ -41,9 +35,7 @@ const GameCard = (props) => {
         <div className="flex overflow-hidden">
           {/* key값 설정 */}
           {gameTags.length > 2
-            ? gameTags
-                .slice(0, 2)
-                .map((tag, index) => <Badge key={index} name={tag} />)
+            ? gameTags.slice(0, 2).map((tag, index) => <Badge key={index} name={tag} />)
             : gameTags.map((tag, index) => <Badge key={index} name={tag} />)}
         </div>
       </div>
