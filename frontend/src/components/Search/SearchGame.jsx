@@ -12,16 +12,23 @@ const SearchGame = (props) => {
   const [gameList, setGameList] = useState([]);
   const [moaList, setMoaList] = useState([]);
   const [tacticList, setTacticList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    getSearchLists("content", keyword)
-      .then(({ data }) => {
-        const { parties, games, tactics } = data.contents;
-        setMoaList([...parties]);
-        setGameList([...games]);
-        setTacticList([...tactics]);
-      })
-      .catch();
+  useEffect(async () => {
+    try {
+      setLoading(true);
+      await getSearchLists("content", keyword)
+        .then(({ data }) => {
+          const { parties, games, tactics } = data.contents;
+          setMoaList([...parties]);
+          setGameList([...games]);
+          setTacticList([...tactics]);
+          setLoading(false);
+        })
+        .catch();
+    } catch {
+      setLoading(false);
+    }
   }, [keyword]);
 
   return (
@@ -41,8 +48,14 @@ const SearchGame = (props) => {
           )}
         </div>
         <div className="w-full rounded bg-main-400">
-          {moaList.length ? (
-            <div className="w-full grid grid-cols-4 gap-2">
+          {loading ? (
+            <div className="w-full grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 gap-2">
+              {[...Array(8)].map((v, index) => (
+                <div key={index} className="w-full laptop:h-[15.4vw] tablet:h-[22vw] mobile:h-[51.8vw]  bg-card-lightgray"></div>
+              ))}
+            </div>
+          ) : moaList.length ? (
+            <div className="w-full grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 gap-2">
               {moaList.map((party) => (
                 <MoaCard key={party.partyId} party={party} />
               ))}
@@ -67,6 +80,7 @@ const SearchGame = (props) => {
       <div className="w-full pt-7">
         <div className="w-full flex flex-row justify-between items-end text-white mb-2">
           <span className="font-blackSans text-3xl text-moa-pink">게임모아</span>
+
           {gameList.length ? (
             <Link
               className="text-white text-[10px] tablet:text-xs font-semibold hover:cursor-pointer hover:font-bold"
@@ -78,8 +92,14 @@ const SearchGame = (props) => {
           )}
         </div>
         <div className="w-full rounded bg-main-400">
-          {gameList.length ? (
-            <div className="w-full grid grid-cols-4 gap-2">
+          {loading ? (
+            <div className="w-full grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 gap-2">
+              {[...Array(4)].map((v, index) => (
+                <div key={index} className="w-full laptop:h-[12.7vw] tablet:h-[17.8vw] mobile:h-[48.5vw] bg-card-lightgray"></div>
+              ))}
+            </div>
+          ) : gameList.length ? (
+            <div className="w-full grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 gap-2">
               {gameList.map((game) => (
                 <GameCard key={game.gameId} game={game} />
               ))}
@@ -98,8 +118,14 @@ const SearchGame = (props) => {
           <span className="font-blackSans text-3xl text-moa-green">공략모아</span>
         </div>
         <div className="w-full rounded bg-main-400">
-          {tacticList.length ? (
-            <div className="w-full grid grid-cols-4 gap-2">
+          {loading ? (
+            <div className="w-full grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 gap-2">
+              {[...Array(8)].map((v, index) => (
+                <div key={index} className="w-full laptop:h-[14vw] tablet:h-[20vw] mobile:h-[50vw] bg-card-lightgray"></div>
+              ))}
+            </div>
+          ) : tacticList.length ? (
+            <div className="w-full grid laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-1 gap-2">
               {tacticList.map((tactic) => (
                 <TacticSearchCard key={tactic.tacticId} tactic={tactic} />
               ))}
