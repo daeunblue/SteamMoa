@@ -148,14 +148,10 @@ const MoaUpdate = (props) => {
   return (
     <>
       <Navbar />
-      <div className="w-per95 tablet:w-per75 mx-auto min-h-full text-white font-sans">
-        <div className="mx-auto">
-          <img
-            className="w-full"
-            src="../../ImgAssets/MoaZone_UpdateVer.gif"
-            alt="모아존 글수정 배너 이미지"
-          />
-        </div>
+      <div className="w-full tablet:w-per75 mx-auto min-h-full text-white font-sans">
+      <div className="w-full bg-[#1E1B1C] laptop:h-[10em] h-[8em] flex items-center">
+        <img src="../../ImgAssets/MoaZone_UpdateVer.gif" alt="게임모아 메인 배너" className="laptop:object-none object-none w-full h-full"/>
+      </div>
         <div className="w-full h-[1.5em] mb-2 bg-main-300 text-main-300 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to "></div>
         <form>
           <div className="m-auto h-full mb-2 bg-main-400">
