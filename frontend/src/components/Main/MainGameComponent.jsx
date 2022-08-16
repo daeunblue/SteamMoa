@@ -23,7 +23,7 @@ const MainGameComponent = (props) => {
 
   return (
     <div
-      className="w-full flex h-[30%] justify-between bg-main-400 rounded opacity-90 hover:opacity-100 hover:scale-[102%] drop-shadow-md hover:cursor-pointer"
+      className="w-full flex h-[30%] justify-between bg-main-400 rounded opacity-90 hover:opacity-100 hover:scale-[102%] drop-shadow-md hover:cursor-pointer ease-in duration-200"
       onClick={onClickRecommend}>
       <div className="overflow-hidden w-per20 relative pt-[20%] rounded">
         <img

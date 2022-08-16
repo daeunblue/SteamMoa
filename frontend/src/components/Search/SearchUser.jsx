@@ -58,7 +58,7 @@ const SearchUser = (props) => {
   }, [page, userList]);
 
   return (
-    <div className="laptop:w-per50 tablet:w-per75 mobile:w-per85 mx-auto">
+    <div className="laptop:w-per50 tablet:w-per75 w-per90 mx-auto">
       <div className="w-full py-7">
         <div className="w-full flex flex-row justify-between items-end text-white mb-2">
           <span className="font-blackSans text-3xl text-moa-purple">유저모아</span>

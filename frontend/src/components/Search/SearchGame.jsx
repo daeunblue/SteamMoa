@@ -32,7 +32,7 @@ const SearchGame = (props) => {
   }, [keyword]);
 
   return (
-    <div className="w-per75 mx-auto">
+    <div className="w-per90 tablet:w-per75 mx-auto">
       {/* 파티모아 */}
       <div className="w-full pt-7">
         <div className="w-full flex flex-row justify-between items-end text-white mb-2">
