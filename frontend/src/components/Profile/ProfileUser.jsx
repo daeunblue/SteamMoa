@@ -96,9 +96,9 @@ const ProfileUser = (props) => {
 
   return (
     <>
-      <div className="h-per50 bg-[#AAB0BA] w-per90 tablet:w-per75 mt-20 rounded-lg mx-auto drop-shadow-md">
+      <div className="h-auto bg-[#AAB0BA] w-per90 tablet:w-per75 mt-[15%] rounded-lg mx-auto drop-shadow-md">
         {/* 톱니바퀴 */}
-        <div className={`w-full flex justify-end ${isMyPage ? "px-[4%] py-[3.5%]" : "p-[6%]"}`}>
+        <div className={`w-full flex justify-end ${isMyPage ? "px-[4%] py-[3.5%]" : "p-[5.5%]"}`}>
           {isMyPage ? (
             <Link to={`/${midLocation}/${profileName}/userupdate`}>
               <FontAwesomeIcon icon={faGear} className="text-white hover:cursor-pointer" />
@@ -108,35 +108,35 @@ const ProfileUser = (props) => {
           )}
         </div>
         {/* 티어 이미지, username... */}
-        <div className="px-[10%] flex mb-6">
-          <div className="w-per50 laptop:w-per40 flex justify-start items-center">
+        <div className="px-[10%] laptop:flex mb-6">
+          <div className="laptop:w-per50 w-full laptop:w-per40 flex justify-center laptop:justify-start items-center">
             <img
               src={`../../ImgAssets/Tier${tier}.png`}
               alt=""
-              className="min-w-[50px] w-per80  drop-shadow-md aspect-square"
+              className="min-w-[65px] max-w-[130px] laptop:w-per80 w-per50  drop-shadow-md aspect-square"
             />
 
           </div>
-          <div className="w-full flex flex-col justify-center pb-[3%]">
+          <div className="w-full flex flex-col justify-center laptop:pb-[3%]">
             {/* 프로필 이름 */}
-            <div className="laptop:flex items-center mb-1">
-              <div className="font-blackSans text-lg mr-2.5">{profileName}</div>
+            <div className="flex items-center justify-center laptop:justify-start laptop:mb-1 mb-0.5">
+              <div className="font-blackSans tablet:text-base laptop:text-lg mr-2.5">{profileName}</div>
               <div className="font-Sans text-xs">[{userProfile.userName}]</div>
             </div>
             {/* 팔로우 */}
-            <div className="flex justify-between">
-              <div className="flex items-center">
+            <div className="laptop:flex laptop:justify-between items-center justify-center mx-auto w-full">
+              <div className="flex items-center laptop:mb-0 mt-0.5 mb-1.5 justify-center">
                 <div
-                  className="text-[13.5px] mr-3 text-gray-700 font-semibold hover:cursor-pointer"
+                  className="text-sm mr-3 text-gray-700 font-semibold hover:cursor-pointer"
                   onClick={onShowFollowing}>{`팔로잉: ${followingList.length}`}</div>
                 <div
-                  className="text-[13.5px] text-gray-700 font-semibold hover:cursor-pointer"
+                  className="text-sm text-gray-700 font-semibold hover:cursor-pointer"
                   onClick={onShowFollower}>{`팔로워: ${followerList.length}`}</div>
               </div>
               {!isMyPage && !(isFollowing === null) ? (
                 <button
-                  className="py-1 px-3 bg-blue-500 text-white text-sm font-semibold 
-                                  rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 mr-2"
+                  className={`ml-2 laptop:ml-0 w-per95 laptop:w-auto py-1.5 laptop:px-3 ${(isFollowing ? "bg-rose-400 hover:bg-rose-600":"bg-blue-500 hover:bg-blue-700")} text-white text-[0.6em] laptop:text-sm font-semibold 
+                                  rounded-lg shadow-md focus:outline-none focus:ring-2 laptop:mr-2`}
                   onClick={onFollowBtnClick}>
                   {isFollowing ? "Unfollow" : "Follow"}
                 </button>
@@ -148,7 +148,7 @@ const ProfileUser = (props) => {
         </div>
         {/* 매너온도,  */}
         <div className="px-[10%]">
-          <div className="w-per95 mx-auto bg-gray-200 rounded-full mb-6">
+          <div className="w-per95 mx-auto bg-gray-200 rounded-full mb-3 laptop:mb-6">
             <div
               className={`${tierColor.tierManner} text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full`}
               style={progressStyle}>

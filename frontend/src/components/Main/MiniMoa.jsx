@@ -26,7 +26,11 @@ const MiniMoa = (props) => {
     if (parties.length >= 5) {
       return [...Array(5)].map((_, index) => {
         if (isMobile) {
-          return <MoaCard party={parties[index]} key={index}></MoaCard>;
+          return (
+            <div className="w-per100 overflow-hidden">
+              <MoaCard party={parties[index]} key={index}></MoaCard>
+            </div>
+          )
         } else if (parties.length >= 15) {
           return (
             <div className="w-full grid grid-cols-3 gap-1" key={index}>
@@ -58,7 +62,7 @@ const MiniMoa = (props) => {
           className="text-white mobile:text-xl tablet:text-2xl laptop:text-3xl"
         />
       </div>
-      <div className="mini-moa-content flex flex-col justify-around items-center w-per75 mx-1.5 tablet:mx-0 tablet:w-per95">
+      <div className="mini-moa-content flex flex-col justify-around items-center w-per80 tablet:w-per95">
         <div className="font-Sans font-semibold text-lg tablet:text-xl laptop:text-2xl my-3 tablet:my-6 miniMoa-neonText text-white">
           MOA PARTY
         </div>

@@ -34,7 +34,7 @@ const ProfileUserUpdate = (props) => {
 
   //비밀번호 확인 swal
   const pwCheckSwal = Swal.mixin({
-    html: `<strong>${profileName}님</strong> <br><br>정보 수정을 위해 비밀번호를 입력해주세요.`,
+    html: `<strong>${profileName}님</strong> <br><br>정보 수정을 위해 <br> 비밀번호를 입력해주세요.`,
     input: 'password',
     showCancelButton: true,
     confirmButtonText: '<strong>입력</strong>',
@@ -242,7 +242,7 @@ const ProfileUserUpdate = (props) => {
 
 
   return (
-    <div className='py-10 px-[7%] w-full h-full'>
+    <div className='py-12 tablet:py-10 px-[7%] w-full h-full'>
       <div className='flex mb-2 w-full mx-auto max-w-[700px]'>
         <div className={`w-2 ${tierColor.tierManner}`}></div>
         <div className={`ml-3 text-2xl font-bold ${tierColor.tiertextLight}`}>회원정보 수정</div>

@@ -56,7 +56,7 @@ const ProfilePastParty = (props) => {
   ) : (
     <div className="my-10 flex flex-col justify-center">
       {!contentList.length && !(render === 1) ? (
-        <div className="w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold">
+        <div className="w-per90 flex flex-col justify-center drop-shadow-lg py-24 mt-2 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold">
           <div className="mb-2">종료된 파티가 없습니다.</div>
           {isMyPage ? (
             <div>
@@ -72,7 +72,7 @@ const ProfilePastParty = (props) => {
       ) : (
         // 컨텐츠
         <>
-          <div className="text-center text-2xl text-white font-blackSans">{titleText} Party</div>
+          <div className="text-center text-2xl text-white font-blackSans">Completed Party</div>
           <div className="w-per90 mx-auto drop-shadow-lg rounded-lg py-7 px-5 bg-sidebar-dark my-5">
             <div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-2">
               {showContents.map((party, index) => {

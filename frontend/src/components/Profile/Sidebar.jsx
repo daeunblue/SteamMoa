@@ -47,6 +47,7 @@ const Sidebar = (props) => {
       <div className={`h-screen bg-sidebar-light w-per25 min-w-[150px] tablet:min-w-[130px] max-w-[225px] ${(isMobile ? "absolute top-0 left-0 z-50"+(showMobileSide ? "": " hidden"):"")}`}>
         {/* 프로필 */}
         <NavLink
+          onClick={closeSide}
           to={`/${midLocation}/${profileName}`}
           className={
             isMain
@@ -73,12 +74,12 @@ const Sidebar = (props) => {
           {menus.map((menu, index) => {
             return (
               <div key={index} className="mb-8">
-                <div className="flex text-lg font-bold text-white">
+                <div className="flex text-base tablet:text-lg font-bold text-white">
                   <div className="mr-1.5">{menu.icon}</div>
                   <div className="">{menu.title}</div>
                 </div>
                 <hr className="text-gray-300 my-1" />
-                <div className="">
+                <div className="text-sm tablet:text-base">
                   {menu.submenus.map((submenu, idx) => {
                     return (
                       <div key={idx} className="py-1">

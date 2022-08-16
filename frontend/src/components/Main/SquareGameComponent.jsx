@@ -10,7 +10,7 @@ const SquareGameComponent = (props) => {
 
   return (
     <div
-      className="w-full hover:cursor-pointer drop-shadow-md bg-main-500 p-1 rounded hover:scale-[102%]"
+      className="w-full hover:cursor-pointer drop-shadow-md bg-main-500 p-1 rounded hover:scale-[102%] ease-out duration-300"
       onClick={onClickRecommend}>
       <div className="overflow-hidden w-full relative pt-[100%] rounded">
         <img

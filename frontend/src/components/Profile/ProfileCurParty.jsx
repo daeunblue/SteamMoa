@@ -55,7 +55,7 @@ const ProfileCurParty = (props) => {
   ) : (
     <div className="my-10 flex flex-col justify-center">
       {!contentList.length && !(render === 1) ? (
-        <div className="w-per90 flex flex-col justify-center drop-shadow-lg p-24 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold">
+        <div className="w-per90 flex flex-col justify-center drop-shadow-lg py-24 mt-2 rounded-lg text-center bg-sidebar-dark mx-auto text-white font-semibold">
           <div className="mb-2">참여 중인 파티가 없습니다.</div>
           {isMyPage ? (
             <div>
