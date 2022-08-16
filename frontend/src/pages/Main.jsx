@@ -32,7 +32,7 @@ const Main = () => {
   return (
     <>
       <Navbar></Navbar>
-      <div className="w-per95 tablet:w-per75 m-auto">
+      <div className="w-full tablet:w-per75 m-auto">
         {/* 배너 Carousel*/}
         <Banner />
         {/* 미니 모아 */}

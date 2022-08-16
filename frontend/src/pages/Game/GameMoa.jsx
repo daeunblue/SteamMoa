@@ -41,7 +41,7 @@ const GameMoa = () => {
     <div className="w-full h-screen">
       <Navbar />
       {/* 게임모아 배너 이미지 */}
-      <div className="w-per95 tablet:w-per75 m-auto bg-[#1E1B1C] laptop:h-[10em] h-[8em] flex items-center">
+      <div className="w-full tablet:w-per75 m-auto bg-[#1E1B1C] laptop:h-[10em] h-[8em] flex items-center">
         <img src="../ImgAssets/GameMoa_Main.gif" alt="게임모아 메인 배너" className="laptop:object-none object-none w-full h-full"/>
       </div>
       {/* 검색 컨테이너 */}

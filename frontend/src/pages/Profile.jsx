@@ -84,6 +84,8 @@ const Profile = (props) => {
     } else {
       if (accessId === userId) {
         navigate(`/mypage/${userId}`, { replace: true });
+      } else {
+        setIsMyPage(false)
       }
     }
 
@@ -119,7 +121,7 @@ const Profile = (props) => {
         setIsFollowing(res.data.followers.includes(userId));
       })
       .catch((err) => {});
-  }, [isFollowing, accessId, midLocation, isLoggedIn, userId, navigate]);
+  }, [isFollowing, accessId, midLocation, isLoggedIn, userId, navigate, location]);
 
   useEffect(() => {
     const tierCol = {

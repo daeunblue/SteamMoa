@@ -91,7 +91,7 @@ const GameSearchContainer = () => {
   const setBgColor = (id) => bgColor[id];
 
   return (
-    <div className="w-per95 tablet:w-per75 m-auto mb-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to">
+    <div className="w-full tablet:w-per75 m-auto mb-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to">
       {/* header : 검색바, 정렬 Select, 펼침버튼 */}
       <div className="w-full grid grid-cols-2 tablet:px-5 tablet:py-3 px-2.5 py-2.5">
         {/* 검색바, 정렬 */}
