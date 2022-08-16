@@ -81,11 +81,11 @@ class VideoChat extends Component {
           // so OpenVidu doesn't create an HTML video by its own
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
-          subscribers.push(subscriber);
+          const newSubscribers = [...subscribers, subscriber];
 
           // Update the state with the new subscribers
           this.setState({
-            subscribers: subscribers,
+            subscribers: newSubscribers,
           });
         });
 
