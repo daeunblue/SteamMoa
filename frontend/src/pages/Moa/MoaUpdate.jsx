@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { moaDelete, moaUpdate } from "../../api/Moazone";
-import MoaUserCard from "../../components/Moa/MoaUserCard";
 import { moaDetail } from "../../api/Moazone";
 import Swal from "sweetalert2";
 

@@ -19,7 +19,7 @@ const VideoChatWrapper = (props) => {
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "먼저 로그인을 해 주세요. &#128517",
+        title: "로그인이 필요한 서비스입니다. &#128517",
         showConfirmButton: false,
         timer: 1500,
       });

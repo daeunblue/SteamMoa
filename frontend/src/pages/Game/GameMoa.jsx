@@ -45,7 +45,10 @@ const GameMoa = () => {
       {/* 검색 컨테이너 */}
       <GameSearchContainer />
       {/* 게임 리스트 */}
-      <GameList gameList={gameList} isLoading={loading} />
+      <div className="w-per95 tablet:w-per75 m-auto">
+        <GameList gameList={gameList} isLoading={loading} />
+      </div>
+
       {/* 페이지네이션 */}
       <div className="w-per95 tablet:w-per75 m-auto flex justify-center py-5">
         <GamePagination />

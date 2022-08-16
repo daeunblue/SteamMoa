@@ -50,8 +50,8 @@ const SearchGame = (props) => {
           ) : (
             <div className=" flex flex-col justify-center items-center text-white text-lg p-5">
               <span>
-                <strong className="text-moa-yellow-dark">첫 번째</strong> 파티 개설자가 될 기회입니다{" "}
-                <span>&#127881;</span>
+                <strong className="text-moa-yellow-dark">첫 번째</strong> 파티 개설자가 될
+                기회입니다 <span>&#127881;</span>
               </span>
               <Link
                 to="/moazone/create"

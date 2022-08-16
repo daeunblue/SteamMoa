@@ -22,12 +22,15 @@ function MoaCreate() {
     partyDescription: "",
     partyTags: [],
     partyTitle: "",
-    startTime: (new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')).substring(0, 16),
+    startTime: new Date(+new Date() + 3240 * 10000)
+      .toISOString()
+      .replace(/\..*/, "")
+      .substring(0, 16),
     userId: userId,
   });
 
-  const date = new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, '')
-  const realDate = date.substring(0, 16)
+  const date = new Date(+new Date() + 3240 * 10000).toISOString().replace(/\..*/, "");
+  const realDate = date.substring(0, 16);
 
   // 파티 태그 요소 하드 코딩
   const [searchParams] = useSearchParams();
@@ -60,7 +63,7 @@ function MoaCreate() {
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "먼저 로그인을 해 주세요 &#128521",
+        title: "로그인이 필요한 서비스 입니다. &#128521",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -113,11 +116,19 @@ function MoaCreate() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if ( moa.gameId || !moa.maxPlayer || !moa.partyDescription || !moa.partyTags || !moa.partyTitle || !moa.startTime || !moa.userId ){
+    if (
+      moa.gameId ||
+      !moa.maxPlayer ||
+      !moa.partyDescription ||
+      !moa.partyTags ||
+      !moa.partyTitle ||
+      !moa.startTime ||
+      !moa.userId
+    ) {
       Swal.fire({
         position: "center",
         icon: "error",
-        title: "모든 칸을 입력해주세요!",
+        title: "모든 칸을 입력해주세요.",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -126,27 +137,28 @@ function MoaCreate() {
     moaCreate({
       ...moa,
       gameId: game.gameId,
-    }).then((data) => {
-      if (data.status === 200) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "모아글 업로드 성공!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate("/moazone");
-      } else {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "모아글 업로드 실패... &#129394",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
     })
-    .catch();
+      .then((data) => {
+        if (data.status === 200) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "모아글 업로드 성공!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate("/moazone");
+        } else {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "모아글 업로드 실패... &#129394",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      })
+      .catch();
   };
 
   const handleCancel = () => {
@@ -164,12 +176,11 @@ function MoaCreate() {
         navigate(`/moazone`);
       }
     });
-  }
+  };
 
   const onToggleModal = () => {
     setModalHidden(!modalHidden);
   };
-
 
   return (
     <>
@@ -206,8 +217,7 @@ function MoaCreate() {
                       alt="게임 이미지"
                       className="laptop:w-per10 tablet:w-per30 w-per50 rounded"
                     />
-                    <span className="laptop:w-per90 tablet:w-per70 w-per50 whitespace-nowrap p-1.5 text-gray-900 align-center pt-1 overflow-hidden text-ellipsis"
-                    >
+                    <span className="laptop:w-per90 tablet:w-per70 w-per50 whitespace-nowrap p-1.5 text-gray-900 align-center pt-1 overflow-hidden text-ellipsis">
                       {game.gameName}
                     </span>
                   </div>
@@ -236,7 +246,9 @@ function MoaCreate() {
             </div>
             <div className="grid tablet:grid-flow-col grid-flow-row mb-3">
               <div className="grid grid-flow-col col-span-2 tablet:mx-2 mr-1 tablet:mb-0 mb-[0.6em]">
-                <span className="tablet:col-span-1 flex items-center text-[0.9em]">플레이 인원</span>
+                <span className="tablet:col-span-1 flex items-center text-[0.9em]">
+                  플레이 인원
+                </span>
                 <input
                   name="maxPlayer"
                   value={moa.maxPlayer}
@@ -249,7 +261,9 @@ function MoaCreate() {
                 />
               </div>
               <div className="grid grid-flow-col col-span-2">
-                <span className="col-span-1 flex tablet:justify-center items-center tablet:mr-2 text-[0.9em]">시작시간</span>
+                <span className="col-span-1 flex tablet:justify-center items-center tablet:mr-2 text-[0.9em]">
+                  시작시간
+                </span>
                 <div className="tablet:col-span-7 col-span-3">
                   <input
                     name="startTime"
@@ -289,44 +303,42 @@ function MoaCreate() {
               <div className="col-span-1 tablet:text-[1em] text-[0.9em] mb-[0.5em]">파티 태그</div>
               <div>
                 <div className="grid grid-flow-col tablet:col-span-5">
-                  {
-                    items.map((item, index) => (
-                      <div key={index}>
-                        <input
-                          checked={checkedList.includes(`${index + 1}`) ? true : false}
-                          onChange={onCheckedElement}
-                          value={index + 1}
-                          id={item}
-                          name={item}
-                          type="checkbox"
-                          className="w-[0.9em] h-[0.9em] tablet:w-4 tablet:h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                        />
-                        <label
-                          htmlFor={item}
-                          className="ml-[0.2em] tablet:ml-2 tablet:text-[0.95em] text-[0.8em] font-medium text-main-100">
-                          {item}
-                        </label>
-                      </div>
-                    ))
-                  }
+                  {items.map((item, index) => (
+                    <div key={index}>
+                      <input
+                        checked={checkedList.includes(`${index + 1}`) ? true : false}
+                        onChange={onCheckedElement}
+                        value={index + 1}
+                        id={item}
+                        name={item}
+                        type="checkbox"
+                        className="w-[0.9em] h-[0.9em] tablet:w-4 tablet:h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
+                      />
+                      <label
+                        htmlFor={item}
+                        className="ml-[0.2em] tablet:ml-2 tablet:text-[0.95em] text-[0.8em] font-medium text-main-100">
+                        {item}
+                      </label>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
-        <div className="flex my-5">
-          <div className="m-auto mt-[0.5em] mb-[3em]">
-            <button
-              onClick={handleCancel}
-              className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">
-              취소
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="w-32 h-12 mx-3 bg-moa-pink hover:bg-moa-pink-dark rounded-lg text-sm">
-              파티 만들기
-            </button>
+          <div className="flex my-5">
+            <div className="m-auto mt-[0.5em] mb-[3em]">
+              <button
+                onClick={handleCancel}
+                className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm">
+                취소
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="w-32 h-12 mx-3 bg-moa-pink hover:bg-moa-pink-dark rounded-lg text-sm">
+                파티 만들기
+              </button>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </>
@@ -334,4 +346,3 @@ function MoaCreate() {
 }
 
 export default MoaCreate;
-

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { getServiceIdDuplicate, postSignup } from "../../api/Auth";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 const SignupForm = (props) => {
   const location = useLocation();
@@ -29,16 +29,16 @@ const SignupForm = (props) => {
 
   const SuccessToast = Swal.mixin({
     toast: true,
-    position: 'center',
+    position: "center",
     timer: 1000,
-  })
+  });
 
   const FailureToast = Swal.mixin({
     buttonsStyling: false,
     toast: true,
-    position: 'center',
+    position: "center",
     showConfirmButton: true,
-  })
+  });
 
   const onChangeId = (event) => {
     const { name, value } = event.target;
@@ -64,7 +64,7 @@ const SignupForm = (props) => {
       [name]: value,
     });
     if (!passwordRegex.test(value)) {
-      setPasswordMessage("* 비밀번호가 유효하지 않습니다");
+      setPasswordMessage("* 비밀번호가 유효하지 않습니다.");
       setIsPassword(false);
     } else {
       setPasswordMessage("");
@@ -78,7 +78,7 @@ const SignupForm = (props) => {
       [name]: value,
     });
     if (value !== user.service_pw) {
-      setPasswordConfirmMessage("* 비밀번호가 일치하지 않습니다");
+      setPasswordConfirmMessage("* 비밀번호가 일치하지 않습니다.");
       setIsPasswordConfirm(false);
     } else {
       setPasswordConfirmMessage("");
@@ -89,11 +89,11 @@ const SignupForm = (props) => {
   const handleIdCheck = (e) => {
     getServiceIdDuplicate(user.service_id)
       .then(({ data }) => {
-        if (!(data.statusCode===200)) {
-          setIdMessage("아이디가 중복되었습니다");
+        if (!(data.statusCode === 200)) {
+          setIdMessage("아이디가 중복되었습니다.");
           setIsCheckedId(false);
         } else {
-          setIdMessage("사용 가능한 아이디입니다");
+          setIdMessage("사용 가능한 아이디입니다.");
           setIsCheckedId(true);
         }
       })
@@ -120,61 +120,73 @@ const SignupForm = (props) => {
 
   const signup = () => {
     if (!user.service_id || !user.name || !user.service_pw || !user.service_pw_confirm) {
-      alert("모든 사항을 입력해주세요.");
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "모든 사항을 입력해주세요.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       return;
     }
     if (!steamId) {
-      alert("유효하지 않은 접근입니다.");
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "유효하지 않은 접근입니다.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/signup", { replace: true });
       return;
     }
-    
+
     postSignup({
       user_name: user.name,
       user_service_id: user.service_id,
       user_service_pw: user.service_pw,
       user_steam_id: steamId,
-    }).then(({ status, data }) => {
-        console.log(status, data)
+    })
+      .then(({ status, data }) => {
         alert(data.message);
         if (status === 200) {
-          SuccessToast.fire(
-            {
-              padding: '3em',
-              showConfirmButton: false,    
-              icon: 'success',
-              title: '회원 가입 성공!'
-            }
-          ).then(navigate("/login", { replace: true }))
+          SuccessToast.fire({
+            padding: "3em",
+            showConfirmButton: false,
+            icon: "success",
+            title: "회원가입 성공!",
+          }).then(navigate("/login", { replace: true }));
         } else {
           // navigate("/signup");
         }
       })
-      .catch(({response}) => {
-        if(response.status === 409) {
-          FailureToast.fire(
-            {
-              customClass: {
-                confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
-              },
-              padding: '1em',
-              icon: 'error',
-              title: `이미 가입된 스팀 아이디입니다.`,
-              text: '로그인을 진행해주세요.',
-            }).then(() =>{navigate('/login', { replace: true })})
-        } else{
-          FailureToast.fire(
-            {
-              customClass: {
-                confirmButton: 'mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full',
-              },
-              padding: '1em',
-              icon: 'error',
-              title: `유효하지 않은 접근입니다.`,
-              text: '다시 시도해주세요.',
-            }).then(()=>{navigate('/signup', { replace: true })})
+      .catch(({ response }) => {
+        if (response.status === 409) {
+          FailureToast.fire({
+            customClass: {
+              confirmButton: "mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full",
+            },
+            padding: "1em",
+            icon: "error",
+            title: `이미 가입된 스팀 아이디입니다.`,
+            text: "로그인을 진행해주세요.",
+          }).then(() => {
+            navigate("/login", { replace: true });
+          });
+        } else {
+          FailureToast.fire({
+            customClass: {
+              confirmButton: "mx-2 rounded py-1 px-5 bg-rose-500 text-white w-full",
+            },
+            padding: "1em",
+            icon: "error",
+            title: `유효하지 않은 접근입니다.`,
+            text: "다시 시도해주세요.",
+          }).then(() => {
+            navigate("/signup", { replace: true });
+          });
         }
-        });
+      });
   };
 
   return (

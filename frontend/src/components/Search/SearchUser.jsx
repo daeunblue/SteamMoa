@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { getSearchLists } from "../../api/Search";
 import MiniPagination from "../MiniPagination";
 import ProfileSearchUser from "../Profile/ProfileSearchUser";
@@ -43,7 +43,7 @@ const SearchUser = (props) => {
   }, [page, userList]);
 
   return (
-    <div className="w-per50 mx-auto">
+    <div className="laptop:w-per50 w-per75 mx-auto">
       <div className="w-full py-7">
         <div className="w-full flex flex-row justify-between items-end text-white mb-2">
           <span className="font-blackSans text-3xl text-moa-purple">

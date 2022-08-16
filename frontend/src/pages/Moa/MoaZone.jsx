@@ -42,7 +42,7 @@ function MoaZone() {
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "로그인이 필요한 서비스입니다 &#128521;",
+        title: "로그인이 필요한 서비스입니다. &#128521;",
         showConfirmButton: false,
         timer: 1500,
       });

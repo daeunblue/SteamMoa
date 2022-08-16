@@ -5,8 +5,7 @@ import MoaCard from "../MoaCard";
 
 const ProfileSearchUser = (props) => {
   const navigate = useNavigate();
-  const { userName, userServiceId, userPoint, userTags, userParties } =
-    props.user;
+  const { userName, userServiceId, userPoint, userTags, userParties } = props.user;
   const tierMin = 33.5;
   const tierMax = 39.5;
   const tierNum = [34.5, 35.5, 37.5, 38.5];
@@ -14,6 +13,7 @@ const ProfileSearchUser = (props) => {
   const progressStyle = {
     width: ((userPoint - tierMin) / (tierMax - tierMin)) * 100 + "%",
   };
+  const roundedPoint = Math.round(userPoint * 10) / 10;
 
   const getTier = () => {
     for (let i = 0; i < tierNum.length; i++) {
@@ -30,19 +30,12 @@ const ProfileSearchUser = (props) => {
   };
 
   return (
-    <div
-      className="w-full flex flex-col bg-miniMoa-dark rounded-lg p-5"
-      onClick={onClickUser}
-    >
+    <div className="w-full flex flex-col bg-miniMoa-dark rounded-lg p-5 overflow-hidden" onClick={onClickUser}>
       {/* 유저 정보 */}
       <div className="w-full flex laptop:flex-row justify-between items-center text-white mb-3 tablet:flex-col mobile:flex-col">
         <div className="flex flex-row items-center">
-          <img
-            src={`../../ImgAssets/Tier${getTier()}.png`}
-            alt=""
-            className="w-14 h-14 mr-5"
-          />
-          <span className="font-blackSans text-2xl mr-2">{userServiceId}</span>
+          <img src={`../../ImgAssets/Tier${getTier()}.png`} alt="" className="w-14 h-14 mr-5" />
+          <span className="font-blackSans laptop:text-2xl mr-2">{userServiceId}</span>
           <span className=" text-lg mr-2">[{userName}]</span>
         </div>
         <div className="flex flex-row justify-center">
@@ -55,14 +48,13 @@ const ProfileSearchUser = (props) => {
       <div className="w-full mb-3">
         <div className="w-full flex flex-row justify-between mb-1">
           <div className="text-lg whitespace-nowrap text-white">파티 온도</div>
-          <span className="w-per5 whitespace-nowrap text-white">{`${userPoint}°C`}</span>
+          <span className="w-per5 whitespace-nowrap text-white">{`${roundedPoint}°C`}</span>
         </div>
         <div className="w-per80 m-auto bg-gray-200 rounded-full dark:bg-gray-700">
           <div
             className="bg-moa-purple text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-            style={progressStyle}
-          >
-            {`${userPoint}°C`}
+            style={progressStyle}>
+            {`${roundedPoint}°C`}
           </div>
         </div>
       </div>

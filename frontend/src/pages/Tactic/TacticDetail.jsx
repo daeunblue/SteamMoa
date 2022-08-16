@@ -24,7 +24,8 @@ const TacticDetail = () => {
         Swal.fire({
           position: "center",
           icon: "warning",
-          title: "해당 게임을 불러올 수 없습니다. &#128521",
+          title: "게임을 불러올 수 없습니다. &#128521",
+          text: "잠시 후 다시 시도해주세요.",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -47,7 +48,7 @@ const TacticDetail = () => {
   const onClickDelete = () => {
     Swal.fire({
       title: "정말로 삭제하시겠어요?",
-      text: "공략글을 삭제하면 복구할 수 없습니다!",
+      text: "공략글을 삭제하면 복구할 수 없습니다.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "d33",
@@ -59,7 +60,7 @@ const TacticDetail = () => {
         tactic_id &&
           deleteTactic(tactic_id)
             .then(({ data }) => {
-              if (data.msg == "Success") {
+              if (data.msg === "Success") {
                 Swal.fire({
                   position: "center",
                   icon: "success",

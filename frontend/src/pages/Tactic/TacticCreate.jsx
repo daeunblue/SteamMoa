@@ -25,7 +25,7 @@ const TacticCreate = () => {
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "먼저 로그인을 해 주세요 &#128521",
+        title: "로그인이 필요한 서비스입니다. &#128521",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -48,7 +48,8 @@ const TacticCreate = () => {
           Swal.fire({
             position: "center",
             icon: "warning",
-            title: "해당 게임을 불러올 수 없습니다. &#128521",
+            title: "게임을 불러올 수 없습니다. &#128521",
+            text: "잠시 후 다시 시도해주세요.",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -84,7 +85,7 @@ const TacticCreate = () => {
       Swal.fire({
         position: "center",
         icon: "error",
-        title: "제목, 게임, 공략글을 작성해주세요 &#129394",
+        title: "제목, 게임, 공략글을 작성해주세요. &#129394",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -93,7 +94,7 @@ const TacticCreate = () => {
     if (!tactic.userServiceId) {
       Swal.fire({
         position: "center",
-        icon: "warning",
+        icon: "error",
         title: "잘못된 접근입니다! &#128529",
         showConfirmButton: false,
         timer: 1500,
