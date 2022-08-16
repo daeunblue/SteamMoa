@@ -87,7 +87,14 @@ const Login = (props) => {
             icon: "success",
             title: "로그인 성공!",
             padding: "1em",
-          }).then(navigate(-1, { replace: true }));
+          }).then(() =>{
+            if (sessionStorage.getItem('justSigned')){
+              sessionStorage.removeItem('justSigned')
+              navigate('/', { replace: true })
+            } else{
+              navigate(-1, { replace: true });
+            }
+          })
           // 2. 나머지는 오류 메시지 보여주기 (toast로)
         } else {
           alert(response.data.message);
@@ -165,7 +172,7 @@ const Login = (props) => {
           />
           <div className="login-find-account flex justify-end texts-end text-white text-xs mb-4">
             <div className="mr-2">
-              <Link to="/singup">회원가입</Link>
+              <Link to="/signup">회원가입</Link>
             </div>
             {/* <div className="items-end mb-4">
                 <Link to="/">아이디|비밀번호 찾기</Link>
