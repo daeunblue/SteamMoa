@@ -47,10 +47,10 @@ const MiniMoa = (props) => {
       <div
         className="w-10 tablet:w-14 laptop:w-16 hover:cursor-pointer text-center"
         onClick={() => {
-          if (index === 4) {
-            setIndex(0);
+          if (index === 0) {
+            setIndex(4);
           } else {
-            setIndex(index + 1);
+            setIndex(index - 1);
           }
         }}>
         <FontAwesomeIcon
@@ -58,7 +58,7 @@ const MiniMoa = (props) => {
           className="text-white mobile:text-xl tablet:text-2xl laptop:text-3xl"
         />
       </div>
-      <div className="mini-moa-content flex flex-col justify-around items-center w-per80 tablet:w-per95">
+      <div className="mini-moa-content flex flex-col justify-around items-center w-per75 mx-1.5 tablet:mx-0 tablet:w-per95">
         <div className="font-Sans font-semibold text-lg tablet:text-xl laptop:text-2xl my-3 tablet:my-6 miniMoa-neonText text-white">
           MOA PARTY
         </div>

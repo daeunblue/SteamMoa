@@ -9,6 +9,7 @@ import { deleteUserFollow, postUserFollow } from "../../api/User.js";
 
 const ProfileUser = (props) => {
   const {
+    isMobile,
     isFollowing,
     setIsFollowing,
     profileName,
@@ -95,7 +96,7 @@ const ProfileUser = (props) => {
 
   return (
     <>
-      <div className="h-per50 bg-[#AAB0BA] w-per75 mt-20 rounded-lg mx-auto drop-shadow-md">
+      <div className="h-per50 bg-[#AAB0BA] w-per90 tablet:w-per75 mt-20 rounded-lg mx-auto drop-shadow-md">
         {/* 톱니바퀴 */}
         <div className={`w-full flex justify-end ${isMyPage ? "px-[4%] py-[3.5%]" : "p-[6%]"}`}>
           {isMyPage ? (
@@ -108,14 +109,17 @@ const ProfileUser = (props) => {
         </div>
         {/* 티어 이미지, username... */}
         <div className="px-[10%] flex mb-6">
-          <img
-            src={`../../ImgAssets/Tier${tier}.png`}
-            alt=""
-            className="min-w-[100px] w-per25 mr-[5%] drop-shadow-md"
-          />
+          <div className="w-per50 laptop:w-per40 flex justify-start items-center">
+            <img
+              src={`../../ImgAssets/Tier${tier}.png`}
+              alt=""
+              className="min-w-[50px] w-per80  drop-shadow-md aspect-square"
+            />
+
+          </div>
           <div className="w-full flex flex-col justify-center pb-[3%]">
             {/* 프로필 이름 */}
-            <div className="flex items-center mb-1">
+            <div className="laptop:flex items-center mb-1">
               <div className="font-blackSans text-lg mr-2.5">{profileName}</div>
               <div className="font-Sans text-xs">[{userProfile.userName}]</div>
             </div>
