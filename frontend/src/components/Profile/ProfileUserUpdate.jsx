@@ -208,7 +208,7 @@ const ProfileUserUpdate = (props) => {
 
   const onDeleteUser = () => {
     Swal.fire({
-      title: "정말 탈퇴하시겠어요? &#129394",
+      title: "정말 탈퇴하시겠어요? &&#128546",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#A9ACB1',
@@ -230,7 +230,7 @@ const ProfileUserUpdate = (props) => {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "탈퇴 성공... &#129394",
+              title: "탈퇴 성공... &#128557",
               showConfirmButton: false,
               timer: 1500,
             });
@@ -249,7 +249,7 @@ const ProfileUserUpdate = (props) => {
       </div>
       <hr className='mx-auto max-w-[700px] w-full' />
 
-      <div className='rounded mt-3 w-full mx-auto bg-zinc-300 p-6 w-full max-w-[700px]'>
+      <div className='rounded mt-3 w-full mx-auto bg-zinc-300 p-6 max-w-[700px]'>
           <label htmlFor="nickname"
                  className="block mb-2 text-sm font-semibold text-gray-900">
             닉네임

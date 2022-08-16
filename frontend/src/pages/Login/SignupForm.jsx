@@ -157,7 +157,12 @@ const SignupForm = (props) => {
             title: "회원가입 성공!",
           }).then(navigate("/login", { replace: true }));
         } else {
-          // navigate("/signup");
+          SuccessToast.fire({
+            padding: "3em",
+            showConfirmButton: false,
+            icon: "error",
+            title: "회원가입 실패...",
+          }).then(navigate("/signup", { replace: true }));
         }
       })
       .catch(({ response }) => {

@@ -158,13 +158,13 @@ function MoaDetail() {
   const onDeleteUser = (deleteUserId) => {
     //파티원 삭제 모달창
     Swal.fire({
-      title: "파티원을 정말 강퇴시킬까요?",
+      title: "파티원을 정말 추방시킬까요?",
       icon: "warning",
       position: "center",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "네. 퇴장시킬래요",
+      confirmButtonText: "네. 내보낼래요.",
       cancelButtonText: "취소",
     }).then((result) => {
       if (result.isConfirmed) {

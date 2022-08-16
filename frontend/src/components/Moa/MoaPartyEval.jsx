@@ -62,7 +62,7 @@ const MoaPartyEval = (props) => {
 
   const onSubmit = () => {
     Swal.fire({
-      text: "평가를 제출할까요? &#128516",
+      text: "평가를 제출할까요? &#128521",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#4461FA",
