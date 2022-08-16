@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines, faChampagneGlasses } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = (props) => {
-  const { setSubPage, isMyPage, userProfile, followerList, followingList, tier, tierColor } = props;
+  const { isMobile, isMyPage, userProfile, followerList, followingList, tier, tierColor, showMobileSide, setShowMobileSide } = props;
   const profileName = userProfile.userServiceId;
   const param = useParams();
   const subParam = Object.values(param);
@@ -33,64 +33,77 @@ const Sidebar = (props) => {
     },
   ];
 
+  const closeSide = () => {
+    if (showMobileSide&&isMobile){
+      setShowMobileSide(false)
+    }
+  }
+
+
+
   return (
-    <div className="h-[110vh] bg-sidebar-light w-per25 min-w-[90px] max-w-[225px]">
-      {/* 프로필 */}
-      <NavLink
-        to={`/${midLocation}/${profileName}`}
-        className={
-          isMain
-            ? `block py-5 px-[10%] bg-${tierColor.tierColor}-500 hover:cursor-pointer shadow-inner`
-            : "block py-5 px-[10%] bg-sidebar-dark hover:cursor-pointer"
-        }>
-        <div className="flex justify-around items-center">
-          <img
-            src={`../../ImgAssets/Tier${tier}.png`}
-            alt=""
-            className="w-per20 min-w-[35px] drop-shadow-md"
-          />
-          <div className="flex flex-col justify-center">
-            <span className="text-xs font-blackSans text-white">{profileName}</span>
-            <div className="grid grid-cols-1 laptop:grid-cols-2 gap-1">
-              <span className="text-white text-[10px]">{`팔로잉: ${followingList.length}`}</span>
-              <span className="text-white text-[10px]">{`팔로워: ${followerList.length}`}</span>
+    <>
+      <div className={(isMobile&&(showMobileSide) ? "h-full w-full absolute top-0 left-0 z-40 bg-black opacity-50":"")} onClick={closeSide}></div>
+      <div className={`h-screen bg-sidebar-light w-per25 min-w-[150px] tablet:min-w-[130px] max-w-[225px] ${(isMobile ? "absolute top-0 left-0 z-50"+(showMobileSide ? "": " hidden"):"")}`}>
+        {/* 프로필 */}
+        <NavLink
+          to={`/${midLocation}/${profileName}`}
+          className={
+            isMain
+              ? `block py-5 px-[10%] bg-${tierColor.tierColor}-500 hover:cursor-pointer shadow-inner`
+              : "block py-5 px-[10%] bg-sidebar-dark hover:cursor-pointer"
+          }>
+          <div className="flex justify-around items-center">
+            <img
+              src={`../../ImgAssets/Tier${tier}.png`}
+              alt=""
+              className="w-per20 min-w-[35px] drop-shadow-md"
+            />
+            <div className="flex flex-col justify-center">
+              <span className="text-xs font-blackSans text-white">{profileName}</span>
+              <div className="grid grid-cols-1 laptop:grid-cols-2 gap-1">
+                <span className="text-white text-[10px]">{`팔로잉: ${followingList.length}`}</span>
+                <span className="text-white text-[10px]">{`팔로워: ${followerList.length}`}</span>
+              </div>
             </div>
           </div>
+        </NavLink>
+        {/* 메뉴 */}
+        <div className="p-[10%]">
+          {menus.map((menu, index) => {
+            return (
+              <div key={index} className="mb-8">
+                <div className="flex text-lg font-bold text-white">
+                  <div className="mr-1.5">{menu.icon}</div>
+                  <div className="">{menu.title}</div>
+                </div>
+                <hr className="text-gray-300 my-1" />
+                <div className="">
+                  {menu.submenus.map((submenu, idx) => {
+                    return (
+                      <div key={idx} className="py-1">
+                        <NavLink
+                          onClick={closeSide}
+                          className={({ isActive }) =>
+                            isActive
+                              ? `text-white flex justify-end px-2 font-bold ${tierColor.tierColorLight} rounded py-0.5`
+                              : "text-gray-400 py-0.5"
+                          }
+                          to={submenu.path}>
+                          {submenu.name}
+                        </NavLink>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
-      </NavLink>
-      {/* 메뉴 */}
-      <div className="p-[10%]">
-        {menus.map((menu, index) => {
-          return (
-            <div key={index} className="mb-8">
-              <div className="flex text-lg font-bold text-white">
-                <div className="mr-1.5">{menu.icon}</div>
-                <div className="">{menu.title}</div>
-              </div>
-              <hr className="text-gray-300 my-1" />
-              <div className="">
-                {menu.submenus.map((submenu, idx) => {
-                  return (
-                    <div key={idx} className="py-1">
-                      <NavLink
-                        className={({ isActive }) =>
-                          isActive
-                            ? `text-white flex justify-end px-2 font-bold ${tierColor.tierColorLight} rounded py-0.5`
-                            : "text-gray-400 py-0.5"
-                        }
-                        to={submenu.path}>
-                        {submenu.name}
-                      </NavLink>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
       </div>
-    </div>
+    </>
   );
+
 };
 
 export default Sidebar;

@@ -13,6 +13,9 @@ import Swal from "sweetalert2";
 import { useRecoilState } from "recoil";
 import { auth } from "../recoil/Auth.js";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+
 import { Route, Routes, useLocation, useParams, useNavigate } from "react-router-dom";
 import { getUserFollowing, getUserFollowwers, getUserInfo } from "../api/User";
 
@@ -41,6 +44,28 @@ const Profile = (props) => {
     tierborder: "",
     tiertext: "",
   });
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640 ? true:false)
+  const [showMobileSide, setShowMobileSide] = useState(false)
+    //choose the screen size 
+  const handleResize = () => {
+    if (window.innerWidth < 640) {
+      setIsMobile(true)
+      setShowMobileSide(false)
+    } else {
+      setIsMobile(false)
+      setShowMobileSide(false)
+    }
+  }
+  useEffect(()=>{
+    window.addEventListener("resize", handleResize)
+  }, 
+  [isMobile]
+  )
+
+  const onShowSide = () => {
+    setShowMobileSide(true)
+  }
+
 
   const navigate = useNavigate();
   const [userAuth] = useRecoilState(auth);
@@ -185,8 +210,14 @@ const Profile = (props) => {
   return (
     <>
       <Navbar />
-      <div className="w-per75 m-auto flex">
+      <div className={`w-full tablet:w-per75 mx-auto flex ${(isMobile ? "absolute":"")}`}>
+        {(isMobile&&(!showMobileSide) ? 
+         <FontAwesomeIcon icon={faBars} onClick={onShowSide} className="text-center absolute top-[1.2em] left-[1.2em] text-white w-[1em] h-[1em]" />
+        :<></>)}
         <Sidebar
+          showMobileSide={showMobileSide}
+          setShowMobileSide={setShowMobileSide}
+          isMobile={isMobile}
           setSubPage={setSubPage}
           isMyPage={isMyPage}
           userProfile={userProfile}
@@ -194,13 +225,14 @@ const Profile = (props) => {
           followingList={followingList}
           tier={tier}
           tierColor={tierColor}></Sidebar>
-        <div className="bg-centerDiv-blue w-full">
+        <div className="bg-centerDiv-blue w-full min-h-screen mx-auto">
           <Routes>
             <Route
               exact="true"
               path=""
               element={
                 <ProfileUser
+                  isMobile={isMobile}
                   tierColor={tierColor}
                   isFollowing={isFollowing}
                   setIsFollowing={setIsFollowing}
@@ -217,6 +249,7 @@ const Profile = (props) => {
               path="userupdate"
               element={
                 <ProfileUserUpdate
+                  isMobile={isMobile}
                   tierColor={tierColor}
                   profileName={profileName}
                   isMyPage={isMyPage}
