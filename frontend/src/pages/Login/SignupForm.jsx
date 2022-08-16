@@ -149,6 +149,7 @@ const SignupForm = (props) => {
     })
       .then(({ status, data }) => {
         if (status === 200) {
+          sessionStorage.setItem('justSigned', true)
           SuccessToast.fire({
             padding: "3em",
             showConfirmButton: false,
