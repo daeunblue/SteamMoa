@@ -64,7 +64,7 @@ const Search = (props) => {
     <div className="w-full h-full">
       <Navbar />
       {/* 검색 입력 부분 */}
-      <div className="w-full h-per20 pt-14 pb-20 nav-grad flex flex-col justify-center items-center text-white">
+      <div className="w-full h-per20 tablet:pt-14 tablet:pb-20 pt-10 pb-14 nav-grad flex flex-col justify-center items-center text-white">
         {/* 안내문구 */}
         <span className="font-blackSans text-3xl">
           <span className="text-moa-yellow">파티</span>
@@ -78,7 +78,7 @@ const Search = (props) => {
           <span className="text-moa-purple">@사용자</span>를 검색해보세요
         </span>
         {/* 검색어 입력 */}
-        <div id="search-bar" className="w-per50 h-14 flex felx-row bg-searchbar-gray rounded-lg">
+        <div id="search-bar" className="laptop:w-per50 tablet:w-per75 mobile:w-per90 h-14 flex felx-row bg-searchbar-gray rounded-lg">
           <div className="flex w-per5 items-center ml-5 pointer-events-none">
             <FontAwesomeIcon className="text-detailContent-light text-2xl" icon={faSearch} />
           </div>

@@ -224,7 +224,7 @@ function MoaDetail() {
   return (
     <div>
       <Navbar />
-      <div className="w-per75 h-screen m-auto mb-2 text-white font-sans">
+      <div className="w-per95 tablet:w-per75 mx-auto h-screen mb-2 text-white font-sans">
         <div className="overflow-hidden w-full relative pb-[25%] bg-gray-900 object opacity-[95%] hover:opacity-100 transition-transform ease-in-out duration-7000">
           {/* 게임 이미지 */}
           <img
@@ -234,7 +234,7 @@ function MoaDetail() {
           />
         </div>
         {/* 게임 이름 */}
-        <div className="w-full laptop:h-8 tablet:h-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to font-blackSans text-xl whitespace-nowrap text-ellipsis">
+        <div className="w-full laptop:h-8 tablet:h-5 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to font-blackSans text-lg flex items-center pl-2 whitespace-nowrap text-ellipsis">
           {detailMoa.gameName}
         </div>
         {/* 본문 */}
@@ -243,7 +243,7 @@ function MoaDetail() {
             <div className="flex justify-between">
               {/* 파티 모집 상태 */}
               <div
-                className={`px-4 rounded flex items-center justify-center w-per55 font-blackSans text-white
+                className={`laptop:px-4 px-3 laptop:text-sm text-xs rounded flex items-center justify-center w-per55 font-blackSans text-white
                 ${detailMoa.partyIsUrgent ? bgColors[0] : bgColors[detailMoa.partyStatus]}`}>
                 <span>
                   {detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}
@@ -251,7 +251,7 @@ function MoaDetail() {
               </div>
               {/* 파티 제목 */}
               <div
-                className="mx-4 mt-2 font-blackSans items-center text-xl tablet:text-2xl laptop:text-[32px] text-whitetext-base whitespace-nowrap text-ellipsis"
+                className="mx-4 mt-2 font-blackSans items-center text-lg tablet:text-xl laptop:text-[28px] text-whitetext-base whitespace-nowrap text-ellipsis"
                 name="partyTitle"
                 value={detailMoa.partyTitle}>
                 {detailMoa.partyTitle}
@@ -259,7 +259,7 @@ function MoaDetail() {
             </div>
             {checkChat() ? (
               <button
-                className="hover:cursor-pointer hover:scale-[102%] h-9 p-2 rounded-2xl text-[2vw] tablet:text-[1.1vw] laptop:text-sm font-semibold bg-[#03a9f4]"
+                className="hover:cursor-pointer hover:scale-[102%] h-9 px-2 rounded-2xl text-[2vw] tablet:text-[1.1vw] laptop:text-sm font-semibold bg-[#03a9f4]"
                 style={neon}
                 onClick={onClickChat}>
                 채팅 입장하기
@@ -282,7 +282,7 @@ function MoaDetail() {
                     </button>
                   ) : (
                     <button
-                      className=" h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-moa-yellow-dark hover:bg-moa-yellow drop-shadow-lg hover:scale-[102%] text-center flex items-center "
+                      className=" h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 bg-moa-yellow-dark hover:bg-moa-yellow drop-shadow-lg hover:scale-[102%] text-center flex items-center "
                       onClick={handlePartyJoin}>
                       파티 참여하기
                     </button>
@@ -321,11 +321,11 @@ function MoaDetail() {
           </div>
           <hr />
           {detailMoa.partyPlayers.length !== 0 && (
-            <div className="my-3 text-xl font-blackSans" name="startTime">
+            <div className="my-2 laptop:text-lg text-base  font-blackSans" name="startTime">
               파티 시작 시간 : {formatTimeISO(detailMoa.startTime)}{" "}
             </div>
           )}
-          <div className="text-xl font-blackSans my-3">
+          <div className="laptop:text-lg text-base font-blackSans mb-2">
             참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})
           </div>
           <div className="flex flex-wrap justify-start items-center overflow-auto p-5">
