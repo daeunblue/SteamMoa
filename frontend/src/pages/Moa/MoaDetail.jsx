@@ -337,7 +337,7 @@ function MoaDetail() {
           <div className="font-blackSans text-xl my-3">파티 모집 내용</div>
           <div className="w-full h-80 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light text-black overflow-ellipse overflow-y-scroll">
             {" "}
-            {detailMoa.partyDescription}
+            <pre>{detailMoa.partyDescription}</pre>
           </div>
           <div className="grid place-items-center mt-4">
             <button
