@@ -165,7 +165,7 @@ const Login = (props) => {
           />
           <div className="login-find-account flex justify-end texts-end text-white text-xs mb-4">
             <div className="mr-2">
-              <Link to="/singup">회원가입</Link>
+              <Link to="/signup">회원가입</Link>
             </div>
             {/* <div className="items-end mb-4">
                 <Link to="/">아이디|비밀번호 찾기</Link>

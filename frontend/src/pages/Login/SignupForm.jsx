@@ -148,7 +148,6 @@ const SignupForm = (props) => {
       user_steam_id: steamId,
     })
       .then(({ status, data }) => {
-        alert(data.message);
         if (status === 200) {
           SuccessToast.fire({
             padding: "3em",
@@ -161,6 +160,7 @@ const SignupForm = (props) => {
         }
       })
       .catch(({ response }) => {
+        console.log(response)
         if (response.status === 409) {
           FailureToast.fire({
             customClass: {

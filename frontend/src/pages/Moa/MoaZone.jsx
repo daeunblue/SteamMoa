@@ -54,7 +54,9 @@ function MoaZone() {
     <div>
       <Navbar />
       {/* 모아존 배너 */}
-      <img src="../../ImgAssets/MoaZone_Main.gif" alt="MoaZon Main" className="w-per95 tablet:w-per75 m-auto" />
+      <div className="w-perfull tablet:w-per75 m-auto bg-[#1E1B1C] laptop:h-[10em] h-[8em] flex items-center">
+        <img src="../ImgAssets/MoaZone_Main.gif" alt="게임모아 메인 배너" className="laptop:object-none object-none w-full h-full"/>
+      </div>
       {/* 검색 컨테이너 */}
       <MoaSearchContainer />
       {/* 모아 만들기 버튼 */}

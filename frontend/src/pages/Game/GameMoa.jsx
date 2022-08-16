@@ -9,6 +9,8 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { gameMaxPage, gameSearchFilter } from "../../recoil/Game";
 import { useSearchParams } from "react-router-dom";
 
+import '../../assets/mainNeon.css'
+
 const GameMoa = () => {
   const [gameList, setGameList] = useState([]);
   const [searchParams] = useSearchParams();
@@ -39,8 +41,8 @@ const GameMoa = () => {
     <div className="w-full h-screen">
       <Navbar />
       {/* 게임모아 배너 이미지 */}
-      <div className="w-per95 tablet:w-per75 m-auto">
-        <img src="../ImgAssets/GameMoa_Main.gif" alt="게임모아 메인 배너" />
+      <div className="w-per95 tablet:w-per75 m-auto bg-[#1E1B1C] laptop:h-[10em] h-[8em] flex items-center">
+        <img src="../ImgAssets/GameMoa_Main.gif" alt="게임모아 메인 배너" className="laptop:object-none object-none w-full h-full"/>
       </div>
       {/* 검색 컨테이너 */}
       <GameSearchContainer />
