@@ -40,7 +40,7 @@ const GameReviewItem = (props) => {
   const onDelete = () => {
     Swal.fire({
       width: 300,
-      text: "리뷰를 삭제할까요? U+1F972",
+      text: "리뷰를 삭제할까요?",
       showCancelButton: true,
       confirmButtonColor: "#FA448C",
       cancelButtonColor: "#A9ACB1",
@@ -124,7 +124,7 @@ const GameReviewItem = (props) => {
         <div className="text-xs pt-1 font-semibold">{review.reviewScore}</div>
       </div>
       {/* content */}
-      <div className="text-sm mb-1">{review.reviewContent}</div>
+      <div className="text-sm mb-1"><pre>{review.reviewContent}</pre></div>
     </div>
   );
 };
