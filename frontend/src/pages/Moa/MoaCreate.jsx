@@ -152,7 +152,7 @@ function MoaCreate() {
           Swal.fire({
             position: "center",
             icon: "error",
-            title: "모아글 업로드 실패... &#129394",
+            title: "모아글 업로드 실패...",
             showConfirmButton: false,
             timer: 1500,
           });

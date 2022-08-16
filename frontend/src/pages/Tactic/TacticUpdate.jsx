@@ -75,7 +75,7 @@ const TacticUpdate = () => {
       Swal.fire({
         position: "center",
         icon: "error",
-        title: "제목, 게임, 공략글을 작성해주세요 &#129394",
+        title: "제목, 게임, 공략글을 작성해주세요.",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -85,7 +85,7 @@ const TacticUpdate = () => {
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "잘못된 접근입니다! &#128529",
+        title: "잘못된 접근입니다!",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -108,7 +108,7 @@ const TacticUpdate = () => {
           Swal.fire({
             position: "center",
             icon: "error",
-            title: "공략글 업로드 실패... &#129394",
+            title: "공략글 업로드 실패...",
             showConfirmButton: false,
             timer: 1500,
           });
