@@ -109,7 +109,7 @@ const ProfileUser = (props) => {
         </div>
         {/* 티어 이미지, username... */}
         <div className="px-[10%] laptop:flex mb-6">
-          <div className="laptop:w-per50 w-full laptop:w-per40 flex justify-center laptop:justify-start items-center">
+          <div className="laptop:w-per50 w-full flex justify-center laptop:justify-start items-center">
             <img
               src={`../../ImgAssets/Tier${tier}.png`}
               alt=""
