@@ -49,7 +49,7 @@ public class ReviewServiceImpl implements ReviewService{
                 review.setReviewScore(reviewPostReq.getReviewScore());
                 review.setUser(userRepository.findByUserServiceId(reviewPostReq.getUserServiceId()).get());
                 review.setGame(gameRepository.findByGameId(reviewPostReq.getGameId()).orElse(null));
-                review.setLocalDateTime(LocalDateTime.now());
+                review.setLocalDateTime(LocalDateTime.now().plusHours(9));
                 reviewRepository.save(review);
             }
             return true;
