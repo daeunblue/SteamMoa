@@ -58,7 +58,8 @@ function MoaUserCard(props) {
 
   const pinkNeonBox = {
     backgroundColor: "rgba(255, 255, 255, 0.9)",
-    width: "11rem",
+    width: "100%",
+    maxWidth: "12em",
     height: "7rem",
     border: "0.1rem solid #fff",
     borderRadius: "1.7rem",
@@ -69,7 +70,8 @@ function MoaUserCard(props) {
 
   const yellowNeonBox = {
     backgroundColor: "rgba(255, 255, 255, 0.9)",
-    width: "11em",
+    width: "100%",
+    maxWidth: "12em",
     height: "7rem",
     border: "0.1rem solid #fff",
     borderRadius: "1.7rem",
@@ -87,7 +89,7 @@ function MoaUserCard(props) {
 
   return (
     <div
-      className="flex flex-col justify-evenly overflow-hidden hover:cursor-pointer hover:opacity-80 ml-3 mr-3 mb-6"
+      className="col-span-1 mx-auto flex flex-col justify-evenly overflow-hidden hover:cursor-pointer hover:opacity-80 w-full"
       onClick={onUserCard}
       style={cardColor}>
       {/* 파티장이 접속했을 때만 x 아이콘 표시 */}
