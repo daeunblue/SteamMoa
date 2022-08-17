@@ -35,6 +35,11 @@ const GameDetail = (props) => {
   const gameId = params.game_id;
   const tabDesign = `inline-flex py-[0.8em] px-[1.6em] rounded-t-lg border-b-2 border-transparent hover:text-gray-700 hover:border-indigo-400`;
 
+  // Scroll To Top 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
   useEffect(() => {
     getGame(gameId)
       .then((res) => {

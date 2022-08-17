@@ -59,6 +59,10 @@ function MoaCreate() {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
+  useEffect(() => {
     if (!userId) {
       Swal.fire({
         position: "center",

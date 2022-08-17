@@ -21,6 +21,10 @@ const TacticCreate = () => {
   const [isFiexedGame, setIsFixedGame] = useState(false);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
+  useEffect(() => {
     if (!user_id) {
       Swal.fire({
         position: "center",
@@ -146,13 +150,13 @@ const TacticCreate = () => {
   return (
     <div className="w-full min-h-full">
       <Navbar />
-      <div className="w-per75 min-h-full mx-auto my-5 rounded flex flex-col">
+      <div className="w-per95 tablet:w-per75 min-h-full mx-auto my-5 rounded flex flex-col">
         <div className="w-full h-full bg-main-300 mb-2 text-main-300">**</div>
         <div className="w-full h-full m-aut p-5 mb-2 bg-main-400">
           <input
             id="tacticTitle"
             onChange={handleChangeTitle}
-            className="w-full text-main-500 bg-createInput-gray text-lg rounded p-1 px-2 mb-2"
+            className="w-full text-main-500 bg-createInput-gray laptop:text-lg rounded p-1 px-2 mb-2"
             placeholder="공략글 제목을 작성해주세요"
           />
           {/* 게임 아이디 찾기 */}
@@ -197,7 +201,7 @@ const TacticCreate = () => {
               공략글 내용
             </label>
             <textarea
-              className="w-full h-[32rem] bg-createInput-gray rounded"
+              className="w-full min-h-[25rem] bg-createInput-gray rounded"
               id="tacticContent"
               placeholder="공략글을 작성해 주세요."
               onChange={handleChangeContents}></textarea>

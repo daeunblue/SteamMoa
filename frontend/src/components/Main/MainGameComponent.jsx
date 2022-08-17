@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const MainGameComponent = (props) => {
   const navigate = useNavigate();
-  const { type, game } = props;
+  const { type, game, isLoading } = props;
   let bg = "bg-moa-green-dark";
   let text = "TODAY";
   let subText = "추천!";
@@ -22,7 +22,7 @@ const MainGameComponent = (props) => {
   };
 
   return (
-    <div
+      <div
       className="w-full flex h-[30%] justify-between bg-main-400 rounded opacity-90 hover:opacity-100 hover:scale-[102%] drop-shadow-md hover:cursor-pointer ease-in duration-200"
       onClick={onClickRecommend}>
       <div className="overflow-hidden w-per20 relative pt-[20%] rounded">
@@ -46,6 +46,7 @@ const MainGameComponent = (props) => {
         </div>
       </div>
     </div>
+  
   );
 };
 

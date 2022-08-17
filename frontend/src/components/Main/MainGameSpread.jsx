@@ -3,7 +3,7 @@ import SquareGameComponent from "./SquareGameComponent";
 import "../../assets/neon.css";
 
 const MainGameSpread = (props) => {
-  const { frees, hots, picks } = props;
+  const { frees, hots, picks, isLoading } = props;
 
   const parts = [
     {
@@ -46,9 +46,21 @@ const MainGameSpread = (props) => {
             </div>
             <div
               className={`grid grid-cols-2 w-full p-3 tablet:p-5 drop-shadow-md shadow-inner laptop:p-6 ${part.bg} bg-opacity-[15%] tablet:grid-cols-5 gap-x-2.5 gap-y-4 tablet:gap-y-5 rounded mt-0.5`}>
-              {part.list.map((game, index) => {
-                return <SquareGameComponent game={game} key={index} />;
-              })}
+              {
+              (isLoading ? 
+                [...Array(15)].map((_,idx) => {
+                  return (
+                    <div className="w-full hover:cursor-pointer drop-shadow-md bg-main-500 p-1 rounded opacity-80">
+                      <div className="overflow-hidden w-full relative pt-[100%] rounded bg-main-400 animate-pulse"></div>
+                      <div className="h-[16px]"></div>
+                    </div>
+                  )
+                })
+                :
+                part.list.map((game, index) => {
+                  return <SquareGameComponent game={game} key={index} />;
+                })
+                )}
             </div>
           </div>
         );
