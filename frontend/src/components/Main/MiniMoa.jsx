@@ -5,7 +5,7 @@ import MoaCard from "../MoaCard";
 import "../../assets/neon.css";
 
 const MiniMoa = (props) => {
-  const { parties } = props;
+  const { parties, isLoading } = props;
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640 ? true : false);
   const [index, setIndex] = useState(0);
 
@@ -27,7 +27,7 @@ const MiniMoa = (props) => {
       return [...Array(5)].map((_, index) => {
         if (isMobile) {
           return (
-            <div className="w-per100 overflow-hidden">
+            <div className="w-per100 overflow-hidden" key={index}>
               <MoaCard party={parties[index]} key={index}></MoaCard>
             </div>
           )
@@ -71,7 +71,33 @@ const MiniMoa = (props) => {
             className="carousel-items w-per500 flex ease-in duration-700"
             // translate3d() 메소드는 현재 위치에서 해당 요소를 주어진 x축과 y축, z축의 거리만큼 이동시킵니다.
             style={{ transform: `translate3d(${-index * 20}%,0,0)` }}>
-            {moaCarousel(parties)}
+            {isLoading? 
+              (isMobile ? 
+                <div className="bg-card-lightgray w-per20 h-[60vw] opacity-80">
+                  <div className="bg-mainBtn-disabled w-full h-per60 animate-pulse"></div>
+                  <div className="h-per40 w-full p-2.5 flex flex-col justify-between">
+                    <div className="h-per40 w-per30 animate-pulse bg-mainBtn-disabled rounded"></div>
+                    <div className="h-per40 w-full animate-pulse bg-mainBtn-disabled rounded"></div>
+                  </div>
+                </div>
+                : 
+                <div className="w-per20 grid grid-cols-3 gap-1">
+                  {[...Array(3)].map((_, idx) => {
+                    return (
+                      <div className="bg-card-lightgray w-full h-[18vw] max-h-[250px]" key={idx}>
+                        <div className="bg-mainBtn-disabled w-full h-per60 animate-pulse"></div>
+                        <div className="h-per40 w-full p-2.5 flex flex-col justify-between">
+                          <div className="h-per40 w-per40 animate-pulse bg-mainBtn-disabled rounded"></div>
+                          <div className="h-per40 w-full animate-pulse bg-mainBtn-disabled rounded"></div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>)
+
+              :
+              moaCarousel(parties)
+            }  
           </div>
           <div className="slideshowDots flex justify-center mt-2">
             {[...Array(5)].map((_, idx) => (

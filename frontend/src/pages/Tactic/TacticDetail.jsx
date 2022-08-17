@@ -16,6 +16,10 @@ const TacticDetail = () => {
   const user_id = user.userId;
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
+  useEffect(() => {
     getATactic(tactic_id)
       .then(({ data }) => {
         setTactic({ ...data });
@@ -87,7 +91,7 @@ const TacticDetail = () => {
   return (
     <div>
       <Navbar />
-      <div className="w-per75 m-auto text-gray-200">
+      <div className="w-per95 tablet:w-per75 m-auto text-gray-200">
         <div className="overflow-hidden w-full relative pb-[25%] bg-gray-900 object opacity-[95%] hover:opacity-100 transition-transform ease-in-out duration-7000">
           {/* 게임 이미지 */}
           {tactic.gameImgPath ? (

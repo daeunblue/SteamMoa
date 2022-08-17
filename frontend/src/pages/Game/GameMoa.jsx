@@ -22,6 +22,10 @@ const GameMoa = () => {
   const setMaxPage = useSetRecoilState(gameMaxPage);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
   useEffect(async () => {
     try {
       setLoading(true);

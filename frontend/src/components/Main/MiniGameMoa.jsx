@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const MiniGameMoa = (props) => {
   const navigate = useNavigate();
-  const { bests, frees, today, hots } = props;
+  const { bests, frees, today, hots, isLoading } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640 ? true : false);
 
@@ -22,11 +22,11 @@ const MiniGameMoa = (props) => {
   }, [isMobile]);
 
   const onClickToday = () => {
-    navigate(`/gamemoa/detail/${today[14].gameId}`);
+    navigate(`/gamemoa/detail/${today[4].gameId}`);
   };
 
   const onClickMore = () => {
-    navigate("/gamemoa");
+    navigate(`/gamemoa`);
   };
 
   if (!isMobile) {
@@ -38,21 +38,27 @@ const MiniGameMoa = (props) => {
         <hr className="bg-createInput-gray mb-3" />
         <div className="grid grid-cols-5 gap-2">
           <div className="col-span-2 py-2 px-3">
-            <div className="w-full h-full flex flex-col justify-between items-center">
+            <div className={`w-full h-full flex flex-col justify-between items-center ${(isLoading ? "h-max-[300px] h-[18vw]":"")}`}>
               {today.length ? (
-                <MainGameComponent game={today[Math.floor(Math.random() * 4)]} type="today" />
+                <MainGameComponent game={today[Math.floor(Math.random() * 4)]} type="today" isLoading={isLoading}/>
               ) : (
-                ""
+                <div
+                className="w-full flex h-[5vw] h-max-[90px] bg-main-400 rounded opacity-90 hover:opacity-100 drop-shadow-md animate-pulse">
+                </div>
               )}
               {hots.length ? (
-                <MainGameComponent game={frees[Math.floor(Math.random() * 10)]} type="hot" />
+                <MainGameComponent game={frees[Math.floor(Math.random() * 10)]} type="hot" isLoading={isLoading}/>
               ) : (
-                ""
+                <div
+                className="w-full flex h-[5vw] h-max-[90px] bg-main-400 rounded opacity-90 hover:opacity-100 drop-shadow-md animate-pulse">
+                </div>
               )}
               {bests.length ? (
-                <MainGameComponent game={bests[Math.floor(Math.random() * 5)]} type="best" />
+                <MainGameComponent game={bests[Math.floor(Math.random() * 5)]} type="best" isLoading={isLoading}/>
               ) : (
-                ""
+                <div
+                className="w-full flex h-[5vw] h-max-[90px] bg-main-400 rounded opacity-90 hover:opacity-100 drop-shadow-md animate-pulse">
+                </div>
               )}
             </div>
           </div>
@@ -65,7 +71,7 @@ const MiniGameMoa = (props) => {
                 onClick={onClickToday}
               />
             ) : (
-              ""
+              <div className="w-full h-full bg-main-400 animate-pulse"></div>
             )}
           </div>
         </div>
@@ -85,6 +91,7 @@ const MiniGameMoa = (props) => {
         <hr className="bg-createInput-gray mb-3" />
         <div className="w-full">
           {today.length ? (
+
             <img
               src={today[4].gameImgpath}
               alt=""
