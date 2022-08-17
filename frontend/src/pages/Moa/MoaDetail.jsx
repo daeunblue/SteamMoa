@@ -9,6 +9,7 @@ import { auth } from "../../recoil/Auth";
 import { formatTimeISO } from "../../util/FormatTime";
 import Swal from "sweetalert2";
 import { getPartyEvalInfo } from "../../api/MoaPartyEval";
+import '../../assets/animatedText.css'
 
 function MoaDetail() {
   const PARTY_ISPLAYING = "3";
@@ -23,7 +24,20 @@ function MoaDetail() {
   const [leader, setLeader] = useState();
   const [isParticipant, setIsParticipant] = useState(false);
   const [showEvalModal, setShowEvalModal] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640 ? true:false)
+  const body = document.querySelector('body')
+  const handleResize = () => {
+    if (window.innerWidth < 640) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+  useEffect(()=>{
+    window.addEventListener("resize", handleResize)
+  }, 
+  [isMobile]
+  )
   const [detailMoa, setDetailMoa] = useState({
     gameId: 1,
     gameImgPath: "",
@@ -238,28 +252,32 @@ function MoaDetail() {
           {detailMoa.gameName}
         </div>
         {/* 본문 */}
-        <div className="p-[2.5%] mb-4">
-          <div className="flex justify-between">
-            <div className="flex justify-between">
+        <div className="p-[2.5%] mb-4 w-full">
+          <div className="flex justify-between w-full">
+            <div className="flex justify-between w-per80">
               {/* 파티 모집 상태 */}
               <div
-                className={`laptop:px-4 px-3 laptop:text-sm text-xs rounded flex items-center justify-center w-per55 font-blackSans text-white
+                className={`laptop:px-4 px-3 laptop:text-sm text-xs rounded flex items-center justify-center w-[12%] font-blackSans whitespace-nowrap text-white
                 ${detailMoa.partyIsUrgent ? bgColors[0] : bgColors[detailMoa.partyStatus]}`}>
                 <span>
                   {detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}
                 </span>
               </div>
               {/* 파티 제목 */}
-              <div
-                className="mx-4 mt-2 font-blackSans items-center text-lg tablet:text-xl laptop:text-[28px] text-whitetext-base whitespace-nowrap text-ellipsis"
-                name="partyTitle"
-                value={detailMoa.partyTitle}>
-                {detailMoa.partyTitle}
+              <div className={`${(isMobile? "animated-title ":"justify-start")} laptop:text-[28px] tablet:text-lg text-base font-blackSans flex w-per85 items-end`}>
+                <div className="track">
+                  <div
+                    className="content"
+                    name="partyTitle"
+                    value={detailMoa.partyTitle}>
+                    {detailMoa.partyTitle}
+                  </div>
+                </div>
               </div>
             </div>
             {checkChat() ? (
               <button
-                className="hover:cursor-pointer hover:scale-[102%] h-9 px-2 rounded-2xl text-[2vw] tablet:text-[1.1vw] laptop:text-sm font-semibold bg-[#03a9f4]"
+                className="w-[17%] hover:cursor-pointer hover:scale-[102%] h-9 px-2 rounded-2xl text-[2vw] tablet:text-[1.1vw] laptop:text-sm font-semibold bg-[#03a9f4]"
                 style={neon}
                 onClick={onClickChat}>
                 채팅 입장하기
@@ -328,15 +346,15 @@ function MoaDetail() {
           <div className="laptop:text-lg text-base font-blackSans mb-2">
             참가 파티원 ({detailMoa.curPlayer}/{detailMoa.maxPlayer})
           </div>
-          <div className="flex flex-wrap justify-start items-center overflow-auto p-5">
+          <div className="grid laptop:grid-cols-5 tablet:grid-cols-3 laptop:gap-x-3 gap-y-5 tablet:gap-x-2 grid-cols-1 items-center overflow-auto px-3 py-5">
             {detailMoa.partyPlayers.map((player, playerId) => {
               return (
-                <MoaUserCard
-                  key={playerId}
-                  player={player}
-                  leader={leader}
-                  deleteUser={onDeleteUser}
-                />
+                  <MoaUserCard
+                    key={playerId}
+                    player={player}
+                    leader={leader}
+                    deleteUser={onDeleteUser}
+                  />
               );
             })}
           </div>
