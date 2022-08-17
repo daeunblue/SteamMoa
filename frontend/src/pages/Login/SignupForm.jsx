@@ -198,7 +198,7 @@ const SignupForm = (props) => {
   return (
     <div className="w-full h-screen">
       <Navbar />
-      <div className="bg-slate-700 pt-24 w-per90 tablet:w-per75 h-per95 mx-auto flex flex-col align-center  items-center">
+      <div className="bg-slate-700 pt-24 w-full tablet:w-per75 h-per95 mx-auto flex flex-col align-center  items-center">
         <span className="text-white font-blackSans text-[2em] mb-2">회원가입</span>
         <div className="w-per85 tablet:w-per70 laptop:w-per50 max-w-[450px]">
           {/* ID */}
