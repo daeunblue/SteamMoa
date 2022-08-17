@@ -43,6 +43,10 @@ class VideoChat extends Component {
     this.joinSession();
   }
 
+  componentDidUpdate() {
+    console.log(this.state.subscribers);
+  }
+
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onbeforeunload);
   }
@@ -98,6 +102,10 @@ class VideoChat extends Component {
         // On every asynchronous exception...
         mySession.on("exception", (exception) => {
           console.warn(exception);
+        });
+
+        mySession.on("signal:toggle", () => {
+          this.setState({ subscribers: [...this.state.subscribers] });
         });
 
         // --- 4) Connect to the session with a valid user token ---
@@ -187,7 +195,9 @@ class VideoChat extends Component {
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter((device) => device.kind === "videoinput");
+      var videoDevices = devices.filter(
+        (device) => device.kind === "videoinput"
+      );
 
       if (videoDevices && videoDevices.length > 1) {
         var newVideoDevice = videoDevices.filter(
@@ -234,6 +244,7 @@ class VideoChat extends Component {
       if (publisher === undefined) return;
       await publisher.publishAudio(!this.state.micOn);
       this.setState({ micOn: !this.state.micOn });
+      this.state.session.signal({ data: "toggleMute", type: "signal:toggle" });
     } catch (e) {
       console.error(e);
     }
@@ -245,6 +256,7 @@ class VideoChat extends Component {
       if (publisher === undefined) return;
       await publisher.publishVideo(!this.state.videoOn);
       this.setState({ videoOn: !this.state.videoOn });
+      this.state.session.signal({ data: "toggleVideo", type: "signal:toggle" });
     } catch (e) {
       console.error(e);
     }
@@ -274,7 +286,8 @@ class VideoChat extends Component {
       axios
         .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
-            Authorization: "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+            Authorization:
+              "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
             "Content-Type": "application/json",
           },
         })
@@ -302,7 +315,9 @@ class VideoChat extends Component {
                   '"'
               )
             ) {
-              window.location.assign(OPENVIDU_SERVER_URL + "/accept-certificate");
+              window.location.assign(
+                OPENVIDU_SERVER_URL + "/accept-certificate"
+              );
             }
           }
         });
@@ -313,12 +328,20 @@ class VideoChat extends Component {
     return new Promise((resolve, reject) => {
       var data = {};
       axios
-        .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions/" + sessionId + "/connection", data, {
-          headers: {
-            Authorization: "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
-            "Content-Type": "application/json",
-          },
-        })
+        .post(
+          OPENVIDU_SERVER_URL +
+            "/openvidu/api/sessions/" +
+            sessionId +
+            "/connection",
+          data,
+          {
+            headers: {
+              Authorization:
+                "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+              "Content-Type": "application/json",
+            },
+          }
+        )
         .then((response) => {
           console.log("TOKEN", response);
           resolve(response.data.token);
@@ -341,21 +364,30 @@ class VideoChat extends Component {
                 <div className="w-fit font-blackSans text-2xl p-2 rounded text-white bg-moa-yellow-dark mr-2">
                   게임중
                 </div>
-                <div className="w-fit font-blackSans text-2xl text-gray-100">[{myPartyName}]</div>
+                <div className="w-fit font-blackSans text-2xl text-gray-100">
+                  [{myPartyName}]
+                </div>
               </div>
               <div className="text-white">[{myGameName}]</div>
             </div>
             <div className="w-full h-[8%] flex flex-row justify-center items-center my-auto">
               <button
                 className="w-10 h-10 border border-white rounded-full mr-4"
-                onClick={this.switchCamera}>
-                <FontAwesomeIcon className="text-white text-lg" icon={faCameraRotate} />
+                onClick={this.switchCamera}
+              >
+                <FontAwesomeIcon
+                  className="text-white text-lg"
+                  icon={faCameraRotate}
+                />
               </button>
               <button
                 className={`${
-                  myMicOn ? "border-white text-white" : " border-red-600 text-red-600"
+                  myMicOn
+                    ? "border-white text-white"
+                    : " border-red-600 text-red-600"
                 } w-10 h-10 border text-sm rounded-full mr-4`}
-                onClick={this.toggleMute}>
+                onClick={this.toggleMute}
+              >
                 {myMicOn ? (
                   <FontAwesomeIcon icon={faMicrophone} />
                 ) : (
@@ -364,9 +396,12 @@ class VideoChat extends Component {
               </button>
               <button
                 className={`${
-                  myVideoOn ? "border-white text-white" : " border-red-600 text-red-600"
+                  myVideoOn
+                    ? "border-white text-white"
+                    : " border-red-600 text-red-600"
                 } w-10 h-10 border text-sm rounded-full mr-4`}
-                onClick={this.toggleVideo}>
+                onClick={this.toggleVideo}
+              >
                 {myVideoOn ? (
                   <FontAwesomeIcon icon={faVideo} />
                 ) : (
@@ -376,14 +411,19 @@ class VideoChat extends Component {
               <button
                 className="bg-red-500 w-10 h-10 text-white rounded-full"
                 id="buttonLeaveSession"
-                onClick={this.leaveSession}>
-                <FontAwesomeIcon className="text-white text-lg" icon={faClose} />
+                onClick={this.leaveSession}
+              >
+                <FontAwesomeIcon
+                  className="text-white text-lg"
+                  icon={faClose}
+                />
               </button>
             </div>
             {/* 사용자 */}
             <div
               id="video-container"
-              className="w-full h-[84%] mt-2 p-3 flex flex-wrap justify-center items-center overflow-auto">
+              className="w-full h-[84%] mt-2 p-3 flex flex-wrap justify-center items-center overflow-auto"
+            >
               {this.state.mainStreamManager !== undefined ? (
                 <div id="main-video">
                   <UserVideoComponent
@@ -395,8 +435,16 @@ class VideoChat extends Component {
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
-                <div key={i} className="" onClick={() => this.handleMainVideoStream(sub)}>
-                  <UserVideoComponent streamManager={sub} isMute={sub.stream.audioActive} isActiveVideo={sub.stream.videoActive}/>
+                <div
+                  key={i}
+                  className=""
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
+                  <UserVideoComponent
+                    streamManager={sub}
+                    isMute={sub.stream.audioActive}
+                    isActiveVideo={sub.stream.videoActive}
+                  />
                 </div>
               ))}
             </div>
