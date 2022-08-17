@@ -141,15 +141,15 @@ const Login = (props) => {
   return (
     <div className="w-full h-screen">
       <Navbar></Navbar>
-      <div className="bg-slate-700 w-per90 tablet:w-per75 h-[93%] mx-auto flex flex-col items-center justify-center">
+      <div className="bg-slate-700 w-full tablet:w-per75 h-[93%] mx-auto flex flex-col items-center justify-center">
         <div className="login-logo w-full">
           <img
             src="../ImgAssets/TypoIconLogo.png"
             alt="TypoIconLogo"
-            className="login-Logo m-auto my-10 w-per75 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]"
+            className="login-Logo m-auto my-10 w-per65 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]"
           />
         </div>
-        <div className="login-form  w-per75 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]">
+        <div className="login-form  w-per65 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]">
           <input
             className="bg-gray-50 mb-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             id="input_id"
@@ -181,7 +181,7 @@ const Login = (props) => {
         </div>
 
         <button
-          className="login-button text-white bg-black  w-per75 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]
+          className="login-button text-white bg-black  w-per65 tablet:w-per50 laptop:w-per35 laptop:max-w-[350px]
                                 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg
                                 px-5 py-4 text-center"
           onClick={login}>

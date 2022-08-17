@@ -68,7 +68,7 @@ const Signup = (props) => {
   return (
     <div className="w-full h-screen">
       <Navbar />
-      <div className="bg-slate-700 w-per90 tablet:w-per75 h-per95 mx-auto  flex flex-col align-center justify-center items-center">
+      <div className="bg-slate-700 w-full tablet:w-per75 h-per95 mx-auto  flex flex-col align-center justify-center items-center">
         {/* 로고 */}
         <img
           src="../ImgAssets/TypoIconLogo.png"

@@ -22,6 +22,8 @@ function MoaZone() {
   const sort = searchParams.get("sort") ? decodeURIComponent(searchParams.get("sort")) : "";
   const setMaxPage = useSetRecoilState(moaMaxPage);
   const searchFilter = useRecoilValue(moaSearchFilter);
+  const [loading, setLoading] = useState(true);
+
 
   const user = useRecoilValue(auth);
   const user_id = user.userId;
@@ -35,6 +37,7 @@ function MoaZone() {
       .then(({ data }) => {
         setMoaList([...data.data]);
         setMaxPage(parseInt(data.maxPage));
+        setLoading(false);
       })
       .catch();
   }, [page, sort, keyword, searchFilter]);
@@ -74,7 +77,7 @@ function MoaZone() {
       </div>
       {/* 모아 리스트 */}
       <div className="w-per95 tablet:w-per75 m-auto">
-        <MoaCardList moaList={moaList}></MoaCardList>
+        <MoaCardList parties={moaList} isLoading={loading}></MoaCardList>
       </div>
       {/* 페이지네이션 */}
       <div className="w-per75 m-auto flex justify-center py-5">

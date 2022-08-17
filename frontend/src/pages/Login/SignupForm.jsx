@@ -198,7 +198,7 @@ const SignupForm = (props) => {
   return (
     <div className="w-full h-screen">
       <Navbar />
-      <div className="bg-slate-700 pt-24 w-per90 tablet:w-per75 h-per95 mx-auto flex flex-col align-center  items-center">
+      <div className="bg-slate-700 pt-24 w-full tablet:w-per75 h-per95 mx-auto flex flex-col align-center  items-center">
         <span className="text-white font-blackSans text-[2em] mb-2">회원가입</span>
         <div className="w-per85 tablet:w-per70 laptop:w-per50 max-w-[450px]">
           {/* ID */}
@@ -215,7 +215,7 @@ const SignupForm = (props) => {
                 className="w-per70 tablet:w-per75 laptop:w-per80 rounded-md"
               />
               <button
-                className="w-per30 tablet:w-per25 laptop:w-per20 ml-2 text-white text-[0.8em] text-center rounded-lg sm:w-auto bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none laptop:px-3 tablet:px-1 py-2.5"
+                className="w-per30 tablet:w-per25 laptop:w-per20 ml-2 text-white text-[0.8em] text-center rounded-lg bg-mainBtn-blue hover:bg-main-300 focus:ring-4 focus:outline-none laptop:px-3 tablet:px-1 py-2.5"
                 onClick={handleIdCheck}>
                 중복검사
               </button>
