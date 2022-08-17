@@ -67,6 +67,12 @@ function MoaDetail() {
 
   const items = ["즐겜", "빡겜", "공략겜", "무지성겜", "친목겜"];
 
+  // Scroll To Top 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+  
+
   useEffect(() => {
     moaDetail(partyId).then(({ data }) => {
       setDetailMoa(data);
@@ -254,17 +260,17 @@ function MoaDetail() {
         {/* 본문 */}
         <div className="p-[2.5%] mb-4 w-full">
           <div className="flex justify-between w-full">
-            <div className="flex justify-between w-per80">
+            <div className="flex w-per70">
               {/* 파티 모집 상태 */}
               <div
-                className={`laptop:px-4 px-3 laptop:text-sm text-xs rounded flex items-center justify-center w-[12%] font-blackSans whitespace-nowrap text-white
+                className={`laptop:max-w-[80px] laptop:px-4 px-3 laptop:text-sm text-xs rounded flex items-center justify-center w-[17%] font-blackSans whitespace-nowrap text-white
                 ${detailMoa.partyIsUrgent ? bgColors[0] : bgColors[detailMoa.partyStatus]}`}>
                 <span>
                   {detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}
                 </span>
               </div>
               {/* 파티 제목 */}
-              <div className={`${(isMobile? "animated-title ":"justify-start")} laptop:text-[28px] tablet:text-lg text-base font-blackSans flex w-per85 items-end`}>
+              <div className={`${(isMobile? "animated-title ":"justify-start")} tablet:ml-3 laptop:text-[28px] tablet:text-lg text-base font-blackSans flex w-per8 items-end tablet:text-ellipsis tablet:overflow-hidden tablet:text-whitespace tablet:justify-start tablet:whitespace-nowrap`}>
                 <div className="track">
                   <div
                     className="content"
@@ -277,30 +283,30 @@ function MoaDetail() {
             </div>
             {checkChat() ? (
               <button
-                className="w-[17%] hover:cursor-pointer hover:scale-[102%] h-9 px-2 rounded-2xl text-[2vw] tablet:text-[1.1vw] laptop:text-sm font-semibold bg-[#03a9f4]"
+                className="0hover:cursor-pointer hover:scale-[102%] h-9 px-2 rounded-2xl text-[2vw] tablet:text-[1.1vw] laptop:text-sm font-semibold bg-[#03a9f4]"
                 style={neon}
                 onClick={onClickChat}>
                 채팅 입장하기
               </button>
             ) : (
-              <div className="flex">
+              <div className="flex w-per30 justify-end">
                 {checkCanUpdate() ? (
                   detailMoa.writerId === userId ? (
                     <button
-                      className=" h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-moa-yellow-dark hover:bg-moa-yellow drop-shadow-lg hover:scale-[102%] text-center flex items-center "
+                      className="py-2 tablet:h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5  bg-moa-yellow-dark hover:bg-moa-yellow drop-shadow-lg hover:scale-[102%] text-center flex items-center "
                       onClick={handlePartyUpdate}>
                       파티 수정하기
                     </button>
                   ) : playerList.includes(userId) ? (
                     <button
-                      className=" h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-moa-pink hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center "
+                      className="py-2 tablet:h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 bg-moa-pink hover:bg-moa-pink-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center "
                       onClick={handlePartyLeave}>
                       {" "}
                       파티 나가기{" "}
                     </button>
                   ) : (
                     <button
-                      className=" h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 bg-moa-yellow-dark hover:bg-moa-yellow drop-shadow-lg hover:scale-[102%] text-center flex items-center "
+                      className=" py-2 tablet:h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 bg-moa-yellow-dark hover:bg-moa-yellow drop-shadow-lg hover:scale-[102%] text-center flex items-center "
                       onClick={handlePartyJoin}>
                       파티 참여하기
                     </button>
@@ -312,23 +318,23 @@ function MoaDetail() {
             )}
           </div>
 
-          <div className="flex justify-between items-center my-2">
-            <div className="flex">
+          <div className="flex justify-between items-center my-2 w-full">
+            <div className="w-per70 grid grid-cols-5 tablet:grid-cols-7 gap-3">
               {detailMoa.partyTags.map((item, idx) => {
                 return (
                   <div
                     key={idx}
                     name="partyTags"
-                    className="h-7 rounded-2xl font-semibold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-2.5 py-1 bg-moa-green-dark drop-shadow-lg text-center flex items-center mr-2">
+                    className="col-span-1 h-7 rounded-2xl font-semibold text-white text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-2.5 py-1 bg-moa-green-dark drop-shadow-lg text-center flex justify-center items-center whitespace-nowrap">
                     {item}
                   </div>
                 );
               })}
             </div>
-            <div className="flex">
+            <div className="flex w-per30 justify-end">
               {checkCanUpdate() ? (
                 <button
-                  className=" h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 py-0.5 bg-moa-blue hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center"
+                  className="py-2 tablet:h-9 hover:cursor-pointer text-white rounded-2xl font-semibold text-[2vw] tablet:text-[1.1vw] laptop:text-sm px-1.5 tablet:px-2.5 bg-moa-blue hover:bg-moa-blue-dark drop-shadow-lg hover:scale-[102%] text-center flex items-center"
                   onClick={handlePartyShare}>
                   파티 공유하기
                 </button>
@@ -359,10 +365,10 @@ function MoaDetail() {
             })}
           </div>
           <hr />
-          <div className="font-blackSans text-xl my-3">파티 모집 내용</div>
-          <div className="w-full h-80 px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light text-black overflow-ellipse overflow-y-scroll">
+          <div className="font-blackSans text-lg laptop:text-xl my-3">파티 모집 내용</div>
+          <div className="w-full h-80 tablet:text-base text-sm px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light text-black overflow-ellipse overflow-y-scroll">
             {" "}
-            <pre>{detailMoa.partyDescription}</pre>
+            <pre className="p-2">{detailMoa.partyDescription}</pre>
           </div>
           { checkChatLink() && isPlayer() ? 
           <div>

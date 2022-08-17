@@ -15,6 +15,11 @@ const Main = () => {
   const [todayGames, setTodayGames] = useState([]);
   const [pickGames, setPickGames] = useState([]);
   const [hotGames, setHotGames] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
 
   useEffect(() => {
     getMainInfo()
@@ -25,6 +30,7 @@ const Main = () => {
         setTodayGames([...res.data.today]);
         setPickGames([...res.data.picks]);
         setHotGames([...res.data.hots]);
+        setIsLoading(false)
       })
       .catch((err) => {});
   }, []);
@@ -36,9 +42,10 @@ const Main = () => {
         {/* 배너 Carousel*/}
         <Banner />
         {/* 미니 모아 */}
-        <MiniMoa parties={parties} />
+        <MiniMoa parties={parties} isLoading={isLoading}/>
         {/* 게임존 */}
         <MiniGameMoa
+          isLoading={isLoading}
           bests={bestGames}
           frees={freeGames}
           today={todayGames}
@@ -47,6 +54,7 @@ const Main = () => {
         />
 
         <MainGameSpread
+          isLoading={isLoading}
           bests={bestGames}
           frees={freeGames}
           today={todayGames}

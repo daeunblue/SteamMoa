@@ -56,6 +56,11 @@ const Profile = (props) => {
       setShowMobileSide(false)
     }
   }
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
   useEffect(()=>{
     window.addEventListener("resize", handleResize)
   }, 

@@ -116,6 +116,10 @@ const MoaUpdate = (props) => {
     });
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
   useEffect((e) => {
     moaDetail(partyId).then(({ data }) => {
       setMoa(data);

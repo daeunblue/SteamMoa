@@ -27,6 +27,10 @@ function MoaZone() {
   const user_id = user.userId;
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
+  useEffect(() => {
     getMoaListSearch(page, sort, keyword, searchFilter)
       .then(({ data }) => {
         setMoaList([...data.data]);
