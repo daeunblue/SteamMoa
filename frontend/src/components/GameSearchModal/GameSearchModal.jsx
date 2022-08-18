@@ -88,7 +88,7 @@ const GameSearchModal = ({ hidden, setHidden, setGame }) => {
         <div className="relative bg-main-300 rounded-lg shadow">
           {/* Header */}
           <div className="flex justify-between items-start p-3 rounded-t border-b border-white">
-            <h3 className="font-semibold">공략 게임 선택</h3>
+            <h3 className="font-semibold">게임 선택</h3>
             <FontAwesomeIcon onClick={setHidden} icon={faClose} />
           </div>
           {/* Body */}
