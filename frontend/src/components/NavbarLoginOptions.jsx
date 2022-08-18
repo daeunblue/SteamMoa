@@ -48,9 +48,12 @@ const NavbarLoginOptions = (props) => {
         </Link>
         <Link
           to="/login"
-          className="text-white text-[10px] tablet:text-xs font-sans ml-1.5 tablet:ml-3 font-bold"
+          className="text-white text-[10px] tablet:text-xs font-sans mx-1.5 tablet:mx-3 font-bold"
         >
           로그인
+        </Link>
+        <Link to="/info" className="text-white text-[10px] tablet:text-xs font-sans ml-1.5 tablet:ml-3 font-bold">
+          <img src="../../ImgAssets/IconLogo.png" alt="" className="w-[15px] tablet:w-[16px]"/>
         </Link>
       </>
     );
@@ -66,7 +69,10 @@ const NavbarLoginOptions = (props) => {
         {/* 알림 */}
         {/* <Link to="/" className="text-white w-4 h-5 mx-2"><FontAwesomeIcon icon={faBell} /></Link>  */}
         {/* 마이페이지 */}
-        <Link to={`/mypage/${userAuth.userId}`} className="text-white w-4 h-5 ml-2 mr-1"><FontAwesomeIcon icon={faUser} /></Link>
+        <Link to={`/mypage/${userAuth.userId}`} className="text-white w-4 h-5 mx-2"><FontAwesomeIcon icon={faUser} /></Link>
+        <Link to="/info" className="text-white text-[10px] tablet:text-xs font-sans ml-1.5 mr-1 font-bold">
+          <img src="../../ImgAssets/IconLogo.png" alt="" className="w-[15px] tablet:w-[16px]"/>
+        </Link>
       </>
     );
 };

@@ -124,7 +124,7 @@ const GameReviewItem = (props) => {
         <div className="text-xs pt-1 font-semibold">{review.reviewScore}</div>
       </div>
       {/* content */}
-      <div className="text-sm mb-1"><pre>{review.reviewContent}</pre></div>
+      <div className="text-sm mb-1"><pre className="whitespace-pre-wrap">{review.reviewContent}</pre></div>
     </div>
   );
 };

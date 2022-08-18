@@ -215,7 +215,7 @@ const Profile = (props) => {
   return (
     <>
       <Navbar />
-      <div className={`w-full tablet:w-per75 mx-auto flex ${(isMobile ? "absolute":"")}`}>
+      <div className={`w-full min-h-screen h-auto tablet:w-per75 mx-auto flex ${(isMobile ? "absolute":"")}`}>
         {(isMobile&&(!showMobileSide) ? 
          <FontAwesomeIcon icon={faBars} onClick={onShowSide} className="text-center absolute top-[1.2em] left-[1.2em] text-white w-[1em] h-[1em]" />
         :<></>)}

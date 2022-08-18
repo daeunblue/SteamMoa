@@ -40,11 +40,15 @@ const Sidebar = (props) => {
   }
 
 
+  const body = document.body,
+  html = document.documentElement;
+
+  const height =  (body) => Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
 
   return (
     <>
       <div className={(isMobile&&(showMobileSide) ? "h-full w-full absolute top-0 left-0 z-40 bg-black opacity-50":"")} onClick={closeSide}></div>
-      <div className={`h-screen bg-sidebar-light w-per25 min-w-[150px] tablet:min-w-[130px] max-w-[225px] ${(isMobile ? "absolute top-0 left-0 z-50"+(showMobileSide ? "": " hidden"):"")}`}>
+      <div className={`min-h-screen h-[${height(body)}px] bg-sidebar-light w-per25 min-w-[150px] tablet:min-w-[130px] max-w-[225px] ${(isMobile ? "absolute top-0 left-0 z-50"+(showMobileSide ? "": " hidden"):"")}`}>
         {/* 프로필 */}
         <NavLink
           onClick={closeSide}

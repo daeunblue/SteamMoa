@@ -44,7 +44,7 @@ function MoaCard(props) {
             className={`p-1 rounded flex justify-center items-center w-per25 text-xs font-blackSans text-white mr-2 ${
               partyIsUrgent ? bgColors[0] : bgColors[partyStatus]
             }`}>
-            <span>{partyIsUrgent ? statusMsg[0] : statusMsg[partyStatus]}</span>
+            <span className="whitespace-nowrap">{partyIsUrgent ? statusMsg[0] : statusMsg[partyStatus]}</span>
           </div>
 
           <div className="font-blackSans text-base whitespace-nowrap overflow-hidden text-ellipsis">
