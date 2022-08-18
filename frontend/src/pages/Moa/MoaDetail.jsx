@@ -263,7 +263,7 @@ function MoaDetail() {
             <div className="flex w-per70">
               {/* 파티 모집 상태 */}
               <div
-                className={`laptop:max-w-[80px] laptop:px-4 px-3 laptop:text-sm text-xs rounded flex items-center justify-center w-[17%] font-blackSans whitespace-nowrap text-white
+                className={`laptop:max-w-[80px] laptop:py-2 py-1 laptop:px-4 px-3 laptop:text-sm text-xs rounded flex items-center justify-center w-[17%] font-blackSans whitespace-nowrap text-white
                 ${detailMoa.partyIsUrgent ? bgColors[0] : bgColors[detailMoa.partyStatus]}`}>
                 <span>
                   {detailMoa.partyIsUrgent ? statusMsg[0] : statusMsg[detailMoa.partyStatus]}
@@ -368,7 +368,7 @@ function MoaDetail() {
           <div className="font-blackSans text-lg laptop:text-xl my-3">파티 모집 내용</div>
           <div className="w-full h-80 tablet:text-base text-sm px-2 py-1 tablet:px-3 tablet:py-2 laptop:px-5 laptop:py-3 tablet rounded opacity-90 bg-detailContent-light text-black overflow-ellipse overflow-y-scroll">
             {" "}
-            <pre className="p-2">{detailMoa.partyDescription}</pre>
+            <pre className="p-2 whitespace-pre-wrap">{detailMoa.partyDescription}</pre>
           </div>
           { checkChatLink() && isPlayer() ? 
           <div>

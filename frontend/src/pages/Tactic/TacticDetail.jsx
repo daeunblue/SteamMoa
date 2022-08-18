@@ -126,8 +126,8 @@ const TacticDetail = () => {
           </div>
         </div>
         {/* 공략글 내용 */}
-        <div className="w-full h-[30rem] overflow-auto flex flex-col mt-2 p-2 rounded bg-main-400">
-          {tactic.tacticContent ? <pre>{tactic.tacticContent}</pre> : "내용이 없습니다."}
+        <div className="w-full h-[30rem] overflow-y-auto flex flex-col mt-2 p-2 rounded bg-main-400">
+          {tactic.tacticContent ? <pre className="whitespace-pre-wrap">{tactic.tacticContent}</pre> : "내용이 없습니다."}
         </div>
         <div className="flex justify-center mt-2 pb-5">
           {user_id && tactic.userServiceId && user_id === tactic.userServiceId ? (
