@@ -15,8 +15,8 @@ const NotFound = (props) => {
           해당 페이지를 찾을 수 없습니다.
         </div>
         <h1
-          contenteditable
-          spellcheck="false"
+          contentEditable
+          spellCheck="false"
           className="tablet:text-[2.3em] text-[1.2em] tablet:mt-10 mt-6 font-semibold hover:cursor-pointer"
           onClick={onClick}>
           STEAM MOA로 돌아가기
