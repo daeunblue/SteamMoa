@@ -1,57 +1,79 @@
 # ReadMe
 
+
 ## 💡 서비스 소개
 
 **스팀 API 활용 스팀 게임 큐레이팅 & 화상 채팅 서비스**
 
-> 스팀에서는 게임을 구매해도, 멀티 플레이 게임을 함께 할 파티원은 구할 수 없습니다.
+> 스팀에서는 게임을 구매해도, 멀티 플레이 게임을 함께 할 파티원은 구할 수 없습니다.<br>
 스팀모아는 멀티 게임 플레이어가 게임을 고르고 파티원을 모집할 수 있도록 돕는 서비스입니다.
 > 
 
 **스팀모아에서 즐겁게 게임을 함께할 사람들을 모아보세요!**
 
 ## 🛠️ 기술 스택
+<div align=center> 
+  <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">  
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
+  <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> 
+  <img src="https://img.shields.io/badge/springSecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white"> 
+  <img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white"> 
+  <br>
 
-- 자바, 스프링부터, 그래들, 스프링시큐리티, 엔진엑스, 리액트, 리코일, 테일윈드, 지라, 깃랩, mysql, 오픈비두, 오픈아이디… 로고 삽입 예정
+  <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+  <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
+  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
+  <img src="https://img.shields.io/badge/ReactRouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
+  <img src="https://img.shields.io/badge/openid-F78C40?style=for-the-badge&logo=openid&logoColor=white">
+  <br>
 
-### 상세 기술스택 및 버전
+  <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
+  <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+  <img src="https://img.shields.io/badge/notion-CA4245?style=for-the-badge&logo=notion&logoColor=white">
+  <br>
+</div>
 
-| 구분 | 기술스택 | 상세 | 버전 |  |
-| --- | --- | --- | --- | --- |
-| 공통 | 형상관리 | Gitlab | - |  |
-|  | 이슈관리 | Jira | - |  |
-|  | 커뮤니케이션 | Matamost, Notion | - |  |
-| Front-end | HTML5 |  | - |  |
-|  | CSS3 |  | - |  |
-|  |  | postcss | 8.4.14 |  |
-|  |  | tailwindcss | 3.1.6 |  |
-|  | JavaScript(ES6) |  | - |  |
-|  | React | React | 17.0.2 |  |
-|  |  | react-router-dom | 6.3.0 |  |
-|  |  | recoil | 0.7.4 |  |
-|  |  | openvidu-browser | 2.22.0 |  |
-|  |  | axios | 0.27.2 |  |
-|  |  | jwt-decode | 3.1.2 |  |
-|  |  | sweetalert2 | 11.4.26 |  |
-|  |  | lodash | 4.17.21 |  |
-|  |  | @fontawesome | 6.1.2 |  |
-|  | IDE | VisualStudioCode | 1.69.2 |  |
-| Back-end | Java | JDK | 1.8.0_192 |  |
-|  | SpringBoot | springboot | 2.7.1 |  |
-|  |  | Gradle | 7.5 |  |
-|  |  | SpringSecurity | - |  |
-|  |  | querydsl | - |  |
-|  |  | jpa | - |  |
-|  | API관리 | Swagger | 2.9.2 |  |
-|  | jwt |  | 3.10.3 |  |
-|  | jsonwebtoken |  | 1.1.1 |  |
-|  | DB | MySQL | 8.0.30-0ubuntu0.20.04.2 |  |
-|  | IDE | IntelliJ Ultimate | - |  |
+<details>
+<summary>상세 기술스택 및 버전</summary>
+
+| 구분 | 기술스택 | 상세 | 버전 |  
+| --- | --- | --- | --- | 
+| 공통 | 형상관리 | Gitlab | - |  
+|  | 이슈관리 | Jira | - |  
+|  | 커뮤니케이션 | Matamost, Notion | - |  
+| Front-end | HTML5 |  | - |  
+|  | CSS3 |  | - |  
+|  |  | postcss | 8.4.14 |  
+|  |  | tailwindcss | 3.1.6 |  
+|  | JavaScript(ES6) |  | - |  
+|  | React | React | 17.0.2 | 
+|  |  | react-router-dom | 6.3.0 |  
+|  |  | recoil | 0.7.4 |  
+|  |  | openvidu-browser | 2.22.0 |  
+|  |  | axios | 0.27.2 |  
+|  |  | jwt-decode | 3.1.2 |  
+|  |  | sweetalert2 | 11.4.26 |  
+|  |  | lodash | 4.17.21 |  
+|  |  | @fontawesome | 6.1.2 |  
+|  | IDE | VisualStudioCode | 1.69.2 |  
+| Back-end | Java | JDK | 1.8.0_192 |  
+|  | SpringBoot | springboot | 2.7.1 |  
+|  |  | Gradle | 7.5 |  
+|  |  | SpringSecurity | - |  
+|  |  | querydsl | - |  
+|  |  | jpa | - |  
+|  | API관리 | Swagger | 2.9.2 |  
+|  | jwt |  | 3.10.3 |  
+|  | jsonwebtoken |  | 1.1.1 |  
+|  | DB | MySQL | 8.0.30-0ubuntu0.20.04.2 |  
+|  | IDE | IntelliJ Ultimate | - |  
+</details>
 
 ## 🗃️ 프로젝트 구조
 
 ### 🏗️ 서비스 구조
-
 ![스크린샷 2022-08-23 오전 11.37.32.png](ReadMe%208118f36887da4163b0ce9d919fa5ba90/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2022-08-23_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_11.37.32.png)
 
 ### 🏗️ 시스템 구조
@@ -154,11 +176,11 @@
 
 | 구분 | 링크 |
 | --- | --- |
-| 게임 데이터 통계 | 통계 보러 가기 |
-| 원페이퍼 기획서 | 기획서 보러 가기 |
-| 기능 정의서 | 기능 정의서 보러 가기 |
-| 와이어 프레임(디자인) | 와이어프레임 보러 가기 |
-| API 정의서 | API 정의서 보러 가기 |
-| 빌드/배포 | 빌드/배포 보러 가기 |
-| 시연 시나리오 | 시연 시나리오 보러 가기 |
-| 발표 자료 | 발표 자료 보러 가기  |
+| 게임 데이터 통계 | [통계 보러 가기](https://www.notion.so/SteamMoa-DB-8393ef6ec36843259b5a584c9068ebd3) |
+| 원페이퍼 기획서 | [기획서 보러 가기](https://www.notion.so/2b5d913f760d4d05ada36b25f1e3e268) |
+| 기능 정의서 | [기능 정의서 보러 가기](https://docs.google.com/spreadsheets/d/1WfJoLFtwinLhnWlKR11bC-UEMn59IrG46p22vAHViIw/edit#gid=1408271660)|
+| 와이어 프레임(디자인) | [와이어프레임 보러 가기](https://www.figma.com/file/Zrl14ZgPRxZdzvOj1vSIpC/Untitled) |
+| API 정의서 | [API 정의서 보러 가기](https://www.notion.so/a8af2ba49b1b47f5b281d92ba527af9a) |
+| 빌드/배포 | [빌드/배포 보러 가기](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A303/-/blob/c476de65f5d1eea007ffd5fd4b6b7a8d126a1c48/exec/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC.docx) |
+| 시연 시나리오 | [시연 시나리오 보러 가기](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A303/-/blob/c476de65f5d1eea007ffd5fd4b6b7a8d126a1c48/exec/%EC%8A%A4%ED%8C%80%20%EB%AA%A8%EC%95%84%20%EC%8B%9C%EC%97%B0%20%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4.pdf) |
+| 발표 자료 | [발표 자료 보러 가기](https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A303/-/blob/c476de65f5d1eea007ffd5fd4b6b7a8d126a1c48/Presentation/%EC%84%9C%EC%9A%B8_3%EB%B0%98_A303_%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C.pdf)  |
