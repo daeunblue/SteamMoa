@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { moaDelete, moaUpdate } from "../../api/Moazone";
-import MoaUserCard from "../../components/Moa/MoaUserCard";
 import { moaDetail } from "../../api/Moazone";
 import Swal from "sweetalert2";
 
@@ -21,16 +20,11 @@ const MoaUpdate = (props) => {
     partyUsers: [],
   });
 
-  console.log("moa: ", moa);
-  console.log("updateMoa는: ", updateMoa);
-
   const items = ["즐겜", "빡겜", "공략겜", "무지성겜", "친목겜"];
   const [checkedList, setCheckedList] = useState([]);
-  console.log("updateMoa는: ", updateMoa);
-  console.log("checkedList: ", checkedList);
 
   const onCheckedElement = (event) => {
-    const { checked, value } = event.target;
+  const { checked, value } = event.target;
 
     if (checked) {
       let newChk = [...checkedList];
@@ -39,21 +33,16 @@ const MoaUpdate = (props) => {
     } else if (!checked) {
       setCheckedList(checkedList.filter((el) => el !== value));
     }
-    // setMoa({...moa,partyTags: checkedList });
   };
 
-  const onRemove = (item) => {
-    console.log(item);
-    setCheckedList(checkedList.filter((el) => el !== item));
-  };
-
-  
+  // const onRemove = (item) => {
+  //   setCheckedList(checkedList.filter((el) => el !== item));
+  // };
 
   const onChange = (event) => {
     let { name, value } = event.target;
     if (name === "partyTags") {
       value = [...updateMoa.partyTags, value];
-      console.log(value);
     }
     setUpdateMoa({
       ...updateMoa,
@@ -61,12 +50,17 @@ const MoaUpdate = (props) => {
     });
   };
 
-  // 수정된 데이터 보내서 저장
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("수정 완료 버튼 클릭시 : ", updateMoa);
     moaUpdate(updateMoa, partyId).then((res) => {
       if (res.status === 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "모아글 수정 완료!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate(`/moazone/detail/${moa.partyId}`);
       } else {
         alert(res.data.message);
@@ -74,20 +68,34 @@ const MoaUpdate = (props) => {
     });
   };
 
-  const handleCancel = () => {
-    navigate(`/`);
+  const handleCancel = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "정말로 나가시겠어요?",
+      text: "지금까지 작성한 내용은 저장되지 않습니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "나갈래요",
+      cancelButtonText: "취소",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        navigate(`/moazone/detail/${partyId}`);
+      }
+    });
   };
 
-  // 파티 삭제
   const handleDeleteParty = (e) => {
     e.preventDefault();
     Swal.fire({
-      title: "모아글을 정말 삭제하시겠습니까?",
+      title: "정말로 삭제하시겠어요?",
+      text: "파티원을 다시 모집하셔야 합니다.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "네. 삭제할래요",
+      confirmButtonText: "삭제할래요",
       cancelButtonText: "취소",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -97,7 +105,7 @@ const MoaUpdate = (props) => {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "모아글이 삭제되었습니다!",
+              title: "모아글 삭제 완료!",
               showConfirmButton: false,
               timer: 1500,
             });
@@ -108,11 +116,13 @@ const MoaUpdate = (props) => {
     });
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
   useEffect((e) => {
     moaDetail(partyId).then(({ data }) => {
       setMoa(data);
-      console.log(data.partyPlayers);
-      console.log(data.partyPlayers[0].userId);
       setUpdateMoa({
         ...updateMoa,
         partyDescription: data.partyDescription,
@@ -142,23 +152,17 @@ const MoaUpdate = (props) => {
   return (
     <>
       <Navbar />
-      <div className="w-per75 min-h-full m-auto text-white font-sans pb-5">
-        <div className="m-auto">
-          <img
-            className="w-full"
-            src="../../ImgAssets/MoaZone_UpdateVer.gif"
-            alt="모아존 글수정 배너 이미지"
-          />
-        </div>
-        <div className="w-full my-2 bg-main-300 text-main-300">
-          공간채우기 용도 글씨
-        </div>
+      <div className="w-full tablet:w-per75 mx-auto min-h-full text-white font-sans">
+      <div className="w-full bg-[#1E1B1C] laptop:h-[10em] h-[8em] flex items-center">
+        <img src="../../ImgAssets/MoaZone_UpdateVer.gif" alt="게임모아 메인 배너" className="laptop:object-none object-none w-full h-full"/>
+      </div>
+        <div className="w-full h-[1.5em] mb-2 bg-main-300 text-main-300 bg-gradient-to-b from-bg-search-gradient-from via-bg-search-gradient-via to-bg-search-gradient-to "></div>
         <form>
           <div className="m-auto h-full mb-2 bg-main-400">
             <div className="createContainer p-4">
-              <div className="mb-3 flex justify-between">
-                <div className="font-blackSans text-xl ">모아글 수정</div>
-                <button className="bg-moa-purple hover:bg-moa-purple-dark rounded py-2 px-4 text-center" onClick={handleDeleteParty}>
+              <div className=" mb-[0.6em]  flex justify-between">
+                <div className="font-blackSans text-[1.2em] flex items-center">모아글 수정</div>
+                <button className="bg-mainBtn-blue hover:bg-moa-pink-dark rounded py-2 px-4 text-center text-sm" onClick={handleDeleteParty}>
                   모아글 삭제
                 </button>
               </div>
@@ -166,74 +170,74 @@ const MoaUpdate = (props) => {
                 name="partyTitle"
                 value={moa.partyTitle}
                 onChange={onChange}
-                className="w-full text-main-500 bg-mainBtn-disabled rounded-lg mb-3"
+                className="bg-mainBtn-disabled w-full text-main-500 text-[0.9em] rounded mb-[0.6em]"
                 type="text"
                 placeholder="파티 모집 제목"
                 disabled
               />
               <div className="grid grid-flow-col mb-3">
-                <span className="col-span-1 ">플레이 게임</span>
+                <span className="col-span-1 flex items-center text-[0.9em]">플레이 게임</span>
                 <input
                   name="gameName"
                   value={moa.gameName}
                   onChange={onChange}
-                  className="col-span-12 text-main-500 bg-mainBtn-disabled rounded-lg"
+                  className="col-span-12 text-main-500 bg-mainBtn-disabled rounded"
                   type="text"
                   placeholder="게임 제목을 검색하세요"
                   disabled
                 />
               </div>
-              <div className="grid grid-flow-col mb-3">
-                <div className="grid grid-flow-col col-span-1 mx-2">
-                  <span className="col-span-1">플레이 인원</span>
+              <div className="grid tablet:grid-flow-col grid-flow-row mb-3">
+                <div className="grid grid-flow-col col-span-2 tablet:mx-2 mr-1 tablet:mb-0 mb-[0.6em]">
+                  <span className="tablet:col-span-1 flex items-center text-[0.9em]">플레이 인원</span>
                   <input
                     name="maxPlayer"
                     value={moa.maxPlayer}
                     onChange={onChange}
-                    className="col-span-4 w-full text-main-500 bg-mainBtn-disabled rounded-lg"
+                    className="tablet:col-span-4 col-span-5 w-full text-main-500 bg-mainBtn-disabled rounded text-[0.9em]"
                     type="number"
                     disabled
                   />
                 </div>
                 <div className="grid grid-flow-col col-span-2">
-                  <span className="col-span-1">시작시간</span>
-                  <div className="col-span-7">
+                  <span className="col-span-1 flex tablet:justify-center items-center tablet:mr-2 text-[0.9em]">시작시간</span>
+                  <div className="tablet:col-span-7 col-span-3">
                     <input
                       name="startTime"
                       value={moa.startTime}
                       onChange={onChange}
-                      className="w-full text-main-500 bg-mainBtn-disabled rounded-lg"
+                      className="w-full text-main-500 rounded text-[0.9em] bg-mainBtn-disabled"
                       type="datetime-local"
                       disabled
                     />
                   </div>
                 </div>
               </div>
-              <div className="mb-3">
+              <div className="mb-3 flex">
                 <textarea
                   name="partyDescription"
                   value={updateMoa.partyDescription}
                   onChange={onChange}
-                  className="w-full text-main-500 bg-createInput-gray rounded-lg"
+                  className="w-full text-main-500 bg-createInput-gray rounded min-h-[10em] tablet:min-h-[13em]"
                   rows="10"
                   placeholder="모집 내용 쓰는 곳"
                 ></textarea>
               </div>
-              <div className="grid grid-flow-col mb-8">
-                <span className="col-span-1">음성 채팅 링크</span>
+              <div className="grid grid-flow-col mb-[1.2em]">
+                <span className="col-span-1 flex items-center text-[0.9em]">음성 채팅 링크</span>
                 <input
                   name="chatLink"
                   value={updateMoa.chatLink}
                   onChange={onChange}
-                  className="col-span-11 text-main-500 bg-createInput-gray w-full rounded-lg"
+                  className="col-span-11 text-main-500 bg-createInput-gray w-full rounded"
                   type="text"
                   id=""
                 />
               </div>
-              <div className="grid grid-flow-col">
-                <div>파티 태그</div>
+              <div className="grid tablet:grid-flow-col grid-flow-row">
+                <div className="col-span-1 tablet:text-[1em] text-[0.9em] mb-[0.5em]">파티 태그</div>
                 <div>
-                  <div className="grid grid-flow-col">
+                  <div className="grid grid-flow-col tablet:col-span-5">
                     {items.map((item, index) => (
                       <div key={index}>
                         <input
@@ -245,11 +249,11 @@ const MoaUpdate = (props) => {
                           id={item}
                           name={item}
                           type="checkbox"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
+                          className="w-[0.9em] h-[0.9em] tablet:w-4 tablet:h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
                         />
                         <label
                           htmlFor={item}
-                          className="ml-2 text-sm font-medium text-main-100 dark:text-gray-300"
+                          className="ml-[0.2em] tablet:ml-2 tablet:text-[0.95em] text-[0.8em] font-medium text-main-100"
                         >
                           {item}
                         </label>
@@ -258,30 +262,18 @@ const MoaUpdate = (props) => {
                   </div>
                 </div>
               </div>
-              {/* <div className="mt-4">참가 파티원</div>
-              <div
-                className="w-per-75 h-40 border-box bg-createInput-gray rounded-lg text-black"
-                name="partyUsers"
-                value={moa.partyUsers}
-                onChange={onChange}
-              >
-                {moa.partyPlayers &&
-                  moa.partyPlayers.map((player, playerId) => {
-                    return <MoaUserCard key={playerId} player={player} />;
-                  })}
-              </div> */}
             </div>
           <div className="flex my-5">
-            <div className="m-auto my-5">
+            <div className="m-auto mt-[0.5em] mb-[3em]">
               <button
                 onClick={handleCancel}
-                className="w-32 h-14 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm"
+                className="w-32 h-12 mx-3 bg-mainBtn-blue hover:bg-mainBtn-blue-hover rounded-lg text-sm"
               >
                 취소
               </button>
               <button
                 onClick={handleSubmit}
-                className="w-32 h-14 mx-3 bg-moa-purple hover:bg-moa-purple-dark rounded-lg text-sm"
+                className="w-32 h-12 mx-3 bg-moa-purple hover:bg-moa-purple-dark rounded-lg text-sm"
               >
                 수정 완료
               </button>

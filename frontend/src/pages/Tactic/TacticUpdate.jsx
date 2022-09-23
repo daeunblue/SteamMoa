@@ -17,6 +17,10 @@ const TacticUpdate = () => {
   const user_id = user.userId;
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
+  useEffect(() => {
     if (!user_id) {
       Swal.fire({
         position: "center",
@@ -75,7 +79,7 @@ const TacticUpdate = () => {
       Swal.fire({
         position: "center",
         icon: "error",
-        title: "제목, 게임, 공략글을 작성해주세요 &#129394",
+        title: "제목, 게임, 공략글을 작성해주세요.",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -85,7 +89,7 @@ const TacticUpdate = () => {
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "잘못된 접근입니다! &#128529",
+        title: "잘못된 접근입니다!",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -108,7 +112,7 @@ const TacticUpdate = () => {
           Swal.fire({
             position: "center",
             icon: "error",
-            title: "공략글 업로드 실패... &#129394",
+            title: "공략글 업로드 실패...",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -120,7 +124,7 @@ const TacticUpdate = () => {
   return (
     <div className="w-full min-h-full">
       <Navbar />
-      <div className="w-per75 min-h-full mx-auto my-5 rounded flex flex-col">
+      <div className="w-per95 tablet:w-per75 min-h-full mx-auto my-5 rounded flex flex-col">
         <div className="w-full h-full bg-main-300 mb-2 text-main-300">**</div>
         <div className="w-full h-full m-aut p-5 mb-2 bg-main-400">
           <div className="w-full flex flex-col">
@@ -129,7 +133,7 @@ const TacticUpdate = () => {
               id="tacticTitle"
               onChange={handleChangeTitle}
               value={tacticTitle}
-              className="w-full text-main-500 bg-createInput-gray text-lg rounded p-1 px-2 "
+              className="w-full text-main-500 bg-createInput-gray laptop:text-lg rounded p-1 px-2 "
               placeholder="공략글 제목을 작성해주세요"
             />
           </div>
@@ -160,7 +164,7 @@ const TacticUpdate = () => {
               공략 내용
             </label>
             <textarea
-              className="w-full h-[32rem] bg-createInput-gray rounded"
+              className="w-full min-h-[25rem] bg-createInput-gray rounded"
               id="tacticContent"
               value={tacticContent}
               placeholder="공략글을 작성해 주세요."

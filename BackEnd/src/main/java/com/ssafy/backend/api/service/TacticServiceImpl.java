@@ -106,7 +106,7 @@ public class TacticServiceImpl implements TacticService{
             }
             tactic.setUser(userRepository.findByUserServiceId(tacticPostReq.getUserServiceId()).get());
             tactic.setGame(gameRepository.findByGameId(tacticPostReq.getGameId()).orElse(null));
-            tactic.setCreateTime(LocalDateTime.now());
+            tactic.setCreateTime(LocalDateTime.now().plusHours(9));
             tacticRepository.save(tactic);
             return true;
         }catch (Exception e){

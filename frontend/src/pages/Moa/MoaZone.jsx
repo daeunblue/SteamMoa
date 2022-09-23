@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import MoaSearchContainer from "../../components/Moa/MoaSearchContainer";
 import MoaCardList from "../../components/MoaCardList";
 import MoaPagination from "../../components/Moa/MoaPagination";
@@ -21,15 +22,22 @@ function MoaZone() {
   const sort = searchParams.get("sort") ? decodeURIComponent(searchParams.get("sort")) : "";
   const setMaxPage = useSetRecoilState(moaMaxPage);
   const searchFilter = useRecoilValue(moaSearchFilter);
+  const [loading, setLoading] = useState(true);
+
 
   const user = useRecoilValue(auth);
   const user_id = user.userId;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
 
   useEffect(() => {
     getMoaListSearch(page, sort, keyword, searchFilter)
       .then(({ data }) => {
         setMoaList([...data.data]);
         setMaxPage(parseInt(data.maxPage));
+        setLoading(false);
       })
       .catch();
   }, [page, sort, keyword, searchFilter]);
@@ -41,7 +49,7 @@ function MoaZone() {
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "로그인이 필요한 서비스입니다 &#128521;",
+        title: "로그인이 필요한 서비스입니다. &#128521;",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -53,11 +61,13 @@ function MoaZone() {
     <div>
       <Navbar />
       {/* 모아존 배너 */}
-      <img src="../../ImgAssets/MoaZone_Main.gif" alt="MoaZon Main" className="w-per75 m-auto" />
+      <div className="w-perfull tablet:w-per75 m-auto bg-[#1E1B1C] laptop:h-[10em] h-[8em] flex items-center">
+        <img src="../ImgAssets/MoaZone_Main.gif" alt="게임모아 메인 배너" className="laptop:object-none object-none w-full h-full"/>
+      </div>
       {/* 검색 컨테이너 */}
       <MoaSearchContainer />
       {/* 모아 만들기 버튼 */}
-      <div className="w-per75 mx-auto my-3 flex justify-end">
+      <div className="w-per95 tablet:w-per75 mx-auto tablet:my-3 my-1.5 flex justify-end">
         <button
           className=" bg-moa-pink hover:bg-moa-pink-dark text-white rounded-lg px-2 py-1 text-xs"
           onClick={handleNavigate}>
@@ -66,13 +76,14 @@ function MoaZone() {
         </button>
       </div>
       {/* 모아 리스트 */}
-      <div className="w-per75 m-auto">
-        <MoaCardList moaList={moaList}></MoaCardList>
+      <div className="w-per95 tablet:w-per75 m-auto">
+        <MoaCardList parties={moaList} isLoading={loading}></MoaCardList>
       </div>
       {/* 페이지네이션 */}
       <div className="w-per75 m-auto flex justify-center py-5">
         <MoaPagination />
       </div>
+      <Footer></Footer>
     </div>
   );
 }

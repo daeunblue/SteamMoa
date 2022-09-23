@@ -16,6 +16,10 @@ const TacticDetail = () => {
   const user_id = user.userId;
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [])
+
+  useEffect(() => {
     getATactic(tactic_id)
       .then(({ data }) => {
         setTactic({ ...data });
@@ -24,7 +28,8 @@ const TacticDetail = () => {
         Swal.fire({
           position: "center",
           icon: "warning",
-          title: "해당 게임을 불러올 수 없습니다. &#128521",
+          title: "게임을 불러올 수 없습니다. &#128521",
+          text: "잠시 후 다시 시도해주세요.",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -47,7 +52,7 @@ const TacticDetail = () => {
   const onClickDelete = () => {
     Swal.fire({
       title: "정말로 삭제하시겠어요?",
-      text: "공략글을 삭제하면 복구할 수 없습니다!",
+      text: "공략글을 삭제하면 복구할 수 없습니다.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "d33",
@@ -59,7 +64,7 @@ const TacticDetail = () => {
         tactic_id &&
           deleteTactic(tactic_id)
             .then(({ data }) => {
-              if (data.msg == "Success") {
+              if (data.msg === "Success") {
                 Swal.fire({
                   position: "center",
                   icon: "success",
@@ -86,7 +91,7 @@ const TacticDetail = () => {
   return (
     <div>
       <Navbar />
-      <div className="w-per75 m-auto text-gray-200">
+      <div className="w-per95 tablet:w-per75 m-auto text-gray-200">
         <div className="overflow-hidden w-full relative pb-[25%] bg-gray-900 object opacity-[95%] hover:opacity-100 transition-transform ease-in-out duration-7000">
           {/* 게임 이미지 */}
           {tactic.gameImgPath ? (
@@ -121,8 +126,8 @@ const TacticDetail = () => {
           </div>
         </div>
         {/* 공략글 내용 */}
-        <div className="w-full h-[30rem] overflow-auto flex flex-col mt-2 p-2 rounded bg-main-400">
-          {tactic.tacticContent ? tactic.tacticContent : "내용이 없습니다."}
+        <div className="w-full h-[30rem] overflow-y-auto flex flex-col mt-2 p-2 rounded bg-main-400">
+          {tactic.tacticContent ? <pre className="whitespace-pre-wrap">{tactic.tacticContent}</pre> : "내용이 없습니다."}
         </div>
         <div className="flex justify-center mt-2 pb-5">
           {user_id && tactic.userServiceId && user_id === tactic.userServiceId ? (

@@ -41,7 +41,7 @@ public class ScheduledTasks {
 
 
         for(Party party: partyRepository.findAll()) {
-
+            System.out.println("지금시간:"+LocalDateTime.now()+" 시작시간:"+party.getStartTime().minusHours(9));
             // log.info("파티 번호: {}  플레이 시작: {}  현재: {}", party.getPartyId(), party.getStartTime(), LocalDateTime.now());
 
             // 파티 상태가 4나 5이면 건너뛰기
@@ -56,21 +56,21 @@ public class ScheduledTasks {
                     party.setStatus("2");
 
                 // 1 모집 중에서 5 모집 실패로 : 지금 시간이 플레이 시간을 지남 && maxplayer > curplayer
-                if(LocalDateTime.now().isAfter(party.getStartTime()) && party.getMaxPlayer() > party.getCurPlayer())
+                if(LocalDateTime.now().isAfter(party.getStartTime().minusHours(9)) && party.getMaxPlayer() > party.getCurPlayer())
                     party.setStatus("5");
             }
 
 
             else if(party.getStatus().equals("2")) {
                 // 2 모집 완료에서 3 플레이 중으로 : 지금 시간이 플레이 시간을 지남
-                if(LocalDateTime.now().isAfter(party.getStartTime()))
+                if(LocalDateTime.now().isAfter(party.getStartTime().minusHours(9)))
                     party.setStatus("3");
             }
 
 
             else if(party.getStatus().equals("3")) {
                 // 3 플레이 중에서 4 플레이 완료로 : 지금 시간이 플레이 시간 + 24h를 지남
-                if(LocalDateTime.now().isAfter(party.getStartTime().plusDays(1))) {
+                if(LocalDateTime.now().isAfter(party.getStartTime().minusHours(9).plusDays(1))) {
                     party.setStatus("4");
 
                     // 모든 파티원에게 평가 알림을 발송합니다. (알림을 알림 테이블에 집어넣습니다.)

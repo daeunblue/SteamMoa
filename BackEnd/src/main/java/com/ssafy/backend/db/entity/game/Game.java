@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="game")
+@Table(name="game", indexes = @Index(name = "gamename_idx", columnList = "game_name"))
 public class Game {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="game_id")
